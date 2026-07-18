@@ -229,18 +229,7 @@
           "type": "button",
           "settings": {
             "button_label": "Enter the archive",
-            "button_link": "shopify://pages/private-archive",
-            "button_style_secondary": false,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        },
-        "button": {
-          "type": "button",
-          "settings": {
-            "button_label": "",
-            "button_link": "",
+            "button_link": "/pages/private-archive?view=archive",
             "button_style_secondary": true,
             "button_label_2": "",
             "button_link_2": "",
@@ -252,8 +241,7 @@
         "caption",
         "heading",
         "text",
-        "button_MhKnCB",
-        "button"
+        "button_MhKnCB"
       ],
       "settings": {
         "desktop_content_position": "left",
