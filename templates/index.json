@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -29,37 +38,40 @@
           }
         }
       },
-      "block_order": ["caption", "heading", "button"],
+      "block_order": [
+        "caption",
+        "heading",
+        "button"
+      ],
       "settings": {
         "image_overlay_opacity": 20,
         "image_height": "large",
-        "desktop_content_position": "middle-left",
-        "show_text_box": false,
         "image_behavior": "none",
+        "desktop_content_position": "middle-left",
         "desktop_content_alignment": "left",
+        "show_text_box": false,
         "color_scheme": "scheme-1",
-        "mobile_content_alignment": "left",
         "stack_images_on_mobile": true,
+        "mobile_content_alignment": "left",
         "show_text_below": false
       }
     },
     "current_drop": {
       "type": "featured-collection",
       "settings": {
+        "collection": "",
+        "products_to_show": 4,
         "title": "Current drop",
         "heading_size": "h1",
         "description": "<p>A limited release of freshly listed specimens.</p>",
         "show_description": true,
         "description_style": "uppercase",
-        "collection": "",
-        "products_to_show": 4,
         "columns_desktop": 4,
-        "color_scheme": "scheme-1",
+        "enable_desktop_slider": false,
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "link",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": true,
+        "color_scheme": "scheme-1",
         "image_ratio": "portrait",
         "image_shape": "default",
         "show_secondary_image": true,
@@ -67,6 +79,7 @@
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
+        "swipe_on_mobile": true,
         "padding_top": 64,
         "padding_bottom": 52
       }
@@ -90,12 +103,17 @@
           }
         }
       },
-      "block_order": ["caption", "heading"],
+      "block_order": [
+        "caption",
+        "heading"
+      ],
       "settings": {
         "desktop_content_position": "left",
         "content_alignment": "left",
         "color_scheme": "scheme-2",
         "full_width": true,
+        "archive_page": "",
+        "archive_button_label": "",
         "padding_top": 88,
         "padding_bottom": 88
       }
@@ -103,20 +121,19 @@
     "featured_genetics": {
       "type": "featured-collection",
       "settings": {
+        "collection": "",
+        "products_to_show": 3,
         "title": "Featured genetics",
         "heading_size": "h1",
         "description": "<p>Dark traits and exclusive parentage from the archive.</p>",
         "show_description": true,
         "description_style": "uppercase",
-        "collection": "",
-        "products_to_show": 3,
         "columns_desktop": 3,
-        "color_scheme": "scheme-1",
+        "enable_desktop_slider": false,
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "link",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": true,
+        "color_scheme": "scheme-1",
         "image_ratio": "portrait",
         "image_shape": "default",
         "show_secondary_image": true,
@@ -124,6 +141,7 @@
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
+        "swipe_on_mobile": true,
         "padding_top": 64,
         "padding_bottom": 64
       }
@@ -162,7 +180,12 @@
           }
         }
       },
-      "block_order": ["caption", "heading", "text", "button"],
+      "block_order": [
+        "caption",
+        "heading",
+        "text",
+        "button"
+      ],
       "settings": {
         "height": "large",
         "desktop_image_width": "medium",
@@ -199,8 +222,18 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Every specimen is documented, numbered and held as part of an ongoing collection. Browse the full record of rare Anthuriums, dark traits and selected hybrids.</p>",
-            "text_style": "body"
+            "text": "<p>Every specimen is documented, numbered and held as part of an ongoing collection. Browse the full record of rare Anthuriums, dark traits and selected hybrids.</p>"
+          }
+        },
+        "button_MhKnCB": {
+          "type": "button",
+          "settings": {
+            "button_label": "Enter the archive",
+            "button_link": "shopify://pages/private-archive",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
           }
         },
         "button": {
@@ -215,7 +248,13 @@
           }
         }
       },
-      "block_order": ["caption", "heading", "text", "button"],
+      "block_order": [
+        "caption",
+        "heading",
+        "text",
+        "button_MhKnCB",
+        "button"
+      ],
       "settings": {
         "desktop_content_position": "left",
         "content_alignment": "left",
@@ -258,17 +297,21 @@
           }
         }
       },
-      "block_order": ["column_1", "column_2", "column_3"],
+      "block_order": [
+        "column_1",
+        "column_2",
+        "column_3"
+      ],
       "settings": {
         "title": "From the collection",
         "heading_size": "h1",
         "image_width": "full",
         "image_ratio": "square",
+        "button_label": "Follow on Instagram",
+        "button_link": "",
         "columns_desktop": 3,
         "column_alignment": "left",
         "background_style": "none",
-        "button_label": "Follow on Instagram",
-        "button_link": "",
         "color_scheme": "scheme-1",
         "columns_mobile": "1",
         "swipe_on_mobile": true,
@@ -293,10 +336,15 @@
           }
         },
         "email_form": {
-          "type": "email_form"
+          "type": "email_form",
+          "settings": {}
         }
       },
-      "block_order": ["heading", "paragraph", "email_form"],
+      "block_order": [
+        "heading",
+        "paragraph",
+        "email_form"
+      ],
       "settings": {
         "color_scheme": "scheme-2",
         "full_width": true,
