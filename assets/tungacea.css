@@ -49,8 +49,8 @@ h1, h2, h3, h4, h5,
 
 .h0 {
   letter-spacing: -0.015em;
-  line-height: 1;
-  font-size: clamp(4.4rem, 8.2vw, 9.2rem);
+  line-height: 1.04;
+  font-size: clamp(3.6rem, 6.6vw, 7.4rem);
 }
 
 .h1, h1 {
@@ -130,12 +130,44 @@ h1, h2, h3, h4, h5,
 }
 
 .header {
-  padding-top: 2.2rem;
-  padding-bottom: 2.2rem;
   align-items: center;
 }
 
+/* Unified brand lockup: red Rakkan seal + Tungacea logo as one artist signature */
+.header__brand {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.1rem;
+  margin: 0;
+  line-height: 0;
+}
+@media screen and (min-width: 990px) {
+  .header--middle-left .header__brand { margin-left: -0.4rem; }
+}
+.header__brand .header__heading-link {
+  display: inline-flex;
+  align-items: flex-end;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+}
+
+/* Crop the logo's built-in empty canvas so only the mark shows (asset file untouched) */
+.header__heading-logo-wrapper--default {
+  position: relative;
+  display: block;
+  width: 91px;
+  height: 80px;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
 .header__heading-logo--default {
+  position: absolute;
+  top: -64px;
+  left: -23px;
+  width: 139px;
+  max-width: none;
+  height: auto;
   filter: brightness(1.35) contrast(0.95);
 }
 
@@ -169,14 +201,28 @@ h1, h2, h3, h4, h5,
 }
 .header__icon:hover { opacity: 0.65; }
 
-.header__rakkan {
-  opacity: 0.92;
-}
-.header .rakkan-seal {
-  margin-left: 1.6rem;
-}
 .rakkan-seal__image {
   filter: saturate(0.9);
+}
+
+/* Rakkan cropped to its artwork and bottom-aligned to the logo foot (bundled seal only) */
+.header__rakkan.rakkan-seal--default {
+  position: relative;
+  display: block;
+  width: 53px;
+  height: 50px;
+  margin: 0;
+  overflow: hidden;
+  opacity: 0.94;
+  flex: 0 0 auto;
+}
+.header__rakkan .rakkan-seal__image--default {
+  position: absolute;
+  top: -21px;
+  left: -21px;
+  width: 95px;
+  max-width: none;
+  height: auto;
 }
 
 /* Cart bubble in restrained oxblood */
@@ -252,13 +298,15 @@ h1, h2, h3, h4, h5,
   box-shadow: none;
   padding: 0;
   backdrop-filter: none;
-  max-width: 60rem;
+  max-width: 64rem;
 }
 .banner--content-align-left .banner__content {
   padding-left: clamp(2rem, 6vw, 8rem);
 }
 .banner__heading {
   margin-bottom: 1.8rem;
+  overflow: visible;
+  padding-bottom: 0.06em;
 }
 .banner__text {
   color: rgba(242, 238, 232, 0.82);
@@ -546,7 +594,10 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   .banner--content-align-left .banner__content { padding-left: 2.4rem; padding-right: 2.4rem; }
   .title-wrapper-with-link { margin-bottom: 3rem; }
   .card__heading a { font-size: 1.7rem; }
-  .header { padding-top: 1.6rem; padding-bottom: 1.6rem; }
-  .header .rakkan-seal { display: none; }
+  .header__brand { gap: 0.8rem; }
+  .header__heading-logo-wrapper--default { width: 68px; height: 60px; }
+  .header__heading-logo--default { top: -48px; left: -17px; width: 104px; }
+  .header__rakkan.rakkan-seal--default { width: 42px; height: 40px; }
+  .header__rakkan .rakkan-seal__image--default { top: -16px; left: -16px; width: 72px; }
   .specimen__row { grid-template-columns: 1fr; gap: 0.4rem; }
 }

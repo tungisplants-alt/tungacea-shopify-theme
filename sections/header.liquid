@@ -149,8 +149,11 @@
 
     {%- if section.settings.logo_position != 'middle-center' -%}
       {%- if request.page_type == 'index' -%}
-        <h1 class="header__heading">
+        <h1 class="header__heading header__brand">
+      {%- else -%}
+        <div class="header__heading header__brand">
       {%- endif -%}
+      {%- render 'rakkan-seal', class: 'header__rakkan' -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
         {%- if settings.logo != blank -%}
           <div class="header__heading-logo-wrapper">
@@ -172,18 +175,19 @@
             }}
           </div>
         {%- else -%}
-          <img
-            src="{{ 'tungacea-logo.png' | asset_url }}"
-            alt="{{ shop.name | escape }}"
-            class="header__heading-logo header__heading-logo--default motion-reduce"
-            width="{{ settings.logo_width }}"
-            style="width: {{ settings.logo_width }}px; height: auto;"
-          >
+          <span class="header__heading-logo-wrapper header__heading-logo-wrapper--default">
+            <img
+              src="{{ 'tungacea-logo.png' | asset_url }}"
+              alt="{{ shop.name | escape }}"
+              class="header__heading-logo header__heading-logo--default motion-reduce"
+            >
+          </span>
         {%- endif -%}
       </a>
-      {%- render 'rakkan-seal', class: 'header__rakkan' -%}
       {%- if request.page_type == 'index' -%}
         </h1>
+      {%- else -%}
+        </div>
       {%- endif -%}
     {%- endif -%}
 
@@ -199,8 +203,11 @@
 
     {%- if section.settings.logo_position == 'middle-center' -%}
       {%- if request.page_type == 'index' -%}
-        <h1 class="header__heading">
+        <h1 class="header__heading header__brand">
+      {%- else -%}
+        <div class="header__heading header__brand">
       {%- endif -%}
+      {%- render 'rakkan-seal', class: 'header__rakkan' -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
         {%- if settings.logo != blank -%}
           <div class="header__heading-logo-wrapper">
@@ -222,18 +229,19 @@
             }}
           </div>
         {%- else -%}
-          <img
-            src="{{ 'tungacea-logo.png' | asset_url }}"
-            alt="{{ shop.name | escape }}"
-            class="header__heading-logo header__heading-logo--default motion-reduce"
-            width="{{ settings.logo_width }}"
-            style="width: {{ settings.logo_width }}px; height: auto;"
-          >
+          <span class="header__heading-logo-wrapper header__heading-logo-wrapper--default">
+            <img
+              src="{{ 'tungacea-logo.png' | asset_url }}"
+              alt="{{ shop.name | escape }}"
+              class="header__heading-logo header__heading-logo--default motion-reduce"
+            >
+          </span>
         {%- endif -%}
       </a>
-      {%- render 'rakkan-seal', class: 'header__rakkan' -%}
       {%- if request.page_type == 'index' -%}
         </h1>
+      {%- else -%}
+        </div>
       {%- endif -%}
     {%- endif -%}
 
@@ -650,7 +658,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_top",
-      "default": 20
+      "default": 16
     },
     {
       "type": "range",
@@ -660,7 +668,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
-      "default": 20
+      "default": 16
     }
   ],
   "blocks": [

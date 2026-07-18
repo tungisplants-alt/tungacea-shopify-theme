@@ -5,7 +5,7 @@
   Accepts: class (extra css class), width_override (px)
 {%- endcomment -%}
 {%- assign seal_width = width_override | default: settings.rakkan_width | default: 60 -%}
-<div class="rakkan-seal {{ class }}" style="--rakkan-width: {{ seal_width }}px;">
+<div class="rakkan-seal {{ class }}{% if settings.rakkan_image == blank %} rakkan-seal--default{% endif %}" style="--rakkan-width: {{ seal_width }}px;">
   {%- if settings.rakkan_image != blank -%}
     {{
       settings.rakkan_image
@@ -20,7 +20,7 @@
   {%- else -%}
     <img
       src="{{ 'tungacea-rakkan.png' | asset_url }}"
-      class="rakkan-seal__image"
+      class="rakkan-seal__image rakkan-seal__image--default"
       loading="lazy"
       width="{{ seal_width }}"
       alt="{{ shop.name | escape }}"
