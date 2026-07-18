@@ -172,7 +172,13 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          <img
+            src="{{ 'tungacea-logo.png' | asset_url }}"
+            alt="{{ shop.name | escape }}"
+            class="header__heading-logo header__heading-logo--default motion-reduce"
+            width="{{ settings.logo_width }}"
+            style="width: {{ settings.logo_width }}px; height: auto;"
+          >
         {%- endif -%}
       </a>
       {%- render 'rakkan-seal', class: 'header__rakkan' -%}
@@ -216,7 +222,13 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          <img
+            src="{{ 'tungacea-logo.png' | asset_url }}"
+            alt="{{ shop.name | escape }}"
+            class="header__heading-logo header__heading-logo--default motion-reduce"
+            width="{{ settings.logo_width }}"
+            style="width: {{ settings.logo_width }}px; height: auto;"
+          >
         {%- endif -%}
       </a>
       {%- render 'rakkan-seal', class: 'header__rakkan' -%}

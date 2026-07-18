@@ -200,8 +200,19 @@
                   {%- endif -%}
                 {%- when 'specimen' -%}
                   {%- liquid
+                    assign mf = product.metafields.custom
+                    assign sp_plant_id = mf.plant_id | default: block.settings.plant_id
+                    assign sp_genetics = mf.genetics | default: block.settings.genetics
+                    assign sp_parentage = mf.parentage | default: block.settings.parentage
+                    assign sp_breeder = mf.breeder_source | default: block.settings.breeder
+                    assign sp_rarity = mf.rarity
+                    assign sp_care = mf.care
+                    assign sp_photo = mf.photo_conditions | default: block.settings.photo_conditions
+                    assign sp_shipping = mf.shipping_note | default: block.settings.shipping_info
+                    assign sp_saletype = mf.sale_type
+
                     assign show_specimen = false
-                    if block.settings.plant_id != blank or block.settings.genetics != blank or block.settings.parentage != blank or block.settings.breeder != blank or block.settings.photo_conditions != blank or block.settings.shipping_info != blank
+                    if sp_plant_id != blank or sp_genetics != blank or sp_parentage != blank or sp_breeder != blank or sp_rarity != blank or sp_care != blank or sp_photo != blank or sp_shipping != blank or sp_saletype != blank
                       assign show_specimen = true
                     endif
                   -%}
@@ -211,43 +222,61 @@
                         <p class="specimen__title">{{ block.settings.heading | escape }}</p>
                       {%- endif -%}
                       <dl class="specimen__list">
-                        {%- if block.settings.plant_id != blank -%}
+                        {%- if sp_plant_id != blank -%}
                           <div class="specimen__row">
                             <dt class="specimen__label">{{ block.settings.label_plant_id | escape }}</dt>
-                            <dd class="specimen__value">{{ block.settings.plant_id }}</dd>
+                            <dd class="specimen__value">{{ sp_plant_id }}</dd>
                           </div>
                         {%- endif -%}
-                        {%- if block.settings.genetics != blank -%}
+                        {%- if sp_genetics != blank -%}
                           <div class="specimen__row">
                             <dt class="specimen__label">{{ block.settings.label_genetics | escape }}</dt>
-                            <dd class="specimen__value">{{ block.settings.genetics }}</dd>
+                            <dd class="specimen__value">{{ sp_genetics }}</dd>
                           </div>
                         {%- endif -%}
-                        {%- if block.settings.parentage != blank -%}
+                        {%- if sp_parentage != blank -%}
                           <div class="specimen__row">
                             <dt class="specimen__label">{{ block.settings.label_parentage | escape }}</dt>
-                            <dd class="specimen__value">{{ block.settings.parentage }}</dd>
+                            <dd class="specimen__value">{{ sp_parentage }}</dd>
                           </div>
                         {%- endif -%}
-                        {%- if block.settings.breeder != blank -%}
+                        {%- if sp_breeder != blank -%}
                           <div class="specimen__row">
                             <dt class="specimen__label">{{ block.settings.label_breeder | escape }}</dt>
-                            <dd class="specimen__value">{{ block.settings.breeder }}</dd>
+                            <dd class="specimen__value">{{ sp_breeder }}</dd>
                           </div>
                         {%- endif -%}
-                        {%- if block.settings.photo_conditions != blank -%}
+                        {%- if sp_rarity != blank -%}
                           <div class="specimen__row">
-                            <dt class="specimen__label">{{ block.settings.label_photo_conditions | escape }}</dt>
-                            <dd class="specimen__value">{{ block.settings.photo_conditions }}</dd>
+                            <dt class="specimen__label">{{ block.settings.label_rarity | escape }}</dt>
+                            <dd class="specimen__value">{{ sp_rarity }}</dd>
                           </div>
                         {%- endif -%}
-                        {%- if block.settings.shipping_info != blank -%}
+                        {%- if sp_care != blank -%}
+                          <div class="specimen__row">
+                            <dt class="specimen__label">{{ block.settings.label_care | escape }}</dt>
+                            <dd class="specimen__value rte">{{ sp_care }}</dd>
+                          </div>
+                        {%- endif -%}
+                        {%- if sp_shipping != blank -%}
                           <div class="specimen__row">
                             <dt class="specimen__label">{{ block.settings.label_shipping | escape }}</dt>
-                            <dd class="specimen__value rte">{{ block.settings.shipping_info }}</dd>
+                            <dd class="specimen__value rte">{{ sp_shipping }}</dd>
                           </div>
                         {%- endif -%}
                       </dl>
+                      {%- if sp_photo != blank or sp_saletype != blank -%}
+                        {%- capture sp_tagsrc -%}{{ sp_saletype }}{% if sp_saletype != blank and sp_photo != blank %},{% endif %}{{ sp_photo }}{%- endcapture -%}
+                        {%- assign sp_taglist = sp_tagsrc | split: ',' -%}
+                        <div class="specimen__tags">
+                          {%- for sp_tag in sp_taglist -%}
+                            {%- assign sp_tag_clean = sp_tag | strip -%}
+                            {%- if sp_tag_clean != blank -%}
+                              <span class="specimen__tag">{{ sp_tag_clean }}</span>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </div>
+                      {%- endif -%}
                     </div>
                   {%- endif -%}
                 {%- when 'sku' -%}
@@ -1007,7 +1036,7 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "A botanical specimen record. Each field only appears on the product when it contains a value."
+          "content": "A botanical specimen record. Fields read from product metafields (custom.plant_id, custom.genetics, custom.parentage, custom.breeder_source, custom.rarity, custom.care, custom.photo_conditions, custom.sale_type, custom.shipping_note) and fall back to the values below. Empty fields are hidden automatically."
         },
         {
           "type": "text",
@@ -1074,6 +1103,26 @@
           "type": "text",
           "id": "breeder",
           "label": "Value"
+        },
+        {
+          "type": "header",
+          "content": "Rarity (metafield custom.rarity)"
+        },
+        {
+          "type": "text",
+          "id": "label_rarity",
+          "label": "Label",
+          "default": "Rarity"
+        },
+        {
+          "type": "header",
+          "content": "Care (metafield custom.care)"
+        },
+        {
+          "type": "text",
+          "id": "label_care",
+          "label": "Label",
+          "default": "Care"
         },
         {
           "type": "header",

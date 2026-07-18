@@ -31,7 +31,7 @@
       },
       "block_order": ["caption", "heading", "button"],
       "settings": {
-        "image_overlay_opacity": 40,
+        "image_overlay_opacity": 15,
         "image_height": "large",
         "desktop_content_position": "middle-left",
         "show_text_box": false,
@@ -178,6 +178,53 @@
         "padding_bottom": 40
       }
     },
+    "archive": {
+      "type": "rich-text",
+      "blocks": {
+        "caption": {
+          "type": "caption",
+          "settings": {
+            "caption": "The archive",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Enter the private archive.",
+            "heading_size": "h1"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Every specimen is documented, numbered and held as part of an ongoing collection. Browse the full record of rare Anthuriums, dark traits and selected hybrids.</p>",
+            "text_style": "body"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "button_label": "View the collection",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": ["caption", "heading", "text", "button"],
+      "settings": {
+        "desktop_content_position": "left",
+        "content_alignment": "left",
+        "color_scheme": "scheme-5",
+        "full_width": true,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
     "community": {
       "type": "multicolumn",
       "blocks": {
@@ -262,6 +309,7 @@
     "brand_statement",
     "featured_genetics",
     "about",
+    "archive",
     "community",
     "newsletter"
   ]
