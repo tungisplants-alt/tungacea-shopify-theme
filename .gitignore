@@ -10,3 +10,10 @@ Thumbs.db
 .shopify
 node_modules
 *.zip
+.env
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
