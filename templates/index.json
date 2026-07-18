@@ -206,8 +206,8 @@
         "button": {
           "type": "button",
           "settings": {
-            "button_label": "View the collection",
-            "button_link": "shopify://collections/all",
+            "button_label": "",
+            "button_link": "",
             "button_style_secondary": true,
             "button_label_2": "",
             "button_link_2": "",
@@ -221,6 +221,8 @@
         "content_alignment": "left",
         "color_scheme": "scheme-5",
         "full_width": false,
+        "archive_page": "",
+        "archive_button_label": "",
         "padding_top": 72,
         "padding_bottom": 72
       }

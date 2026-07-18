@@ -1,0 +1,72 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-private-archive",
+      "blocks": {
+        "specimen-1": {
+          "type": "specimen",
+          "settings": {
+            "name": "Anthurium 'Obsidian Vein'",
+            "plant_id": "TGC-014",
+            "genetics": "papillilaminum x dressleri",
+            "parentage": "Selected dark seedling, F2",
+            "breeder": "Tungacea",
+            "year": "2024",
+            "status": "private_collection",
+            "notes": "<p>Deep matte foliage with pronounced silvered veining. Held as breeding reference for the dark papillilaminum line.</p>"
+          }
+        },
+        "specimen-2": {
+          "type": "specimen",
+          "settings": {
+            "name": "Anthurium 'Carmine Study'",
+            "plant_id": "TGC-009",
+            "genetics": "crystallinum x magnificum",
+            "parentage": "Open cross, selected for petiole colour",
+            "breeder": "Tungacea",
+            "year": "2023",
+            "status": "past_release",
+            "notes": "<p>Released as part of an early limited drop. Documented here for provenance.</p>"
+          }
+        },
+        "specimen-3": {
+          "type": "specimen",
+          "settings": {
+            "name": "Anthurium 'Fern Ledger No. 3'",
+            "plant_id": "TGC-021",
+            "genetics": "warocqueanum select",
+            "parentage": "Division of mother plant",
+            "breeder": "Tungacea",
+            "year": "2022",
+            "status": "breeding_stock",
+            "notes": "<p>Long-form velvet type kept as active breeding stock. Not offered for sale.</p>"
+          }
+        },
+        "specimen-4": {
+          "type": "specimen",
+          "settings": {
+            "name": "Anthurium 'Ash Archive'",
+            "plant_id": "TGC-005",
+            "genetics": "regale x forgetii",
+            "parentage": "Selected seedling, retired line",
+            "breeder": "Tungacea",
+            "year": "2021",
+            "status": "archived",
+            "notes": "<p>Retired from the growing collection and archived for record-keeping.</p>"
+          }
+        }
+      },
+      "block_order": ["specimen-1", "specimen-2", "specimen-3", "specimen-4"],
+      "settings": {
+        "enable_filters": true,
+        "color_scheme": "scheme-1",
+        "collection": "",
+        "collection_heading": "",
+        "products_to_show": 6,
+        "padding_top": 72,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": ["main"]
+}

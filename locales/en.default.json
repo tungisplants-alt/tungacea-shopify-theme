@@ -274,7 +274,6 @@
       "announcement": "Announcement",
       "announcement_bar": "Announcement bar"
     },
-
     "header": {
       "announcement": "Announcement",
       "menu": "Menu",
@@ -528,6 +527,31 @@
       "max_characters": "{{ max_chars }} characters max",
       "send_on": "YYYY-MM-DD",
       "send_on_label": "Send on (optional)"
+    }
+  },
+  "private_archive": {
+    "eyebrow": "The Private Archive",
+    "heading": "Selected specimens. Documented genetics.",
+    "intro": "A growing record of Anthurium specimens, selected traits, parentage and past releases from the Tungacea collection.",
+    "view_specimen": "View specimen",
+    "enter_the_archive": "Enter the archive",
+    "filters": {
+      "title": "Filter specimens",
+      "all": "All"
+    },
+    "status": {
+      "private_collection": "Private Collection",
+      "archived": "Archived",
+      "past_release": "Past Release",
+      "sold": "Sold",
+      "breeding_stock": "Breeding Stock"
+    },
+    "labels": {
+      "plant_id": "Plant ID",
+      "genetics": "Genetics",
+      "parentage": "Parentage",
+      "breeder": "Breeder / source",
+      "year": "Year"
     }
   }
 }

@@ -1,0 +1,274 @@
+/*
+  Tungacea — Private Archive.
+  A private botanical record: near-black ground, warm off-white text,
+  restrained oxblood accents, large image-first editorial rows.
+  Depends on tokens defined in tungacea.css.
+*/
+
+.private-archive {
+  --pa-line: var(--tungacea-hairline, rgba(242, 238, 232, 0.1));
+  --pa-line-soft: var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.055));
+  --pa-muted: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  --pa-accent: var(--tungacea-accent, 150, 45, 58);
+  --pa-ease: var(--tungacea-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+}
+
+/* ---------- Intro ---------- */
+.private-archive__intro {
+  max-width: 62rem;
+  margin-bottom: 5.6rem;
+}
+
+.private-archive__eyebrow {
+  margin: 0 0 1.8rem;
+  color: var(--pa-muted);
+}
+
+.private-archive__heading {
+  margin: 0;
+  font-weight: 400;
+  max-width: 18ch;
+  line-height: 1.06;
+}
+
+.private-archive__lead {
+  margin-top: 2.2rem;
+  max-width: 54ch;
+  color: var(--pa-muted);
+  font-size: 1.7rem;
+  line-height: 1.6;
+}
+
+.private-archive__lead > * {
+  margin: 0;
+}
+
+/* ---------- Filters ---------- */
+.private-archive__filters {
+  display: none;
+  flex-wrap: wrap;
+  gap: 1.6rem 2.8rem;
+  padding: 2rem 0 3.2rem;
+  border-top: 1px solid var(--pa-line-soft);
+  margin-bottom: 3.2rem;
+}
+
+/* Revealed only once JS has wired the filters up (progressive enhancement).
+   Without JS the bar stays hidden and every specimen remains visible. */
+.private-archive--filters-ready .private-archive__filters {
+  display: flex;
+}
+
+.private-archive__filter {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0.4rem 0;
+  cursor: pointer;
+  color: var(--pa-muted);
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 1.15rem;
+  position: relative;
+  transition: color 0.35s var(--pa-ease);
+}
+
+.private-archive__filter::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -0.4rem;
+  height: 1px;
+  background: rgb(var(--pa-accent));
+  transition: right 0.4s var(--pa-ease);
+}
+
+.private-archive__filter:hover,
+.private-archive__filter.is-active {
+  color: rgb(var(--color-foreground));
+}
+
+.private-archive__filter.is-active::after {
+  right: 0;
+}
+
+.private-archive__filter:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 4px;
+}
+
+/* ---------- Specimen rows ---------- */
+.private-archive__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+}
+
+.private-archive__item {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.4rem;
+  align-items: center;
+}
+
+.private-archive__item[hidden] {
+  display: none;
+}
+
+.private-archive__media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: rgba(242, 238, 232, 0.03);
+}
+
+.private-archive__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 1.4s var(--pa-ease);
+}
+
+.private-archive__item:hover .private-archive__image {
+  transform: scale(1.03);
+}
+
+.private-archive__image--secondary {
+  margin-top: 1.2rem;
+  width: 62%;
+}
+
+.private-archive__body {
+  padding-top: 0.4rem;
+}
+
+.private-archive__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0 0 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 1.05rem;
+  color: var(--pa-muted);
+}
+
+.private-archive__status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(var(--pa-accent));
+}
+
+.private-archive__name {
+  margin: 0 0 2rem;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 3vw, 3.6rem);
+  line-height: 1.1;
+}
+
+.private-archive__name-link {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.private-archive__name-link:hover {
+  opacity: 0.72;
+}
+
+.private-archive__meta {
+  margin: 0;
+  border-top: 1px solid var(--pa-line-soft);
+}
+
+.private-archive__row {
+  display: grid;
+  grid-template-columns: minmax(10rem, 30%) 1fr;
+  gap: 1.6rem;
+  padding: 1.3rem 0;
+  border-bottom: 1px solid var(--pa-line-soft);
+}
+
+.private-archive__row dt {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 1.05rem;
+  color: var(--pa-muted);
+}
+
+.private-archive__row dd {
+  margin: 0;
+  font-size: 1.5rem;
+  color: rgb(var(--color-foreground));
+}
+
+.private-archive__notes {
+  margin-top: 1.8rem;
+  color: var(--pa-muted);
+  font-size: 1.45rem;
+  line-height: 1.65;
+  max-width: 52ch;
+}
+
+.private-archive__notes > * {
+  margin: 0;
+}
+
+.private-archive__link {
+  display: inline-block;
+  margin-top: 2.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 1.15rem;
+  color: rgb(var(--color-foreground));
+  text-underline-offset: 0.5rem;
+  text-decoration-color: rgba(var(--pa-accent), 0.9);
+}
+
+/* ---------- Optional published collection ---------- */
+.private-archive__published {
+  margin-top: 8rem;
+  padding-top: 6rem;
+  border-top: 1px solid var(--pa-line-soft);
+}
+
+.private-archive__subheading {
+  margin: 0 0 4rem;
+  font-weight: 400;
+}
+
+/* ---------- Desktop: alternating editorial rows ---------- */
+@media screen and (min-width: 750px) {
+  .private-archive__grid {
+    gap: 11rem;
+  }
+
+  .private-archive__item {
+    grid-template-columns: 1.05fr 1fr;
+    gap: 6rem;
+  }
+
+  .private-archive__item:nth-child(even) .private-archive__media {
+    order: 2;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .private-archive__image,
+  .private-archive__filter,
+  .private-archive__filter::after,
+  .private-archive__name-link {
+    transition: none;
+  }
+
+  .private-archive__item:hover .private-archive__image {
+    transform: none;
+  }
+}

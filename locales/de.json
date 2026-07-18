@@ -528,5 +528,30 @@
       "expanded": "Formular für den Empfänger des Gutscheins erweitert",
       "collapsed": "Formular für den Empfänger des Gutscheins minimiert"
     }
+  },
+  "private_archive": {
+    "eyebrow": "Das private Archiv",
+    "heading": "Ausgewählte Exemplare. Dokumentierte Genetik.",
+    "intro": "Eine wachsende Aufzeichnung von Anthurium-Exemplaren, ausgewählten Merkmalen, Abstammung und früheren Veröffentlichungen aus der Tungacea-Sammlung.",
+    "view_specimen": "Exemplar ansehen",
+    "enter_the_archive": "Archiv betreten",
+    "filters": {
+      "title": "Exemplare filtern",
+      "all": "Alle"
+    },
+    "status": {
+      "private_collection": "Private Sammlung",
+      "archived": "Archiviert",
+      "past_release": "Frühere Veröffentlichung",
+      "sold": "Verkauft",
+      "breeding_stock": "Zuchtbestand"
+    },
+    "labels": {
+      "plant_id": "Pflanzen-ID",
+      "genetics": "Genetik",
+      "parentage": "Abstammung",
+      "breeder": "Züchter / Quelle",
+      "year": "Jahr"
+    }
   }
 }
