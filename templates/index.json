@@ -31,7 +31,7 @@
       },
       "block_order": ["caption", "heading", "button"],
       "settings": {
-        "image_overlay_opacity": 35,
+        "image_overlay_opacity": 40,
         "image_height": "large",
         "desktop_content_position": "middle-left",
         "show_text_box": false,
@@ -48,7 +48,7 @@
       "settings": {
         "title": "Current drop",
         "heading_size": "h1",
-        "description": "A limited release of freshly listed specimens.",
+        "description": "<p>A limited release of freshly listed specimens.</p>",
         "show_description": true,
         "description_style": "uppercase",
         "collection": "",
@@ -105,7 +105,7 @@
       "settings": {
         "title": "Featured genetics",
         "heading_size": "h1",
-        "description": "Dark traits and exclusive parentage from the archive.",
+        "description": "<p>Dark traits and exclusive parentage from the archive.</p>",
         "show_description": true,
         "description_style": "uppercase",
         "collection": "",
