@@ -198,6 +198,58 @@
                       {{ product.description }}
                     </div>
                   {%- endif -%}
+                {%- when 'specimen' -%}
+                  {%- liquid
+                    assign show_specimen = false
+                    if block.settings.plant_id != blank or block.settings.genetics != blank or block.settings.parentage != blank or block.settings.breeder != blank or block.settings.photo_conditions != blank or block.settings.shipping_info != blank
+                      assign show_specimen = true
+                    endif
+                  -%}
+                  {%- if show_specimen -%}
+                    <div class="specimen quick-add-hidden" {{ block.shopify_attributes }}>
+                      {%- if block.settings.heading != blank -%}
+                        <p class="specimen__title">{{ block.settings.heading | escape }}</p>
+                      {%- endif -%}
+                      <dl class="specimen__list">
+                        {%- if block.settings.plant_id != blank -%}
+                          <div class="specimen__row">
+                            <dt class="specimen__label">{{ block.settings.label_plant_id | escape }}</dt>
+                            <dd class="specimen__value">{{ block.settings.plant_id }}</dd>
+                          </div>
+                        {%- endif -%}
+                        {%- if block.settings.genetics != blank -%}
+                          <div class="specimen__row">
+                            <dt class="specimen__label">{{ block.settings.label_genetics | escape }}</dt>
+                            <dd class="specimen__value">{{ block.settings.genetics }}</dd>
+                          </div>
+                        {%- endif -%}
+                        {%- if block.settings.parentage != blank -%}
+                          <div class="specimen__row">
+                            <dt class="specimen__label">{{ block.settings.label_parentage | escape }}</dt>
+                            <dd class="specimen__value">{{ block.settings.parentage }}</dd>
+                          </div>
+                        {%- endif -%}
+                        {%- if block.settings.breeder != blank -%}
+                          <div class="specimen__row">
+                            <dt class="specimen__label">{{ block.settings.label_breeder | escape }}</dt>
+                            <dd class="specimen__value">{{ block.settings.breeder }}</dd>
+                          </div>
+                        {%- endif -%}
+                        {%- if block.settings.photo_conditions != blank -%}
+                          <div class="specimen__row">
+                            <dt class="specimen__label">{{ block.settings.label_photo_conditions | escape }}</dt>
+                            <dd class="specimen__value">{{ block.settings.photo_conditions }}</dd>
+                          </div>
+                        {%- endif -%}
+                        {%- if block.settings.shipping_info != blank -%}
+                          <div class="specimen__row">
+                            <dt class="specimen__label">{{ block.settings.label_shipping | escape }}</dt>
+                            <dd class="specimen__value rte">{{ block.settings.shipping_info }}</dd>
+                          </div>
+                        {%- endif -%}
+                      </dl>
+                    </div>
+                  {%- endif -%}
                 {%- when 'sku' -%}
                   <p
                     class="product__sku{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.sku.size == 0 %} visibility-hidden{% endif %}"
@@ -947,6 +999,113 @@
       "type": "description",
       "name": "t:sections.main-product.blocks.description.name",
       "limit": 1
+    },
+    {
+      "type": "specimen",
+      "name": "Specimen record",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "A botanical specimen record. Each field only appears on the product when it contains a value."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Section heading",
+          "default": "Specimen record"
+        },
+        {
+          "type": "header",
+          "content": "Plant ID"
+        },
+        {
+          "type": "text",
+          "id": "label_plant_id",
+          "label": "Label",
+          "default": "Plant ID"
+        },
+        {
+          "type": "text",
+          "id": "plant_id",
+          "label": "Value"
+        },
+        {
+          "type": "header",
+          "content": "Genetics"
+        },
+        {
+          "type": "text",
+          "id": "label_genetics",
+          "label": "Label",
+          "default": "Genetics"
+        },
+        {
+          "type": "text",
+          "id": "genetics",
+          "label": "Value"
+        },
+        {
+          "type": "header",
+          "content": "Parentage"
+        },
+        {
+          "type": "text",
+          "id": "label_parentage",
+          "label": "Label",
+          "default": "Parentage"
+        },
+        {
+          "type": "text",
+          "id": "parentage",
+          "label": "Value"
+        },
+        {
+          "type": "header",
+          "content": "Breeder or source"
+        },
+        {
+          "type": "text",
+          "id": "label_breeder",
+          "label": "Label",
+          "default": "Breeder / source"
+        },
+        {
+          "type": "text",
+          "id": "breeder",
+          "label": "Value"
+        },
+        {
+          "type": "header",
+          "content": "Photo conditions"
+        },
+        {
+          "type": "text",
+          "id": "label_photo_conditions",
+          "label": "Label",
+          "default": "Photo conditions"
+        },
+        {
+          "type": "text",
+          "id": "photo_conditions",
+          "label": "Value"
+        },
+        {
+          "type": "header",
+          "content": "Shipping information"
+        },
+        {
+          "type": "text",
+          "id": "label_shipping",
+          "label": "Label",
+          "default": "Shipping"
+        },
+        {
+          "type": "richtext",
+          "id": "shipping_info",
+          "label": "Value"
+        }
+      ]
     },
     {
       "type": "share",
