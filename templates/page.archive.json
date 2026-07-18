@@ -12,6 +12,22 @@
     "main": {
       "type": "main-private-archive",
       "blocks": {
+        "specimen_xdd3wp": {
+          "type": "specimen",
+          "settings": {
+            "image": "shopify://shop_images/D2061F69-B3D6-438D-AD92-07975F7501BE.jpg",
+            "name": "Anthurium Ralph Lynam x Fortsherman F2",
+            "plant_id": "No.0001",
+            "genetics": "Papillilaminum",
+            "parentage": "Hybridization",
+            "breeder": "Tofusprinkles",
+            "year": "Unkown",
+            "status": "private_collection",
+            "notes": "<p>My Most precious RLFS F2 No.4 </p>",
+            "link": "",
+            "link_label": ""
+          }
+        },
         "specimen-1": {
           "type": "specimen",
           "settings": {
@@ -22,7 +38,9 @@
             "breeder": "Tungacea",
             "year": "2024",
             "status": "private_collection",
-            "notes": "<p>Deep matte foliage with pronounced silvered veining. Held as breeding reference for the dark papillilaminum line.</p>"
+            "notes": "<p>Deep matte foliage with pronounced silvered veining. Held as breeding reference for the dark papillilaminum line.</p>",
+            "link": "",
+            "link_label": ""
           }
         },
         "specimen-2": {
@@ -35,7 +53,9 @@
             "breeder": "Tungacea",
             "year": "2023",
             "status": "past_release",
-            "notes": "<p>Released as part of an early limited drop. Documented here for provenance.</p>"
+            "notes": "<p>Released as part of an early limited drop. Documented here for provenance.</p>",
+            "link": "",
+            "link_label": ""
           }
         },
         "specimen-3": {
@@ -48,7 +68,9 @@
             "breeder": "Tungacea",
             "year": "2022",
             "status": "breeding_stock",
-            "notes": "<p>Long-form velvet type kept as active breeding stock. Not offered for sale.</p>"
+            "notes": "<p>Long-form velvet type kept as active breeding stock. Not offered for sale.</p>",
+            "link": "",
+            "link_label": ""
           }
         },
         "specimen-4": {
@@ -61,12 +83,23 @@
             "breeder": "Tungacea",
             "year": "2021",
             "status": "archived",
-            "notes": "<p>Retired from the growing collection and archived for record-keeping.</p>"
+            "notes": "<p>Retired from the growing collection and archived for record-keeping.</p>",
+            "link": "",
+            "link_label": ""
           }
         }
       },
-      "block_order": ["specimen-1", "specimen-2", "specimen-3", "specimen-4"],
+      "block_order": [
+        "specimen_xdd3wp",
+        "specimen-1",
+        "specimen-2",
+        "specimen-3",
+        "specimen-4"
+      ],
       "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "intro": "",
         "enable_filters": true,
         "color_scheme": "scheme-1",
         "collection": "",
@@ -77,5 +110,7 @@
       }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
