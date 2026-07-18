@@ -137,7 +137,7 @@ h1, h2, h3, h4, h5,
 .header__brand {
   display: flex;
   align-items: flex-end;
-  gap: 1.1rem;
+  gap: 0.4rem;
   margin: 0;
   line-height: 0;
 }
@@ -209,8 +209,8 @@ h1, h2, h3, h4, h5,
 .header__rakkan.rakkan-seal--default {
   position: relative;
   display: block;
-  width: 53px;
-  height: 50px;
+  width: 28px;
+  height: 26px;
   margin: 0;
   overflow: hidden;
   opacity: 0.94;
@@ -218,9 +218,9 @@ h1, h2, h3, h4, h5,
 }
 .header__rakkan .rakkan-seal__image--default {
   position: absolute;
-  top: -21px;
-  left: -21px;
-  width: 95px;
+  top: -11px;
+  left: -11px;
+  width: 50px;
   max-width: none;
   height: auto;
 }
@@ -594,10 +594,10 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   .banner--content-align-left .banner__content { padding-left: 2.4rem; padding-right: 2.4rem; }
   .title-wrapper-with-link { margin-bottom: 3rem; }
   .card__heading a { font-size: 1.7rem; }
-  .header__brand { gap: 0.8rem; }
+  .header__brand { gap: 0.3rem; }
   .header__heading-logo-wrapper--default { width: 68px; height: 60px; }
   .header__heading-logo--default { top: -48px; left: -17px; width: 104px; }
-  .header__rakkan.rakkan-seal--default { width: 42px; height: 40px; }
-  .header__rakkan .rakkan-seal__image--default { top: -16px; left: -16px; width: 72px; }
+  .header__rakkan.rakkan-seal--default { width: 22px; height: 21px; }
+  .header__rakkan .rakkan-seal__image--default { top: -8px; left: -8px; width: 38px; }
   .specimen__row { grid-template-columns: 1fr; gap: 0.4rem; }
 }
