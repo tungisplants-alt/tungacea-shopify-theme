@@ -211,7 +211,7 @@ h1, h2, h3, h4, h5,
 .header__rakkan.rakkan-seal--default {
   position: absolute;
   left: 24px;   /* just left of the logo's central stem foot (foot ≈ 45px) */
-  bottom: 8px;  /* sits near the lower end of the stem, above its tip */
+  bottom: -2px; /* seal's vertical center locked to the logo foot line (foot ≈ 73.5px) */
   z-index: 2;
   display: block;
   width: 18px;  /* ≈22% of the 80px logo box height */
@@ -603,7 +603,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   .header__brand { gap: 0.3rem; }
   .header__heading-logo-wrapper--default { width: 68px; height: 60px; }
   .header__heading-logo--default { top: -48px; left: -17px; width: 104px; }
-  .header__rakkan.rakkan-seal--default { width: 15px; height: 14px; left: 17px; bottom: 6px; }
+  .header__rakkan.rakkan-seal--default { width: 15px; height: 14px; left: 17px; bottom: -2px; }
   .header__rakkan .rakkan-seal__image--default { top: -5px; left: -5px; width: 25px; }
   .specimen__row { grid-template-columns: 1fr; gap: 0.4rem; }
 }
