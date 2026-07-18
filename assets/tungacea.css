@@ -135,6 +135,7 @@ h1, h2, h3, h4, h5,
 
 /* Unified brand lockup: red Rakkan seal + Tungacea logo as one artist signature */
 .header__brand {
+  position: relative;
   display: flex;
   align-items: flex-end;
   gap: 0.4rem;
@@ -205,22 +206,27 @@ h1, h2, h3, h4, h5,
   filter: saturate(0.9);
 }
 
-/* Rakkan cropped to its artwork and bottom-aligned to the logo foot (bundled seal only) */
+/* Rakkan cropped to its artwork and anchored as a seal to the logo's lower-left stem base
+   (bundled seal only). Positioned relative to the logo lockup, not the header row. */
 .header__rakkan.rakkan-seal--default {
-  position: relative;
+  position: absolute;
+  left: 24px;   /* just left of the logo's central stem foot (foot ≈ 45px) */
+  bottom: 8px;  /* sits near the lower end of the stem, above its tip */
+  z-index: 2;
   display: block;
-  width: 28px;
-  height: 26px;
+  width: 18px;  /* ≈22% of the 80px logo box height */
+  height: 17px;
   margin: 0;
   overflow: hidden;
   opacity: 0.94;
   flex: 0 0 auto;
+  pointer-events: none;
 }
 .header__rakkan .rakkan-seal__image--default {
   position: absolute;
-  top: -11px;
-  left: -11px;
-  width: 50px;
+  top: -7px;
+  left: -7px;
+  width: 33px;
   max-width: none;
   height: auto;
 }
@@ -597,7 +603,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   .header__brand { gap: 0.3rem; }
   .header__heading-logo-wrapper--default { width: 68px; height: 60px; }
   .header__heading-logo--default { top: -48px; left: -17px; width: 104px; }
-  .header__rakkan.rakkan-seal--default { width: 22px; height: 21px; }
-  .header__rakkan .rakkan-seal__image--default { top: -8px; left: -8px; width: 38px; }
+  .header__rakkan.rakkan-seal--default { width: 15px; height: 14px; left: 17px; bottom: 6px; }
+  .header__rakkan .rakkan-seal__image--default { top: -5px; left: -5px; width: 25px; }
   .specimen__row { grid-template-columns: 1fr; gap: 0.4rem; }
 }
