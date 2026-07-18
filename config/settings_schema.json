@@ -30,26 +30,6 @@
         "id": "favicon",
         "label": "t:settings_schema.logo.settings.favicon.label",
         "info": "t:settings_schema.logo.settings.favicon.info"
-      },
-      {
-        "type": "header",
-        "content": "Rakkan seal"
-      },
-      {
-        "type": "image_picker",
-        "id": "rakkan_image",
-        "label": "Rakkan seal image",
-        "info": "Optional red seal shown in the header and footer. Leave empty to hide."
-      },
-      {
-        "type": "range",
-        "id": "rakkan_width",
-        "min": 32,
-        "max": 160,
-        "step": 4,
-        "default": 60,
-        "unit": "px",
-        "label": "Rakkan seal width"
       }
     ]
   },
@@ -142,7 +122,7 @@
         "step": 5,
         "unit": "%",
         "label": "t:settings_schema.typography.settings.heading_scale.label",
-        "default": 130
+        "default": 100
       },
       {
         "type": "header",
@@ -151,7 +131,7 @@
       {
         "type": "font_picker",
         "id": "type_body_font",
-        "default": "archivo_n4",
+        "default": "assistant_n4",
         "label": "t:settings_schema.typography.settings.type_body_font.label"
       },
       {
