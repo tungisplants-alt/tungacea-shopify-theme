@@ -64,6 +64,42 @@ Files changed:
 Verified via static mock (real CSS + assets) screenshotted desktop 1920 — slimmer refined
 header, lockup preserved, oxblood accents restrained, hero elegant, footer minimal. No publish.
 
+## Refinement pass 3 — mobile header, divider, language selector (2026-07-19, Tungacea-v1)
+User choices: refine existing selectors in place (keep native behaviour); keep the
+Shopify Markets country selector as-is (refine LANGUAGE only); validate via theme-check
+(no live store). Files changed:
+- **snippets/language-localization.liquid** (rewritten): reusable native selector.
+  Uses `localization.available_languages` + native `{% form 'localization' %}` (no fake
+  URLs, preserves current page). Deutsch→English pinned first, subtle divider, then all
+  other PUBLISHED languages alphabetical by endonym. Compact ISO trigger (EN/DE) + chevron,
+  visually-hidden "Select language / Current language". aria-current + oxblood checkmark on
+  active; small oxblood dot + "Preferred" label on de/en. `compact` + `show_label` params.
+- **sections/main-password-header.liquid**: added `.password-header__utils` wrapping the
+  language form + subtle vertical divider + access-code control on one line; wrapped
+  access-code text in `.password-link__label`.
+- **layout/password.liquid**: loads `localization-form.js` so the selector works on password.
+- **assets/localization-form.js**: null-guarded `.menu-drawer` and `this.header` so the
+  native selector runs on the password page (no header-wrapper / drawer there). Storefront
+  behaviour unchanged.
+- **sections/header.liquid**: desktop language selector → `compact: true` (still before search).
+- **snippets/header-drawer.liquid**: mobile drawer language selector → `show_label: true`
+  ("Language" row, below nav / above social).
+- **assets/section-password.css**: (1) mobile header padding 1.6rem→1rem vertical (~9% shorter,
+  logo/Rakkan untouched); (2) oxblood divider constrained to `--tungacea-signup-width` (44rem)
+  = exact email-field width, shared var on field + `.email-signup-banner__meta`; (3) utility-area
+  layout + dropdown positioning (absolute, in-viewport); (4) mobile access-code collapses to
+  padlock icon (label kept for screen readers) so lang code + control stay one line, no clip.
+- **assets/tungacea.css**: shared `.tungacea-lang` premium styling (graphite panel, off-white
+  text, oxblood active/preferred, caret rotation, drawer row, reduced-motion). Applies on
+  storefront + drawer + password.
+- **locales/en.default.json + de.json**: added localization keys `preferred`, `select_language`,
+  `current_language`, `close_language_menu` (EN + DE). Other locales fall back to en.default.
+Verified: @shopify/theme-check-node → 0 Liquid/JSON/schema errors, 0 offenses in touched files.
+Only published Shopify languages render (dynamic). No deploy/publish. NOTE: publishing the 20
+EU languages is a merchant action in Shopify admin (Settings→Languages / Translate & Adapt);
+the theme reflects them automatically.
+
+
 ## Backlog / next
 - P1: optional refined empty-state for collection/search pages.
 - P2: dedicated password-page CSS split if it grows; A/B copy variants.

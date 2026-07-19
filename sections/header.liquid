@@ -263,7 +263,7 @@
             {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
               <div>
                 <h2 class="visually-hidden" id="HeaderLanguageLabel">{{ 'localization.language_label' | t }}</h2>
-                {%- render 'language-localization', localPosition: 'HeaderLanguage' -%}
+                {%- render 'language-localization', localPosition: 'HeaderLanguage', compact: true -%}
               </div>
             {%- endform -%}
           </localization-form>

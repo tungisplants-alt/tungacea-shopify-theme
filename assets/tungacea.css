@@ -791,3 +791,170 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 .active-facets__button .active-facets__button-inner {
   color: rgb(var(--color-foreground));
 }
+
+
+/* =====================================================================
+   TUNGACEA — native Shopify language selector (shared)
+   Reusable across the password header, desktop storefront header and the
+   mobile navigation drawer. Built on Dawn's <localization-form> element so
+   all keyboard / focus / Escape / click-outside behaviour is preserved.
+   Restrained oxblood is used only for the active + preferred indicators.
+   ===================================================================== */
+.tungacea-lang {
+  position: relative;
+}
+
+/* ---------- Trigger ---------- */
+.tungacea-lang .tungacea-lang__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--tungacea-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1;
+  transition: color 0.3s var(--tungacea-ease);
+}
+.tungacea-lang .tungacea-lang__button:hover,
+.tungacea-lang .tungacea-lang__button:focus-visible {
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+}
+.tungacea-lang__current {
+  line-height: 1;
+  white-space: nowrap;
+}
+.tungacea-lang__label {
+  margin-right: auto;
+  color: var(--tungacea-muted);
+}
+.tungacea-lang__caret {
+  display: inline-flex;
+  width: 1rem;
+  height: 1rem;
+  transition: transform 0.3s var(--tungacea-ease);
+}
+.tungacea-lang__caret .icon,
+.tungacea-lang__caret svg {
+  width: 1rem;
+  height: 1rem;
+}
+.tungacea-lang .tungacea-lang__button[aria-expanded='true'] .tungacea-lang__caret {
+  transform: rotate(180deg);
+}
+
+/* ---------- Panel (dark, graphite surface) ---------- */
+.tungacea-lang .tungacea-lang__panel {
+  background-color: #141416;
+  border: 1px solid rgba(242, 238, 232, 0.08);
+  border-radius: 3px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+.tungacea-lang .tungacea-lang__list {
+  padding: 0.6rem 0;
+  min-width: 21rem;
+  max-height: 32rem;
+  overflow-y: auto;
+}
+
+/* ---------- Items ---------- */
+.tungacea-lang .tungacea-lang__link {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 1.6rem;
+  text-decoration: none;
+  color: rgba(242, 238, 232, 0.7);
+  letter-spacing: 0.02em;
+  transition: color 0.25s var(--tungacea-ease), background-color 0.25s var(--tungacea-ease);
+}
+.tungacea-lang .tungacea-lang__link:hover,
+.tungacea-lang .tungacea-lang__link:focus-visible {
+  color: #f2eee8;
+  background-color: rgba(242, 238, 232, 0.045);
+  text-decoration: none;
+}
+.tungacea-lang__name {
+  flex: 1 1 auto;
+}
+.tungacea-lang__check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex: 0 0 auto;
+  color: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+.tungacea-lang__check .icon,
+.tungacea-lang__check svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+/* Active language — restrained oxblood indicator + off-white text */
+.tungacea-lang .tungacea-lang__link[aria-current='true'] {
+  color: #f2eee8;
+  box-shadow: inset 2px 0 0 rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+/* Preferred (Deutsch / English) — subtle oxblood dot + faint label */
+.tungacea-lang__item--preferred .tungacea-lang__name::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  margin-right: 0.7rem;
+  border-radius: 50%;
+  vertical-align: middle;
+  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+.tungacea-lang__pref {
+  flex: 0 0 auto;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.85rem;
+  color: rgba(var(--tungacea-accent-bright, 168, 52, 66), 0.85);
+}
+
+/* Divider between preferred languages and the alphabetical list */
+.tungacea-lang__divider {
+  height: 1px;
+  margin: 0.6rem 1.6rem;
+  background: var(--tungacea-hairline-accent, rgba(110, 28, 40, 0.32));
+  list-style: none;
+}
+
+/* ---------- Mobile drawer row ---------- */
+.menu-drawer__localization .tungacea-lang .tungacea-lang__button {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1.4rem 0;
+  font-size: 1.3rem;
+  letter-spacing: 0.16em;
+}
+.menu-drawer__localization .tungacea-lang__current {
+  color: rgb(var(--color-foreground));
+}
+.menu-drawer__localization .tungacea-lang__caret {
+  margin-left: 0.4rem;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .tungacea-lang .tungacea-lang__caret,
+  .tungacea-lang .tungacea-lang__button,
+  .tungacea-lang .tungacea-lang__link {
+    transition: none;
+  }
+  .tungacea-lang .tungacea-lang__panel {
+    animation: none !important;
+  }
+}

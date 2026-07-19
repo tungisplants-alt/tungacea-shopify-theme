@@ -393,7 +393,11 @@
     "update_country": "Update country/region",
     "search": "Search",
     "popular_countries_regions": "Popular countries/regions",
-    "country_results_count": "{{ count }} countries/regions found"
+    "country_results_count": "{{ count }} countries/regions found",
+    "preferred": "Preferred",
+    "select_language": "Select language",
+    "current_language": "Current language",
+    "close_language_menu": "Close language menu"
   },
   "customer": {
     "account": {
