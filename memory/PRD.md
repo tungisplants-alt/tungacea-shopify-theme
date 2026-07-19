@@ -72,3 +72,23 @@ to commit to branch `Tungacea-v1`. Do not modify/publish the live theme.
 - P1: If user wants fully seamless (no grey panel), consider a subtle CSS mask,
   a pure-black-background video, or cover with tuned object-position.
 - P2: Optional poster preload via <link rel=preload> if TTFB matters.
+
+## Update — responsive composition refinement (this session)
+Rebalanced the desktop hero into a centered two-column layout (scoped to
+`.banner.email-signup-banner.tng-360-active`); interactive drag engine unchanged.
+- Container `width:min(90vw,1280px); margin-inline:auto`, vertically centred via
+  responsive `min-height` (no fixed vh that clips), generous padding-block.
+- ≥1100px: two columns — text ~44% (max 52rem, readable) + viewer column, gap
+  clamp(60–100px). Viewer height clamp(56–68rem / 66vh) with `aspect-ratio:9/16`
+  so the plant is height-driven (up to ~382×680) and vertically centred; the old
+  full-bleed overlay wash (`.banner::after`) is disabled in this mode.
+- 900–1099px: tighter two-column (smaller gap/viewer).
+- <900px: stacked — viewer on top (~82vw, max 43rem), editorial text/form below;
+  vertical scroll + horizontal drag preserved.
+- Removed the `media` class from the stage (base.css `.media > *` was forcing
+  top:0/height:100% on the hint); hint now lives INSIDE the stage so it centres
+  on the plant at its lower portion.
+- Note: video is 9:16, so with `object-fit:contain` + max-height ~680px the plant
+  width is capped ~382px (physical limit without cropping). Verified: drag both
+  directions, wrapping, hint fade, 0 console errors, Theme Check clean.
+- Screenshots at 1440 / 1024 / 390 shown to user for approval. NOT saved to GitHub.

@@ -21,7 +21,9 @@
     this.stage = stage;
     this.video = stage.querySelector('video');
     this.hint =
-      (stage.parentElement && stage.parentElement.querySelector('[data-tng-360-hint]')) || null;
+      stage.querySelector('[data-tng-360-hint]') ||
+      (stage.parentElement && stage.parentElement.querySelector('[data-tng-360-hint]')) ||
+      null;
 
     this.sensitivity = parseFloat(stage.getAttribute('data-sensitivity')) || 1;
     this.idleEnabled = stage.getAttribute('data-idle') === 'true';
