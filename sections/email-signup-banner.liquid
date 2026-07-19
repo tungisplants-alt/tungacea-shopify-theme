@@ -28,12 +28,9 @@
 
 <div
   id="Banner-{{ section.id }}"
-  class="email-signup-banner banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.image_height == 'adapt-image' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if section.settings.show_background_image and section.settings.enable_360_viewer %} tng-360-active{% endif %}"
+  class="email-signup-banner banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.image_height == 'adapt-image' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}"
 >
   {%- if section.settings.show_background_image -%}
-    {%- if section.settings.enable_360_viewer -%}
-      {%- render 'password-360-viewer', section: section -%}
-    {%- else -%}
     <div class="banner__media{% if section.settings.image != blank %} media{% endif %}">
       {%- if section.settings.image != blank -%}
         <img
@@ -55,6 +52,34 @@
           width="{{ section.settings.image.width }}"
           height="{{ section.settings.image.width | divided_by: section.settings.image.aspect_ratio }}"
         >
+      {%- elsif section.settings.enable_hero_video -%}
+        {%- comment -%}
+          Ambient background video — a drop-in replacement for the previous
+          static plant image. Reuses the exact .tungacea-default-media styling
+          (object-fit: cover, object-position from section-password.css) so the
+          composition, container and responsive behaviour are identical to the
+          approved static-image version. Poster is the original approved image,
+          so autoplay-blocked browsers show the previous hero seamlessly.
+        {%- endcomment -%}
+        <video
+          class="banner__media-image tungacea-default-media tungacea-hero-video"
+          poster="{{ 'tungacea-password.jpg' | asset_url }}"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          width="1080"
+          height="1920"
+          aria-hidden="true"
+          disablepictureinpicture
+          disableremoteplayback
+          tabindex="-1"
+          data-testid="password-hero-video"
+        >
+          <source src="{{ 'anthurium-360.mp4' | asset_url }}" type="video/mp4">
+        </video>
+        <script src="{{ 'password-hero-video.js' | asset_url }}" defer="defer"></script>
       {%- else -%}
         <img
           src="{{ 'tungacea-password.jpg' | asset_url }}"
@@ -67,7 +92,6 @@
         >
       {%- endif -%}
     </div>
-    {%- endif -%}
   {%- endif -%}
   <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} page-width">
     <div class="email-signup-banner__box banner__box newsletter newsletter__wrapper isolate{% if section.settings.show_background_image == false %} email-signup-banner__box--no-image{% endif %} content-container color-{{ section.settings.color_scheme }} gradient content-container--full-width-mobile">
@@ -197,54 +221,13 @@
     },
     {
       "type": "header",
-      "content": "360° plant viewer"
+      "content": "Hero background video"
     },
     {
       "type": "checkbox",
-      "id": "enable_360_viewer",
-      "label": "Enable interactive 360° viewer",
-      "info": "Replaces the static hero image with a drag-to-rotate video of the plant.",
-      "default": true
-    },
-    {
-      "type": "video",
-      "id": "video",
-      "label": "360° rotation video",
-      "info": "Optional. Leave empty to use the bundled Anthurium 360° video (assets/anthurium-360.mp4)."
-    },
-    {
-      "type": "image_picker",
-      "id": "video_poster",
-      "label": "Poster / first frame",
-      "info": "Optional. Shown before the video loads. Defaults to the bundled poster."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_drag_hint",
-      "label": "Show \"Drag to rotate\" hint",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "drag_hint_text",
-      "label": "Hint text",
-      "default": "Drag to rotate"
-    },
-    {
-      "type": "range",
-      "id": "drag_sensitivity",
-      "min": 0.5,
-      "max": 2,
-      "step": 0.1,
-      "unit": "x",
-      "label": "Drag sensitivity",
-      "default": 1
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_idle_rotation",
-      "label": "Slow idle auto-rotation",
-      "info": "Very slowly rotates the plant until the visitor interacts. Disabled automatically for reduced-motion visitors.",
+      "id": "enable_hero_video",
+      "label": "Use ambient video for the default hero",
+      "info": "Plays the bundled muted Anthurium video (assets/anthurium-360.mp4) in place of the default static image. Falls back to the poster image if autoplay is blocked. Only applies when no custom image is set above.",
       "default": true
     },
     {

@@ -73,7 +73,28 @@ to commit to branch `Tungacea-v1`. Do not modify/publish the live theme.
   a pure-black-background video, or cover with tuned object-position.
 - P2: Optional poster preload via <link rel=preload> if TTFB matters.
 
-## Update — responsive composition refinement (this session)
+## Update — reverted to ambient background video (this session)
+The interactive drag-to-rotate concept was rejected. Fully reverted the hero to
+the original approved static-image composition and replaced ONLY the image with
+an autoplaying muted looping background video (drop-in replacement).
+- DELETED: snippets/password-360-viewer.liquid, assets/password-360-viewer.css,
+  assets/password-360-viewer.js, assets/anthurium-360-poster.jpg (all unused now).
+- `sections/email-signup-banner.liquid`: removed `tng-360-active` class + all 360
+  schema settings. Media block now: custom image → else ambient `<video>` (when
+  `enable_hero_video`) → else original default `<img>`. The video reuses the exact
+  `banner__media-image tungacea-default-media` classes, so `object-fit: cover`,
+  `object-position: center 30%/26%` and the `.banner::after` gradient wash are
+  identical to the approved static hero. Attributes: autoplay muted loop
+  playsinline preload=auto, no controls, aria-hidden, tabindex=-1,
+  poster=`tungacea-password.jpg` (the original approved image = seamless fallback).
+- NEW `assets/password-hero-video.js` (~40 lines): enforces muted, retries play(),
+  pauses on `visibilitychange`. No drag/scrub/pointer/keyboard/idle logic remains.
+- `templates/password.json`: 360 keys removed; `enable_hero_video: true`.
+- Kept asset: `assets/anthurium-360.mp4` (still the video source).
+- Verified 1440/1024/390: full-bleed background video behind editorial text,
+  autoplay muted loop, no controls, playsinline, mobile has NO separate portrait
+  block (text/form in original position), no horizontal overflow, Theme Check 0
+  offenses in changed files. NOT saved to GitHub.
 Rebalanced the desktop hero into a centered two-column layout (scoped to
 `.banner.email-signup-banner.tng-360-active`); interactive drag engine unchanged.
 - Container `width:min(90vw,1280px); margin-inline:auto`, vertically centred via
