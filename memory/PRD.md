@@ -42,6 +42,29 @@ tonal layering + restrained (moderate) oxblood accents. Premium branded password
 
 ## No deploy / publish performed. Changes are on branch Tungacea-v1 only.
 
+## Password-page refinement pass 2 (2026-06 — current branch Tungacea-v1)
+User choices: ~30% slimmer header; entry button copy = "Enter with access code";
+default minimal footer (hide duplicate Instagram icon, keep Shopify/admin line quiet).
+Files changed:
+- **assets/section-password.css**:
+  - Top header slimmed ~30%: padding 2.4/3.2rem → 1.6/2/2.4rem across mobile/tablet/desktop.
+  - Brand lockup scaled down as ONE unit (relationship preserved): scale 1.72/2 → 1.2 (mobile) /
+    1.3 (tablet ≥750) / 1.4 (desktop ≥990). Frame dims always = 91×80 base logo box × scale,
+    so white-mark/red-Rakkan baseline alignment is identical. Header height ~224px → ~128/144/160px.
+  - Top password link finer (1.05rem, 0.24em tracking, lighter tone).
+  - Secondary meta row gets a quiet oxblood hairline divider (tonal nuance, controlled red).
+  - Hero composition: object-position center 26–30% + deeper lower gradient wash so the
+    Anthurium + red venation stay the hero and the pot/substrate reads as shadow.
+  - Form: zero-radius underline field, graphite hover, oxblood focus (already present).
+  - Footer: `.list-social` hidden (Instagram already shown as @tungacea in hero), Shopify/admin
+    captions made very quiet; tighter padding.
+- **locales/en.default.json**: password_page copy → English "access code" set
+  (heading, button "Enter with access code", placeholder, error). Locale STRUCTURE untouched
+  (multilingual EU capability intact; only en.default values refined).
+Verified via static mock (real CSS + assets) screenshotted desktop 1920 — slimmer refined
+header, lockup preserved, oxblood accents restrained, hero elegant, footer minimal. No publish.
+
 ## Backlog / next
 - P1: optional refined empty-state for collection/search pages.
 - P2: dedicated password-page CSS split if it grows; A/B copy variants.
+- P2: mirror the "access code" wording into other EU locale files (de/fr/etc.) when desired.
