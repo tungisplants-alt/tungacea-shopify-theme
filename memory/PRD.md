@@ -73,7 +73,25 @@ to commit to branch `Tungacea-v1`. Do not modify/publish the live theme.
   a pure-black-background video, or cover with tuned object-position.
 - P2: Optional poster preload via <link rel=preload> if TTFB matters.
 
-## Update — reverted to ambient background video (this session)
+## Update — per-breakpoint video framing (this session)
+Tuned the ambient hero video so the Anthurium is the intentional focal subject
+(layout/typography/forms unchanged). Added `assets/password-hero-video.css`
+(enqueued only when the video renders), scoped to
+`.password-main .banner__media .tungacea-hero-video`:
+- object-fit: cover + restrained per-breakpoint zoom (transform: scale) + object-position.
+- Desktop ≥1100: `scale(1.55) translate(9%,-13%)` — plant enlarged, lifted, centre-right;
+  red leaf dominant, left text clear.
+- Tablet 750–1099: `scale(1.4) translate(7%,-11%)`.
+- Mobile ≤749: `object-position:66% 72%; scale(1.95)` — plant in lower-centre/right,
+  dark foliage behind text (legible), red venation visible, moody dark gradient above.
+- Poster regenerated from the video's true first frame (`anthurium-360-poster.jpg`)
+  so poster and playback share identical framing (no jump). Reuses the existing
+  `.banner::after` gradient wash for legibility; no new overlays/frames.
+- Verified full loop at t=0/12 for 1440/1024/390: plant focal & recognisable,
+  text/form readable, autoplay muted loop playsinline active, no layout shift,
+  0 console errors, Theme Check 0 offenses in changed files. NOT saved to GitHub.
+- Note: video is 9:16 in a very tall mobile hero, so a dark editorial gradient
+  remains above the plant on mobile (physical aspect limit); reads as intentional.
 The interactive drag-to-rotate concept was rejected. Fully reverted the hero to
 the original approved static-image composition and replaced ONLY the image with
 an autoplaying muted looping background video (drop-in replacement).

@@ -61,9 +61,10 @@
           approved static-image version. Poster is the original approved image,
           so autoplay-blocked browsers show the previous hero seamlessly.
         {%- endcomment -%}
+        {{ 'password-hero-video.css' | asset_url | stylesheet_tag }}
         <video
           class="banner__media-image tungacea-default-media tungacea-hero-video"
-          poster="{{ 'tungacea-password.jpg' | asset_url }}"
+          poster="{{ 'anthurium-360-poster.jpg' | asset_url }}"
           autoplay
           muted
           loop
