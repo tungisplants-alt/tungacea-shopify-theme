@@ -362,6 +362,40 @@ h1, h2, h3, h4, h5,
 /* secondary image crossfade on hover (Dawn shows two imgs) */
 .card__media .media img + img { transition: opacity 0.6s ease; }
 
+/* Fix: make the whole product media area a real, clickable link.
+   The media anchor wraps .media, which is position:absolute, so the anchor
+   would otherwise collapse to zero height and receive no clicks/taps.
+   Sizing it to fill .card__media restores full click + touch on the image,
+   pointing to the same product URL used by the title link. */
+.product-card-wrapper .card__media > a.full-unstyled-link {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: block;
+}
+.product-card-wrapper .card__media > a.full-unstyled-link:focus-visible {
+  outline: 0.2rem solid rgb(var(--color-foreground));
+  outline-offset: -0.4rem;
+}
+
+/* On media cards, the inner .card__content (holding the badge) sits on top of
+   the absolutely-positioned media and would otherwise swallow every click on
+   the image. Let clicks/taps pass through it to the media link, while keeping
+   the badge visible. Scoped to media cards so text-only card title links keep
+   working. */
+.product-card-wrapper .card--media .card__inner > .card__content {
+  pointer-events: none;
+}
+
+/* Decorative, non-interactive badges must never intercept the media link */
+.product-card-wrapper .card__badge,
+.product-card-wrapper .card__badge .badge {
+  pointer-events: none;
+}
+
 .card__content { padding-top: 1.6rem; }
 .card__heading {
   font-family: var(--font-heading-family);
