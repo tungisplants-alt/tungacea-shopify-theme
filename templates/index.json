@@ -110,7 +110,7 @@
       "settings": {
         "desktop_content_position": "left",
         "content_alignment": "left",
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-4",
         "full_width": true,
         "archive_page": "",
         "archive_button_label": "",
@@ -300,7 +300,7 @@
         "columns_desktop": 3,
         "column_alignment": "left",
         "background_style": "none",
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-2",
         "columns_mobile": "1",
         "swipe_on_mobile": true,
         "padding_top": 64,

@@ -18,53 +18,53 @@
             "background": "#0A0A0A",
             "background_gradient": "",
             "text": "#F2EEE8",
-            "button": "#F2EEE8",
-            "button_label": "#0A0A0A",
+            "button": "#6E1C28",
+            "button_label": "#F5F1EB",
             "secondary_button_label": "#F2EEE8",
             "shadow": "#000000"
           }
         },
         "scheme-2": {
           "settings": {
-            "background": "#121212",
+            "background": "#151517",
             "background_gradient": "",
             "text": "#F2EEE8",
-            "button": "#F2EEE8",
-            "button_label": "#121212",
+            "button": "#6E1C28",
+            "button_label": "#F5F1EB",
             "secondary_button_label": "#F2EEE8",
             "shadow": "#000000"
           }
         },
         "scheme-3": {
           "settings": {
-            "background": "#7A1F2D",
+            "background": "#6E1C28",
             "background_gradient": "",
-            "text": "#F2EEE8",
+            "text": "#F5EDE9",
             "button": "#F2EEE8",
-            "button_label": "#7A1F2D",
-            "secondary_button_label": "#F2EEE8",
+            "button_label": "#5A141E",
+            "secondary_button_label": "#F5EDE9",
             "shadow": "#000000"
           }
         },
         "scheme-4": {
           "settings": {
-            "background": "#181818",
+            "background": "#1F1E22",
             "background_gradient": "",
             "text": "#F2EEE8",
-            "button": "#F2EEE8",
-            "button_label": "#181818",
+            "button": "#6E1C28",
+            "button_label": "#F5F1EB",
             "secondary_button_label": "#F2EEE8",
             "shadow": "#000000"
           }
         },
         "scheme-5": {
           "settings": {
-            "background": "#5B1621",
+            "background": "#4E141E",
             "background_gradient": "",
-            "text": "#F2EEE8",
+            "text": "#F5EDE9",
             "button": "#F2EEE8",
-            "button_label": "#5B1621",
-            "secondary_button_label": "#F2EEE8",
+            "button_label": "#4E141E",
+            "secondary_button_label": "#F5EDE9",
             "shadow": "#000000"
           }
         }
@@ -170,7 +170,7 @@
       "social_twitter_link": "",
       "social_facebook_link": "",
       "social_pinterest_link": "",
-      "social_instagram_link": "",
+      "social_instagram_link": "https://www.instagram.com/tungacea/",
       "social_tiktok_link": "",
       "social_tumblr_link": "",
       "social_snapchat_link": "",

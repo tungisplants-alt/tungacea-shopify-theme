@@ -641,3 +641,153 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   .header__rakkan .rakkan-seal__image--default { top: -5px; left: -5px; width: 25px; }
   .specimen__row { grid-template-columns: 1fr; gap: 0.4rem; }
 }
+
+
+/* =====================================================================
+   REFINEMENT PASS — tonal depth + restrained oxblood (moderate)
+   Layers depth over the near-black base without turning the site red.
+   The approved logo / Rakkan lockup rules above are intentionally
+   left untouched.
+   ===================================================================== */
+
+:root {
+  --tungacea-black: #0a0a0a;
+  --tungacea-charcoal: #151517;
+  --tungacea-graphite: #1f1e22;
+  --tungacea-oxblood: 110, 28, 40;       /* #6E1C28 — deep button / panel red */
+  --tungacea-wine: 78, 20, 30;           /* #4E141E — deepest wine */
+  --tungacea-accent-bright: 168, 52, 66; /* #A83442 — small visible accents */
+  --tungacea-hairline-accent: rgba(110, 28, 40, 0.32);
+}
+
+/* ---------- Tonal layering: panels read as distinct raised surfaces ---------- */
+/* Charcoal + graphite panels get a whisper of top light so they lift off black */
+.color-scheme-2,
+.color-scheme-4 {
+  background-image: linear-gradient(
+    180deg,
+    rgba(242, 238, 232, 0.022) 0%,
+    rgba(242, 238, 232, 0) 260px
+  );
+}
+
+/* Oxblood + wine panels are toned down at the crown so they feel expensive,
+   never flat or bright */
+.color-scheme-3,
+.color-scheme-5 {
+  background-image: radial-gradient(
+    120% 130% at 50% 0%,
+    rgba(0, 0, 0, 0.32) 0%,
+    rgba(0, 0, 0, 0) 62%
+  );
+}
+
+/* ---------- Section separators (quiet tonal transitions) ---------- */
+.content-for-layout > .shopify-section + .shopify-section .color-scheme-1:first-child {
+  box-shadow: inset 0 1px 0 var(--tungacea-hairline-soft);
+}
+
+/* ---------- Editorial eyebrows get a small oxblood tick ---------- */
+.rich-text__caption.caption-with-letter-spacing::before,
+.image-with-text .caption-with-letter-spacing::before,
+.multicolumn .title-wrapper .caption-with-letter-spacing::before {
+  content: '';
+  display: inline-block;
+  width: 2.4rem;
+  height: 1px;
+  margin-right: 1.2rem;
+  vertical-align: middle;
+  background: rgb(var(--tungacea-accent-bright));
+}
+
+/* ---------- Buttons ---------- */
+/* Outline / secondary buttons pick up oxblood on hover (controlled red) */
+.button--secondary:not([disabled]):hover,
+.button--tertiary:not([disabled]):hover {
+  border-color: rgb(var(--tungacea-accent-bright));
+  color: rgb(var(--tungacea-accent-bright));
+  background: transparent;
+}
+
+/* Solid oxblood CTAs deepen slightly rather than just fading */
+.color-scheme-1 .button--primary:not([disabled]):hover,
+.color-scheme-2 .button--primary:not([disabled]):hover,
+.color-scheme-4 .button--primary:not([disabled]):hover,
+.color-scheme-1 .button:not(.button--secondary):not(.button--tertiary):not([disabled]):hover,
+.color-scheme-2 .button:not(.button--secondary):not(.button--tertiary):not([disabled]):hover,
+.color-scheme-4 .button:not(.button--secondary):not(.button--tertiary):not([disabled]):hover {
+  opacity: 1;
+  background-color: rgb(var(--tungacea-wine));
+}
+
+/* ---------- Inputs / focus in oxblood ---------- */
+.field__input:focus-visible,
+.select__select:focus-visible,
+.customer .field input:focus-visible {
+  box-shadow: 0 0 0 0.2rem rgba(var(--tungacea-accent-bright), 0.55);
+  outline: 0;
+}
+
+/* Newsletter submit arrow tinted */
+.newsletter-form__button:hover .icon,
+.newsletter-form__button:focus-visible .icon {
+  color: rgb(var(--tungacea-accent-bright));
+}
+
+/* ---------- Dividers / hairlines with a hint of oxblood ---------- */
+.rich-text + .rich-text hr,
+.section--divider hr {
+  border-color: var(--tungacea-hairline-accent);
+}
+
+/* Underlined editorial links reveal oxblood */
+.underlined-link:hover,
+.link.underlined-link:hover {
+  text-decoration-color: rgb(var(--tungacea-accent-bright));
+}
+
+/* ---------- Sale badge stays a toned oxblood chip ---------- */
+.card__badge .badge {
+  background: rgb(var(--tungacea-oxblood));
+  color: #f5f1eb;
+}
+.badge.color-scheme-4 { /* sold-out chip: graphite, muted */
+  color: var(--tungacea-muted);
+}
+
+/* ---------- Footer polish: quiet oxblood crown + tighter rhythm ---------- */
+.footer {
+  border-top: 1px solid var(--tungacea-hairline-accent);
+}
+.footer__content-bottom {
+  border-top: 1px solid var(--tungacea-hairline-soft);
+}
+.footer .list-social__link:hover .icon,
+.footer .list-social__link:focus-visible .icon {
+  color: rgb(var(--tungacea-accent-bright));
+}
+.footer__rakkan { opacity: 0.9; }
+
+/* ---------- Empty cart state ---------- */
+.cart__empty-text,
+.cart-drawer__warnings .cart__empty-text {
+  letter-spacing: 0.04em;
+}
+.cart__empty-text + .cart__login-title,
+.is-empty .cart-drawer__collection .title {
+  color: var(--tungacea-muted);
+}
+
+/* ---------- Collection / product accents ---------- */
+.product-form__buttons .shopify-payment-button__button--unbranded:hover {
+  background-color: rgb(var(--tungacea-wine));
+}
+.price--on-sale .price-item--sale {
+  color: rgb(var(--tungacea-accent-bright));
+}
+
+/* Active facet / filter accents */
+.facets__display .facets__item input[type='checkbox']:checked + label,
+.active-facets__button .active-facets__button-inner {
+  color: rgb(var(--color-foreground));
+}
