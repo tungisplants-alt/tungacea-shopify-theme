@@ -54,17 +54,20 @@
         >
       {%- elsif section.settings.enable_hero_video -%}
         {%- comment -%}
-          Ambient background video — a drop-in replacement for the previous
-          static plant image. Reuses the exact .tungacea-default-media styling
-          (object-fit: cover, object-position from section-password.css) so the
-          composition, container and responsive behaviour are identical to the
-          approved static-image version. Poster is the original approved image,
-          so autoplay-blocked browsers show the previous hero seamlessly.
+          Non-interactive ambient hero video — the new Tungacea signature clip
+          (assets/tungacea-hero-video.mp4) with the red seal baked into the frame.
+          Autoplay + muted + loop + playsinline, no controls and no drag/360
+          interaction. Framing (object-fit / object-position / responsive crop) is
+          handled in assets/password-hero-video.css so the seal stays visible, the
+          plant reads as the focal subject and the finest leaf shows on every
+          breakpoint. The poster is a clean frame from the same clip, so the first
+          paint matches playback with no loading flash. Only applies when no custom
+          image is set above.
         {%- endcomment -%}
         {{ 'password-hero-video.css' | asset_url | stylesheet_tag }}
         <video
           class="banner__media-image tungacea-default-media tungacea-hero-video"
-          poster="{{ 'anthurium-360-poster.jpg' | asset_url }}"
+          poster="{{ 'tungacea-hero-video-poster.jpg' | asset_url }}"
           autoplay
           muted
           loop
@@ -78,7 +81,7 @@
           tabindex="-1"
           data-testid="password-hero-video"
         >
-          <source src="{{ 'anthurium-360.mp4' | asset_url }}" type="video/mp4">
+          <source src="{{ 'tungacea-hero-video.mp4' | asset_url }}" type="video/mp4">
         </video>
         <script src="{{ 'password-hero-video.js' | asset_url }}" defer="defer"></script>
       {%- else -%}
@@ -228,7 +231,7 @@
       "type": "checkbox",
       "id": "enable_hero_video",
       "label": "Use ambient video for the default hero",
-      "info": "Plays the bundled muted Anthurium video (assets/anthurium-360.mp4) in place of the default static image. Falls back to the poster image if autoplay is blocked. Only applies when no custom image is set above.",
+      "info": "Plays the bundled muted Tungacea signature video (assets/tungacea-hero-video.mp4) in place of the default static image. Autoplay, muted, looped and non-interactive; falls back to the poster frame if autoplay is blocked. Only applies when no custom image is set above.",
       "default": true
     },
     {
