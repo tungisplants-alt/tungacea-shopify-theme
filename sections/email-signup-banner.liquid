@@ -85,14 +85,24 @@
         </video>
         <script src="{{ 'password-hero-video.js' | asset_url }}" defer="defer"></script>
       {%- else -%}
+        {%- comment -%}
+          Approved Tungacea password hero — the uploaded Anthurium portrait
+          (assets/tungacea-password-hero.jpg). Full-bleed background media with the
+          copy overlaid lower-left, exactly like the prior approved hero. Framing
+          (object-fit / object-position / responsive crop) lives in
+          assets/password-hero-image.css so the plant stays the focal point, the
+          finest leaves show and the copy never covers the focal foliage.
+        {%- endcomment -%}
+        {{ 'password-hero-image.css' | asset_url | stylesheet_tag }}
         <img
-          src="{{ 'tungacea-password.jpg' | asset_url }}"
+          src="{{ 'tungacea-password-hero.jpg' | asset_url }}"
           alt="{{ shop.name | escape }}"
           width="1080"
           height="1920"
           loading="eager"
           fetchpriority="high"
-          class="banner__media-image tungacea-default-media"
+          class="banner__media-image tungacea-default-media tungacea-hero-image"
+          data-testid="password-hero-image"
         >
       {%- endif -%}
     </div>
