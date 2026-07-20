@@ -1,0 +1,252 @@
+{% comment %}
+  Tungacea — Specimen Passport (product page).
+
+  Upgrades the product page `specimen` block into a botanical archive record
+  while keeping the standard Dawn purchasing flow untouched. Rendered from
+  sections/main-product.liquid via:
+
+    {% render 'specimen-passport', product: product, block: block %}
+
+  Data model is shared with the Specimen Product Cards. Primary values come
+  from product metafields (custom.*), with safe fallbacks to the older
+  metafields and to existing Theme Editor block values.
+
+  Accepts:
+  - product: {Object} Product Liquid object (required)
+  - block:   {Object} main-product `specimen` block (required, for settings/fallbacks)
+{% endcomment %}
+
+{%- liquid
+  assign mf = product.metafields.custom
+
+  # ---- Specimen ID (custom.specimen_id -> custom.plant_id -> block value) ----
+  assign passport_id = mf.specimen_id.value | default: mf.plant_id.value | default: block.settings.plant_id | default: '' | strip
+
+  # ---- Single-line detail fields ----
+  assign passport_parentage = mf.parentage.value | default: block.settings.parentage | default: '' | strip
+  assign passport_genetics = mf.genetics.value | default: block.settings.genetics | default: '' | strip
+  assign passport_trait = mf.primary_trait.value | default: '' | strip
+  assign passport_stage = mf.growth_stage.value | default: '' | strip
+  assign passport_propagation = mf.propagation.value | default: '' | strip
+  assign passport_breeder = mf.breeder_source.value | default: block.settings.breeder | default: '' | strip
+  assign passport_origin = mf.origin.value | default: '' | strip
+  assign passport_rarity = mf.rarity.value | default: '' | strip
+  assign passport_photo = mf.photo_conditions.value | default: block.settings.photo_conditions | default: '' | strip
+  assign passport_saletype = mf.sale_type.value | default: '' | strip
+
+  # ---- Rich-text fields (rendered safely by Shopify) ----
+  capture passport_care_html
+    echo mf.care
+  endcapture
+  assign passport_care_plain = passport_care_html | strip_html | strip
+
+  capture passport_notes_html
+    echo mf.specimen_notes
+  endcapture
+  assign passport_notes_plain = passport_notes_html | strip_html | strip
+
+  capture passport_shipping_mf_html
+    echo mf.shipping_note
+  endcapture
+  assign passport_shipping_mf_plain = passport_shipping_mf_html | strip_html | strip
+  assign passport_shipping_html = ''
+  if passport_shipping_mf_plain != blank
+    assign passport_shipping_html = passport_shipping_mf_html
+  else
+    capture passport_shipping_block_html
+      echo block.settings.shipping_info
+    endcapture
+    assign passport_shipping_block_plain = passport_shipping_block_html | strip_html | strip
+    if passport_shipping_block_plain != blank
+      assign passport_shipping_html = passport_shipping_block_html
+    endif
+  endif
+  assign passport_shipping_plain = passport_shipping_html | strip_html | strip
+
+  # ---- Exact specimen (boolean metafield, sale_type only as blank fallback) ----
+  assign passport_exact = false
+  if mf.exact_specimen.value == true
+    assign passport_exact = true
+  elsif mf.exact_specimen == blank
+    assign saletype_dc = passport_saletype | downcase
+    if saletype_dc contains 'exact specimen'
+      assign passport_exact = true
+    endif
+  endif
+
+  # ---- Status (custom.specimen_status, else derive Available/Sold) ----
+  assign status_raw = mf.specimen_status.value | default: '' | strip
+  assign status_label = status_raw
+  assign status_state = 'custom'
+  if status_raw == blank
+    if product.available
+      assign status_label = 'products.product.specimen_status.available' | t
+      assign status_state = 'available'
+    else
+      assign status_label = 'products.product.specimen_status.sold' | t
+      assign status_state = 'sold'
+    endif
+  else
+    assign status_dc = status_raw | downcase
+    if status_dc contains 'reserv'
+      assign status_state = 'reserved'
+    elsif status_dc contains 'coming'
+      assign status_state = 'coming'
+    elsif status_dc contains 'sold'
+      assign status_state = 'sold'
+    elsif status_dc contains 'avail'
+      assign status_state = 'available'
+    endif
+  endif
+
+  # ---- Visibility: at least one meaningful field / note / exact value ----
+  # A derived Available/Sold status alone must NOT reveal the passport.
+  assign show_passport = false
+  if passport_id != blank or passport_parentage != blank or passport_genetics != blank or passport_trait != blank or passport_stage != blank or passport_propagation != blank or passport_breeder != blank or passport_origin != blank or passport_rarity != blank or passport_photo != blank or passport_saletype != blank or passport_care_plain != blank or passport_notes_plain != blank or passport_shipping_plain != blank or passport_exact
+    assign show_passport = true
+  endif
+
+  # ---- Labels (reuse existing block labels where useful) ----
+  assign lbl_parentage = block.settings.label_parentage | default: 'Parentage'
+  assign lbl_genetics = block.settings.label_genetics | default: 'Genetics'
+  assign lbl_trait = 'Primary trait'
+  assign lbl_stage = 'Growth stage'
+  assign lbl_propagation = 'Propagation'
+  assign lbl_breeder = block.settings.label_breeder | default: 'Breeder / source'
+  assign lbl_origin = 'Origin'
+  assign lbl_rarity = block.settings.label_rarity | default: 'Rarity'
+  assign lbl_care = block.settings.label_care | default: 'Care'
+  assign lbl_photo = block.settings.label_photo_conditions | default: 'Photo conditions'
+  assign lbl_saletype = 'Sale type'
+  assign lbl_notes = 'Specimen notes'
+  assign lbl_shipping = block.settings.label_shipping | default: 'Shipping'
+  assign lbl_id = block.settings.label_plant_id | default: 'Specimen ID'
+
+  assign show_status = block.settings.show_status | default: true, allow_false: true
+  assign show_exact = block.settings.show_exact_notice | default: true, allow_false: true
+  assign framed = block.settings.show_archive_frame | default: true, allow_false: true
+-%}
+
+{%- if show_passport -%}
+  <section
+    class="specimen-passport quick-add-hidden{% if framed %} specimen-passport--framed{% endif %}"
+    aria-labelledby="SpecimenPassport-title-{{ block.id }}"
+    {{ block.shopify_attributes }}
+  >
+    <header class="specimen-passport__header">
+      <div class="specimen-passport__heading-group">
+        {%- if block.settings.eyebrow != blank -%}
+          <p class="specimen-passport__eyebrow">{{ block.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="specimen-passport__title" id="SpecimenPassport-title-{{ block.id }}">
+          {{- block.settings.heading | default: 'Specimen passport' | escape -}}
+        </h2>
+      </div>
+
+      {%- if passport_id != blank or show_status -%}
+        <div class="specimen-passport__meta">
+          {%- if passport_id != blank -%}
+            <p class="specimen-passport__id">
+              <span class="visually-hidden">{{ lbl_id | escape }}:</span>
+              {{- passport_id | escape -}}
+            </p>
+          {%- endif -%}
+          {%- if show_status -%}
+            <p class="specimen-passport__status specimen-passport__status--{{ status_state }}">
+              {{- status_label | escape -}}
+            </p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </header>
+
+    {%- if passport_exact and show_exact -%}
+      <p class="specimen-passport__exact" role="note">
+        {{- block.settings.exact_notice | default: 'EXACT SPECIMEN — You will receive the plant shown in the product images.' | escape -}}
+      </p>
+    {%- endif -%}
+
+    <dl class="specimen-passport__grid">
+      {%- if passport_parentage != blank -%}
+        <div class="specimen-passport__row">
+          <dt class="specimen-passport__label">{{ lbl_parentage | escape }}</dt>
+          <dd class="specimen-passport__value">{{ passport_parentage | escape }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if passport_genetics != blank -%}
+        <div class="specimen-passport__row">
+          <dt class="specimen-passport__label">{{ lbl_genetics | escape }}</dt>
+          <dd class="specimen-passport__value">{{ passport_genetics | escape }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if passport_trait != blank -%}
+        <div class="specimen-passport__row">
+          <dt class="specimen-passport__label">{{ lbl_trait | escape }}</dt>
+          <dd class="specimen-passport__value">{{ passport_trait | escape }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if passport_stage != blank -%}
+        <div class="specimen-passport__row">
+          <dt class="specimen-passport__label">{{ lbl_stage | escape }}</dt>
+          <dd class="specimen-passport__value">{{ passport_stage | escape }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if passport_propagation != blank -%}
+        <div class="specimen-passport__row">
+          <dt class="specimen-passport__label">{{ lbl_propagation | escape }}</dt>
+          <dd class="specimen-passport__value">{{ passport_propagation | escape }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if passport_breeder != blank -%}
+        <div class="specimen-passport__row">
+          <dt class="specimen-passport__label">{{ lbl_breeder | escape }}</dt>
+          <dd class="specimen-passport__value">{{ passport_breeder | escape }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if passport_origin != blank -%}
+        <div class="specimen-passport__row">
+          <dt class="specimen-passport__label">{{ lbl_origin | escape }}</dt>
+          <dd class="specimen-passport__value">{{ passport_origin | escape }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if passport_rarity != blank -%}
+        <div class="specimen-passport__row">
+          <dt class="specimen-passport__label">{{ lbl_rarity | escape }}</dt>
+          <dd class="specimen-passport__value">{{ passport_rarity | escape }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if passport_care_plain != blank -%}
+        <div class="specimen-passport__row">
+          <dt class="specimen-passport__label">{{ lbl_care | escape }}</dt>
+          <dd class="specimen-passport__value rte">{{ passport_care_html }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if passport_photo != blank -%}
+        <div class="specimen-passport__row">
+          <dt class="specimen-passport__label">{{ lbl_photo | escape }}</dt>
+          <dd class="specimen-passport__value">{{ passport_photo | escape }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if passport_saletype != blank -%}
+        <div class="specimen-passport__row">
+          <dt class="specimen-passport__label">{{ lbl_saletype | escape }}</dt>
+          <dd class="specimen-passport__value">{{ passport_saletype | escape }}</dd>
+        </div>
+      {%- endif -%}
+    </dl>
+
+    {%- if passport_notes_plain != blank -%}
+      <div class="specimen-passport__note">
+        <p class="specimen-passport__note-label">{{ lbl_notes | escape }}</p>
+        <div class="specimen-passport__note-body rte">{{ passport_notes_html }}</div>
+      </div>
+    {%- endif -%}
+
+    {%- if passport_shipping_plain != blank -%}
+      <div class="specimen-passport__note">
+        <p class="specimen-passport__note-label">{{ lbl_shipping | escape }}</p>
+        <div class="specimen-passport__note-body rte">{{ passport_shipping_html }}</div>
+      </div>
+    {%- endif -%}
+  </section>
+{%- endif -%}

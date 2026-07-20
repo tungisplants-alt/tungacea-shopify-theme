@@ -39,8 +39,13 @@
         "specimen": {
           "type": "specimen",
           "settings": {
-            "heading": "Specimen record",
-            "label_plant_id": "Plant ID",
+            "eyebrow": "TUNGACEA ARCHIVE RECORD",
+            "heading": "Specimen passport",
+            "exact_notice": "EXACT SPECIMEN — You will receive the plant shown in the product images.",
+            "show_status": true,
+            "show_exact_notice": true,
+            "show_archive_frame": true,
+            "label_plant_id": "Specimen ID",
             "plant_id": "",
             "label_genetics": "Genetics",
             "genetics": "",
@@ -68,8 +73,8 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
-        "description",
         "specimen",
+        "description",
         "share"
       ],
       "settings": {
