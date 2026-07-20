@@ -245,37 +245,20 @@
         "padding_bottom": 64
       }
     },
-    "newsletter": {
-      "type": "newsletter",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Join the archive",
-            "heading_size": "h1"
-          }
-        },
-        "paragraph": {
-          "type": "paragraph",
-          "settings": {
-            "text": "<p>Be notified of new drops, rare hybrids and restocks.</p>"
-          }
-        },
-        "email_form": {
-          "type": "email_form",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "heading",
-        "paragraph",
-        "email_form"
-      ],
+    "collector_access": {
+      "type": "collector-access",
       "settings": {
-        "color_scheme": "scheme-2",
-        "full_width": true,
-        "padding_top": 72,
-        "padding_bottom": 72
+        "eyebrow": "COLLECTOR ACCESS / 01",
+        "heading": "First access to rare releases.",
+        "heading_size": "h1",
+        "body": "<p>Receive early notice of upcoming drops, exact specimens, selected seedlings and additions to the Tungacea archive.</p>",
+        "email_placeholder": "Email address",
+        "button_label": "Request access",
+        "supporting_line": "No noise. Only selected releases and field notes.",
+        "show_rakkan": true,
+        "color_scheme": "scheme-1",
+        "padding_top": 88,
+        "padding_bottom": 88
       }
     }
   },
@@ -286,6 +269,6 @@
     "private_archive_teaser",
     "about",
     "community",
-    "newsletter"
+    "collector_access"
   ]
 }
