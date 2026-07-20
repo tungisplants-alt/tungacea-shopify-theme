@@ -119,32 +119,22 @@
         "padding_bottom": 88
       }
     },
-    "featured_genetics": {
-      "type": "featured-collection",
+    "private_archive_teaser": {
+      "type": "private-archive-teaser",
       "settings": {
-        "collection": "",
-        "products_to_show": 3,
-        "title": "Featured genetics",
+        "show_image_frame": true,
+        "eyebrow": "PRIVATE ARCHIVE / 01",
+        "heading": "Selected genetics. Preserved beyond the sale.",
         "heading_size": "h1",
-        "description": "<p>Dark traits and exclusive parentage from the archive.</p>",
-        "show_description": true,
-        "description_style": "uppercase",
-        "columns_desktop": 3,
-        "enable_desktop_slider": false,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "link",
+        "body": "<p>A growing record of rare Anthuriums, parent plants and distinctive traits — documented as part of the Tungacea collection.</p>",
+        "button_label": "Enter the archive",
+        "button_link": "/pages/private-archive?view=archive",
+        "button_style_secondary": true,
+        "desktop_layout_direction": "image-first",
+        "image_position": "center",
         "color_scheme": "scheme-1",
-        "image_ratio": "portrait",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "swipe_on_mobile": true,
-        "padding_top": 64,
-        "padding_bottom": 64
+        "padding_top": 88,
+        "padding_bottom": 88
       }
     },
     "about": {
@@ -200,59 +190,6 @@
         "color_scheme": "scheme-2",
         "padding_top": 40,
         "padding_bottom": 40
-      }
-    },
-    "archive": {
-      "type": "rich-text",
-      "blocks": {
-        "caption": {
-          "type": "caption",
-          "settings": {
-            "caption": "The archive",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
-          }
-        },
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Enter the private archive.",
-            "heading_size": "h1"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Every specimen is documented, numbered and held as part of an ongoing collection. Browse the full record of rare Anthuriums, dark traits and selected hybrids.</p>"
-          }
-        },
-        "button_MhKnCB": {
-          "type": "button",
-          "settings": {
-            "button_label": "Enter the archive",
-            "button_link": "/pages/private-archive?view=archive",
-            "button_style_secondary": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "caption",
-        "heading",
-        "text",
-        "button_MhKnCB"
-      ],
-      "settings": {
-        "desktop_content_position": "left",
-        "content_alignment": "left",
-        "color_scheme": "scheme-5",
-        "full_width": false,
-        "archive_page": "",
-        "archive_button_label": "",
-        "padding_top": 72,
-        "padding_bottom": 72
       }
     },
     "community": {
@@ -346,9 +283,8 @@
     "hero",
     "current_drop",
     "brand_statement",
-    "featured_genetics",
+    "private_archive_teaser",
     "about",
-    "archive",
     "community",
     "newsletter"
   ]
