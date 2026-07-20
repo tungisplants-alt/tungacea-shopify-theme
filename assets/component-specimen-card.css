@@ -1,0 +1,224 @@
+/*
+  Tungacea — Specimen Card
+  Restyles the shared Dawn product card (snippets/card-product.liquid) into a
+  botanical specimen label. Scoped to `.product-card-wrapper` so collection,
+  blog and other Dawn cards are never affected.
+  Reuses existing Tungacea tokens: --tungacea-muted, --tungacea-accent-bright,
+  --tungacea-hairline, --tungacea-ease, --color-foreground, --font-*.
+*/
+
+/* ---------- Layout rhythm ---------- */
+.product-card-wrapper .card__content {
+  padding-top: 1.8rem;
+  padding-inline: 0;
+}
+
+.product-card-wrapper .card__information.specimen-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  text-align: left;
+}
+
+/* Specimen ID — a quiet collection reference, not a SKU */
+.product-card-wrapper .specimen-card__id {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--tungacea-muted);
+}
+.product-card-wrapper .specimen-card__id::before {
+  content: '';
+  width: 1.6rem;
+  height: 1px;
+  background: rgb(var(--tungacea-accent-bright));
+  flex: 0 0 auto;
+}
+
+/* Title — the primary line */
+.product-card-wrapper .card__heading.specimen-card__title {
+  margin: 0;
+  line-height: 1.12;
+}
+.product-card-wrapper .card__heading.specimen-card__title a {
+  font-size: 1.9rem;
+  letter-spacing: -0.005em;
+}
+
+/* Parentage — visibly secondary to the title */
+.product-card-wrapper .specimen-card__parentage {
+  margin-top: -0.1rem;
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--tungacea-muted);
+}
+
+/* Trait · Growth stage — small editorial metadata */
+.product-card-wrapper .specimen-card__traits {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.7rem;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 1.02rem;
+  line-height: 1.3;
+  color: rgba(185, 178, 169, 0.62);
+}
+.product-card-wrapper .specimen-card__sep {
+  color: rgba(185, 178, 169, 0.4);
+}
+
+/* ---------- Footer: status (left) + price (right) ---------- */
+.product-card-wrapper .card-information {
+  margin-top: 0.4rem;
+}
+.product-card-wrapper .specimen-card__footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.2rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--tungacea-hairline);
+}
+
+.product-card-wrapper .specimen-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 1.02rem;
+  line-height: 1;
+  color: var(--tungacea-muted);
+  white-space: nowrap;
+}
+.product-card-wrapper .specimen-card__status::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background: rgba(185, 178, 169, 0.5);
+}
+
+/* Restrained oxblood only for live / reserved / coming states */
+.product-card-wrapper .specimen-card__status--available::before,
+.product-card-wrapper .specimen-card__status--coming::before {
+  background: rgb(var(--tungacea-accent-bright));
+}
+.product-card-wrapper .specimen-card__status--reserved {
+  color: rgb(var(--tungacea-accent-bright));
+}
+.product-card-wrapper .specimen-card__status--reserved::before {
+  background: rgb(var(--tungacea-accent-bright));
+}
+/* Sold reads as a faint, retired line */
+.product-card-wrapper .specimen-card__status--sold {
+  color: rgba(185, 178, 169, 0.5);
+}
+.product-card-wrapper .specimen-card__status--sold::before {
+  background: rgba(185, 178, 169, 0.32);
+}
+
+/* Price — clear but understated, aligned right */
+.product-card-wrapper .specimen-card__footer .price {
+  margin: 0;
+  text-align: right;
+}
+.product-card-wrapper .specimen-card__footer .price .price__container {
+  justify-content: flex-end;
+}
+.product-card-wrapper .specimen-card__footer .price .price-item {
+  font-size: 1.35rem;
+  letter-spacing: 0.03em;
+}
+
+/* ---------- Hide Dawn's overlay badge chip (status now lives in the footer).
+   Kept in the DOM so the title's aria-labelledby reference is preserved. ---- */
+.product-card-wrapper .card__badge {
+  display: none;
+}
+
+/* ---------- Image: calm, premium — no exaggerated zoom ---------- */
+.product-card-wrapper .card__media .media img {
+  transition: opacity 0.4s var(--tungacea-ease);
+  transform: none !important;
+  will-change: opacity;
+}
+
+@media screen and (min-width: 990px) {
+  /* Single-image cards stay perfectly still on hover */
+  .product-card-wrapper:hover .card__media .media--hover-effect > img:first-child:only-child {
+    transform: none !important;
+  }
+  /* Two-image cards: gentle crossfade to the secondary image */
+  .product-card-wrapper:hover .card__media .media--hover-effect > img:first-child:not(:only-child) {
+    opacity: 0;
+  }
+  .product-card-wrapper:hover .card__media .media--hover-effect > img + img {
+    opacity: 1;
+    transform: none !important;
+    transition: opacity 0.4s var(--tungacea-ease);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card-wrapper .card__media .media img {
+    transition: none;
+  }
+}
+
+/* ---------- Responsive ---------- */
+@media screen and (max-width: 989px) {
+  .product-card-wrapper .card__content {
+    padding-top: 1.5rem;
+  }
+  .product-card-wrapper .card__information.specimen-card {
+    gap: 0.6rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .product-card-wrapper .card__content {
+    padding-top: 1.3rem;
+  }
+  .product-card-wrapper .card__heading.specimen-card__title a {
+    font-size: 1.6rem;
+  }
+  .product-card-wrapper .specimen-card__id {
+    font-size: 0.98rem;
+    letter-spacing: 0.2em;
+    gap: 0.6rem;
+  }
+  .product-card-wrapper .specimen-card__id::before {
+    width: 1.2rem;
+  }
+  .product-card-wrapper .specimen-card__parentage {
+    font-size: 1.2rem;
+  }
+  .product-card-wrapper .specimen-card__traits {
+    font-size: 0.95rem;
+    letter-spacing: 0.14em;
+  }
+  .product-card-wrapper .specimen-card__footer {
+    padding-top: 1.1rem;
+    gap: 0.8rem;
+  }
+  .product-card-wrapper .specimen-card__status {
+    font-size: 0.95rem;
+    letter-spacing: 0.14em;
+  }
+  .product-card-wrapper .specimen-card__footer .price .price-item {
+    font-size: 1.25rem;
+  }
+}

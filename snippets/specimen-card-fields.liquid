@@ -1,0 +1,61 @@
+{% comment %}
+  Tungacea — Specimen Card fields resolver.
+
+  Reads the optional custom metafields for a product and derives the displayed
+  status, then echoes a single delimited payload the product card can split:
+
+    specimen_id || parentage || traits || status_state || status_label
+
+  Kept as a dedicated snippet so the shared card-product snippet stays simple
+  and within Theme Check's Liquid complexity budget.
+
+  Accepts:
+  - product: {Object} Product Liquid object (required)
+
+  Metafields (namespace.key):
+  - custom.specimen_id
+  - custom.parentage
+  - custom.primary_trait
+  - custom.growth_stage
+  - custom.specimen_status
+{% endcomment %}
+{%- liquid
+  assign specimen_id = product.metafields.custom.specimen_id.value | default: '' | strip
+  assign specimen_parentage = product.metafields.custom.parentage.value | default: '' | strip
+  assign specimen_trait = product.metafields.custom.primary_trait.value | default: '' | strip
+  assign specimen_stage = product.metafields.custom.growth_stage.value | default: '' | strip
+  assign specimen_status_raw = product.metafields.custom.specimen_status.value | default: '' | strip
+
+  assign specimen_traits = ''
+  if specimen_trait != blank and specimen_stage != blank
+    assign specimen_traits = specimen_trait | append: ' · ' | append: specimen_stage
+  elsif specimen_trait != blank
+    assign specimen_traits = specimen_trait
+  elsif specimen_stage != blank
+    assign specimen_traits = specimen_stage
+  endif
+
+  assign specimen_status_label = specimen_status_raw
+  assign specimen_status_state = 'custom'
+  if specimen_status_raw == blank
+    if product.available
+      assign specimen_status_label = 'products.product.specimen_status.available' | t
+      assign specimen_status_state = 'available'
+    else
+      assign specimen_status_label = 'products.product.specimen_status.sold' | t
+      assign specimen_status_state = 'sold'
+    endif
+  else
+    assign specimen_status_downcase = specimen_status_raw | downcase
+    if specimen_status_downcase contains 'reserv'
+      assign specimen_status_state = 'reserved'
+    elsif specimen_status_downcase contains 'coming'
+      assign specimen_status_state = 'coming'
+    elsif specimen_status_downcase contains 'sold'
+      assign specimen_status_state = 'sold'
+    elsif specimen_status_downcase contains 'avail'
+      assign specimen_status_state = 'available'
+    endif
+  endif
+-%}
+{{- specimen_id }}||{{ specimen_parentage }}||{{ specimen_traits }}||{{ specimen_status_state }}||{{ specimen_status_label -}}

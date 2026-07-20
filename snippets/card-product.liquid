@@ -27,6 +27,7 @@
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
   {{ 'quick-order-list.css' | asset_url | stylesheet_tag }}
   {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
+  {{ 'component-specimen-card.css' | asset_url | stylesheet_tag }}
 {%- endunless -%}
 {%- if card_product and card_product != empty -%}
   {%- liquid
@@ -39,6 +40,18 @@
     if ratio == 0 or ratio == null
       assign ratio = 1
     endif
+  -%}
+
+  {%- comment -%} Tungacea Specimen Card — optional metafield-driven metadata + derived status.
+    Decision logic lives in the specimen-card-fields snippet to keep this shared card lean. {%- endcomment -%}
+  {%- capture specimen_fields -%}{%- render 'specimen-card-fields', product: card_product -%}{%- endcapture -%}
+  {%- liquid
+    assign specimen_parts = specimen_fields | split: '||'
+    assign specimen_id = specimen_parts[0] | strip
+    assign specimen_parentage = specimen_parts[1] | strip
+    assign specimen_traits = specimen_parts[2] | strip
+    assign specimen_status_state = specimen_parts[3] | strip
+    assign specimen_status_label = specimen_parts[4] | strip
   -%}
 
   <product-component view-event-payload="{{ card_product | standard_event_data: 'view', context: product_view_context | escape }}">
@@ -153,9 +166,12 @@
           </div>
         </div>
         <div class="card__content">
-          <div class="card__information">
+          <div class="card__information specimen-card">
+            {%- if specimen_id != blank -%}
+              <div class="specimen-card__id" data-testid="specimen-card-id">{{ specimen_id | escape }}</div>
+            {%- endif -%}
             <h3
-              class="card__heading{% if card_product.featured_media or settings.card_style == 'standard' %} h5{% endif %}"
+              class="card__heading specimen-card__title{% if card_product.featured_media or settings.card_style == 'standard' %} h5{% endif %}"
               {% if card_product.featured_media or settings.card_style == 'card' %}
                 id="title-{{ section_id }}-{{ card_product.id }}"
               {% endif %}
@@ -169,6 +185,16 @@
                 {{ card_product.title | escape }}
               </a>
             </h3>
+            {%- if specimen_parentage != blank -%}
+              <div class="specimen-card__parentage" data-testid="specimen-card-parentage">
+                {{- specimen_parentage | escape -}}
+              </div>
+            {%- endif -%}
+            {%- if specimen_traits != blank -%}
+              <div class="specimen-card__traits" data-testid="specimen-card-traits">
+                {{- specimen_traits | escape -}}
+              </div>
+            {%- endif -%}
             <div class="card-information">
               {%- if show_vendor -%}
                 <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
@@ -213,7 +239,15 @@
                 </p>
               {%- endif -%}
 
-              {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
+              <div class="specimen-card__footer">
+                <span
+                  class="specimen-card__status specimen-card__status--{{ specimen_status_state }}"
+                  data-testid="specimen-card-status"
+                >
+                  {{ specimen_status_label | escape }}
+                </span>
+                {% render 'price', product: card_product, price_class: 'specimen-card__price', show_compare_at_price: true %}
+              </div>
               {%- if card_product.quantity_price_breaks_configured? -%}
                 {% if card_product.variants_count == 1 and quick_add == 'bulk' %}
                   {% liquid
