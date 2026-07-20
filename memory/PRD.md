@@ -131,3 +131,41 @@ Rebalanced the desktop hero into a centered two-column layout (scoped to
   width is capped ~382px (physical limit without cropping). Verified: drag both
   directions, wrapping, hint fade, 0 console errors, Theme Check clean.
 - Screenshots at 1440 / 1024 / 390 shown to user for approval. NOT saved to GitHub.
+
+
+---
+
+# Phase 2A — Private Archive Teaser (homepage)
+Branch: `feature/homepage-archive-teaser` (from origin/Tungacea-v1). Do NOT touch Tungacea-v1 directly.
+
+## Goal
+Replace homepage "Featured genetics" product grid with a distinctive, non-purchasable
+Private Archive teaser: dark editorial botanical archive, restrained oxblood accent,
+asymmetric ~58% image / 42% content, quiet luxury, thin archive hairline/frame.
+No prices, availability, quick-add, badges, product grids or fake products.
+
+## Implemented (2026-06)
+- NEW `sections/private-archive-teaser.liquid` — reusable section, self-contained scoped CSS.
+  Editable in Theme Editor: image, image-frame toggle, eyebrow/archive reference, heading (+size),
+  body, button label, button link (button hidden cleanly when link blank), desktop layout direction
+  (image left/right), image crop position, color scheme, top/bottom padding.
+  Reuses theme tokens: `color-{scheme}` classes, `.page-width`, `.button`/`.button--secondary`,
+  Cormorant/Jost fonts, `--color-foreground/background/button`, `--media-radius`.
+  A11y: semantic <figure>/<h2>, image alt with heading fallback, bundled `tungacea-archive.jpg`
+  default image, keyboard focus via theme button, entrance animation wrapped in
+  `@media (prefers-reduced-motion: no-preference)`. No external libs, no hardcoded shop URLs.
+- MODIFIED `templates/index.json`:
+  - `featured_genetics` (featured-collection) -> `private_archive_teaser`.
+  - Removed duplicate `archive` rich-text section (it repeated the new teaser).
+  - Order: hero, current_drop, brand_statement, private_archive_teaser, about, community, newsletter.
+- Local preview harnesses only (NOT theme files, safe to delete): `preview-archive.html`,
+  `preview-archive-mobile.html`.
+
+## Verified
+- Theme Check (via @shopify/cli@3.80.7): new section + index.json = 0 offenses.
+  13 pre-existing offenses (4 errors/9 warnings) all in untouched files.
+- Hero, Current Drop, Specimen/Product cards + metafields, password/header/product/collection/
+  private-archive pages, branding assets: untouched (git diff confirms only index.json changed).
+
+## Delivery status
+- NOT committed / pushed. Awaiting user feedback on preview before any refinement.

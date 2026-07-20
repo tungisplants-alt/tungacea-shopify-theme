@@ -1,0 +1,358 @@
+{%- comment -%}
+  Private Archive Teaser
+  A non-purchasable, editorial entry point into the Tungacea private botanical archive.
+  Reuses the theme's color schemes, typography and spacing tokens.
+{%- endcomment -%}
+
+{%- liquid
+  assign has_button = false
+  if section.settings.button_label != blank and section.settings.button_link != blank
+    assign has_button = true
+  endif
+
+  assign image_alt = section.settings.image.alt
+  if image_alt == blank
+    assign image_alt = section.settings.heading | strip_html | strip
+  endif
+-%}
+
+{%- style -%}
+  .private-archive-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  #PrivateArchive-{{ section.id }} .private-archive__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.4rem;
+    align-items: center;
+  }
+
+  #PrivateArchive-{{ section.id }} .private-archive__media {
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--media-radius, 0);
+  }
+
+  #PrivateArchive-{{ section.id }} .private-archive__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.image_position }};
+  }
+
+  #PrivateArchive-{{ section.id }} .private-archive__media--frame::after {
+    content: "";
+    position: absolute;
+    inset: 1.2rem;
+    border: 0.1rem solid rgba(var(--color-foreground), 0.22);
+    pointer-events: none;
+  }
+
+  #PrivateArchive-{{ section.id }} .private-archive__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.6rem;
+    max-width: 46rem;
+  }
+
+  #PrivateArchive-{{ section.id }} .private-archive__eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    width: 100%;
+  }
+
+  #PrivateArchive-{{ section.id }} .private-archive__eyebrow {
+    margin: 0;
+    font-family: var(--font-body-family);
+    font-size: 1.2rem;
+    letter-spacing: 0.28rem;
+    text-transform: uppercase;
+    color: rgb(var(--color-button));
+    white-space: nowrap;
+  }
+
+  #PrivateArchive-{{ section.id }} .private-archive__hairline {
+    flex: 1 1 auto;
+    height: 0.1rem;
+    background-color: rgba(var(--color-foreground), 0.22);
+  }
+
+  #PrivateArchive-{{ section.id }} .private-archive__heading {
+    margin: 0;
+    color: rgb(var(--color-foreground));
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  #PrivateArchive-{{ section.id }} .private-archive__body {
+    margin: 0;
+    color: rgba(var(--color-foreground), 0.8);
+    max-width: 42rem;
+  }
+
+  #PrivateArchive-{{ section.id }} .private-archive__body > * {
+    margin: 0;
+  }
+
+  #PrivateArchive-{{ section.id }} .private-archive__cta {
+    margin-top: 0.8rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .private-archive-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    #PrivateArchive-{{ section.id }} .private-archive__grid {
+      grid-template-columns: 58fr 42fr;
+      gap: clamp(4rem, 6vw, 8rem);
+      align-items: stretch;
+    }
+
+    #PrivateArchive-{{ section.id }} .private-archive__grid--text-first {
+      grid-template-columns: 42fr 58fr;
+    }
+
+    #PrivateArchive-{{ section.id }} .private-archive__grid--text-first .private-archive__media {
+      order: 2;
+    }
+
+    #PrivateArchive-{{ section.id }} .private-archive__media {
+      min-height: 46rem;
+    }
+
+    #PrivateArchive-{{ section.id }} .private-archive__content {
+      justify-content: center;
+      padding-block: 1.6rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    #PrivateArchive-{{ section.id }} .private-archive__reveal {
+      opacity: 0;
+      transform: translateY(1.2rem);
+      animation: private-archive-reveal-{{ section.id }} 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    #PrivateArchive-{{ section.id }} .private-archive__content .private-archive__reveal:nth-child(2) { animation-delay: 0.08s; }
+    #PrivateArchive-{{ section.id }} .private-archive__content .private-archive__reveal:nth-child(3) { animation-delay: 0.16s; }
+    #PrivateArchive-{{ section.id }} .private-archive__content .private-archive__reveal:nth-child(4) { animation-delay: 0.24s; }
+
+    @keyframes private-archive-reveal-{{ section.id }} {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+{%- endstyle -%}
+
+<div class="private-archive color-{{ section.settings.color_scheme }} gradient">
+  <div class="private-archive-{{ section.id }} section-{{ section.id }}-padding">
+    <div class="page-width">
+      <div
+        id="PrivateArchive-{{ section.id }}"
+        class="private-archive__inner"
+      >
+        <div class="private-archive__grid private-archive__grid--{{ section.settings.desktop_layout_direction }}">
+          <figure class="private-archive__media private-archive__reveal{% if section.settings.show_image_frame %} private-archive__media--frame{% endif %}">
+            {%- if section.settings.image != blank -%}
+              {{
+                section.settings.image
+                | image_url: width: 1600
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '450, 660, 900, 1100, 1400, 1600',
+                  sizes: '(min-width: 750px) 58vw, 100vw',
+                  alt: image_alt
+              }}
+            {%- else -%}
+              <img
+                src="{{ 'tungacea-archive.jpg' | asset_url }}"
+                alt="{{ image_alt | default: shop.name | escape }}"
+                width="1200"
+                height="1500"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </figure>
+
+          <div class="private-archive__content">
+            {%- if section.settings.eyebrow != blank -%}
+              <div class="private-archive__eyebrow-row private-archive__reveal">
+                <p class="private-archive__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+                <span class="private-archive__hairline" aria-hidden="true"></span>
+              </div>
+            {%- endif -%}
+
+            {%- if section.settings.heading != blank -%}
+              <h2 class="private-archive__heading private-archive__reveal {{ section.settings.heading_size }}">
+                {{ section.settings.heading }}
+              </h2>
+            {%- endif -%}
+
+            {%- if section.settings.body != blank -%}
+              <div class="private-archive__body rte private-archive__reveal">
+                {{ section.settings.body }}
+              </div>
+            {%- endif -%}
+
+            {%- if has_button -%}
+              <div class="private-archive__cta private-archive__reveal">
+                <a
+                  href="{{ section.settings.button_link }}"
+                  class="button{% if section.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
+                >
+                  {{ section.settings.button_label | escape }}
+                </a>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Private archive teaser",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Large botanical image. If left empty, a bundled archive image is used."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_frame",
+      "label": "Show thin archive frame on image",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Archive reference / eyebrow",
+      "default": "PRIVATE ARCHIVE / 01"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Selected genetics. Preserved beyond the sale."
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" },
+        { "value": "hxl", "label": "Extra large" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body text",
+      "default": "<p>A growing record of rare Anthuriums, parent plants and distinctive traits — documented as part of the Tungacea collection.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Enter the archive"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "If no link is selected, the button is hidden."
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary",
+      "label": "Use outline button style",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_layout_direction",
+      "label": "Desktop layout direction",
+      "options": [
+        { "value": "image-first", "label": "Image left, text right" },
+        { "value": "text-first", "label": "Text left, image right" }
+      ],
+      "default": "image-first"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image crop position",
+      "options": [
+        { "value": "left top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "left bottom", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 88
+    }
+  ],
+  "presets": [
+    {
+      "name": "Private archive teaser"
+    }
+  ]
+}
+{% endschema %}
