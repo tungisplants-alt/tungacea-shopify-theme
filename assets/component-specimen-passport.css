@@ -1,0 +1,234 @@
+/*
+  Tungacea — Specimen Passport (product page)
+  Scoped to `.specimen-passport` so no other section is affected.
+  Reuses existing Tungacea tokens: --tungacea-muted, --tungacea-hairline,
+  --tungacea-hairline-soft, --tungacea-accent-bright, --tungacea-ease,
+  --color-foreground, --font-heading-family, --font-body-family.
+
+  Design: dark editorial botanical archive record. Thin hairlines,
+  restrained oxblood accent, generous but controlled spacing, no boxed card.
+*/
+
+.specimen-passport {
+  margin-top: 3.6rem;
+  padding-top: 0.2rem;
+}
+
+/* ---------- Archive header row ---------- */
+.specimen-passport__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2.4rem 3.2rem;
+  padding-bottom: 1.6rem;
+}
+.specimen-passport--framed .specimen-passport__header {
+  border-bottom: 1px solid rgba(var(--tungacea-accent-bright), 0.42);
+}
+
+.specimen-passport__heading-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.specimen-passport__eyebrow {
+  margin: 0;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 1.02rem;
+  line-height: 1;
+  color: var(--tungacea-muted);
+}
+
+.specimen-passport__title {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-size: 2.1rem;
+  line-height: 1.08;
+  letter-spacing: 0.005em;
+  color: rgb(var(--color-foreground));
+}
+
+/* Specimen ID + status, aligned to the opposite side */
+.specimen-passport__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.7rem;
+  text-align: right;
+  flex: 0 0 auto;
+}
+
+.specimen-passport__id {
+  margin: 0;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 1.12rem;
+  line-height: 1;
+  color: rgb(var(--color-foreground));
+  word-break: break-word;
+}
+
+.specimen-passport__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 1.02rem;
+  line-height: 1;
+  color: var(--tungacea-muted);
+  white-space: nowrap;
+}
+.specimen-passport__status::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background: rgba(185, 178, 169, 0.5);
+}
+.specimen-passport__status--available::before,
+.specimen-passport__status--coming::before {
+  background: rgb(var(--tungacea-accent-bright));
+}
+.specimen-passport__status--reserved {
+  color: rgb(var(--tungacea-accent-bright));
+}
+.specimen-passport__status--reserved::before {
+  background: rgb(var(--tungacea-accent-bright));
+}
+.specimen-passport__status--sold {
+  color: rgba(185, 178, 169, 0.5);
+}
+.specimen-passport__status--sold::before {
+  background: rgba(185, 178, 169, 0.32);
+}
+
+/* ---------- Exact specimen notice — prominent but quiet ---------- */
+.specimen-passport__exact {
+  margin: 2rem 0 0;
+  padding: 1.2rem 0 1.2rem 1.6rem;
+  border-left: 2px solid rgb(var(--tungacea-accent-bright));
+  font-family: var(--font-body-family);
+  font-size: 1.28rem;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: rgb(var(--color-foreground));
+}
+
+/* ---------- Key / value details grid ---------- */
+.specimen-passport__grid {
+  margin: 2.4rem 0 0;
+}
+.specimen-passport__row {
+  display: grid;
+  grid-template-columns: minmax(12rem, 32%) 1fr;
+  gap: 1.4rem 2.4rem;
+  padding: 1.35rem 0;
+}
+.specimen-passport--framed .specimen-passport__row + .specimen-passport__row {
+  border-top: 1px solid var(--tungacea-hairline-soft);
+}
+
+.specimen-passport__label {
+  margin: 0;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 1.08rem;
+  line-height: 1.5;
+  color: var(--tungacea-muted);
+}
+.specimen-passport__value {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.5rem;
+  line-height: 1.5;
+  color: rgb(var(--color-foreground));
+}
+.specimen-passport__value.rte > *:first-child {
+  margin-top: 0;
+}
+.specimen-passport__value.rte > *:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Notes + shipping ---------- */
+.specimen-passport__note {
+  margin-top: 2.6rem;
+}
+.specimen-passport--framed .specimen-passport__note {
+  padding-top: 2.2rem;
+  border-top: 1px solid var(--tungacea-hairline);
+}
+.specimen-passport__note-label {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 1.08rem;
+  line-height: 1;
+  color: var(--tungacea-muted);
+}
+.specimen-passport__note-body {
+  font-family: var(--font-body-family);
+  font-size: 1.45rem;
+  line-height: 1.6;
+  color: rgb(var(--color-foreground));
+}
+.specimen-passport__note-body > *:first-child {
+  margin-top: 0;
+}
+.specimen-passport__note-body > *:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Mobile: single column, no overflow ---------- */
+@media screen and (max-width: 749px) {
+  .specimen-passport {
+    margin-top: 3rem;
+  }
+  .specimen-passport__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.4rem;
+    padding-bottom: 1.4rem;
+  }
+  .specimen-passport__meta {
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.8rem 1.6rem;
+  }
+  .specimen-passport__title {
+    font-size: 1.9rem;
+  }
+  .specimen-passport__row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 1.3rem 0;
+  }
+  .specimen-passport__value {
+    font-size: 1.45rem;
+  }
+  .specimen-passport__exact {
+    font-size: 1.22rem;
+  }
+}
+
+/* ---------- Reduced motion (no transitions introduced, kept explicit) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .specimen-passport,
+  .specimen-passport * {
+    transition: none;
+  }
+}
