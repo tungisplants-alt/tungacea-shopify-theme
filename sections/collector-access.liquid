@@ -1,0 +1,468 @@
+{%- comment -%}
+  Collector Access
+  Editorial, non-generic reframing of the newsletter as a private collector list.
+  Uses Shopify's native {% form 'customer' %} for real submission / success / error states.
+  Reuses theme color schemes, typography, spacing tokens and the approved Rakkan seal.
+{%- endcomment -%}
+
+{%- liquid
+  assign heading_size = section.settings.heading_size | default: 'h1'
+  assign placeholder = section.settings.email_placeholder | default: 'Email address'
+-%}
+
+{%- style -%}
+  .collector-access-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.2rem;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.6rem;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    width: 100%;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__eyebrow {
+    margin: 0;
+    font-family: var(--font-body-family);
+    font-size: 1.2rem;
+    letter-spacing: 0.28rem;
+    text-transform: uppercase;
+    color: rgb(var(--color-button));
+    white-space: nowrap;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__hairline {
+    flex: 1 1 auto;
+    height: 0.1rem;
+    background-color: rgba(var(--color-foreground), 0.22);
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__heading {
+    margin: 0;
+    color: rgb(var(--color-foreground));
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__body {
+    margin: 0;
+    color: rgba(var(--color-foreground), 0.8);
+    max-width: 40rem;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__body > * {
+    margin: 0;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__seal {
+    margin-top: 0.8rem;
+    opacity: 0.9;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__signup {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__form {
+    width: 100%;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__field {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1.6rem;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__input {
+    flex: 1 1 24rem;
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.35);
+    color: rgb(var(--color-foreground));
+    font-family: var(--font-body-family);
+    font-size: 1.6rem;
+    line-height: 1.4;
+    padding: 1.1rem 0.2rem;
+    border-radius: 0;
+    transition: border-color 0.2s ease;
+    appearance: none;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__input::placeholder {
+    color: rgba(var(--color-foreground), 0.5);
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__input:hover {
+    border-bottom-color: rgba(var(--color-foreground), 0.6);
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__input:focus {
+    outline: 0;
+    border-bottom-color: rgb(var(--color-foreground));
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__input:focus-visible {
+    outline: 0.2rem solid rgba(var(--color-foreground), 0.6);
+    outline-offset: 0.4rem;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__submit {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 3rem;
+    font-family: var(--font-body-family);
+    font-size: 1.4rem;
+    letter-spacing: 0.06rem;
+    line-height: 1;
+    color: rgb(var(--color-foreground));
+    background-color: transparent;
+    border: 0.1rem solid rgb(var(--color-button));
+    border-radius: 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__submit:hover {
+    background-color: rgb(var(--color-button));
+    color: rgb(var(--color-button-text));
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__submit:focus-visible {
+    background-color: rgb(var(--color-button));
+    color: rgb(var(--color-button-text));
+    outline: 0.2rem solid rgba(var(--color-foreground), 0.6);
+    outline-offset: 0.3rem;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__support {
+    margin: 0;
+    font-size: 1.3rem;
+    letter-spacing: 0.02rem;
+    color: rgba(var(--color-foreground), 0.6);
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin: 0;
+    font-size: 1.4rem;
+    line-height: 1.4;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__message .svg-wrapper {
+    flex: 0 0 auto;
+    margin-top: 0.2rem;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__message svg {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__message--error {
+    color: rgb(var(--color-foreground));
+  }
+
+  #CollectorAccess-{{ section.id }} .collector-access__message--success {
+    color: rgb(var(--color-foreground));
+    font-weight: 500;
+  }
+
+  @media screen and (min-width: 750px) {
+    .collector-access-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    #CollectorAccess-{{ section.id }} .collector-access__grid {
+      grid-template-columns: 46fr 54fr;
+      gap: clamp(4rem, 6vw, 8rem);
+      align-items: center;
+    }
+
+    #CollectorAccess-{{ section.id }} .collector-access__intro {
+      align-self: center;
+    }
+
+    #CollectorAccess-{{ section.id }} .collector-access__signup {
+      padding-left: clamp(3rem, 4vw, 5rem);
+      border-left: 0.1rem solid rgba(var(--color-foreground), 0.2);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #CollectorAccess-{{ section.id }} .collector-access__signup {
+      padding-top: 2.8rem;
+      border-top: 0.1rem solid rgba(var(--color-foreground), 0.2);
+    }
+
+    #CollectorAccess-{{ section.id }} .collector-access__input,
+    #CollectorAccess-{{ section.id }} .collector-access__submit {
+      width: 100%;
+    }
+
+    #CollectorAccess-{{ section.id }} .collector-access__field {
+      gap: 2rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    #CollectorAccess-{{ section.id }} .collector-access__reveal {
+      opacity: 0;
+      transform: translateY(1.2rem);
+      animation: collector-access-reveal-{{ section.id }} 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    #CollectorAccess-{{ section.id }} .collector-access__intro .collector-access__reveal:nth-child(2) { animation-delay: 0.08s; }
+    #CollectorAccess-{{ section.id }} .collector-access__intro .collector-access__reveal:nth-child(3) { animation-delay: 0.16s; }
+    #CollectorAccess-{{ section.id }} .collector-access__intro .collector-access__reveal:nth-child(4) { animation-delay: 0.24s; }
+
+    @keyframes collector-access-reveal-{{ section.id }} {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+{%- endstyle -%}
+
+<div class="collector-access color-{{ section.settings.color_scheme }} gradient">
+  <div class="collector-access-{{ section.id }} section-{{ section.id }}-padding">
+    <div class="page-width">
+      <div id="CollectorAccess-{{ section.id }}" class="collector-access__inner">
+        <div class="collector-access__grid">
+          <div class="collector-access__intro">
+            {%- if section.settings.eyebrow != blank -%}
+              <div class="collector-access__eyebrow-row collector-access__reveal">
+                <p class="collector-access__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+                <span class="collector-access__hairline" aria-hidden="true"></span>
+              </div>
+            {%- endif -%}
+
+            {%- if section.settings.heading != blank -%}
+              <h2 class="collector-access__heading collector-access__reveal {{ heading_size }}">
+                {{ section.settings.heading }}
+              </h2>
+            {%- endif -%}
+
+            {%- if section.settings.body != blank -%}
+              <div class="collector-access__body rte collector-access__reveal">
+                {{ section.settings.body }}
+              </div>
+            {%- endif -%}
+
+            {%- if section.settings.show_rakkan -%}
+              {% render 'rakkan-seal', class: 'collector-access__seal collector-access__reveal', width_override: 50 %}
+            {%- endif -%}
+          </div>
+
+          <div class="collector-access__signup collector-access__reveal">
+            {%- form 'customer', class: 'collector-access__form' -%}
+              <input type="hidden" name="contact[tags]" value="collector-access">
+              <div class="collector-access__field">
+                <label class="visually-hidden" for="CollectorAccess-email-{{ section.id }}">
+                  {{ placeholder | escape }}
+                </label>
+                <input
+                  id="CollectorAccess-email-{{ section.id }}"
+                  class="collector-access__input"
+                  type="email"
+                  name="contact[email]"
+                  value="{{ form.email }}"
+                  placeholder="{{ placeholder | escape }}"
+                  autocomplete="email"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  aria-required="true"
+                  required
+                  {%- if form.errors %}
+                    autofocus
+                    aria-invalid="true"
+                    aria-describedby="CollectorAccess-error-{{ section.id }}"
+                  {%- elsif form.posted_successfully? %}
+                    aria-describedby="CollectorAccess-success-{{ section.id }}"
+                  {%- endif %}
+                >
+                <button
+                  type="submit"
+                  name="commit"
+                  class="collector-access__submit"
+                >
+                  {{ section.settings.button_label | default: 'Request access' | escape }}
+                </button>
+              </div>
+
+              {%- if form.errors -%}
+                <small
+                  id="CollectorAccess-error-{{ section.id }}"
+                  class="collector-access__message collector-access__message--error"
+                >
+                  <span class="svg-wrapper" aria-hidden="true">
+                    {{- 'icon-error.svg' | inline_asset_content -}}
+                  </span>
+                  <span>
+                    {{- form.errors.translated_fields.email | capitalize }}
+                    {{ form.errors.messages.email -}}
+                  </span>
+                </small>
+              {%- endif -%}
+
+              {%- if form.posted_successfully? -%}
+                <h3
+                  id="CollectorAccess-success-{{ section.id }}"
+                  class="collector-access__message collector-access__message--success"
+                  tabindex="-1"
+                  autofocus
+                >
+                  <span class="svg-wrapper" aria-hidden="true">
+                    {{- 'icon-success.svg' | inline_asset_content -}}
+                  </span>
+                  <span>{{ 'newsletter.success' | t }}</span>
+                </h3>
+              {%- endif -%}
+            {%- endform -%}
+
+            {%- if section.settings.supporting_line != blank -%}
+              <p class="collector-access__support">{{ section.settings.supporting_line | escape }}</p>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collector access",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow / archive reference",
+      "default": "COLLECTOR ACCESS / 01"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "First access to rare releases."
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" },
+        { "value": "hxl", "label": "Extra large" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body text",
+      "default": "<p>Receive early notice of upcoming drops, exact specimens, selected seedlings and additions to the Tungacea archive.</p>"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Email address"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Request access"
+    },
+    {
+      "type": "text",
+      "id": "supporting_line",
+      "label": "Supporting line",
+      "info": "Leave blank to hide.",
+      "default": "No noise. Only selected releases and field notes."
+    },
+    {
+      "type": "header",
+      "content": "Rakkan seal"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rakkan",
+      "label": "Show Rakkan seal",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 88
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collector access"
+    }
+  ]
+}
+{% endschema %}
