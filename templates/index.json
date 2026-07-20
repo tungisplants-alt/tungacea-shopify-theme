@@ -60,7 +60,7 @@
     "current_drop": {
       "type": "featured-collection",
       "settings": {
-        "collection": "",
+        "collection": "current-drop",
         "products_to_show": 4,
         "title": "Current drop",
         "heading_size": "h1",

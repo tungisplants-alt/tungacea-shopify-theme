@@ -17,3 +17,6 @@ credentials.json
 *.pem
 *.key
 .credentials
+
+# dev-only exports, preview harnesses, test media (never ship to theme)
+exports/
