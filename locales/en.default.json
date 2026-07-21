@@ -71,6 +71,10 @@
     "success": "Thanks for subscribing",
     "button_label": "Subscribe"
   },
+  "collector_access": {
+    "email_placeholder": "Email address",
+    "button_label": "Request access"
+  },
   "accessibility": {
     "skip_to_text": "Skip to content",
     "skip_to_product_info": "Skip to product information",
@@ -130,6 +134,25 @@
       "specimen_status": {
         "available": "Available",
         "sold": "Sold"
+      },
+      "specimen": {
+        "eyebrow": "Tungacea Archive Record",
+        "heading": "Botanical Documentation",
+        "exact_notice": "You will receive the exact specimen shown in the product images.",
+        "id_label": "Specimen ID",
+        "parentage": "Parentage",
+        "genetics": "Genetics",
+        "primary_trait": "Primary trait",
+        "growth_stage": "Growth stage",
+        "propagation": "Propagation",
+        "breeder": "Breeder / source",
+        "origin": "Origin",
+        "rarity": "Rarity",
+        "care": "Care",
+        "photo_conditions": "Photo conditions",
+        "sale_type": "Sale type",
+        "notes": "Specimen notes",
+        "shipping": "Shipping note"
       },
       "product_variants": "Product variants",
       "media": {

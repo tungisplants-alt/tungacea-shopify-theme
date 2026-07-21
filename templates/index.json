@@ -15,21 +15,21 @@
         "caption": {
           "type": "text",
           "settings": {
-            "text": "Rare Anthuriums. Selected genetics.",
+            "text": "Seltene Anthurien. Ausgewählte Genetik.",
             "text_style": "caption-with-letter-spacing"
           }
         },
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Living specimens.",
+            "heading": "Lebende Exemplare.",
             "heading_size": "h0"
           }
         },
         "button": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Explore the collection",
+            "button_label_1": "Kollektion entdecken",
             "button_link_1": "shopify://collections/all",
             "button_style_secondary_1": false,
             "button_label_2": "",
@@ -62,9 +62,9 @@
       "settings": {
         "collection": "current-drop",
         "products_to_show": 4,
-        "title": "Current drop",
+        "title": "Aktuelle Auswahl",
         "heading_size": "h1",
-        "description": "<p>A limited release of freshly listed specimens.</p>",
+        "description": "<p>Eine limitierte Auswahl neu verfügbarer Exemplare.</p>",
         "show_description": true,
         "description_style": "uppercase",
         "columns_desktop": 4,
@@ -99,7 +99,7 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Rare Anthuriums, selected genetics and carefully curated hybrids.",
+            "heading": "Seltene Anthurien, ausgewählte Genetik und sorgfältig kuratierte Hybriden.",
             "heading_size": "h1"
           }
         }
@@ -123,11 +123,11 @@
       "type": "private-archive-teaser",
       "settings": {
         "show_image_frame": true,
-        "eyebrow": "PRIVATE ARCHIVE / 01",
-        "heading": "Selected genetics. Preserved beyond the sale.",
+        "eyebrow": "PRIVATES ARCHIV / 01",
+        "heading": "Ausgewählte Genetik. Über den Verkauf hinaus bewahrt.",
         "heading_size": "h1",
-        "body": "<p>A growing record of rare Anthuriums, parent plants and distinctive traits — documented as part of the Tungacea collection.</p>",
-        "button_label": "Enter the archive",
+        "body": "<p>Ein wachsendes Archiv seltener Anthurien, Elternpflanzen und markanter Merkmale — dokumentiert als Teil der Tungacea-Sammlung.</p>",
+        "button_label": "Archiv betreten",
         "button_link": "/pages/private-archive?view=archive",
         "button_style_secondary": true,
         "desktop_layout_direction": "image-first",
@@ -143,7 +143,7 @@
         "caption": {
           "type": "caption",
           "settings": {
-            "caption": "About",
+            "caption": "Über Tungacea",
             "text_style": "caption-with-letter-spacing",
             "text_size": "medium"
           }
@@ -151,21 +151,21 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "A private botanical archive.",
+            "heading": "Ein privates botanisches Archiv.",
             "heading_size": "h1"
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Tungacea is a specialist plant business from Germany, dedicated to rare Anthuriums, selected dark traits and exclusive genetics. Every seedling and hybrid is documented and grown with the care of a private collection.</p>",
+            "text": "<p>Tungacea ist ein auf seltene Anthurien, ausgewählte dunkle Merkmale und exklusive Genetik spezialisiertes Pflanzenunternehmen aus Deutschland. Jeder Sämling und jede Hybride wird mit der Sorgfalt einer privaten Sammlung dokumentiert und kultiviert.</p>",
             "text_style": "body"
           }
         },
         "button": {
           "type": "button",
           "settings": {
-            "button_label": "The collection",
+            "button_label": "Die Kollektion",
             "button_link": "shopify://collections/all",
             "button_style_secondary": true
           }
@@ -229,11 +229,11 @@
         "column_3"
       ],
       "settings": {
-        "title": "From the collection",
+        "title": "Aus der Kollektion",
         "heading_size": "h1",
         "image_width": "full",
         "image_ratio": "square",
-        "button_label": "Follow on Instagram",
+        "button_label": "Auf Instagram folgen",
         "button_link": "",
         "columns_desktop": 3,
         "column_alignment": "left",
@@ -248,13 +248,13 @@
     "collector_access": {
       "type": "collector-access",
       "settings": {
-        "eyebrow": "COLLECTOR ACCESS / 01",
-        "heading": "First access to rare releases.",
+        "eyebrow": "SAMMLERZUGANG / 01",
+        "heading": "Frühzugang zu seltenen Exemplaren.",
         "heading_size": "h1",
-        "body": "<p>Receive early notice of upcoming drops, exact specimens, selected seedlings and additions to the Tungacea archive.</p>",
-        "email_placeholder": "Email address",
-        "button_label": "Request access",
-        "supporting_line": "No noise. Only selected releases and field notes.",
+        "body": "<p>Erhalte frühzeitig Informationen zu kommenden Verkaufsstarts, abgebildeten Exemplaren, ausgewählten Sämlingen und Neuzugängen im Tungacea-Archiv.</p>",
+        "email_placeholder": "E-Mail-Adresse",
+        "button_label": "Zugang anfragen",
+        "supporting_line": "Keine unnötigen Mails. Nur ausgewählte Veröffentlichungen und Feldnotizen.",
         "show_rakkan": true,
         "color_scheme": "scheme-1",
         "padding_top": 88,

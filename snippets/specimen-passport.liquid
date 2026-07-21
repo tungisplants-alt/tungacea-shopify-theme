@@ -106,21 +106,50 @@
     assign show_passport = true
   endif
 
-  # ---- Labels (reuse existing block labels where useful) ----
-  assign lbl_parentage = block.settings.label_parentage | default: 'Parentage'
-  assign lbl_genetics = block.settings.label_genetics | default: 'Genetics'
-  assign lbl_trait = 'Primary trait'
-  assign lbl_stage = 'Growth stage'
-  assign lbl_propagation = 'Propagation'
-  assign lbl_breeder = block.settings.label_breeder | default: 'Breeder / source'
-  assign lbl_origin = 'Origin'
-  assign lbl_rarity = block.settings.label_rarity | default: 'Rarity'
-  assign lbl_care = block.settings.label_care | default: 'Care'
-  assign lbl_photo = block.settings.label_photo_conditions | default: 'Photo conditions'
-  assign lbl_saletype = 'Sale type'
-  assign lbl_notes = 'Specimen notes'
-  assign lbl_shipping = block.settings.label_shipping | default: 'Shipping'
-  assign lbl_id = block.settings.label_plant_id | default: 'Specimen ID'
+  # ---- Localized labels (locale keys; optional Theme Editor override wins) ----
+  assign t_id = 'products.product.specimen.id_label' | t
+  assign t_parentage = 'products.product.specimen.parentage' | t
+  assign t_genetics = 'products.product.specimen.genetics' | t
+  assign t_trait = 'products.product.specimen.primary_trait' | t
+  assign t_stage = 'products.product.specimen.growth_stage' | t
+  assign t_propagation = 'products.product.specimen.propagation' | t
+  assign t_breeder = 'products.product.specimen.breeder' | t
+  assign t_origin = 'products.product.specimen.origin' | t
+  assign t_rarity = 'products.product.specimen.rarity' | t
+  assign t_care = 'products.product.specimen.care' | t
+  assign t_photo = 'products.product.specimen.photo_conditions' | t
+  assign t_saletype = 'products.product.specimen.sale_type' | t
+  assign t_notes = 'products.product.specimen.notes' | t
+  assign t_shipping = 'products.product.specimen.shipping' | t
+
+  assign lbl_parentage = block.settings.label_parentage | default: t_parentage
+  assign lbl_genetics = block.settings.label_genetics | default: t_genetics
+  assign lbl_trait = t_trait
+  assign lbl_stage = t_stage
+  assign lbl_propagation = t_propagation
+  assign lbl_breeder = block.settings.label_breeder | default: t_breeder
+  assign lbl_origin = t_origin
+  assign lbl_rarity = block.settings.label_rarity | default: t_rarity
+  assign lbl_care = block.settings.label_care | default: t_care
+  assign lbl_photo = block.settings.label_photo_conditions | default: t_photo
+  assign lbl_saletype = t_saletype
+  assign lbl_notes = t_notes
+  assign lbl_shipping = block.settings.label_shipping | default: t_shipping
+  assign lbl_id = block.settings.label_plant_id | default: t_id
+
+  # ---- Localized heading / eyebrow / exact-specimen notice (override wins) ----
+  assign passport_eyebrow = block.settings.eyebrow | default: '' | strip
+  if passport_eyebrow == blank
+    assign passport_eyebrow = 'products.product.specimen.eyebrow' | t
+  endif
+  assign passport_heading = block.settings.heading | default: '' | strip
+  if passport_heading == blank
+    assign passport_heading = 'products.product.specimen.heading' | t
+  endif
+  assign passport_exact_notice = block.settings.exact_notice | default: '' | strip
+  if passport_exact_notice == blank
+    assign passport_exact_notice = 'products.product.specimen.exact_notice' | t
+  endif
 
   assign show_status = block.settings.show_status | default: true, allow_false: true
   assign show_exact = block.settings.show_exact_notice | default: true, allow_false: true
@@ -135,11 +164,11 @@
   >
     <header class="specimen-passport__header">
       <div class="specimen-passport__heading-group">
-        {%- if block.settings.eyebrow != blank -%}
-          <p class="specimen-passport__eyebrow">{{ block.settings.eyebrow | escape }}</p>
+        {%- if passport_eyebrow != blank -%}
+          <p class="specimen-passport__eyebrow">{{ passport_eyebrow | escape }}</p>
         {%- endif -%}
         <h2 class="specimen-passport__title" id="SpecimenPassport-title-{{ block.id }}">
-          {{- block.settings.heading | default: 'Specimen passport' | escape -}}
+          {{- passport_heading | escape -}}
         </h2>
       </div>
 
@@ -162,7 +191,7 @@
 
     {%- if passport_exact and show_exact -%}
       <p class="specimen-passport__exact" role="note">
-        {{- block.settings.exact_notice | default: 'EXACT SPECIMEN — You will receive the plant shown in the product images.' | escape -}}
+        {{- passport_exact_notice | escape -}}
       </p>
     {%- endif -%}
 

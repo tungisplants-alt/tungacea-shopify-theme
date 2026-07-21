@@ -7,7 +7,10 @@
 
 {%- liquid
   assign heading_size = section.settings.heading_size | default: 'h1'
-  assign placeholder = section.settings.email_placeholder | default: 'Email address'
+  assign email_fallback = 'collector_access.email_placeholder' | t
+  assign placeholder = section.settings.email_placeholder | default: email_fallback
+  assign button_fallback = 'collector_access.button_label' | t
+  assign button_label = section.settings.button_label | default: button_fallback
 -%}
 
 {%- style -%}
@@ -312,7 +315,7 @@
                   name="commit"
                   class="collector-access__submit"
                 >
-                  {{ section.settings.button_label | default: 'Request access' | escape }}
+                  {{ button_label | escape }}
                 </button>
               </div>
 

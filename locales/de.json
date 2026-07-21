@@ -71,6 +71,10 @@
     "success": "Danke für deine Anmeldung",
     "button_label": "Abonnieren"
   },
+  "collector_access": {
+    "email_placeholder": "E-Mail-Adresse",
+    "button_label": "Zugang anfragen"
+  },
   "accessibility": {
     "skip_to_text": "Direkt zum Inhalt",
     "close": "Schließen",
@@ -121,6 +125,25 @@
       "specimen_status": {
         "available": "Verfügbar",
         "sold": "Verkauft"
+      },
+      "specimen": {
+        "eyebrow": "Tungacea Sammlerarchiv",
+        "heading": "Botanische Dokumentation",
+        "exact_notice": "Du erhältst exakt das abgebildete Exemplar.",
+        "id_label": "Exemplar-ID",
+        "parentage": "Abstammung",
+        "genetics": "Genetik",
+        "primary_trait": "Hauptmerkmal",
+        "growth_stage": "Wachstumsstadium",
+        "propagation": "Vermehrung",
+        "breeder": "Züchter / Quelle",
+        "origin": "Herkunft",
+        "rarity": "Seltenheit",
+        "care": "Pflege",
+        "photo_conditions": "Aufnahmebedingungen",
+        "sale_type": "Verkaufsart",
+        "notes": "Hinweise zum Exemplar",
+        "shipping": "Versandhinweis"
       },
       "quantity": {
         "label": "Anzahl",
