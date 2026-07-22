@@ -185,3 +185,83 @@
 .tungacea-catalogue .collection-empty__action {
   display: inline-block;
 }
+
+/* ---------- Mobile: contained botanical archive record (< 750px) ----------
+   Scoped to .tungacea-catalogue .product-card-wrapper so it only refines the
+   collection grid — homepage cards, product pages and desktop are untouched.
+   Higher specificity than component-specimen-card.css so the vertical footer
+   and card boundary override cleanly without editing the shared card file. */
+@media screen and (max-width: 749px) {
+  /* Equal-height cards across a row */
+  .tungacea-catalogue .grid__item {
+    display: flex;
+  }
+  .tungacea-catalogue .grid__item > product-component,
+  .tungacea-catalogue .grid__item .product-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* 1 — subtle full-card archive boundary; image stays flush + connected */
+  .tungacea-catalogue .product-card-wrapper .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.1));
+    border-radius: 0;
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.12);
+  }
+  .tungacea-catalogue .product-card-wrapper .card > .card__inner {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+
+  /* 2 — comfortable padding on the lower information area only (not the image) */
+  .tungacea-catalogue .product-card-wrapper .card > .card__content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 1.4rem 1.4rem 1.6rem;
+  }
+  .tungacea-catalogue .product-card-wrapper .card__information.specimen-card {
+    flex: 1 1 auto;
+  }
+
+  /* 4 — push the status/price footer toward the bottom of the card */
+  .tungacea-catalogue .product-card-wrapper .card-information {
+    margin-top: auto;
+  }
+
+  /* 5 — vertical specimen footer: status first, price below, both left aligned */
+  .tungacea-catalogue .product-card-wrapper .specimen-card__footer {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.6rem;
+  }
+  .tungacea-catalogue .product-card-wrapper .specimen-card__status {
+    white-space: normal;
+  }
+  .tungacea-catalogue .product-card-wrapper .specimen-card__footer .price,
+  .tungacea-catalogue .product-card-wrapper .specimen-card__footer .price .price__container {
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  /* 6 — unit price kept but clearly secondary: smaller, muted, beneath price */
+  .tungacea-catalogue .product-card-wrapper .specimen-card__footer .price .unit-price {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  }
+
+  /* 7 — larger row gap so one product row is clearly separated from the next */
+  .tungacea-catalogue .grid.product-grid {
+    row-gap: 3.2rem;
+  }
+}
