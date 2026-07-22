@@ -34,21 +34,21 @@
   assign passport_photo = mf.photo_conditions.value | default: block.settings.photo_conditions | default: '' | strip
   assign passport_saletype = mf.sale_type.value | default: '' | strip
 
-  # ---- Rich-text fields (rendered safely by Shopify) ----
+  # ---- Rich-text fields (rendered safely by Shopify native metafield filters) ----
+  assign passport_care_plain = mf.care | metafield_text | strip
   capture passport_care_html
-    echo mf.care
+    echo mf.care | metafield_tag
   endcapture
-  assign passport_care_plain = passport_care_html | strip_html | strip
 
+  assign passport_notes_plain = mf.specimen_notes | metafield_text | strip
   capture passport_notes_html
-    echo mf.specimen_notes
+    echo mf.specimen_notes | metafield_tag
   endcapture
-  assign passport_notes_plain = passport_notes_html | strip_html | strip
 
+  assign passport_shipping_mf_plain = mf.shipping_note | metafield_text | strip
   capture passport_shipping_mf_html
-    echo mf.shipping_note
+    echo mf.shipping_note | metafield_tag
   endcapture
-  assign passport_shipping_mf_plain = passport_shipping_mf_html | strip_html | strip
   assign passport_shipping_html = ''
   if passport_shipping_mf_plain != blank
     assign passport_shipping_html = passport_shipping_mf_html
