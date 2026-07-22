@@ -1,6 +1,7 @@
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-catalogue-toolbar.css' | asset_url | stylesheet_tag }}
 
 {% if section.settings.image_shape == 'blob' %}
   {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
@@ -40,7 +41,7 @@
   view-event-payload="{{ collection | standard_event_data: 'view' | escape }}"
   data-collection-id="{{ collection.id }}"
 >
-  <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
+  <div class="section-{{ section.id }}-padding tungacea-catalogue gradient color-{{ section.settings.color_scheme }}">
     {%- paginate collection.products by section.settings.products_per_page -%}
       {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
       {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
@@ -129,17 +130,46 @@
           {% endif %}
         >
           {%- if collection.products.size == 0 -%}
+            {%- liquid
+              assign filters_active = false
+              for filter in collection.filters
+                if filter.active_values.size > 0
+                  assign filters_active = true
+                endif
+                if filter.type == 'price_range'
+                  if filter.min_value.value != null or filter.max_value.value != null
+                    assign filters_active = true
+                  endif
+                endif
+              endfor
+            -%}
             <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
               <div class="loading-overlay gradient"></div>
-              <div class="title-wrapper center">
-                <h2 class="title title--primary">
-                  {{ 'sections.collection_template.empty' | t -}}
-                  <br>
-                  {{
-                    'sections.collection_template.use_fewer_filters_html'
-                    | t: link: collection.url, class: 'underlined-link link'
-                  }}
-                </h2>
+              <div class="collection-empty" data-testid="collection-empty-state">
+                {%- if filters_active -%}
+                  <p class="collection-empty__eyebrow caption">
+                    {{- 'sections.collection_template.eyebrow' | t -}}
+                  </p>
+                  <p class="collection-empty__message" data-testid="collection-no-results">
+                    {{- 'sections.collection_template.no_results' | t -}}
+                  </p>
+                  <facet-remove class="collection-empty__action">
+                    <a
+                      href="{{ collection.url }}"
+                      class="button button--tertiary"
+                      data-testid="collection-reset-filters"
+                    >
+                      {{- 'sections.collection_template.reset_filters' | t -}}
+                    </a>
+                  </facet-remove>
+                {%- else -%}
+                  <p class="collection-empty__eyebrow caption">
+                    {{- 'sections.collection_template.eyebrow' | t -}}
+                  </p>
+                  <p class="collection-empty__message" data-testid="collection-empty-message">
+                    {{- 'sections.collection_template.empty_catalogue' | t -}}
+                  </p>
+                {%- endif -%}
               </div>
             </div>
           {%- else -%}

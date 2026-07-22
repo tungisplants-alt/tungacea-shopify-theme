@@ -1,0 +1,187 @@
+/*
+  Tungacea — collection catalogue toolbar refinement.
+  Scoped to .tungacea-catalogue so it never leaks into other templates.
+  Pure restyle of Dawn's native facets/sort/count markup: no markup,
+  URL, form or accessibility behaviour is changed.
+*/
+
+/* ---------- Toolbar frame ---------- */
+.tungacea-catalogue .facets.small-hide {
+  border-top: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.1));
+  border-bottom: 1px solid var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.055));
+  padding-top: 2.4rem;
+  padding-bottom: 1.2rem;
+  margin-bottom: 3.6rem;
+}
+
+/* Keep the native grid but breathe more and align to a calm baseline */
+.tungacea-catalogue .facets__form {
+  align-items: baseline;
+  gap: 0 4rem;
+}
+
+/* ---------- Filter triggers ---------- */
+.tungacea-catalogue .facets__heading {
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 1.05rem;
+  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  margin-right: 2.4rem;
+}
+
+.tungacea-catalogue .facets__summary {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 1.15rem;
+  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  transition: color 0.3s var(--tungacea-ease, ease);
+}
+
+.tungacea-catalogue .facets__disclosure[open] .facets__summary,
+.tungacea-catalogue .facets__summary:hover {
+  color: rgb(var(--color-foreground));
+}
+
+.tungacea-catalogue .facets__disclosure {
+  margin-right: 4rem;
+}
+
+/* ---------- Sort control ---------- */
+.tungacea-catalogue .facet-filters__label {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 1.05rem;
+  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+}
+
+.tungacea-catalogue .facet-filters__sort {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 1.15rem;
+  color: rgb(var(--color-foreground));
+}
+
+/* ---------- Product count: visually separated from controls ---------- */
+.tungacea-catalogue .facets__form .product-count {
+  padding-left: 4rem;
+  border-left: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.1));
+}
+
+.tungacea-catalogue .product-count__text {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 1.1rem;
+  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+}
+
+@media screen and (max-width: 989px) {
+  .tungacea-catalogue .facets__form .product-count {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+/* ---------- Active filters as compact archive chips ---------- */
+.tungacea-catalogue .active-facets {
+  margin-top: 0.8rem;
+  gap: 0;
+}
+
+.tungacea-catalogue span.active-facets__button-inner,
+.tungacea-catalogue .active-facets__button--light .active-facets__button-inner {
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.1));
+  background: rgba(242, 238, 232, 0.02);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 1rem;
+  padding: 0.5rem 1.1rem;
+  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  transition: color 0.3s var(--tungacea-ease, ease),
+    border-color 0.3s var(--tungacea-ease, ease),
+    background-color 0.3s var(--tungacea-ease, ease);
+}
+
+.tungacea-catalogue .active-facets__button:hover .active-facets__button-inner,
+.tungacea-catalogue .active-facets__button--light:hover .active-facets__button-inner {
+  box-shadow: none;
+  border-color: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  color: rgb(var(--color-foreground));
+  background: rgba(var(--tungacea-accent-bright, 168, 52, 66), 0.08);
+}
+
+.tungacea-catalogue .active-facets__button .svg-wrapper {
+  color: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+/* "Clear all" reads as a quiet editorial link */
+.tungacea-catalogue .active-facets__button-remove {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 1rem;
+  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+}
+
+/* ---------- Mobile filter trigger: comfortable tap target ---------- */
+.tungacea-catalogue .mobile-facets__open {
+  min-height: 4.4rem;
+}
+
+.tungacea-catalogue .mobile-facets__open-label {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 1.2rem;
+  color: rgb(var(--color-foreground));
+}
+
+.tungacea-catalogue .mobile-facets__count {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 1.1rem;
+  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+}
+
+/* ---------- Empty & filtered no-result states ---------- */
+.tungacea-catalogue .collection--empty {
+  padding-top: 4rem;
+  padding-bottom: 6rem;
+}
+
+.tungacea-catalogue .collection-empty {
+  max-width: 52rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tungacea-catalogue .collection-empty__eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 1.05rem;
+  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  margin: 0 0 1.6rem;
+}
+
+.tungacea-catalogue .collection-empty__eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 2.4rem;
+  height: 1px;
+  margin-right: 1.2rem;
+  vertical-align: middle;
+  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+.tungacea-catalogue .collection-empty__message {
+  font-family: var(--font-heading-family);
+  font-weight: 400;
+  font-size: 2.2rem;
+  line-height: 1.3;
+  color: rgb(var(--color-foreground));
+  margin: 0 0 2.8rem;
+}
+
+.tungacea-catalogue .collection-empty__action {
+  display: inline-block;
+}

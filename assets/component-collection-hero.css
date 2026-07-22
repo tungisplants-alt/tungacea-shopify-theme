@@ -96,3 +96,94 @@
     min-height: 20rem;
   }
 }
+
+
+/*
+  Tungacea — editorial catalogue header.
+  Layered over Dawn's collection-hero without altering its base structure.
+*/
+.collection-hero--catalogue {
+  border-bottom: 1px solid var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.055));
+}
+
+.collection-hero--catalogue .collection-hero__inner {
+  align-items: flex-start;
+}
+
+.collection-hero__eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 1.1rem;
+  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  margin: 0 0 1.8rem;
+}
+
+.collection-hero__eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 2.4rem;
+  height: 1px;
+  margin-right: 1.2rem;
+  vertical-align: middle;
+  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+.collection-hero--catalogue .collection-hero__title {
+  margin: 0;
+  font-weight: 400;
+}
+
+.collection-hero--catalogue .collection-hero__title + .collection-hero__description,
+.collection-hero--catalogue .collection-hero__description {
+  margin-top: 2.2rem;
+  margin-bottom: 0;
+  max-width: 58ch;
+  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  font-size: 1.6rem;
+  line-height: 1.6;
+}
+
+.collection-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  margin-top: 2.8rem;
+}
+
+.collection-hero__rule {
+  display: block;
+  width: 4.8rem;
+  height: 1px;
+  flex: 0 0 auto;
+  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+.collection-hero__count {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 1.15rem;
+  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+}
+
+/* When a collection image is present, keep the text column balanced */
+.collection-hero--catalogue.collection-hero--with-image .collection-hero__text-wrapper {
+  padding: 0 2rem 0 0;
+}
+
+@media screen and (max-width: 749px) {
+  .collection-hero__eyebrow {
+    letter-spacing: 0.26em;
+    margin-bottom: 1.4rem;
+  }
+
+  .collection-hero--catalogue .collection-hero__description {
+    font-size: 1.5rem;
+    margin-top: 1.8rem;
+  }
+
+  .collection-hero__meta {
+    margin-top: 2.2rem;
+  }
+}

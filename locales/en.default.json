@@ -370,7 +370,15 @@
     "collection_template": {
       "empty": "No products found",
       "title": "Collection",
-      "use_fewer_filters_html": "Use fewer filters or <a class=\"{{ class }}\" href=\"{{ link }}\">remove all</a>"
+      "use_fewer_filters_html": "Use fewer filters or <a class=\"{{ class }}\" href=\"{{ link }}\">remove all</a>",
+      "eyebrow": "TUNGACEA COLLECTION / 01",
+      "specimen_count": {
+        "one": "{{ count }} specimen",
+        "other": "{{ count }} specimens"
+      },
+      "empty_catalogue": "This collection currently holds no specimens.",
+      "no_results": "No specimens match this selection.",
+      "reset_filters": "Reset filters"
     },
     "video": {
       "load_video": "Load video: {{ description }}"
