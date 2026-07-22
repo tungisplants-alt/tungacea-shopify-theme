@@ -313,6 +313,8 @@
     "header": {
       "announcement": "Announcement",
       "menu": "Menu",
+      "navigation_eyebrow": "TUNGACEA NAVIGATION / 01",
+      "drawer_note": "Rare Anthuriums · selected genetics",
       "cart_count": {
         "one": "{{ count }} item",
         "other": "{{ count }} items"

@@ -19,6 +19,7 @@
     <div id="menu-drawer" class="gradient menu-drawer motion-reduce color-{{ section.settings.menu_color_scheme }}">
       <div class="menu-drawer__inner-container">
         <div class="menu-drawer__navigation-container">
+          <p class="tungacea-drawer__eyebrow">{{ 'sections.header.navigation_eyebrow' | t }}</p>
           <nav class="menu-drawer__navigation">
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">
               {%- for link in section.settings.menu.links -%}
@@ -29,6 +30,7 @@
                         id="HeaderDrawer-{{ link.handle }}"
                         class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.child_active %} menu-drawer__menu-item--active{% endif %}"
                       >
+                        <span class="tungacea-drawer__index" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
                         {{ link.title | escape }}
                         <span class="svg-wrapper">
                           {{- 'icon-arrow.svg' | inline_asset_content -}}
@@ -128,6 +130,7 @@
                         aria-current="page"
                       {% endif %}
                     >
+                      <span class="tungacea-drawer__index" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
                       {{ link.title | escape }}
                     </a>
                   {%- endif -%}
@@ -136,6 +139,7 @@
             </ul>
           </nav>
           <div class="menu-drawer__utility-links">
+            <p class="tungacea-drawer__note">{{ 'sections.header.drawer_note' | t }}</p>
             {%- if shop.customer_accounts_enabled -%}
               <a
                 href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"

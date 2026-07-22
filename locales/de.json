@@ -306,6 +306,8 @@
     "header": {
       "announcement": "Ankündigung",
       "menu": "Menü",
+      "navigation_eyebrow": "TUNGACEA NAVIGATION / 01",
+      "drawer_note": "Seltene Anthurien · ausgewählte Genetik",
       "cart_count": {
         "one": "{{ count }} Artikel",
         "other": "{{ count }} Artikel"

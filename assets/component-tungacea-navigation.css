@@ -1,0 +1,254 @@
+/*
+ * Tungacea editorial navigation
+ * Scoped entirely to .tungacea-header. Refines the native Dawn header,
+ * dropdown menu and mobile drawer presentation without altering any menu,
+ * submenu, disclosure, logo, Rakkan, search, account, localization or cart
+ * behaviour. Visual language: near-black surfaces, restrained oxblood accents,
+ * editorial typography, square geometry, quiet luxury.
+ */
+
+.tungacea-header {
+  --tung-oxblood: #7a2531;
+  --tung-surface: #0c0c0d;
+  --tung-hairline: rgba(240, 236, 230, 0.14);
+  --tung-ink: rgba(244, 240, 234, 0.92);
+  --tung-muted: rgba(244, 240, 234, 0.5);
+}
+
+/* ============================================================
+   DESKTOP INLINE NAVIGATION
+   ============================================================ */
+@media screen and (min-width: 990px) {
+  .tungacea-header .header__inline-menu .list-menu--inline {
+    column-gap: 3.2rem;
+    row-gap: 1rem;
+  }
+
+  .tungacea-header .header__inline-menu .header__menu-item {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--tung-ink);
+    transition: color 0.3s ease;
+  }
+
+  .tungacea-header .header__inline-menu .header__menu-item:hover {
+    color: var(--tung-ink);
+    text-decoration: none;
+  }
+
+  /* short oxblood hairline for hover + current, replacing the thick underline */
+  .tungacea-header .header__inline-menu > .list-menu > li > a.header__menu-item,
+  .tungacea-header
+    .header__inline-menu
+    > .list-menu
+    > li
+    > header-menu
+    > details
+    > summary.header__menu-item {
+    position: relative;
+  }
+
+  .tungacea-header .header__inline-menu > .list-menu > li > a.header__menu-item::after,
+  .tungacea-header
+    .header__inline-menu
+    > .list-menu
+    > li
+    > header-menu
+    > details
+    > summary.header__menu-item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -0.2rem;
+    width: 2rem;
+    height: 1px;
+    background-color: var(--tung-oxblood);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.35s ease;
+  }
+
+  .tungacea-header .header__inline-menu > .list-menu > li > a.header__menu-item:hover::after,
+  .tungacea-header
+    .header__inline-menu
+    > .list-menu
+    > li
+    > header-menu
+    > details
+    > summary.header__menu-item:hover::after,
+  .tungacea-header
+    .header__inline-menu
+    > .list-menu
+    > li
+    > a.header__menu-item[aria-current='page']::after,
+  .tungacea-header
+    .header__inline-menu
+    > .list-menu
+    > li
+    > a.header__menu-item:has(.header__active-menu-item)::after,
+  .tungacea-header
+    .header__inline-menu
+    > .list-menu
+    > li
+    > header-menu
+    > details
+    > summary.header__menu-item:has(.header__active-menu-item)::after {
+    transform: scaleX(1);
+  }
+
+  .tungacea-header .header__inline-menu .header__active-menu-item {
+    color: var(--tung-ink);
+    text-decoration: none;
+  }
+
+  /* keep keyboard focus clearly visible */
+  .tungacea-header .header__inline-menu .header__menu-item:focus-visible {
+    outline: 0.2rem solid var(--tung-oxblood);
+    outline-offset: 0.3rem;
+  }
+
+  /* dropdown surface — near-black, hairline border, square, no big shadow */
+  .tungacea-header .header__submenu.list-menu--disclosure {
+    background-color: var(--tung-surface);
+    border: 1px solid var(--tung-hairline);
+    border-radius: 0;
+    box-shadow: none;
+    padding: 1.2rem 0;
+    min-width: 22rem;
+  }
+
+  .tungacea-header .header__submenu .header__menu-item {
+    color: var(--tung-ink);
+    letter-spacing: 0.08em;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    transition: color 0.25s ease, background-color 0.25s ease;
+  }
+
+  .tungacea-header .header__submenu .header__menu-item:hover {
+    color: var(--tung-ink);
+    background-color: rgba(240, 236, 230, 0.04);
+    text-decoration: none;
+  }
+
+  /* current child item — restrained oxblood marker */
+  .tungacea-header .header__submenu .list-menu__item--active {
+    position: relative;
+    color: var(--tung-ink);
+    box-shadow: inset 0.2rem 0 0 var(--tung-oxblood);
+  }
+}
+
+/* ============================================================
+   MOBILE EDITORIAL DRAWER
+   ============================================================ */
+.tungacea-header .menu-drawer {
+  background: var(--tung-surface);
+}
+
+/* editorial eyebrow header */
+.tungacea-header .tungacea-drawer__eyebrow {
+  margin: 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--tung-muted);
+  padding: 2.4rem 3rem 2rem;
+  border-bottom: 1px solid var(--tung-hairline);
+}
+
+.tungacea-header .menu-drawer__navigation {
+  padding: 0;
+}
+
+/* top-level entries as large archive rows with a one-pixel separator */
+.tungacea-header .menu-drawer__navigation > .menu-drawer__menu > li {
+  border-bottom: 1px solid var(--tung-hairline);
+}
+
+.tungacea-header .menu-drawer__navigation > .menu-drawer__menu > li > .menu-drawer__menu-item {
+  display: flex;
+  align-items: baseline;
+  font-family: var(--font-heading-family);
+  font-size: 2.2rem;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: var(--tung-ink);
+  padding: 2rem 3rem;
+  overflow-wrap: anywhere;
+}
+
+/* automatically generated two-digit index */
+.tungacea-header .tungacea-drawer__index {
+  display: inline-block;
+  flex: 0 0 auto;
+  min-width: 3.4rem;
+  margin-right: 1.6rem;
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  color: var(--tung-muted);
+}
+
+/* active top-level marker */
+.tungacea-header
+  .menu-drawer__navigation
+  > .menu-drawer__menu
+  > li
+  > .menu-drawer__menu-item--active {
+  box-shadow: inset 0.3rem 0 0 var(--tung-oxblood);
+}
+
+/* submenu — same editorial voice, smaller hierarchy, clearly distinct */
+.tungacea-header .menu-drawer__submenu {
+  background: var(--tung-surface);
+}
+
+.tungacea-header .menu-drawer__submenu .menu-drawer__menu-item {
+  font-family: var(--font-body-family);
+  font-size: 1.6rem;
+  letter-spacing: 0.06em;
+  padding: 1.6rem 3rem;
+  color: var(--tung-muted);
+}
+
+.tungacea-header .menu-drawer__submenu .menu-drawer__menu-item--active {
+  color: var(--tung-ink);
+  box-shadow: inset 0.3rem 0 0 var(--tung-oxblood);
+}
+
+.tungacea-header .menu-drawer__close-button {
+  font-size: 1.3rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tung-muted);
+  padding: 2rem 3rem;
+}
+
+/* ============================================================
+   DRAWER UTILITY AREA — QUIET ARCHIVE FOOTER
+   ============================================================ */
+.tungacea-header .menu-drawer__utility-links {
+  background: transparent;
+  border-top: 1px solid var(--tung-hairline);
+  padding: 2.4rem 3rem;
+}
+
+.tungacea-header .tungacea-drawer__note {
+  margin: 0 0 1.6rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tung-muted);
+}
+
+.tungacea-header .menu-drawer__utility-links .menu-drawer__account {
+  color: var(--tung-ink);
+  letter-spacing: 0.1em;
+}
+
+.tungacea-header .menu-drawer__utility-links .list-social__link {
+  color: var(--tung-muted);
+}
