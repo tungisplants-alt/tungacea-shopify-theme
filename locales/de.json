@@ -318,7 +318,7 @@
       "caption": "Artikel im Warenkorb",
       "remove_title": "{{ title }} entfernen",
       "note": "Spezielle Bestellanweisungen",
-      "checkout": "Auschecken",
+      "checkout": "Zur Kasse",
       "empty": "Dein Warenkorb ist leer",
       "product_disclosure": "Produktoffenlegung",
       "product_disclosures": "Produktoffenlegungen",
@@ -363,7 +363,7 @@
       "view_all": "Alle anzeigen"
     },
     "collection_template": {
-      "title": "Kategorie",
+      "title": "Kollektion",
       "empty": "Keine Produkte gefunden",
       "use_fewer_filters_html": "Verwende weniger Filter oder <a class=\"{{ class }}\" href=\"{{ link }}\">entferne alle</a>",
       "eyebrow": "TUNGACEA KOLLEKTION / 01",
@@ -485,7 +485,7 @@
       "guest_continue": "Fortfahren",
       "guest_title": "Als Gast fortsetzen",
       "password": "Passwort",
-      "title": "Login",
+      "title": "Anmelden",
       "sign_in": "Anmelden",
       "submit": "Senden",
       "alternate_provider_separator": "oder"
