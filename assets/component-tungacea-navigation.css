@@ -148,6 +148,15 @@
   background: var(--tung-surface);
 }
 
+/* drawer grid balance — eyebrow keeps its natural height, navigation fills the
+   flexible middle row, utility area settles at the bottom. Fixes the large
+   artificial blank block caused by Dawn's default two-row grid stretching the
+   eyebrow. Vertical scrolling is preserved by the container's own overflow. */
+.tungacea-header .menu-drawer__navigation-container {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-content: stretch;
+}
+
 /* editorial eyebrow header */
 .tungacea-header .tungacea-drawer__eyebrow {
   margin: 0;
@@ -155,7 +164,7 @@
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--tung-muted);
-  padding: 2.4rem 3rem 2rem;
+  padding: 2.4rem 3rem 2.8rem;
   border-bottom: 1px solid var(--tung-hairline);
 }
 
@@ -168,7 +177,13 @@
   border-bottom: 1px solid var(--tung-hairline);
 }
 
-.tungacea-header .menu-drawer__navigation > .menu-drawer__menu > li > .menu-drawer__menu-item {
+.tungacea-header .menu-drawer__navigation > .menu-drawer__menu > li > .menu-drawer__menu-item,
+.tungacea-header
+  .menu-drawer__navigation
+  > .menu-drawer__menu
+  > li
+  > details
+  > summary.menu-drawer__menu-item {
   display: flex;
   align-items: baseline;
   font-family: var(--font-heading-family);
@@ -178,6 +193,18 @@
   color: var(--tung-ink);
   padding: 2rem 3rem;
   overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* reserve room on submenu parents so the serif title never runs under the
+   right-aligned arrow while keeping the same top-level rhythm */
+.tungacea-header
+  .menu-drawer__navigation
+  > .menu-drawer__menu
+  > li
+  > details
+  > summary.menu-drawer__menu-item {
+  padding-right: 5.2rem;
 }
 
 /* automatically generated two-digit index */
@@ -192,13 +219,58 @@
   color: var(--tung-muted);
 }
 
-/* active top-level marker */
+/* active top-level marker — quiet archival hairline, no full-height bar and no
+   highlighted row. Applies to both direct links and submenu-parent summaries. */
 .tungacea-header
   .menu-drawer__navigation
   > .menu-drawer__menu
   > li
-  > .menu-drawer__menu-item--active {
-  box-shadow: inset 0.3rem 0 0 var(--tung-oxblood);
+  > .menu-drawer__menu-item--active,
+.tungacea-header
+  .menu-drawer__navigation
+  > .menu-drawer__menu
+  > li
+  > details
+  > summary.menu-drawer__menu-item--active {
+  position: relative;
+  background-color: transparent;
+  box-shadow: none;
+  color: var(--tung-ink);
+}
+
+.tungacea-header
+  .menu-drawer__navigation
+  > .menu-drawer__menu
+  > li
+  > .menu-drawer__menu-item--active:hover,
+.tungacea-header
+  .menu-drawer__navigation
+  > .menu-drawer__menu
+  > li
+  > details
+  > summary.menu-drawer__menu-item--active:hover {
+  background-color: transparent;
+}
+
+.tungacea-header
+  .menu-drawer__navigation
+  > .menu-drawer__menu
+  > li
+  > .menu-drawer__menu-item--active::before,
+.tungacea-header
+  .menu-drawer__navigation
+  > .menu-drawer__menu
+  > li
+  > details
+  > summary.menu-drawer__menu-item--active::before {
+  content: '';
+  position: absolute;
+  left: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 2.8rem;
+  background-color: var(--tung-oxblood);
 }
 
 /* submenu — same editorial voice, smaller hierarchy, clearly distinct */
