@@ -1,0 +1,188 @@
+/*
+  Tungacea — Featured Collection "Specimen Spotlight" carousel (homepage only).
+
+  Scope:   .tungacea-featured-collection   (added to the featured-collection
+           section wrapper only). Never touches the collection catalogue,
+           search results or product recommendations, which use other sections.
+
+  Range:   All layout rules apply only below 750px. Desktop is untouched.
+
+  Goal:    Present one dominant specimen archive record per swipe with a
+           restrained preview of the next card. Reuses the existing Dawn
+           slider markup, JavaScript and accessibility attributes — no card
+           render, product loop or pricing logic is altered.
+
+  Tokens:  --tungacea-hairline, --tungacea-muted (assets/tungacea.css).
+*/
+
+@media screen and (max-width: 749px) {
+  /* -------------------------------------------------------------------------
+     Slide sizing — one primary card per view + next-card peek
+     Strategy:
+       edge (left inset)   1.5rem
+       gap between slides   0.75rem
+       slide width          84% of the viewport-wide slider track
+       => visible peek of the next card ≈ 10–11% of the viewport
+  ------------------------------------------------------------------------- */
+  .tungacea-featured-collection {
+    --tfc-edge: 1.5rem;
+    --tfc-gap: 0.75rem;
+    --tfc-slide-width: 84%;
+  }
+
+  .tungacea-featured-collection .slider.slider--tablet {
+    column-gap: var(--tfc-gap);
+    scroll-padding-left: var(--tfc-edge);
+  }
+
+  .tungacea-featured-collection .slider.slider--tablet.grid--peek .grid__item:first-of-type {
+    margin-left: var(--tfc-edge);
+  }
+
+  .tungacea-featured-collection .slider__slide {
+    width: var(--tfc-slide-width);
+    min-width: var(--tfc-slide-width);
+    max-width: var(--tfc-slide-width);
+    box-sizing: border-box;
+    scroll-snap-align: start;
+    /* No shadow on these cards, so drop the shadow reveal padding */
+    padding-top: 0;
+    padding-bottom: 0;
+    display: flex;
+  }
+
+  /* -------------------------------------------------------------------------
+     Archive record container — one contained botanical record per slide.
+     Vertical flex so the card fills the slide height and the footer can be
+     pushed toward the bottom regardless of title length.
+  ------------------------------------------------------------------------- */
+  .tungacea-featured-collection .slider__slide > product-component,
+  .tungacea-featured-collection .slider__slide .product-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .tungacea-featured-collection .product-card-wrapper {
+    border: 1px solid var(--tungacea-hairline); /* subtle 1px hairline */
+    border-radius: 0;                            /* square corners */
+    box-shadow: none;                            /* no shadow */
+    /* extremely subtle near-black surface difference only */
+    background: rgba(242, 238, 232, 0.018);
+    overflow: hidden;                            /* keep content inside the record */
+  }
+
+  .tungacea-featured-collection .product-card-wrapper .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  /* Image stays full-width and flush with the card edges — no padding, no radius */
+  .tungacea-featured-collection .card__inner,
+  .tungacea-featured-collection .card__media,
+  .tungacea-featured-collection .card__media .media {
+    border-radius: 0;
+    margin: 0;
+  }
+
+  /* -------------------------------------------------------------------------
+     Information panel — the record's text belongs to the image above it.
+     `.card > .card__content` targets only the outer specimen panel, never the
+     hidden inner (image-overlay) card__content nested in .card__inner.
+  ------------------------------------------------------------------------- */
+  .tungacea-featured-collection .card > .card__content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 1.4rem 1.4rem 1.5rem;
+  }
+
+  .tungacea-featured-collection .card > .card__content .card__information.specimen-card {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* Overflow protection for flex children so long content never bleeds out */
+  .tungacea-featured-collection .card__information.specimen-card > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Title wraps naturally, stays fully readable, never truncated or forced to one line */
+  .tungacea-featured-collection .specimen-card__title,
+  .tungacea-featured-collection .specimen-card__title a {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    min-width: 0;
+  }
+
+  .tungacea-featured-collection .specimen-card__parentage,
+  .tungacea-featured-collection .specimen-card__traits {
+    overflow-wrap: anywhere;
+  }
+
+  /* -------------------------------------------------------------------------
+     Footer — push status/price toward the bottom of the record.
+     `.card-information` wraps the footer; auto top margin fills any slack so
+     a short title never disconnects the footer from the record.
+  ------------------------------------------------------------------------- */
+  .tungacea-featured-collection .specimen-card .card-information {
+    margin-top: auto;
+  }
+
+  /* Status (first) and price (below) stacked vertically, both left-aligned */
+  .tungacea-featured-collection .specimen-card__footer {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.6rem;
+  }
+
+  .tungacea-featured-collection .specimen-card__status {
+    white-space: normal; /* oxblood availability dot preserved via ::before */
+  }
+
+  /* Price aligned left, kept inside the record */
+  .tungacea-featured-collection .specimen-card__footer .price {
+    margin: 0;
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .tungacea-featured-collection .specimen-card__footer .price .price__container {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+
+  /* Valid Shopify unit price: clearly secondary — smaller, muted, beneath price */
+  .tungacea-featured-collection .specimen-card__footer .price .unit-price {
+    margin-top: 0.3rem;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    color: var(--tungacea-muted);
+    opacity: 0.85;
+  }
+
+  /* -------------------------------------------------------------------------
+     Slider controls — keep the existing prev / counter / next centred and
+     clearly separated from the card content. (No JS or markup changes.)
+  ------------------------------------------------------------------------- */
+  .tungacea-featured-collection .slider-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.6rem;
+  }
+}
