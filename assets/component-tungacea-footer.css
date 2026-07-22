@@ -1,0 +1,223 @@
+/*
+ * Tungacea footer — scoped editorial colophon styling.
+ * All selectors are scoped beneath .tungacea-footer and rely on Dawn theme variables.
+ */
+
+.tungacea-footer {
+  border-top: 1px solid rgba(var(--color-foreground), 0.12);
+}
+
+.tungacea-footer .footer__content-top {
+  padding-top: 2rem;
+  padding-bottom: 2.4rem;
+}
+
+/* Editorial top: three-column layout on desktop (brand widest). */
+@media screen and (min-width: 990px) {
+  .tungacea-footer .footer__blocks-wrapper.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .tungacea-footer .footer__blocks-wrapper .footer-block.grid__item {
+    max-width: none;
+    width: auto;
+  }
+}
+
+/* Block headings: muted uppercase. */
+.tungacea-footer .footer-block__heading {
+  font-size: 1.1rem;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.72);
+  margin-bottom: 1.4rem;
+}
+
+/* Brand text block heading uses the serif brand voice. */
+.tungacea-footer .footer-block:first-child .footer-block__heading {
+  font-family: var(--font-heading-family);
+  font-size: 1.6rem;
+  letter-spacing: 0.24rem;
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
+}
+
+.tungacea-footer .footer-block__details-content.rte {
+  font-size: 1.4rem;
+  line-height: 1.7;
+  color: rgba(var(--color-foreground), 0.78);
+  max-width: 42ch;
+}
+
+/* Quiet navigation typography — two columns of links when comfortable. */
+.tungacea-footer .footer-block--menu ul.footer-block__details-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.tungacea-footer .footer-block--menu .list-menu__item--link {
+  font-size: 1.3rem;
+  letter-spacing: 0.03rem;
+  color: rgba(var(--color-foreground), 0.78);
+  padding: 0.2rem 0;
+  transition: color 0.2s ease;
+}
+
+.tungacea-footer .footer-block--menu .list-menu__item--link:hover {
+  color: rgb(var(--color-foreground));
+}
+
+/* Compact social area, integrated with the editorial top. */
+.tungacea-footer .footer-block--newsletter {
+  margin-top: 2rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba(var(--color-foreground), 0.1);
+}
+
+.tungacea-footer .footer__list-social.list-social {
+  justify-content: flex-start;
+  margin: 0;
+}
+
+.tungacea-footer .footer__list-social .list-social__item .icon {
+  height: 1.8rem;
+  width: 1.8rem;
+}
+
+/* Utility area: rakkan, localization, copyright, policies. */
+.tungacea-footer .footer__content-bottom {
+  border-top: 1px solid rgba(var(--color-foreground), 0.12);
+  padding-top: 2.4rem;
+}
+
+/* Compact archive-signature Rakkan. */
+.tungacea-footer .footer__rakkan {
+  margin: 0 auto 1.8rem;
+  display: flex;
+  justify-content: center;
+}
+
+.tungacea-footer .footer__rakkan .rakkan-seal__image {
+  width: auto;
+  max-width: 3.6rem;
+  height: auto;
+  opacity: 0.9;
+}
+
+.tungacea-footer .footer__content-bottom-wrapper {
+  margin-top: 0;
+}
+
+/* Compact, square language / country selectors. */
+.tungacea-footer .footer__localization {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem 2rem;
+  align-items: flex-start;
+}
+
+.tungacea-footer .footer__localization .localization-form {
+  margin: 0;
+}
+
+.tungacea-footer .footer__localization .caption-large {
+  font-size: 1rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.6);
+  margin-bottom: 0.6rem;
+}
+
+.tungacea-footer .footer__localization .localization-form__select {
+  max-width: 22rem;
+  border-radius: 0;
+}
+
+.tungacea-footer .footer__localization .disclosure__button {
+  border-radius: 0;
+}
+
+/* Balanced copyright + policy row. */
+.tungacea-footer .footer__copyright {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1.6rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba(var(--color-foreground), 0.1);
+}
+
+.tungacea-footer .footer__copyright .copyright__content,
+.tungacea-footer .footer__copyright .policies .copyright__content {
+  font-size: 1.1rem;
+  letter-spacing: 0.05rem;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.tungacea-footer .footer__copyright .policies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  margin: 0;
+}
+
+/* Final payment trust row. */
+.tungacea-footer .footer__payment-row {
+  margin-top: 2.4rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(var(--color-foreground), 0.16);
+}
+
+.tungacea-footer .footer__payment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  text-align: center;
+}
+
+.tungacea-footer .footer__payment-heading {
+  font-size: 1.05rem;
+  letter-spacing: 0.14rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.6);
+  margin: 0;
+}
+
+.tungacea-footer .footer__payment .list-payment {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem 1rem;
+  margin: 0;
+}
+
+.tungacea-footer .footer__payment .list-payment__item .icon {
+  height: 2.4rem;
+  width: auto;
+}
+
+/* Mobile: stack navigation only on very narrow screens, keep spacing controlled. */
+@media screen and (max-width: 749px) {
+  .tungacea-footer .footer__content-top {
+    padding-top: 1.6rem;
+    padding-bottom: 2rem;
+  }
+
+  .tungacea-footer .footer-block__details-content.rte {
+    max-width: none;
+  }
+
+  .tungacea-footer .footer__localization {
+    justify-content: flex-start;
+  }
+
+  .tungacea-footer .footer__copyright {
+    justify-content: flex-start;
+  }
+}

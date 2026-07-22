@@ -4,13 +4,39 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "blocks": {},
-      "block_order": [],
+      "blocks": {
+        "footer_brand": {
+          "type": "text",
+          "settings": {
+            "heading": "TUNGACEA / 01",
+            "subtext": "<p>Seltene Anthurien · ausgewählte Genetik.<br>Kultiviert und versendet aus Deutschland.</p>"
+          }
+        },
+        "footer_explore": {
+          "type": "link_list",
+          "settings": {
+            "heading": "ENTDECKEN",
+            "menu": "main-menu"
+          }
+        },
+        "footer_information": {
+          "type": "link_list",
+          "settings": {
+            "heading": "INFORMATIONEN",
+            "menu": "footer"
+          }
+        }
+      },
+      "block_order": [
+        "footer_brand",
+        "footer_explore",
+        "footer_information"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
-        "newsletter_enable": true,
+        "newsletter_enable": false,
         "newsletter_heading": "Abonniere unsere E-Mails",
-        "enable_follow_on_shop": true,
+        "enable_follow_on_shop": false,
         "show_social": true,
         "enable_country_selector": true,
         "enable_language_selector": true,

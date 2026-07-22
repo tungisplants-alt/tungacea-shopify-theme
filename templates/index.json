@@ -192,59 +192,6 @@
         "padding_bottom": 40
       }
     },
-    "community": {
-      "type": "multicolumn",
-      "blocks": {
-        "column_1": {
-          "type": "column",
-          "settings": {
-            "title": "",
-            "text": "<p></p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column_2": {
-          "type": "column",
-          "settings": {
-            "title": "",
-            "text": "<p></p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column_3": {
-          "type": "column",
-          "settings": {
-            "title": "",
-            "text": "<p></p>",
-            "link_label": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "column_1",
-        "column_2",
-        "column_3"
-      ],
-      "settings": {
-        "title": "Aus der Kollektion",
-        "heading_size": "h1",
-        "image_width": "full",
-        "image_ratio": "square",
-        "button_label": "Auf Instagram folgen",
-        "button_link": "",
-        "columns_desktop": 3,
-        "column_alignment": "left",
-        "background_style": "none",
-        "color_scheme": "scheme-2",
-        "columns_mobile": "1",
-        "swipe_on_mobile": true,
-        "padding_top": 64,
-        "padding_bottom": 64
-      }
-    },
     "collector_access": {
       "type": "collector-access",
       "settings": {
@@ -268,7 +215,6 @@
     "brand_statement",
     "private_archive_teaser",
     "about",
-    "community",
     "collector_access"
   ]
 }
