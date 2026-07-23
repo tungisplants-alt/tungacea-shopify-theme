@@ -110,7 +110,6 @@
     {%- comment -%} 4. Social + language — compact utility column {%- endcomment -%}
     <div class="tungacea-footer__utility">
       {%- if settings.social_instagram_link != blank -%}
-        {%- assign ig_handle = settings.social_instagram_link | split: 'instagram.com/' | last | split: '?' | first | split: '/' | first -%}
         <div class="tungacea-footer__social">
           <span class="tungacea-footer__social-label">Instagram</span>
           <a
@@ -120,10 +119,9 @@
             rel="noopener"
             aria-label="Instagram — {{ shop.name | escape }}"
           >
-            <span class="tungacea-footer__social-handle">
-              {%- if ig_handle != blank -%}@{{ ig_handle }}{%- else -%}{{ shop.name }}{%- endif -%}
+            <span class="tungacea-footer__social-icon svg-wrapper" aria-hidden="true">
+              {{- 'icon-instagram.svg' | inline_asset_content -}}
             </span>
-            <span class="tungacea-footer__social-arrow" aria-hidden="true">↗</span>
           </a>
         </div>
       {%- endif -%}

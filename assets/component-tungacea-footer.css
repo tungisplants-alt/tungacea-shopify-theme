@@ -236,21 +236,25 @@
 .tungacea-footer .tungacea-footer__social-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.4rem;
-  letter-spacing: 0.02rem;
-  color: rgba(var(--color-foreground), 0.85);
-  transition: color 0.2s ease;
+  justify-content: flex-start;
+  width: 4rem;
+  height: 4rem;
+  color: rgba(var(--color-foreground), 0.7);
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .tungacea-footer .tungacea-footer__social-link:hover {
   color: rgb(var(--color-foreground));
 }
 
-.tungacea-footer .tungacea-footer__social-arrow {
-  font-size: 1.2rem;
-  line-height: 1;
-  color: rgba(var(--color-foreground), 0.55);
+.tungacea-footer .tungacea-footer__social-icon {
+  display: inline-flex;
+}
+
+.tungacea-footer .tungacea-footer__social-icon .icon,
+.tungacea-footer .tungacea-footer__social-icon svg {
+  width: 2rem;
+  height: 2rem;
 }
 
 /* Compact localization — significantly smaller than the boxed selector. */
@@ -280,10 +284,16 @@
 
 /* Country: shrink Dawn's default disclosure button to match. */
 .tungacea-footer .tungacea-footer__locform .disclosure__button {
-  padding: 0.4rem 0;
+  padding: 0.6rem 1.2rem;
   font-size: 1.2rem;
   border-radius: 0;
   min-height: 0;
+}
+
+/* Language: give the compact trigger a touch more breathing room. */
+.tungacea-footer .tungacea-footer__locform .tungacea-lang__button {
+  padding: 0.6rem 1.4rem;
+  column-gap: 0.6rem;
 }
 
 .tungacea-footer .tungacea-footer__locform .localization-form__select {
