@@ -11,7 +11,7 @@
   "general": {
     "password_page": {
       "login_form_heading": "Shop mit Passwort betreten:",
-      "login_password_button": "Mit Passwort betreten",
+      "login_password_button": "Mit Zugangscode betreten",
       "login_form_password_label": "Passwort",
       "login_form_password_placeholder": "Dein Passwort",
       "login_form_error": "Falsches Passwort!",
