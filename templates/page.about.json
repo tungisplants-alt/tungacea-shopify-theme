@@ -16,7 +16,7 @@
             "image": "",
             "caption": "DIE ERSTEN SCHRITTE",
             "heading": "Wie alles begann",
-            "text": "<p>ErzÃ¤hle hier, wie dein Hobby begonnen hat und welche Pflanze den Anfang gemacht hat.</p>",
+            "text": "<p>Erzähle hier, wie dein Hobby begonnen hat und welche Pflanze den Anfang gemacht hat.</p>",
             "button_label": "",
             "button_link": ""
           }
@@ -25,7 +25,7 @@
           "type": "row",
           "settings": {
             "image": "",
-            "caption": "DIE SAMMLUNG WÃ„CHST",
+            "caption": "DIE SAMMLUNG WÄCHST",
             "heading": "Vom Interesse zur Leidenschaft",
             "text": "<p>Beschreibe hier eine wichtige Station, neue Erfahrungen oder besondere Pflanzen auf deinem Weg.</p>",
             "button_label": "",
@@ -38,7 +38,7 @@
             "image": "",
             "caption": "HEUTE",
             "heading": "Tungacea heute",
-            "text": "<p>Zeige hier, wie sich dein Hobby bis heute entwickelt hat und was Tungacea fÃ¼r dich bedeutet.</p>",
+            "text": "<p>Zeige hier, wie sich dein Hobby bis heute entwickelt hat und was Tungacea für dich bedeutet.</p>",
             "button_label": "",
             "button_link": ""
           }
@@ -71,4 +71,3 @@
     "hobby_timeline"
   ]
 }
-
