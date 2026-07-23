@@ -26,7 +26,7 @@
             "image": "shopify://shop_images/1000091366.jpg",
             "caption": "DIE ERSTEN SCHRITTE",
             "heading": "Wie alles begann",
-            "text": "<p>Erzähle hier, wie dein Hobby begonnen hat und welche Pflanze den Anfang gemacht hat.</p>",
+            "text": "<p><strong>Hi, ich bin Tung.</strong></p><p>2024 fing alles mit einer Monstera auf der Fensterbank an. Bald wollte ich wissen, warum die eine Pflanze wächst und die nächste nicht. Aus einer wurden schnell viele – bis die Fensterbank nicht mehr reichte und ich tatsächlich ein ganzes Pflanzenzimmer einrichtete. Dafür muss man wohl ein bisschen pflanzenverrückt sein. Dass daraus einmal Tungacea werden würde, hätte ich damals selbst nicht gedacht.</p>",
             "button_label": "",
             "button_link": ""
           }
@@ -34,9 +34,10 @@
         "timeline_growth": {
           "type": "row",
           "settings": {
+            "image": "shopify://shop_images/CCE187F9-FF02-483E-AE52-FD03D955E44F.jpg",
             "caption": "DIE SAMMLUNG WÄCHST",
             "heading": "Vom Interesse zur Leidenschaft",
-            "text": "<p>Beschreibe hier eine wichtige Station, neue Erfahrungen oder besondere Pflanzen auf deinem Weg.</p>",
+            "text": "<p>Mit einem klassischen <em>Anthurium papillilaminum</em> fing der nächste Abschnitt an. Dieses matte, dunkle Blatt beim Austrieb hatte etwas, das mich nicht mehr losließ. Aus der kleinen Pflanzenvitrine wurde eine Milsbo, später eine ganze Ecke mit Regalen und schließlich zwei Growzelte. Spätestens als ich in einem Zelt voller Pflanzen stand, war klar: Das war längst mehr als nur Interesse. Die besonderen Anthurien kamen erst danach – mit jedem Schritt tiefer ins Hobby.<br/><br/></p>",
             "button_label": "",
             "button_link": ""
           }
