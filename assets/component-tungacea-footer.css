@@ -1,223 +1,338 @@
 /*
- * Tungacea footer — scoped editorial colophon styling.
- * All selectors are scoped beneath .tungacea-footer and rely on Dawn theme variables.
+ * Tungacea footer — compact editorial colophon.
+ * Every selector is scoped beneath .tungacea-footer and relies on Dawn theme
+ * variables (typography, foreground, spacing, page width). No global element
+ * selectors, no fixed heights, no hardcoded colours.
  */
 
 .tungacea-footer {
   border-top: 1px solid rgba(var(--color-foreground), 0.12);
 }
 
-.tungacea-footer .footer__content-top {
-  padding-top: 2rem;
-  padding-bottom: 2.4rem;
+/* ------------------------------------------------------------------
+   Top grid — brand · Entdecken · Service & Recht · utility
+   ------------------------------------------------------------------ */
+.tungacea-footer .tungacea-footer__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.4rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.4rem;
 }
 
-/* Editorial top: three-column layout on desktop (brand widest). */
+@media screen and (min-width: 750px) {
+  .tungacea-footer .tungacea-footer__grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4rem;
+    row-gap: 3.2rem;
+  }
+}
+
 @media screen and (min-width: 990px) {
-  .tungacea-footer .footer__blocks-wrapper.grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 4rem;
+  .tungacea-footer .tungacea-footer__grid {
+    grid-template-columns: 1.7fr 1fr 1fr 1.2fr;
+    column-gap: 4rem;
     align-items: start;
   }
-
-  .tungacea-footer .footer__blocks-wrapper .footer-block.grid__item {
-    max-width: none;
-    width: auto;
-  }
 }
 
-/* Block headings: muted uppercase. */
-.tungacea-footer .footer-block__heading {
-  font-size: 1.1rem;
-  letter-spacing: 0.12rem;
-  text-transform: uppercase;
-  color: rgba(var(--color-foreground), 0.72);
-  margin-bottom: 1.4rem;
+/* ------------------------------------------------------------------
+   1. Brand area
+   ------------------------------------------------------------------ */
+.tungacea-footer .tungacea-footer__brand {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.6rem;
 }
 
-/* Brand text block heading uses the serif brand voice. */
-.tungacea-footer .footer-block:first-child .footer-block__heading {
+.tungacea-footer .tungacea-footer__brand-text {
+  min-width: 0;
+}
+
+.tungacea-footer .tungacea-footer__brand-title {
+  margin: 0 0 1rem;
   font-family: var(--font-heading-family);
-  font-size: 1.6rem;
-  letter-spacing: 0.24rem;
+  font-size: 1.7rem;
+  letter-spacing: 0.22rem;
   text-transform: uppercase;
   color: rgb(var(--color-foreground));
 }
 
-.tungacea-footer .footer-block__details-content.rte {
-  font-size: 1.4rem;
+.tungacea-footer .tungacea-footer__brand-desc.rte {
+  margin: 0;
+  font-size: 1.3rem;
   line-height: 1.7;
-  color: rgba(var(--color-foreground), 0.78);
-  max-width: 42ch;
+  color: rgba(var(--color-foreground), 0.7);
+  max-width: 34ch;
 }
 
-/* Quiet navigation typography — two columns of links when comfortable. */
-.tungacea-footer .footer-block--menu ul.footer-block__details-content {
+.tungacea-footer .tungacea-footer__brand-desc.rte > * {
+  margin: 0;
+}
+
+/* Seal — small, restrained, connected to the brand block. Never centred alone. */
+.tungacea-footer .tungacea-footer__seal.rakkan-seal {
+  flex: 0 0 auto;
+  margin: 0.2rem 0 0;
+  display: block;
+}
+
+.tungacea-footer .tungacea-footer__seal .rakkan-seal__image {
+  width: auto;
+  max-width: 5.6rem;
+  height: auto;
+  opacity: 0.92;
+}
+
+/* ------------------------------------------------------------------
+   2 + 3. Navigation groups (native details/summary accordion on mobile)
+   ------------------------------------------------------------------ */
+.tungacea-footer .tungacea-footer__group {
+  border-top: 1px solid rgba(var(--color-foreground), 0.12);
+}
+
+.tungacea-footer .tungacea-footer__group-summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  padding: 1.6rem 0;
+  cursor: pointer;
+  min-height: 4.4rem;
+}
+
+.tungacea-footer .tungacea-footer__group-summary::-webkit-details-marker {
+  display: none;
+}
+
+.tungacea-footer .tungacea-footer__group-summary:focus-visible {
+  outline: 0.2rem solid rgb(var(--color-foreground));
+  outline-offset: 0.3rem;
+}
+
+.tungacea-footer .tungacea-footer__group-heading {
+  font-size: 1.1rem;
+  letter-spacing: 0.14rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.72);
+}
+
+/* Subtle plus indicator (becomes a minus when open). */
+.tungacea-footer .tungacea-footer__group-indicator {
+  position: relative;
+  flex: 0 0 auto;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.tungacea-footer .tungacea-footer__group-indicator::before,
+.tungacea-footer .tungacea-footer__group-indicator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(var(--color-foreground), 0.6);
+}
+
+.tungacea-footer .tungacea-footer__group-indicator::before {
+  width: 1.2rem;
+  height: 1px;
+}
+
+.tungacea-footer .tungacea-footer__group-indicator::after {
+  width: 1px;
+  height: 1.2rem;
+  transition: opacity 0.2s ease;
+}
+
+.tungacea-footer .tungacea-footer__group[open] .tungacea-footer__group-indicator::after {
+  opacity: 0;
+}
+
+.tungacea-footer .tungacea-footer__group-content {
+  padding-bottom: 1.6rem;
+}
+
+.tungacea-footer .tungacea-footer__links {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+  margin: 0;
 }
 
-.tungacea-footer .footer-block--menu .list-menu__item--link {
+.tungacea-footer .tungacea-footer__link {
   font-size: 1.3rem;
   letter-spacing: 0.03rem;
-  color: rgba(var(--color-foreground), 0.78);
-  padding: 0.2rem 0;
+  color: rgba(var(--color-foreground), 0.72);
   transition: color 0.2s ease;
 }
 
-.tungacea-footer .footer-block--menu .list-menu__item--link:hover {
+.tungacea-footer .tungacea-footer__link:hover,
+.tungacea-footer .tungacea-footer__link--active {
   color: rgb(var(--color-foreground));
 }
 
-/* Compact social area, integrated with the editorial top. */
-.tungacea-footer .footer-block--newsletter {
-  margin-top: 2rem;
-  padding-top: 1.6rem;
-  border-top: 1px solid rgba(var(--color-foreground), 0.1);
+/* Desktop: reveal collapsed content and present the summary as a static heading. */
+@media screen and (min-width: 750px) {
+  .tungacea-footer .tungacea-footer__group {
+    border-top: 0;
+  }
+
+  .tungacea-footer .tungacea-footer__group-summary {
+    padding: 0 0 1.4rem;
+    cursor: default;
+    pointer-events: none;
+    min-height: 0;
+  }
+
+  .tungacea-footer .tungacea-footer__group-indicator {
+    display: none;
+  }
+
+  .tungacea-footer .tungacea-footer__group-content {
+    padding-bottom: 0;
+  }
+
+  .tungacea-footer .tungacea-footer__accordion::details-content {
+    content-visibility: visible;
+    display: block;
+  }
 }
 
-.tungacea-footer .footer__list-social.list-social {
-  justify-content: flex-start;
-  margin: 0;
-}
-
-.tungacea-footer .footer__list-social .list-social__item .icon {
-  height: 1.8rem;
-  width: 1.8rem;
-}
-
-/* Utility area: rakkan, localization, copyright, policies. */
-.tungacea-footer .footer__content-bottom {
-  border-top: 1px solid rgba(var(--color-foreground), 0.12);
-  padding-top: 2.4rem;
-}
-
-/* Compact archive-signature Rakkan. */
-.tungacea-footer .footer__rakkan {
-  margin: 0 auto 1.8rem;
+/* ------------------------------------------------------------------
+   4. Utility column — Instagram + compact localization
+   ------------------------------------------------------------------ */
+.tungacea-footer .tungacea-footer__utility {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1.8rem;
+  border-top: 1px solid rgba(var(--color-foreground), 0.12);
+  padding-top: 1.6rem;
 }
 
-.tungacea-footer .footer__rakkan .rakkan-seal__image {
-  width: auto;
-  max-width: 3.6rem;
-  height: auto;
-  opacity: 0.9;
+@media screen and (min-width: 750px) {
+  .tungacea-footer .tungacea-footer__utility {
+    border-top: 0;
+    padding-top: 0;
+  }
 }
 
-.tungacea-footer .footer__content-bottom-wrapper {
-  margin-top: 0;
+.tungacea-footer .tungacea-footer__social {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
-/* Compact, square language / country selectors. */
-.tungacea-footer .footer__localization {
+.tungacea-footer .tungacea-footer__social-label {
+  font-size: 1.1rem;
+  letter-spacing: 0.14rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.72);
+}
+
+.tungacea-footer .tungacea-footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.4rem;
+  letter-spacing: 0.02rem;
+  color: rgba(var(--color-foreground), 0.85);
+  transition: color 0.2s ease;
+}
+
+.tungacea-footer .tungacea-footer__social-link:hover {
+  color: rgb(var(--color-foreground));
+}
+
+.tungacea-footer .tungacea-footer__social-arrow {
+  font-size: 1.2rem;
+  line-height: 1;
+  color: rgba(var(--color-foreground), 0.55);
+}
+
+/* Compact localization — significantly smaller than the boxed selector. */
+.tungacea-footer .tungacea-footer__localization {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.2rem 2rem;
-  align-items: flex-start;
+  gap: 1rem 1.6rem;
+  align-items: center;
 }
 
-.tungacea-footer .footer__localization .localization-form {
+.tungacea-footer .tungacea-footer__locform {
+  display: inline-block;
+}
+
+.tungacea-footer .tungacea-footer__locform .localization-form {
   margin: 0;
 }
 
-.tungacea-footer .footer__localization .caption-large {
-  font-size: 1rem;
-  letter-spacing: 0.1rem;
-  text-transform: uppercase;
-  color: rgba(var(--color-foreground), 0.6);
-  margin-bottom: 0.6rem;
+/* Language: reuse the theme's compact tungacea-lang trigger. */
+.tungacea-footer .tungacea-footer__locform .tungacea-lang__label {
+  margin-right: 0.4rem;
 }
 
-.tungacea-footer .footer__localization .localization-form__select {
-  max-width: 22rem;
+.tungacea-footer .tungacea-footer__locform .tungacea-lang__label::after {
+  content: ':';
+}
+
+/* Country: shrink Dawn's default disclosure button to match. */
+.tungacea-footer .tungacea-footer__locform .disclosure__button {
+  padding: 0.4rem 0;
+  font-size: 1.2rem;
+  border-radius: 0;
+  min-height: 0;
+}
+
+.tungacea-footer .tungacea-footer__locform .localization-form__select {
   border-radius: 0;
 }
 
-.tungacea-footer .footer__localization .disclosure__button {
-  border-radius: 0;
+/* ------------------------------------------------------------------
+   5. Bottom row — copyright + compact, dynamic payment icons
+   ------------------------------------------------------------------ */
+.tungacea-footer .tungacea-footer__bottom {
+  border-top: 1px solid rgba(var(--color-foreground), 0.12);
+  margin-top: 2.4rem;
+  padding-top: 1.8rem;
 }
 
-/* Balanced copyright + policy row. */
-.tungacea-footer .footer__copyright {
+.tungacea-footer .tungacea-footer__bottom-inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.8rem 1.6rem;
-  padding-top: 1.6rem;
-  border-top: 1px solid rgba(var(--color-foreground), 0.1);
+  justify-content: space-between;
+  gap: 1.4rem 2rem;
 }
 
-.tungacea-footer .footer__copyright .copyright__content,
-.tungacea-footer .footer__copyright .policies .copyright__content {
+.tungacea-footer .tungacea-footer__copyright.copyright__content {
   font-size: 1.1rem;
   letter-spacing: 0.05rem;
   color: rgba(var(--color-foreground), 0.6);
 }
 
-.tungacea-footer .footer__copyright .policies {
+.tungacea-footer .tungacea-footer__payment.list-payment {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem 1.6rem;
-  margin: 0;
-}
-
-/* Final payment trust row. */
-.tungacea-footer .footer__payment-row {
-  margin-top: 2.4rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(var(--color-foreground), 0.16);
-}
-
-.tungacea-footer .footer__payment {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 1.2rem;
-  text-align: center;
-}
-
-.tungacea-footer .footer__payment-heading {
-  font-size: 1.05rem;
-  letter-spacing: 0.14rem;
-  text-transform: uppercase;
-  color: rgba(var(--color-foreground), 0.6);
+  justify-content: flex-start;
+  gap: 0.6rem 0.8rem;
   margin: 0;
 }
 
-.tungacea-footer .footer__payment .list-payment {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.8rem 1rem;
-  margin: 0;
-}
-
-.tungacea-footer .footer__payment .list-payment__item .icon {
-  height: 2.4rem;
+.tungacea-footer .tungacea-footer__payment .list-payment__item .icon {
+  height: 2rem;
   width: auto;
 }
 
-/* Mobile: stack navigation only on very narrow screens, keep spacing controlled. */
 @media screen and (max-width: 749px) {
-  .tungacea-footer .footer__content-top {
-    padding-top: 1.6rem;
-    padding-bottom: 2rem;
-  }
-
-  .tungacea-footer .footer-block__details-content.rte {
-    max-width: none;
-  }
-
-  .tungacea-footer .footer__localization {
+  .tungacea-footer .tungacea-footer__bottom-inner {
     justify-content: flex-start;
   }
 
-  .tungacea-footer .footer__copyright {
-    justify-content: flex-start;
+  .tungacea-footer .tungacea-footer__payment.list-payment {
+    max-width: 100%;
   }
 }

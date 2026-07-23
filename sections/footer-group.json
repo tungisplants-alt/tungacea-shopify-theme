@@ -18,19 +18,11 @@
             "heading": "ENTDECKEN",
             "menu": "main-menu"
           }
-        },
-        "footer_information": {
-          "type": "link_list",
-          "settings": {
-            "heading": "INFORMATIONEN",
-            "menu": "footer"
-          }
         }
       },
       "block_order": [
         "footer_brand",
-        "footer_explore",
-        "footer_information"
+        "footer_explore"
       ],
       "settings": {
         "color_scheme": "scheme-1",
