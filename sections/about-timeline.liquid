@@ -106,6 +106,12 @@
     line-height: 1.25;
   }
 
+  #AboutTimeline-{{ section.id }} .about-timeline__actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 5.6rem;
+  }
+
   @media screen and (max-width: 989px) {
     #AboutTimeline-{{ section.id }} {
       padding: 3.6rem 0 5.6rem;
@@ -236,6 +242,17 @@
         {%- endif -%}
       {%- endfor -%}
     </div>
+
+    {%- if section.settings.button_label != blank -%}
+      <div class="about-timeline__actions">
+        <a
+          href="{{ section.settings.button_link | default: routes.all_products_collection_url }}"
+          class="button"
+        >
+          {{ section.settings.button_label | escape }}
+        </a>
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
@@ -247,7 +264,20 @@
   "disabled_on": {
     "groups": ["header", "footer"]
   },
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button-Text",
+      "default": "Pflanzen entdecken"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button-Link",
+      "info": "Ohne Auswahl führt der Button zu allen Produkten."
+    }
+  ],
   "blocks": [
     {
       "type": "chapter",
