@@ -53,7 +53,7 @@
   #AboutTimeline-{{ section.id }} .about-timeline__media {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: var(--about-image-ratio, 4 / 3);
     border-radius: var(--media-radius);
     background: rgba(var(--color-foreground), 0.05);
     box-shadow: 0 1.6rem 4rem rgba(var(--color-foreground), 0.08);
@@ -167,7 +167,6 @@
     }
 
     #AboutTimeline-{{ section.id }} .about-timeline__media {
-      aspect-ratio: 5 / 4;
       box-shadow: 0 1rem 2.8rem rgba(var(--color-foreground), 0.07);
     }
 
@@ -200,7 +199,12 @@
             {{ block.shopify_attributes }}
           >
             <div class="about-timeline__media-wrap">
-              <div class="about-timeline__media">
+              <div
+                class="about-timeline__media"
+                {% if block.settings.image != blank %}
+                  style="--about-image-ratio: {{ block.settings.image.aspect_ratio }};"
+                {% endif %}
+              >
                 {%- if block.settings.image != blank -%}
                   {%- capture sizes -%}
                     (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 160 | divided_by: 2 }}px,
