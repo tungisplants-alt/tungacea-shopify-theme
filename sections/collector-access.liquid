@@ -72,11 +72,6 @@
     margin: 0;
   }
 
-  #CollectorAccess-{{ section.id }} .collector-access__seal {
-    margin-top: 0.8rem;
-    opacity: 0.9;
-  }
-
   #CollectorAccess-{{ section.id }} .collector-access__signup {
     display: flex;
     flex-direction: column;
@@ -275,10 +270,6 @@
               <div class="collector-access__body rte collector-access__reveal">
                 {{ section.settings.body }}
               </div>
-            {%- endif -%}
-
-            {%- if section.settings.show_rakkan -%}
-              {% render 'rakkan-seal', class: 'collector-access__seal collector-access__reveal', width_override: 50 %}
             {%- endif -%}
           </div>
 

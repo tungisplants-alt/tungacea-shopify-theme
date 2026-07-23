@@ -348,7 +348,8 @@
       "taxes_at_checkout_shipping_at_checkout_without_policy": "Steuern, Rabatte und Versand werden beim Checkout berechnet."
     },
     "footer": {
-      "payment": "Zahlungsmethoden"
+      "payment": "Zahlungsmethoden",
+      "service_legal_heading": "SERVICE & RECHT"
     },
     "featured_blog": {
       "view_all": "Alle anzeigen",

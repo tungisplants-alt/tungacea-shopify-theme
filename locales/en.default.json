@@ -355,7 +355,8 @@
       }
     },
     "footer": {
-      "payment": "Payment methods"
+      "payment": "Payment methods",
+      "service_legal_heading": "SERVICE & LEGAL"
     },
     "featured_blog": {
       "view_all": "View all",
