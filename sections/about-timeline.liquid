@@ -1,0 +1,279 @@
+{%- style -%}
+  #AboutTimeline-{{ section.id }} {
+    padding: 4.8rem 0 7.2rem;
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__header {
+    max-width: 76rem;
+    margin: 0 auto 5.6rem;
+    text-align: center;
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__title {
+    margin: 0;
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__list {
+    position: relative;
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__list::before {
+    content: '';
+    position: absolute;
+    top: 3.2rem;
+    bottom: 3.2rem;
+    left: 50%;
+    width: 1px;
+    background: rgba(var(--color-foreground), 0.18);
+    transform: translateX(-50%);
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 8rem minmax(0, 1fr);
+    grid-template-areas: 'media marker copy';
+    align-items: center;
+    margin-bottom: 8rem;
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__item:last-child {
+    margin-bottom: 0;
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__item--reverse {
+    grid-template-areas: 'copy marker media';
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__media-wrap {
+    grid-area: media;
+    min-width: 0;
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--media-radius);
+    background: rgba(var(--color-foreground), 0.05);
+    box-shadow: 0 1.6rem 4rem rgba(var(--color-foreground), 0.08);
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__media img,
+  #AboutTimeline-{{ section.id }} .about-timeline__media svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__marker {
+    z-index: 1;
+    grid-area: marker;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.8rem;
+    height: 4.8rem;
+    margin: 0 auto;
+    border: 1px solid rgba(var(--color-foreground), 0.24);
+    border-radius: 50%;
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+    font-size: 1.2rem;
+    line-height: 1;
+    letter-spacing: 0.12em;
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__copy {
+    grid-area: copy;
+    padding: 2rem 4.8rem;
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__copy.rte > :first-child {
+    margin-top: 0;
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__copy.rte > :last-child {
+    margin-bottom: 0;
+  }
+
+  #AboutTimeline-{{ section.id }} .about-timeline__copy.rte strong:first-child {
+    font-family: var(--font-heading-family);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    font-size: calc(var(--font-heading-scale) * 2.4rem);
+    line-height: 1.25;
+  }
+
+  @media screen and (max-width: 989px) {
+    #AboutTimeline-{{ section.id }} {
+      padding: 3.6rem 0 5.6rem;
+    }
+
+    #AboutTimeline-{{ section.id }} .about-timeline__header {
+      margin-bottom: 4rem;
+      text-align: left;
+    }
+
+    #AboutTimeline-{{ section.id }} .about-timeline__list::before {
+      top: 2.4rem;
+      bottom: 2.4rem;
+      left: 2.4rem;
+      transform: none;
+    }
+
+    #AboutTimeline-{{ section.id }} .about-timeline__item,
+    #AboutTimeline-{{ section.id }} .about-timeline__item--reverse {
+      grid-template-columns: 4.8rem minmax(0, 1fr);
+      grid-template-areas:
+        'marker media'
+        '. copy';
+      align-items: start;
+      margin-bottom: 5.6rem;
+    }
+
+    #AboutTimeline-{{ section.id }} .about-timeline__marker {
+      width: 3.8rem;
+      height: 3.8rem;
+      margin-top: 1.2rem;
+      font-size: 1.1rem;
+    }
+
+    #AboutTimeline-{{ section.id }} .about-timeline__copy {
+      padding: 2.4rem 0 0;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AboutTimeline-{{ section.id }} .about-timeline__header {
+      margin-bottom: 3.2rem;
+    }
+
+    #AboutTimeline-{{ section.id }} .about-timeline__item,
+    #AboutTimeline-{{ section.id }} .about-timeline__item--reverse {
+      grid-template-columns: 4rem minmax(0, 1fr);
+      margin-bottom: 4.8rem;
+    }
+
+    #AboutTimeline-{{ section.id }} .about-timeline__list::before {
+      left: 1.9rem;
+    }
+
+    #AboutTimeline-{{ section.id }} .about-timeline__marker {
+      width: 3.4rem;
+      height: 3.4rem;
+      margin-top: 0.8rem;
+    }
+
+    #AboutTimeline-{{ section.id }} .about-timeline__media {
+      aspect-ratio: 5 / 4;
+      box-shadow: 0 1rem 2.8rem rgba(var(--color-foreground), 0.07);
+    }
+
+    #AboutTimeline-{{ section.id }} .about-timeline__copy {
+      padding-top: 2rem;
+    }
+  }
+{%- endstyle -%}
+
+<section id="AboutTimeline-{{ section.id }}" class="about-timeline gradient">
+  <div class="page-width">
+    <header class="about-timeline__header">
+      <h1 class="about-timeline__title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+        {{ page.title | escape }}
+      </h1>
+    </header>
+
+    <div class="about-timeline__list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign item_position = forloop.index0 | modulo: 2
+          assign show_block = false
+          if block.settings.image != blank or block.settings.text != blank or request.design_mode
+            assign show_block = true
+          endif
+        -%}
+        {%- if show_block -%}
+          <article
+            class="about-timeline__item{% if item_position == 1 %} about-timeline__item--reverse{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="about-timeline__media-wrap">
+              <div class="about-timeline__media">
+                {%- if block.settings.image != blank -%}
+                  {%- capture sizes -%}
+                    (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 160 | divided_by: 2 }}px,
+                    (min-width: 990px) calc((100vw - 18rem) / 2),
+                    calc(100vw - 9rem)
+                  {%- endcapture -%}
+                  {{
+                    block.settings.image
+                    | image_url: width: 1600
+                    | image_tag:
+                      loading: 'lazy',
+                      sizes: sizes,
+                      widths: '360, 535, 750, 1070, 1500, 1600'
+                  }}
+                {%- elsif request.design_mode -%}
+                  {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </div>
+            </div>
+
+            <div class="about-timeline__marker" aria-hidden="true">
+              {%- if forloop.index < 10 -%}0{%- endif -%}{{ forloop.index }}
+            </div>
+
+            <div class="about-timeline__copy rte">
+              {{ block.settings.text }}
+            </div>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ãœber Tungacea",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [],
+  "blocks": [
+    {
+      "type": "chapter",
+      "name": "Bild & Text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Bild"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "info": "Tipp: Die erste Zeile fett setzen, wenn sie wie eine Ãœberschrift wirken soll."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Ãœber Tungacea",
+      "blocks": [
+        { "type": "chapter" },
+        { "type": "chapter" },
+        { "type": "chapter" },
+        { "type": "chapter" }
+      ]
+    }
+  ]
+}
+{% endschema %}
