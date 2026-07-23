@@ -45,9 +45,10 @@
         "timeline_today": {
           "type": "row",
           "settings": {
+            "image": "shopify://shop_images/485DA170-447B-43A4-922C-6DFBCF65C9A9.jpg",
             "caption": "HEUTE",
-            "heading": "Tungacea heute",
-            "text": "<p>Zeige hier, wie sich dein Hobby bis heute entwickelt hat und was Tungacea für dich bedeutet.</p>",
+            "heading": "Lebende Kunst",
+            "text": "<p>Viele meiner Pflanzen landen irgendwann vor der Kamera. Nicht, um sie schöner wirken zu lassen, sondern um genau das festzuhalten, weshalb ich bei ihnen hängen geblieben bin: ein dunkler Austrieb, eine besondere Struktur oder die Form eines Blattes. Genauso wähle ich auch die Pflanzen für Tungacea aus – ich nehme nur auf, was ich selbst gerne in meiner Sammlung hätte. Für mich sind das keine gewöhnlichen Zimmerpflanzen, sondern lebende Kunst.</p>",
             "button_label": "",
             "button_link": ""
           }
