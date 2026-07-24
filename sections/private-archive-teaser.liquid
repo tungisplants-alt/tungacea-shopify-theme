@@ -22,7 +22,11 @@
 
   assign teaser_button_link = section.settings.button_link
   if teaser_button_link == blank
-    assign teaser_button_link = routes.root_url | append: 'pages/archive'
+    if routes.root_url == '/'
+      assign teaser_button_link = '/pages/archive'
+    else
+      assign teaser_button_link = routes.root_url | append: '/pages/archive'
+    endif
   endif
 
   assign has_button = false
