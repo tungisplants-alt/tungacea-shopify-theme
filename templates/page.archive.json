@@ -44,7 +44,7 @@
             "name": "Anthurium 'King of Spades' x 'Michelle'",
             "plant_id": "TA-1002",
             "genetics": "Komplexhybrid",
-            "parentage": "King of Spades × Michelle",
+            "parentage": "'King of Spades' × 'Michelle'",
             "breeder": "Variegated_Stingray",
             "year": "",
             "primary_trait": "\"Butterfly\" Sinus, Form der King of Spades, Aderung von der Michelle",
@@ -61,11 +61,37 @@
             "link": "",
             "link_label": ""
           }
+        },
+        "specimen_h6EdAT": {
+          "type": "specimen",
+          "settings": {
+            "image": "shopify://shop_images/97743E5C-1DB6-4A11-8B17-DC3783D54667.jpg",
+            "name": "Anthurium RVDP x Dressleri RG",
+            "plant_id": "TA-1003",
+            "genetics": "Hybrid",
+            "parentage": "Red Vein Dark Phoenix x Dressleri Rio Guanche",
+            "breeder": "secretfoliage",
+            "year": "",
+            "primary_trait": "",
+            "growth_stage": "",
+            "propagation": "",
+            "origin": "",
+            "rarity": "",
+            "care": "",
+            "photo_conditions": "",
+            "sale_type": "",
+            "shipping": "",
+            "status": "private_collection",
+            "notes": "",
+            "link": "",
+            "link_label": ""
+          }
         }
       },
       "block_order": [
         "specimen_xdd3wp",
-        "specimen_kRTGdc"
+        "specimen_kRTGdc",
+        "specimen_h6EdAT"
       ],
       "name": "ARCHIV",
       "settings": {
