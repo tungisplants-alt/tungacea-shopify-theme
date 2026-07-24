@@ -15,14 +15,14 @@
         "caption": {
           "type": "text",
           "settings": {
-            "text": "Seltene Anthurien. Ausgewählte Genetik.",
+            "text": "Seltene Anthurien. Lebende Kunst.",
             "text_style": "caption-with-letter-spacing"
           }
         },
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Lebende Exemplare.",
+            "heading": "Sammlerstücke",
             "heading_size": "h0"
           }
         },
