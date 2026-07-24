@@ -151,22 +151,22 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Ein privates botanisches Archiv.",
+            "heading": "Zwischen Pflanze und Porträt.",
             "heading_size": "h1"
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Tungacea ist ein auf seltene Anthurien, ausgewählte dunkle Merkmale und exklusive Genetik spezialisiertes Pflanzenunternehmen aus Deutschland. Jeder Sämling und jede Hybride wird mit der Sorgfalt einer privaten Sammlung dokumentiert und kultiviert.</p>",
+            "text": "<p>Bei Tungacea treffen Anthurien aus meiner eigenen Sammlung und mein Blick durch die Kamera aufeinander. Neben Klonen meiner Mutterpflanzen entstehen hier eigene Kreuzungen, deren Entwicklung ich von Blatt zu Blatt begleite und fotografisch festhalte.<br/></p>",
             "text_style": "body"
           }
         },
         "button": {
           "type": "button",
           "settings": {
-            "button_label": "Die Kollektion",
-            "button_link": "shopify://collections/all",
+            "button_label": "TUNGACEA KENNENLERNEN",
+            "button_link": "shopify://pages/about-me",
             "button_style_secondary": true
           }
         }
