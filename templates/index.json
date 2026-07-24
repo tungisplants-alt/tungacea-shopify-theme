@@ -123,10 +123,10 @@
       "type": "private-archive-teaser",
       "settings": {
         "show_image_frame": true,
-        "eyebrow": "PRIVATES ARCHIV / 01",
-        "heading": "Ausgewählte Genetik. Über den Verkauf hinaus bewahrt.",
+        "eyebrow": "MEIN ARCHIV / 01",
+        "heading": "Hier zeige ich dir, was bei Tungacea heranwächst.",
         "heading_size": "h1",
-        "body": "<p>Ein wachsendes Archiv seltener Anthurien, Elternpflanzen und markanter Merkmale — dokumentiert als Teil der Tungacea-Sammlung.</p>",
+        "body": "<p>In meinem Archiv dokumentiere ich Mutterpflanzen, eigene Kreuzungen und weitere Anthurien aus meiner Sammlung. Aus ihnen können später Stecklinge und Nachzuchten entstehen, die als neue Exemplare in die Kollektion kommen.<br/><br/><br/><br/></p>",
         "button_label": "Archiv betreten",
         "button_link": "/pages/private-archive?view=archive",
         "button_style_secondary": true,
