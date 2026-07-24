@@ -12,6 +12,10 @@
       assign heading_class = 'h1'
   endcase
   assign specimen_total = collection.all_products_count | default: collection.products_count
+  assign collection_display_title = collection.title
+  if collection.handle == 'all'
+    assign collection_display_title = 'sections.collection_template.all_title' | t
+  endif
 -%}
 
 {%- style -%}
@@ -37,7 +41,7 @@
 
       <h1 class="collection-hero__title {{ heading_class }}" data-testid="collection-title">
         <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
-        {{- collection.title | escape -}}
+        {{- collection_display_title | escape -}}
       </h1>
 
       {%- if section.settings.show_collection_description and collection.description != blank -%}

@@ -23,18 +23,35 @@
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
 
+    {%- liquid
+      assign resolved_page_title = page_title
+      assign resolved_page_description = page_description
+
+      if request.page_type == 'index'
+        assign resolved_page_description = 'seo.home_description' | t
+      elsif request.page_type == 'collection' and collection.handle == 'all'
+        assign resolved_page_title = 'sections.collection_template.all_title' | t
+        assign resolved_page_description = 'sections.collection_template.all_description' | t
+      elsif request.page_type == 'page' and template.suffix == 'archive'
+        assign resolved_page_title = 'private_archive.eyebrow' | t
+        assign resolved_page_description = 'seo.archive_description' | t
+      elsif request.page_type == 'page' and template.suffix == 'contact'
+        assign resolved_page_description = 'seo.contact_description' | t
+      endif
+    -%}
+
     <title>
-      {{ page_title }}
+      {{ resolved_page_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
       {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- unless resolved_page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
+    {% if resolved_page_description %}
+      <meta name="description" content="{{ resolved_page_description | escape }}">
     {% endif %}
 
-    {% render 'meta-tags' %}
+    {% render 'meta-tags', meta_title: resolved_page_title, meta_description: resolved_page_description %}
 
     <script type="module">
       import * as StandardEvents from 'https://cdn.shopify.com/storefront/standard-events.js';
@@ -348,7 +365,17 @@
       tabindex="-1"
       data-template="{{ template.name }}"
     >
-      {{ content_for_layout }}
+      {%- capture rendered_page_content -%}{{ content_for_layout }}{%- endcapture -%}
+      {%- if request.page_type == 'policy' and request.locale.iso_code == 'de' and page_title == shop.privacy_policy.title -%}
+        {%- assign rendered_page_content = rendered_page_content
+          | replace: 'Ihre personenbezogene Daten', 'Ihre personenbezogenen Daten'
+          | replace: 'fehlerhafter personenbezogenen Daten', 'fehlerhafter personenbezogener Daten'
+          | replace: 'Wenn Sie sich Ihr Wohnsitz im Vereinigten Königreich oder im Europäischen Wirtschaftsraum befindet,', 'Wenn sich Ihr Wohnsitz im Vereinigten Königreich oder im Europäischen Wirtschaftsraum befindet,'
+          | replace: 'Wenn Sie sich abrufen möchten,', 'Wenn Sie diese abrufen möchten,'
+          | replace: 'wenden Sie sich bitte telefonisch unter , per E-Mail', 'wenden Sie sich bitte per E-Mail'
+        -%}
+      {%- endif -%}
+      {{ rendered_page_content }}
     </main>
 
     {% sections 'footer-group' %}

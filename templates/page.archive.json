@@ -27,78 +27,14 @@
             "link": "",
             "link_label": ""
           }
-        },
-        "specimen-1": {
-          "type": "specimen",
-          "settings": {
-            "name": "Anthurium 'Obsidian Vein'",
-            "plant_id": "TGC-014",
-            "genetics": "papillilaminum x dressleri",
-            "parentage": "Ausgewählter dunkler Sämling, F2",
-            "breeder": "Tungacea",
-            "year": "2024",
-            "status": "private_collection",
-            "notes": "<p>Tiefes mattes Laub mit ausgeprägter silbriger Aderung. Als Zuchtreferenz für die dunkle papillilaminum-Linie gehalten.</p>",
-            "link": "",
-            "link_label": ""
-          }
-        },
-        "specimen-2": {
-          "type": "specimen",
-          "settings": {
-            "name": "Anthurium 'Carmine Study'",
-            "plant_id": "TGC-009",
-            "genetics": "crystallinum x magnificum",
-            "parentage": "Offene Kreuzung, ausgewählt nach Petiolenfärbung",
-            "breeder": "Tungacea",
-            "year": "2023",
-            "status": "past_release",
-            "notes": "<p>Veröffentlicht als Teil einer frühen limitierten Auswahl. Hier zur Provenienz dokumentiert.</p>",
-            "link": "",
-            "link_label": ""
-          }
-        },
-        "specimen-3": {
-          "type": "specimen",
-          "settings": {
-            "name": "Anthurium 'Fern Ledger No. 3'",
-            "plant_id": "TGC-021",
-            "genetics": "warocqueanum select",
-            "parentage": "Teilung der Mutterpflanze",
-            "breeder": "Tungacea",
-            "year": "2022",
-            "status": "breeding_stock",
-            "notes": "<p>Langform-Samttyp, als aktiver Zuchtbestand gehalten. Nicht zum Verkauf angeboten.</p>",
-            "link": "",
-            "link_label": ""
-          }
-        },
-        "specimen-4": {
-          "type": "specimen",
-          "settings": {
-            "name": "Anthurium 'Ash Archive'",
-            "plant_id": "TGC-005",
-            "genetics": "regale x forgetii",
-            "parentage": "Ausgewählter Sämling, eingestellte Linie",
-            "breeder": "Tungacea",
-            "year": "2021",
-            "status": "archived",
-            "notes": "<p>Aus der wachsenden Sammlung ausgeschieden und zur Dokumentation archiviert.</p>",
-            "link": "",
-            "link_label": ""
-          }
         }
       },
       "block_order": [
-        "specimen_xdd3wp",
-        "specimen-1",
-        "specimen-2",
-        "specimen-3",
-        "specimen-4"
+        "specimen_xdd3wp"
       ],
       "name": "ARCHIV",
       "settings": {
-        "eyebrow": "MEIN ARCHIV",
+        "eyebrow": "",
         "heading": "",
         "intro": "",
         "enable_filters": true,

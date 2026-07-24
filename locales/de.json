@@ -286,13 +286,15 @@
       "cart": "Warenkorb"
     },
     "contact": {
+      "intro": "Du hast eine Frage zu einem Exemplar, zum Versand oder zur Eingewöhnung deiner Pflanze? Schreib mir direkt – ich antworte persönlich.",
+      "direct_email": "Oder direkt per E-Mail:",
       "form": {
         "name": "Name",
         "email": "E-Mail",
         "phone": "Telefonnummer",
         "comment": "Kommentar",
         "send": "Senden",
-        "post_success": "Danke, dass du uns kontaktiert hast. Wir werden uns so schnell wie möglich bei dir melden.",
+        "post_success": "Danke für deine Nachricht. Ich melde mich so schnell wie möglich bei dir.",
         "error_heading": "Bitte passe Folgendes an:",
         "title": "Kontaktformular"
       }
@@ -307,7 +309,7 @@
       "announcement": "Ankündigung",
       "menu": "Menü",
       "navigation_eyebrow": "TUNGACEA NAVIGATION / 01",
-      "drawer_note": "Seltene Anthurien · ausgewählte Genetik",
+      "drawer_note": "Seltene Anthurien · lebende Kunst",
       "cart_count": {
         "one": "{{ count }} Artikel",
         "other": "{{ count }} Artikel"
@@ -349,7 +351,8 @@
     },
     "footer": {
       "payment": "Zahlungsmethoden",
-      "service_legal_heading": "SERVICE & RECHT"
+      "service_legal_heading": "SERVICE & RECHT",
+      "brand_copy_html": "<strong>Seltene Anthurien · lebende Kunst.</strong><br>Von mir kultiviert und aus Deutschland versendet."
     },
     "featured_blog": {
       "view_all": "Alle anzeigen",
@@ -365,6 +368,8 @@
     },
     "collection_template": {
       "title": "Kollektion",
+      "all_title": "Sammlerstücke",
+      "all_description": "Entdecke alle aktuell gezeigten Anthurien und Sammlerstücke.",
       "empty": "Keine Produkte gefunden",
       "use_fewer_filters_html": "Verwende weniger Filter oder <a class=\"{{ class }}\" href=\"{{ link }}\">entferne alle</a>",
       "eyebrow": "TUNGACEA KOLLEKTION / 01",
@@ -581,9 +586,12 @@
     }
   },
   "private_archive": {
-    "eyebrow": "Das private Archiv",
-    "heading": "Ausgewählte Exemplare. Dokumentierte Genetik.",
-    "intro": "Eine wachsende Aufzeichnung von Anthurium-Exemplaren, ausgewählten Merkmalen, Abstammung und früheren Veröffentlichungen aus der Tungacea-Sammlung.",
+    "eyebrow": "MEIN ARCHIV",
+    "heading": "Ein Blick auf das, was gerade heranwächst.",
+    "intro": "Hier dokumentiere ich Mutterpflanzen, eigene Kreuzungen und weitere Anthurien aus meiner Sammlung. Aus ihnen können später Stecklinge und Nachzuchten entstehen, die als neue Exemplare in die Kollektion kommen.",
+    "teaser_eyebrow": "MEIN ARCHIV / 01",
+    "teaser_heading": "Ein Blick auf das, was gerade heranwächst.",
+    "teaser_body": "In meinem Archiv dokumentiere ich Mutterpflanzen, eigene Kreuzungen und weitere Anthurien aus meiner Sammlung. Aus ihnen können später Stecklinge und Nachzuchten entstehen, die als neue Exemplare in die Kollektion kommen.",
     "view_specimen": "Exemplar ansehen",
     "enter_the_archive": "Archiv betreten",
     "filters": {
@@ -604,5 +612,21 @@
       "breeder": "Züchter / Quelle",
       "year": "Jahr"
     }
+  },
+  "brand": {
+    "strapline": "Seltene Anthurien · lebende Kunst"
+  },
+  "seo": {
+    "home_description": "Seltene Anthurien, Klone eigener Mutterpflanzen und eigene Kreuzungen – von mir kultiviert, fotografiert und sorgfältig versendet.",
+    "archive_description": "Ein Blick in meine Sammlung: Mutterpflanzen, eigene Anthurium-Kreuzungen und Exemplare, aus denen später Stecklinge und Nachzuchten entstehen können.",
+    "contact_description": "Fragen zu einem Exemplar, zum Versand oder zur Eingewöhnung? Schreib mir direkt – ich antworte persönlich.",
+    "password_title": "Privater Zugang",
+    "password_description": "Tungacea öffnet bald. Trag dich ein und erfahre, wann neue Anthurien und Exemplare verfügbar sind."
+  },
+  "tungacea_password": {
+    "eyebrow": "Privater Zugang",
+    "heading": "Die Tungacea Kollektion öffnet bald.",
+    "body": "Hier teile ich Klone meiner Mutterpflanzen und Anthurien aus eigener Züchtung. Trag dich ein, wenn du erfahren möchtest, wann neue Exemplare verfügbar sind.",
+    "collectors_note": "Sammlerliste · Frühzugang"
   }
 }

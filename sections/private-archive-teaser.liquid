@@ -5,14 +5,34 @@
 {%- endcomment -%}
 
 {%- liquid
+  assign teaser_eyebrow = section.settings.eyebrow
+  if teaser_eyebrow == blank
+    assign teaser_eyebrow = 'private_archive.teaser_eyebrow' | t
+  endif
+
+  assign teaser_heading = section.settings.heading
+  if teaser_heading == blank
+    assign teaser_heading = 'private_archive.teaser_heading' | t
+  endif
+
+  assign teaser_button_label = section.settings.button_label
+  if teaser_button_label == blank
+    assign teaser_button_label = 'private_archive.enter_the_archive' | t
+  endif
+
+  assign teaser_button_link = section.settings.button_link
+  if teaser_button_link == blank
+    assign teaser_button_link = routes.root_url | append: 'pages/archive'
+  endif
+
   assign has_button = false
-  if section.settings.button_label != blank and section.settings.button_link != blank
+  if teaser_button_label != blank and teaser_button_link != blank
     assign has_button = true
   endif
 
   assign image_alt = section.settings.image.alt
   if image_alt == blank
-    assign image_alt = section.settings.heading | strip_html | strip
+    assign image_alt = teaser_heading | strip_html | strip
   endif
 -%}
 
@@ -185,32 +205,34 @@
           </figure>
 
           <div class="private-archive__content">
-            {%- if section.settings.eyebrow != blank -%}
+            {%- if teaser_eyebrow != blank -%}
               <div class="private-archive__eyebrow-row private-archive__reveal">
-                <p class="private-archive__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+                <p class="private-archive__eyebrow">{{ teaser_eyebrow | escape }}</p>
                 <span class="private-archive__hairline" aria-hidden="true"></span>
               </div>
             {%- endif -%}
 
-            {%- if section.settings.heading != blank -%}
+            {%- if teaser_heading != blank -%}
               <h2 class="private-archive__heading private-archive__reveal {{ section.settings.heading_size }}">
-                {{ section.settings.heading }}
+                {{ teaser_heading }}
               </h2>
             {%- endif -%}
 
-            {%- if section.settings.body != blank -%}
-              <div class="private-archive__body rte private-archive__reveal">
+            <div class="private-archive__body rte private-archive__reveal">
+              {%- if section.settings.body != blank -%}
                 {{ section.settings.body }}
-              </div>
-            {%- endif -%}
+              {%- else -%}
+                <p>{{ 'private_archive.teaser_body' | t }}</p>
+              {%- endif -%}
+            </div>
 
             {%- if has_button -%}
               <div class="private-archive__cta private-archive__reveal">
                 <a
-                  href="{{ section.settings.button_link }}"
+                  href="{{ teaser_button_link }}"
                   class="button{% if section.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
                 >
-                  {{ section.settings.button_label | escape }}
+                  {{ teaser_button_label | escape }}
                 </a>
               </div>
             {%- endif -%}

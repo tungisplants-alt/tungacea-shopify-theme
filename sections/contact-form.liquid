@@ -16,6 +16,13 @@
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="contact page-width page-width--narrow section-{{ section.id }}-padding">
+    <div class="contact__intro rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      <p>{{ 'templates.contact.intro' | t }}</p>
+      <p class="contact__direct-email">
+        {{ 'templates.contact.direct_email' | t }}
+        <a class="link" href="mailto:tungisplants@gmail.com">tungisplants@gmail.com</a>
+      </p>
+    </div>
     {%- if section.settings.heading != blank -%}
       <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
         {{ section.settings.heading }}

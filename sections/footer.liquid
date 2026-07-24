@@ -55,9 +55,7 @@
         {%- if brand_block.settings.heading != blank -%}
           <h2 class="tungacea-footer__brand-title inline-richtext">{{ brand_block.settings.heading }}</h2>
         {%- endif -%}
-        {%- if brand_block.settings.subtext != blank -%}
-          <div class="tungacea-footer__brand-desc rte">{{ brand_block.settings.subtext }}</div>
-        {%- endif -%}
+        <div class="tungacea-footer__brand-desc rte">{{ 'sections.footer.brand_copy_html' | t }}</div>
       </div>
       {%- render 'rakkan-seal', class: 'tungacea-footer__seal', width_override: 56 -%}
     </div>
@@ -72,9 +70,15 @@
         <div class="tungacea-footer__group-content">
           <ul class="tungacea-footer__links list-unstyled" role="list">
             {%- for link in explore_block.settings.menu.links -%}
+              {%- liquid
+                assign footer_link_url = link.url
+                if link.url contains '/collections/all'
+                  assign footer_link_url = routes.all_products_collection_url
+                endif
+              -%}
               <li>
                 <a
-                  href="{{ link.url }}"
+                  href="{{ footer_link_url }}"
                   class="tungacea-footer__link link link--text{% if link.active %} tungacea-footer__link--active{% endif %}"
                 >
                   {{ link.title | escape }}

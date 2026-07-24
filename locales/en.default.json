@@ -286,6 +286,8 @@
       "cart": "Cart"
     },
     "contact": {
+      "intro": "Have a question about a specimen, shipping, or helping your plant settle in? Send me a message—I’ll reply personally.",
+      "direct_email": "Or email me directly:",
       "form": {
         "title": "Contact form",
         "name": "Name",
@@ -293,7 +295,7 @@
         "phone": "Phone number",
         "comment": "Comment",
         "send": "Send",
-        "post_success": "Thanks for contacting us. We'll get back to you as soon as possible.",
+        "post_success": "Thanks for your message. I’ll get back to you as soon as possible.",
         "error_heading": "Please adjust the following:"
       }
     },
@@ -314,7 +316,7 @@
       "announcement": "Announcement",
       "menu": "Menu",
       "navigation_eyebrow": "TUNGACEA NAVIGATION / 01",
-      "drawer_note": "Rare Anthuriums · selected genetics",
+      "drawer_note": "Rare Anthuriums · living art",
       "cart_count": {
         "one": "{{ count }} item",
         "other": "{{ count }} items"
@@ -356,7 +358,8 @@
     },
     "footer": {
       "payment": "Payment methods",
-      "service_legal_heading": "SERVICE & LEGAL"
+      "service_legal_heading": "SERVICE & LEGAL",
+      "brand_copy_html": "<strong>Rare Anthuriums · living art.</strong><br>Grown by me and shipped from Germany."
     },
     "featured_blog": {
       "view_all": "View all",
@@ -373,6 +376,8 @@
     "collection_template": {
       "empty": "No products found",
       "title": "Collection",
+      "all_title": "Specimens",
+      "all_description": "Discover all Anthuriums and collector specimens currently on display.",
       "use_fewer_filters_html": "Use fewer filters or <a class=\"{{ class }}\" href=\"{{ link }}\">remove all</a>",
       "eyebrow": "TUNGACEA COLLECTION / 01",
       "specimen_count": {
@@ -581,9 +586,12 @@
     }
   },
   "private_archive": {
-    "eyebrow": "The Private Archive",
-    "heading": "Selected specimens. Documented genetics.",
-    "intro": "A growing record of Anthurium specimens, selected traits, parentage and past releases from the Tungacea collection.",
+    "eyebrow": "MY ARCHIVE",
+    "heading": "A glimpse of what’s growing.",
+    "intro": "Here I document mother plants, my own crosses, and other Anthuriums from my collection. Over time, they may become the source of cuttings and offspring that join the collection as new specimens.",
+    "teaser_eyebrow": "MY ARCHIVE / 01",
+    "teaser_heading": "A glimpse of what’s growing.",
+    "teaser_body": "In my archive, I document mother plants, my own crosses, and other Anthuriums from my collection. Over time, they may become the source of cuttings and offspring that join the collection as new specimens.",
     "view_specimen": "View specimen",
     "enter_the_archive": "Enter the archive",
     "filters": {
@@ -604,5 +612,21 @@
       "breeder": "Breeder / source",
       "year": "Year"
     }
+  },
+  "brand": {
+    "strapline": "Rare Anthuriums · living art"
+  },
+  "seo": {
+    "home_description": "Rare Anthuriums, clones of my own mother plants, and my own crosses—grown, photographed, and carefully shipped by me.",
+    "archive_description": "A look into my collection: mother plants, my own Anthurium crosses, and specimens that may later produce cuttings and offspring.",
+    "contact_description": "Questions about a specimen, shipping, or helping your plant settle in? Send me a message—I’ll reply personally.",
+    "password_title": "Private access",
+    "password_description": "Tungacea is opening soon. Join the list to hear when new Anthuriums and specimens become available."
+  },
+  "tungacea_password": {
+    "eyebrow": "Private access",
+    "heading": "The Tungacea collection is opening soon.",
+    "body": "Here I share clones of my mother plants and Anthuriums from my own breeding. Join the list to hear when new specimens become available.",
+    "collectors_note": "Collectors list · early access"
   }
 }
