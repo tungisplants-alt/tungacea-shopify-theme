@@ -49,6 +49,16 @@
   if section.index == 1
     assign fetch_priority = 'high'
   endif
+
+  assign banner_image_alt = section.settings.image.alt
+  if banner_image_alt == blank
+    for block in section.blocks
+      if block.type == 'heading' and block.settings.heading != blank
+        assign banner_image_alt = block.settings.heading | strip_html | strip
+        break
+      endif
+    endfor
+  endif
 -%}
 
 <div
@@ -76,6 +86,7 @@
         | image_tag:
           width: section.settings.image.width,
           height: image_height,
+          alt: banner_image_alt,
           class: image_class,
           sizes: sizes,
           widths: widths,
@@ -116,6 +127,7 @@
         | image_tag:
           width: section.settings.image_2.width,
           height: image_height_2,
+          alt: banner_image_alt,
           class: image_class_2,
           sizes: sizes,
           widths: widths,

@@ -105,6 +105,11 @@
             if link_label == blank
               assign link_label = 'private_archive.view_specimen' | t
             endif
+
+            assign archive_image_alt = block.settings.image.alt
+            if archive_image_alt == blank
+              assign archive_image_alt = block.settings.name | strip_html | strip
+            endif
           -%}
           <article
             class="private-archive__item"
@@ -119,6 +124,7 @@
                   | image_url: width: 1400
                   | image_tag:
                     loading: 'lazy',
+                    alt: archive_image_alt,
                     sizes: '(min-width: 990px) 50vw, 100vw',
                     widths: '400, 600, 800, 1000, 1200, 1400',
                     class: 'private-archive__image'
@@ -132,6 +138,7 @@
                   | image_url: width: 1000
                   | image_tag:
                     loading: 'lazy',
+                    alt: archive_image_alt,
                     sizes: '(min-width: 990px) 25vw, 45vw',
                     widths: '300, 500, 700, 1000',
                     class: 'private-archive__image private-archive__image--secondary'
