@@ -594,6 +594,7 @@
     "teaser_body": "In my archive, I document mother plants, my own crosses, and other Anthuriums from my collection. Over time, they may become the source of cuttings and offspring that join the collection as new specimens.",
     "view_specimen": "View specimen",
     "enter_the_archive": "Enter the archive",
+    "documentation_heading": "Botanical Documentation",
     "filters": {
       "title": "Filter specimens",
       "all": "All"
@@ -606,11 +607,20 @@
       "breeding_stock": "Breeding Stock"
     },
     "labels": {
-      "plant_id": "Plant ID",
+      "plant_id": "Specimen ID",
       "genetics": "Genetics",
       "parentage": "Parentage",
       "breeder": "Breeder / source",
-      "year": "Year"
+      "year": "Year",
+      "primary_trait": "Primary trait",
+      "growth_stage": "Growth stage",
+      "propagation": "Propagation",
+      "origin": "Origin",
+      "rarity": "Rarity",
+      "care": "Care",
+      "photo_conditions": "Photo conditions",
+      "sale_type": "Sale type",
+      "shipping": "Shipping note"
     }
   },
   "brand": {

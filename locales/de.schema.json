@@ -3480,7 +3480,7 @@
               "label": "Exemplarname"
             },
             "plant_id": {
-              "label": "Pflanzen-ID"
+              "label": "Exemplar-ID"
             },
             "genetics": {
               "label": "Genetik"
@@ -3493,6 +3493,33 @@
             },
             "year": {
               "label": "Jahr"
+            },
+            "primary_trait": {
+              "label": "Hauptmerkmal"
+            },
+            "growth_stage": {
+              "label": "Wachstumsstadium"
+            },
+            "propagation": {
+              "label": "Vermehrung"
+            },
+            "origin": {
+              "label": "Herkunft"
+            },
+            "rarity": {
+              "label": "Seltenheit"
+            },
+            "care": {
+              "label": "Pflege und Kulturbedingungen"
+            },
+            "photo_conditions": {
+              "label": "Aufnahmebedingungen"
+            },
+            "sale_type": {
+              "label": "Verkaufsart"
+            },
+            "shipping": {
+              "label": "Versandhinweis"
             },
             "status": {
               "label": "Archivstatus",

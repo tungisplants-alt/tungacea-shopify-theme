@@ -594,6 +594,7 @@
     "teaser_body": "In meinem Archiv dokumentiere ich Mutterpflanzen, eigene Kreuzungen und weitere Anthurien aus meiner Sammlung. Aus ihnen können später Stecklinge und Nachzuchten entstehen, die als neue Exemplare in die Kollektion kommen.",
     "view_specimen": "Exemplar ansehen",
     "enter_the_archive": "Archiv betreten",
+    "documentation_heading": "Botanische Dokumentation",
     "filters": {
       "title": "Exemplare filtern",
       "all": "Alle"
@@ -606,11 +607,20 @@
       "breeding_stock": "Zuchtbestand"
     },
     "labels": {
-      "plant_id": "Pflanzen-ID",
+      "plant_id": "Exemplar-ID",
       "genetics": "Genetik",
       "parentage": "Abstammung",
       "breeder": "Züchter / Quelle",
-      "year": "Jahr"
+      "year": "Jahr",
+      "primary_trait": "Hauptmerkmal",
+      "growth_stage": "Wachstumsstadium",
+      "propagation": "Vermehrung",
+      "origin": "Herkunft",
+      "rarity": "Seltenheit",
+      "care": "Pflege",
+      "photo_conditions": "Aufnahmebedingungen",
+      "sale_type": "Verkaufsart",
+      "shipping": "Versandhinweis"
     }
   },
   "brand": {

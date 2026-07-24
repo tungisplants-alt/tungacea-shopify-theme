@@ -3480,7 +3480,7 @@
               "label": "Specimen name"
             },
             "plant_id": {
-              "label": "Plant ID"
+              "label": "Specimen ID"
             },
             "genetics": {
               "label": "Genetics"
@@ -3493,6 +3493,33 @@
             },
             "year": {
               "label": "Year"
+            },
+            "primary_trait": {
+              "label": "Primary trait"
+            },
+            "growth_stage": {
+              "label": "Growth stage"
+            },
+            "propagation": {
+              "label": "Propagation"
+            },
+            "origin": {
+              "label": "Origin"
+            },
+            "rarity": {
+              "label": "Rarity"
+            },
+            "care": {
+              "label": "Care and growing conditions"
+            },
+            "photo_conditions": {
+              "label": "Photo conditions"
+            },
+            "sale_type": {
+              "label": "Sale type"
+            },
+            "shipping": {
+              "label": "Shipping note"
             },
             "status": {
               "label": "Archive status",

@@ -110,6 +110,11 @@
             if archive_image_alt == blank
               assign archive_image_alt = block.settings.name | strip_html | strip
             endif
+
+            assign has_botanical_documentation = false
+            if block.settings.primary_trait != blank or block.settings.growth_stage != blank or block.settings.propagation != blank or block.settings.origin != blank or block.settings.rarity != blank or block.settings.care != blank or block.settings.photo_conditions != blank or block.settings.sale_type != blank or block.settings.shipping != blank
+              assign has_botanical_documentation = true
+            endif
           -%}
           <article
             class="private-archive__item"
@@ -186,6 +191,74 @@
                   </div>
                 {%- endif -%}
               </dl>
+
+              {%- if has_botanical_documentation -%}
+                <details class="private-archive__documentation">
+                  <summary class="private-archive__documentation-summary">
+                    <span>{{ 'private_archive.documentation_heading' | t }}</span>
+                    <span class="private-archive__documentation-icon" aria-hidden="true"></span>
+                  </summary>
+                  <div class="private-archive__documentation-body">
+                    <dl class="private-archive__meta private-archive__meta--documentation">
+                      {%- if block.settings.primary_trait != blank -%}
+                        <div class="private-archive__row">
+                          <dt>{{ 'private_archive.labels.primary_trait' | t }}</dt>
+                          <dd>{{ block.settings.primary_trait | escape }}</dd>
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.growth_stage != blank -%}
+                        <div class="private-archive__row">
+                          <dt>{{ 'private_archive.labels.growth_stage' | t }}</dt>
+                          <dd>{{ block.settings.growth_stage | escape }}</dd>
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.propagation != blank -%}
+                        <div class="private-archive__row">
+                          <dt>{{ 'private_archive.labels.propagation' | t }}</dt>
+                          <dd>{{ block.settings.propagation | escape }}</dd>
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.origin != blank -%}
+                        <div class="private-archive__row">
+                          <dt>{{ 'private_archive.labels.origin' | t }}</dt>
+                          <dd>{{ block.settings.origin | escape }}</dd>
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.rarity != blank -%}
+                        <div class="private-archive__row">
+                          <dt>{{ 'private_archive.labels.rarity' | t }}</dt>
+                          <dd>{{ block.settings.rarity | escape }}</dd>
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.care != blank -%}
+                        <div class="private-archive__row">
+                          <dt>{{ 'private_archive.labels.care' | t }}</dt>
+                          <dd class="rte">{{ block.settings.care }}</dd>
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.photo_conditions != blank -%}
+                        <div class="private-archive__row">
+                          <dt>{{ 'private_archive.labels.photo_conditions' | t }}</dt>
+                          <dd>{{ block.settings.photo_conditions | escape }}</dd>
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.sale_type != blank -%}
+                        <div class="private-archive__row">
+                          <dt>{{ 'private_archive.labels.sale_type' | t }}</dt>
+                          <dd>{{ block.settings.sale_type | escape }}</dd>
+                        </div>
+                      {%- endif -%}
+                    </dl>
+
+                    {%- if block.settings.shipping != blank -%}
+                      <div class="private-archive__documentation-note">
+                        <p>{{ 'private_archive.labels.shipping' | t }}</p>
+                        <div class="rte">{{ block.settings.shipping }}</div>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </details>
+              {%- endif -%}
 
               {%- if block.settings.notes != blank -%}
                 <div class="private-archive__notes rte">{{ block.settings.notes }}</div>
@@ -398,6 +471,51 @@
           "type": "text",
           "id": "year",
           "label": "t:sections.private-archive.blocks.specimen.settings.year.label"
+        },
+        {
+          "type": "text",
+          "id": "primary_trait",
+          "label": "t:sections.private-archive.blocks.specimen.settings.primary_trait.label"
+        },
+        {
+          "type": "text",
+          "id": "growth_stage",
+          "label": "t:sections.private-archive.blocks.specimen.settings.growth_stage.label"
+        },
+        {
+          "type": "text",
+          "id": "propagation",
+          "label": "t:sections.private-archive.blocks.specimen.settings.propagation.label"
+        },
+        {
+          "type": "text",
+          "id": "origin",
+          "label": "t:sections.private-archive.blocks.specimen.settings.origin.label"
+        },
+        {
+          "type": "text",
+          "id": "rarity",
+          "label": "t:sections.private-archive.blocks.specimen.settings.rarity.label"
+        },
+        {
+          "type": "richtext",
+          "id": "care",
+          "label": "t:sections.private-archive.blocks.specimen.settings.care.label"
+        },
+        {
+          "type": "text",
+          "id": "photo_conditions",
+          "label": "t:sections.private-archive.blocks.specimen.settings.photo_conditions.label"
+        },
+        {
+          "type": "text",
+          "id": "sale_type",
+          "label": "t:sections.private-archive.blocks.specimen.settings.sale_type.label"
+        },
+        {
+          "type": "richtext",
+          "id": "shipping",
+          "label": "t:sections.private-archive.blocks.specimen.settings.shipping.label"
         },
         {
           "type": "select",
