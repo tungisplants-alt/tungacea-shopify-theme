@@ -96,8 +96,9 @@
         "specimen-3",
         "specimen-4"
       ],
+      "name": "ARCHIV",
       "settings": {
-        "eyebrow": "",
+        "eyebrow": "MEIN ARCHIV",
         "heading": "",
         "intro": "",
         "enable_filters": true,
