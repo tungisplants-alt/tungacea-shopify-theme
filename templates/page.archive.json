@@ -24,8 +24,8 @@
             "year": "",
             "primary_trait": "Längliche Form, dunkel samtiges Blatt mit rötlicher feiner Aderung",
             "growth_stage": "Etablierte Mutterpflanze",
-            "propagation": "Mutterpflanze, Ableger können künftig entstehen",
-            "origin": "",
+            "propagation": "Vermehrter Klon durch Stammsteckling",
+            "origin": "USA",
             "rarity": "F2-Hybrid mit individuell ausgeprägtem Phänotyp",
             "care": "",
             "photo_conditions": "",
@@ -36,10 +36,36 @@
             "link": "",
             "link_label": ""
           }
+        },
+        "specimen_kRTGdc": {
+          "type": "specimen",
+          "settings": {
+            "image": "shopify://shop_images/004C7085-3920-46EB-AE2B-277F39AFC1B6.jpg",
+            "name": "Anthurium 'King of Spades' x 'Michelle'",
+            "plant_id": "TA-1002",
+            "genetics": "Komplexhybrid",
+            "parentage": "King of Spades × Michelle",
+            "breeder": "Variegated_Stingray",
+            "year": "",
+            "primary_trait": "\"Butterfly\" Sinus, Form der King of Spades, Aderung von der Michelle",
+            "growth_stage": "Jungpflanze",
+            "propagation": "Vermehrter Klon durch Stammsteckling",
+            "origin": "Österreich",
+            "rarity": "",
+            "care": "",
+            "photo_conditions": "",
+            "sale_type": "",
+            "shipping": "",
+            "status": "private_collection",
+            "notes": "<p>An dieser Pflanze bin ich vor allem wegen der Aderung und der Form hängen geblieben. Noch ist die Pflanze juvenil – ich bin sehr gespannt wie die weitere Entwicklung aussieht.<br/></p>",
+            "link": "",
+            "link_label": ""
+          }
         }
       },
       "block_order": [
-        "specimen_xdd3wp"
+        "specimen_xdd3wp",
+        "specimen_kRTGdc"
       ],
       "name": "ARCHIV",
       "settings": {
