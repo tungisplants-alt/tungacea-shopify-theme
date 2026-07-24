@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.footer.name",
   "type": "footer",
@@ -9,7 +18,7 @@
           "type": "text",
           "settings": {
             "heading": "TUNGACEA / 01",
-            "subtext": "<p>Seltene Anthurien · ausgewählte Genetik.<br>Kultiviert und versendet aus Deutschland.</p>"
+            "subtext": "<p><strong>Seltene Anthurien · lebende Kunst.</strong><br/>Von mir kultiviert und aus Deutschland versendet.</p>"
           }
         },
         "footer_explore": {
