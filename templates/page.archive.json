@@ -111,13 +111,65 @@
             "link": "",
             "link_label": ""
           }
+        },
+        "specimen_3fYwfd": {
+          "type": "specimen",
+          "settings": {
+            "image": "shopify://shop_images/F03A5BDF-0470-4FD2-B89A-DD98DFB53A71.jpg",
+            "name": "",
+            "plant_id": "",
+            "genetics": "",
+            "parentage": "",
+            "breeder": "",
+            "year": "",
+            "primary_trait": "",
+            "growth_stage": "",
+            "propagation": "",
+            "origin": "",
+            "rarity": "",
+            "care": "",
+            "photo_conditions": "",
+            "sale_type": "",
+            "shipping": "",
+            "status": "private_collection",
+            "notes": "",
+            "link": "",
+            "link_label": ""
+          }
+        },
+        "specimen_TG48tt": {
+          "type": "specimen",
+          "settings": {
+            "image": "shopify://shop_images/IMG_5703.jpg",
+            "name": "",
+            "plant_id": "",
+            "genetics": "",
+            "parentage": "",
+            "breeder": "",
+            "year": "",
+            "primary_trait": "",
+            "growth_stage": "",
+            "propagation": "",
+            "origin": "",
+            "rarity": "",
+            "care": "",
+            "photo_conditions": "",
+            "sale_type": "",
+            "shipping": "",
+            "status": "private_collection",
+            "notes": "",
+            "link": "",
+            "link_label": ""
+          }
         }
       },
       "block_order": [
         "specimen_xdd3wp",
         "specimen_kRTGdc",
         "specimen_h6EdAT",
-        "specimen_ibfHcj"
+        "specimen_ibfHcj",
+        "specimen_3fYwfd",
+        "specimen_TG48tt"
       ],
       "name": "ARCHIV",
       "settings": {
