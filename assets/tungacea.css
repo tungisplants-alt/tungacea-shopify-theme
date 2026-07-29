@@ -7,9 +7,9 @@
 :root {
   --tungacea-accent: 150, 45, 58;        /* restrained oxblood for accents */
   --tungacea-accent-deep: 91, 22, 33;
-  --tungacea-hairline: rgba(242, 238, 232, 0.1);
-  --tungacea-hairline-soft: rgba(242, 238, 232, 0.055);
-  --tungacea-muted: rgba(185, 178, 169, 0.78);
+  --tungacea-hairline: rgba(242, 238, 232, 0.14);
+  --tungacea-hairline-soft: rgba(242, 238, 232, 0.08);
+  --tungacea-muted: rgba(205, 198, 188, 0.88);
   --tungacea-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
@@ -656,7 +656,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   --tungacea-graphite: #1f1e22;
   --tungacea-oxblood: 110, 28, 40;       /* #6E1C28 — deep button / panel red */
   --tungacea-wine: 78, 20, 30;           /* #4E141E — deepest wine */
-  --tungacea-accent-bright: 168, 52, 66; /* #A83442 — small visible accents */
+  --tungacea-accent-bright: 177, 61, 76; /* #B13D4C — clearer small accents */
   --tungacea-hairline-accent: rgba(110, 28, 40, 0.32);
 }
 
@@ -956,5 +956,59 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   }
   .tungacea-lang .tungacea-lang__panel {
     animation: none !important;
+  }
+}
+
+
+/* =====================================================================
+   READABILITY BALANCE PASS — dark, not uniformly black
+   Keeps the cinematic hero, header, drawers and footer near-black while
+   lifting content surfaces, secondary copy and product cards one step.
+   ===================================================================== */
+
+/* Main scheme: a near-black graphite instead of featureless pure black. */
+.color-scheme-1 {
+  --color-background: 15, 15, 17;
+}
+
+/* The framing elements remain the darkest layer of the Tungacea identity. */
+.header-wrapper,
+.menu-drawer,
+.menu-drawer__inner-container,
+.drawer__inner {
+  background-color: #0a0a0a;
+}
+
+.footer.color-scheme-1 {
+  --color-background: 10, 10, 10;
+}
+
+/* Product imagery and information now read as one quiet collector card.
+   Direct-child selectors leave Dawn's badge overlay and click handling intact. */
+.product-card-wrapper .card--standard > .card__inner {
+  background-color: #19191c;
+  box-shadow: inset 0 0 0 1px var(--tungacea-hairline-soft);
+}
+
+.product-card-wrapper .card--standard > .card__content {
+  background-color: #141416;
+  border-right: 1px solid var(--tungacea-hairline-soft);
+  border-bottom: 1px solid var(--tungacea-hairline-soft);
+  border-left: 1px solid var(--tungacea-hairline-soft);
+  padding: 1.4rem 1.4rem 1.6rem;
+}
+
+.product-card-wrapper .card--standard > .card__content .card__information {
+  padding: 0;
+}
+
+.product-card-wrapper .card__media .media,
+.product-card-wrapper .card__inner .placeholder-svg {
+  background-color: #19191c;
+}
+
+@media screen and (max-width: 749px) {
+  .product-card-wrapper .card--standard > .card__content {
+    padding: 1.2rem 1.2rem 1.4rem;
   }
 }
