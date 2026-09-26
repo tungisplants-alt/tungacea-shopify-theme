@@ -61,7 +61,7 @@
       "type": "featured-collection",
       "settings": {
         "collection": "current-drop",
-        "products_to_show": 4,
+        "products_to_show": 6,
         "title": "Aktuelle Auswahl",
         "heading_size": "h1",
         "description": "<p>Eine limitierte Auswahl neu verfügbarer Exemplare.</p>",
@@ -80,7 +80,7 @@
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
-        "swipe_on_mobile": false,
+        "swipe_on_mobile": true,
         "padding_top": 64,
         "padding_bottom": 52
       }
