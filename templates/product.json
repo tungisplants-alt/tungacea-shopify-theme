@@ -45,10 +45,6 @@
             "show_gift_card_recipient": true
           }
         },
-        "description": {
-          "type": "description",
-          "settings": {}
-        },
         "specimen": {
           "type": "specimen",
           "settings": {
@@ -74,6 +70,10 @@
             "shipping_info": ""
           }
         },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
         "share": {
           "type": "share",
           "settings": {
@@ -88,8 +88,8 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
-        "description",
         "specimen",
+        "description",
         "share"
       ],
       "settings": {
