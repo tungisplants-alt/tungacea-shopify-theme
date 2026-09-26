@@ -79,8 +79,8 @@
         "show_vendor": false,
         "show_rating": false,
         "quick_add": "none",
-        "columns_mobile": "1",
-        "swipe_on_mobile": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
         "padding_top": 64,
         "padding_bottom": 52
       }
