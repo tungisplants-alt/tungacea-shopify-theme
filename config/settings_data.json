@@ -142,10 +142,20 @@
     },
     "content_for_index": [],
     "blocks": {
-      "14060646107696862457": {
-        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+      "339036956232728707": {
+        "type": "shopify://apps/eu-widerrufsbutton/blocks/withdrawal-link/019e3842-e8eb-772d-9292-20f5ccbc0337",
         "disabled": false,
-        "settings": {}
+        "settings": {
+          "style": "button",
+          "bold": true,
+          "underline": true,
+          "underline_thickness": 1,
+          "link_color": "",
+          "size": "middle",
+          "border_radius": 4,
+          "text_color": "#ffffff",
+          "background_color": "#000000"
+        }
       }
     },
     "color_schemes": {
