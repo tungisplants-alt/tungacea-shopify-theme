@@ -912,6 +912,13 @@
           "label": "Links zu Richtlinien",
           "info": "[Richtlinien verwalten](/admin/settings/legal)"
         },
+        "show_withdrawal": {
+          "label": "Widerruf-Link zeigen",
+          "info": "Verlinkt auf /a/withdrawal. Braucht die installierte Widerrufs-App; ohne sie führt der Link ins Leere."
+        },
+        "show_withdrawal_bottom": {
+          "label": "Widerruf zusätzlich in der Fusszeile zeigen"
+        },
         "header__9": {
           "content": "Versorgungsunternehmen"
         },

@@ -106,6 +106,24 @@
                 </li>
               {%- endif -%}
             {%- endfor -%}
+            {%- comment -%}
+              Widerruf — the app embed only styles links to /a/withdrawal, it never
+              creates one. The `anv-withdrawal-button` class is the app's documented
+              opt-out: with it, its injected `!important` rules (black on black here)
+              are skipped and the link keeps Tungacea's own styling. The plain
+              `/a/withdrawal` href is deliberate — the app's locale script rewrites it
+              to the visitor's language root at runtime.
+            {%- endcomment -%}
+            {%- if section.settings.show_withdrawal -%}
+              <li>
+                <a
+                  href="/a/withdrawal"
+                  class="tungacea-footer__link tungacea-footer__withdrawal anv-withdrawal-button link"
+                >
+                  {{- 'sections.footer.withdrawal_link' | t -}}
+                </a>
+              </li>
+            {%- endif -%}
           </ul>
         </div>
       </details>
@@ -164,6 +182,19 @@
       <small class="tungacea-footer__copyright copyright__content">
         &copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}
       </small>
+
+      {%- comment -%}
+        Second, always-reachable placement. The legal group above can be switched
+        off or collapsed on mobile; this one sits in the bottom bar on every page.
+      {%- endcomment -%}
+      {%- if section.settings.show_withdrawal and section.settings.show_withdrawal_bottom -%}
+        <a
+          href="/a/withdrawal"
+          class="tungacea-footer__withdrawal tungacea-footer__withdrawal--bottom anv-withdrawal-button link"
+        >
+          {{- 'sections.footer.withdrawal_link' | t -}}
+        </a>
+      {%- endif -%}
 
       {%- if section.settings.payment_enable and shop.enabled_payment_types.size > 0 -%}
         <ul
@@ -352,6 +383,19 @@
       "default": true,
       "label": "t:sections.footer.settings.show_policy.label",
       "info": "t:sections.footer.settings.show_policy.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_withdrawal",
+      "default": true,
+      "label": "t:sections.footer.settings.show_withdrawal.label",
+      "info": "t:sections.footer.settings.show_withdrawal.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_withdrawal_bottom",
+      "default": true,
+      "label": "t:sections.footer.settings.show_withdrawal_bottom.label"
     },
     {
       "type": "header",

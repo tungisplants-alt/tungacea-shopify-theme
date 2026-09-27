@@ -1064,6 +1064,13 @@
           "label": "Policy links",
           "info": "[Manage policies](/admin/settings/legal)"
         },
+        "show_withdrawal": {
+          "label": "Show withdrawal link",
+          "info": "Links to /a/withdrawal. Requires the installed withdrawal app; without it the link leads nowhere."
+        },
+        "show_withdrawal_bottom": {
+          "label": "Also show withdrawal in the bottom bar"
+        },
         "margin_top": {
           "label": "Top margin"
         },
