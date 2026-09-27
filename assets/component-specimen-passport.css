@@ -99,13 +99,13 @@
   background: rgb(var(--tungacea-accent-bright));
 }
 .specimen-passport__status--reserved {
-  color: rgb(var(--tungacea-accent-bright));
+  color: rgb(var(--tungacea-accent-text));
 }
 .specimen-passport__status--reserved::before {
   background: rgb(var(--tungacea-accent-bright));
 }
 .specimen-passport__status--sold {
-  color: rgba(185, 178, 169, 0.5);
+  color: rgba(185, 178, 169, 0.68);
 }
 .specimen-passport__status--sold::before {
   background: rgba(185, 178, 169, 0.32);

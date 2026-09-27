@@ -657,6 +657,10 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   --tungacea-oxblood: 110, 28, 40;       /* #6E1C28 — deep button / panel red */
   --tungacea-wine: 78, 20, 30;           /* #4E141E — deepest wine */
   --tungacea-accent-bright: 177, 61, 76; /* #B13D4C — clearer small accents */
+  /* #CC6070 — für kleinen Text auf Schwarz. accent-bright erreicht bei ~10 px
+     nur 3,43:1 und fällt damit unter die 4,5:1 für kleine Schrift; als Punkt,
+     Linie oder Rand bleibt accent-bright richtig. */
+  --tungacea-accent-text: 204, 96, 112;
   --tungacea-hairline-accent: rgba(110, 28, 40, 0.32);
 }
 

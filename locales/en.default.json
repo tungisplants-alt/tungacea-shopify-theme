@@ -137,6 +137,7 @@
       },
       "specimen_flags": {
         "new": "New",
+        "unicorn": "Unicorn",
         "rare": "Rare",
         "sale": "Sale"
       },

@@ -17,12 +17,16 @@
              Never shown on a specimen that is no longer available.
   - Selten — set per specimen: metafield `custom.is_rare` (true), or the
              product tag `selten` or `rare`.
+  - Unicorn — the top rarity step: metafield `custom.is_unicorn` (true), or the
+             product tag `unicorn`. It outranks Selten, which is then hidden:
+             a unicorn is rare by definition and both together read as padding.
   - Sale   — automatic: an available specimen whose compare-at price is higher
              than its price.
 {% endcomment %}
 {%- liquid
   assign flag_new = false
   assign flag_rare = false
+  assign flag_unicorn = false
   assign flag_sale = false
   assign tagged_new = false
 
@@ -34,10 +38,20 @@
     if specimen_tag_key == 'selten' or specimen_tag_key == 'rare'
       assign flag_rare = true
     endif
+    if specimen_tag_key == 'unicorn'
+      assign flag_unicorn = true
+    endif
   endfor
 
   if product.metafields.custom.is_rare.value == true
     assign flag_rare = true
+  endif
+
+  if product.metafields.custom.is_unicorn.value == true
+    assign flag_unicorn = true
+  endif
+  if flag_unicorn
+    assign flag_rare = false
   endif
 
   if product.available and product.compare_at_price > product.price
@@ -64,11 +78,16 @@
     endif
   endif
 -%}
-{%- if flag_new or flag_rare or flag_sale -%}
+{%- if flag_new or flag_unicorn or flag_rare or flag_sale -%}
   <div class="specimen-card__flags" data-testid="specimen-card-flags">
     {%- if flag_new -%}
       <span class="specimen-card__flag specimen-card__flag--new" data-testid="specimen-card-flag-new">
         {{- 'products.product.specimen_flags.new' | t -}}
+      </span>
+    {%- endif -%}
+    {%- if flag_unicorn -%}
+      <span class="specimen-card__flag specimen-card__flag--unicorn" data-testid="specimen-card-flag-unicorn">
+        {{- 'products.product.specimen_flags.unicorn' | t -}}
       </span>
     {%- endif -%}
     {%- if flag_rare -%}
