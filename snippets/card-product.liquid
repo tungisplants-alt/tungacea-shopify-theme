@@ -170,6 +170,7 @@
             {%- if specimen_id != blank -%}
               <div class="specimen-card__id" data-testid="specimen-card-id">{{ specimen_id | escape }}</div>
             {%- endif -%}
+            {%- render 'specimen-card-flags', product: card_product -%}
             <h3
               class="card__heading specimen-card__title{% if card_product.featured_media or settings.card_style == 'standard' %} h5{% endif %}"
               {% if card_product.featured_media or settings.card_style == 'card' %}

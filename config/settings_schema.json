@@ -1286,6 +1286,17 @@
         "id": "sold_out_badge_color_scheme",
         "label": "t:settings_schema.badges.settings.sold_out_badge_color_scheme.label",
         "default": "scheme-3"
+      },
+      {
+        "type": "range",
+        "id": "specimen_new_days",
+        "min": 0,
+        "max": 90,
+        "step": 5,
+        "unit": "t:settings_schema.badges.settings.specimen_new_days.unit",
+        "label": "t:settings_schema.badges.settings.specimen_new_days.label",
+        "info": "t:settings_schema.badges.settings.specimen_new_days.info",
+        "default": 30
       }
     ]
   },

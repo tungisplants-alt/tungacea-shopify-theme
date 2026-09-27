@@ -1,0 +1,85 @@
+{% comment %}
+  Tungacea — Specimen Card flags (Neu / Selten / Sale).
+
+  Renders the small status flags shown above a specimen card title. Kept as a
+  dedicated snippet so the shared card-product snippet stays lean and stays
+  within Theme Check's Liquid complexity budget, and so the markup can be
+  rendered and checked on its own.
+
+  Emits nothing at all when no flag applies.
+
+  Accepts:
+  - product: {Object} Product Liquid object (required)
+
+  How each flag is set:
+  - Neu    — automatic: the product was published within `settings.specimen_new_days`
+             days. Can be forced with the product tag `neu` or `new`.
+             Never shown on a specimen that is no longer available.
+  - Selten — set per specimen: metafield `custom.is_rare` (true), or the
+             product tag `selten` or `rare`.
+  - Sale   — automatic: an available specimen whose compare-at price is higher
+             than its price.
+{% endcomment %}
+{%- liquid
+  assign flag_new = false
+  assign flag_rare = false
+  assign flag_sale = false
+  assign tagged_new = false
+
+  for specimen_tag in product.tags
+    assign specimen_tag_key = specimen_tag | downcase | strip
+    if specimen_tag_key == 'neu' or specimen_tag_key == 'new'
+      assign tagged_new = true
+    endif
+    if specimen_tag_key == 'selten' or specimen_tag_key == 'rare'
+      assign flag_rare = true
+    endif
+  endfor
+
+  if product.metafields.custom.is_rare.value == true
+    assign flag_rare = true
+  endif
+
+  if product.available and product.compare_at_price > product.price
+    assign flag_sale = true
+  endif
+
+  comment
+    A specimen that is sold or reserved is not new any more, whatever its
+    publication date says.
+  endcomment
+  if product.available
+    if tagged_new
+      assign flag_new = true
+    else
+      assign specimen_new_days = settings.specimen_new_days | default: 30
+      if specimen_new_days > 0 and product.published_at
+        assign moment_now = 'now' | date: '%s' | times: 1
+        assign moment_published = product.published_at | date: '%s' | times: 1
+        assign specimen_age_days = moment_now | minus: moment_published | divided_by: 86400
+        if specimen_age_days >= 0 and specimen_age_days < specimen_new_days
+          assign flag_new = true
+        endif
+      endif
+    endif
+  endif
+-%}
+{%- if flag_new or flag_rare or flag_sale -%}
+  <div class="specimen-card__flags" data-testid="specimen-card-flags">
+    {%- if flag_new -%}
+      <span class="specimen-card__flag specimen-card__flag--new" data-testid="specimen-card-flag-new">
+        {{- 'products.product.specimen_flags.new' | t -}}
+      </span>
+    {%- endif -%}
+    {%- if flag_rare -%}
+      <span class="specimen-card__flag specimen-card__flag--rare" data-testid="specimen-card-flag-rare">
+        {{- 'products.product.specimen_flags.rare' | t -}}
+      </span>
+    {%- endif -%}
+    {%- if flag_sale -%}
+      <span class="specimen-card__flag specimen-card__flag--sale" data-testid="specimen-card-flag-sale">
+        {{- 'products.product.specimen_flags.sale' | t -}}
+      </span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

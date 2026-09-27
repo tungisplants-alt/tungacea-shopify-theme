@@ -126,6 +126,11 @@
         "available": "Verfügbar",
         "sold": "Verkauft"
       },
+      "specimen_flags": {
+        "new": "Neu",
+        "rare": "Selten",
+        "sale": "Sale"
+      },
       "specimen": {
         "eyebrow": "Tungacea Sammlerarchiv",
         "heading": "Botanische Dokumentation",

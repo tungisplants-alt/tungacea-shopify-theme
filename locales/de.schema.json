@@ -197,6 +197,11 @@
     "badges": {
       "name": "Badges",
       "settings": {
+        "specimen_new_days": {
+          "label": "„Neu“-Kennzeichen: Tage nach Veröffentlichung",
+          "info": "Wie lange ein neu veröffentlichtes Exemplar das Kennzeichen „Neu“ auf seiner Karte trägt. 0 schaltet die Automatik ab; das Produkt-Tag „neu“ zeigt es immer.",
+          "unit": "Tage"
+        },
         "position": {
           "options__1": {
             "label": "Unten links"

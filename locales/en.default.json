@@ -135,6 +135,11 @@
         "available": "Available",
         "sold": "Sold"
       },
+      "specimen_flags": {
+        "new": "New",
+        "rare": "Rare",
+        "sale": "Sale"
+      },
       "specimen": {
         "eyebrow": "Tungacea Archive Record",
         "heading": "Botanical Documentation",

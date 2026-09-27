@@ -97,6 +97,11 @@
     "badges": {
       "name": "Badges",
       "settings": {
+        "specimen_new_days": {
+          "label": "“New” flag: days after publishing",
+          "info": "How long a newly published specimen carries the New flag on its card. 0 turns the automatic flag off; the product tag “new” always shows it.",
+          "unit": "days"
+        },
         "position": {
           "options__1": {
             "label": "Bottom left"

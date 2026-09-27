@@ -40,6 +40,41 @@
   flex: 0 0 auto;
 }
 
+/* ---------- Flags: Neu / Selten / Sale ----------
+   Three quiet specimen annotations, not shop stickers. Neu is an outline only;
+   Selten and Sale are filled in the two oxblood tones so the hierarchy reads
+   without colour alone carrying the meaning — the word does that. */
+.product-card-wrapper .specimen-card__flags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.product-card-wrapper .specimen-card__flag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.95rem;
+  line-height: 1;
+  /* extra right padding: letter-spacing adds a trailing gap after the last glyph */
+  padding: 0.5rem 0.62rem 0.45rem 0.8rem;
+  border: 1px solid var(--tungacea-hairline);
+  color: var(--tungacea-muted);
+  white-space: nowrap;
+}
+.product-card-wrapper .specimen-card__flag--rare {
+  background: rgb(var(--tungacea-accent-deep));
+  border-color: rgb(var(--tungacea-accent));
+  color: #f7f3ee;
+}
+.product-card-wrapper .specimen-card__flag--sale {
+  background: rgb(var(--tungacea-accent));
+  border-color: rgb(var(--tungacea-accent));
+  color: #f7f3ee;
+}
+
 /* Title — the primary line */
 .product-card-wrapper .card__heading.specimen-card__title {
   margin: 0;
@@ -209,6 +244,11 @@
   .product-card-wrapper .specimen-card__traits {
     font-size: 0.95rem;
     letter-spacing: 0.14em;
+  }
+  .product-card-wrapper .specimen-card__flag {
+    font-size: 0.9rem;
+    letter-spacing: 0.14em;
+    padding: 0.45rem 0.55rem 0.4rem 0.7rem;
   }
   .product-card-wrapper .specimen-card__footer {
     padding-top: 1.1rem;
