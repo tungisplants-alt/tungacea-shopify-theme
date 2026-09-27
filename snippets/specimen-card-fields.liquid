@@ -23,7 +23,7 @@
   assign specimen_id = product.metafields.custom.specimen_id.value | default: '' | strip
   assign specimen_parentage = product.metafields.custom.parentage.value | default: '' | strip
   assign specimen_trait = product.metafields.custom.primary_trait.value | default: '' | strip
-  assign specimen_stage = product.metafields.custom.growth_stage.value | default: '' | strip
+  assign specimen_stage = product.metafields.custom.breeder_source.value | default: '' | strip
   assign specimen_status_raw = product.metafields.custom.specimen_status.value | default: '' | strip
 
   assign specimen_traits = ''
