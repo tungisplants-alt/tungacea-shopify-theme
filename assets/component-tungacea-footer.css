@@ -329,23 +329,12 @@
    near-black footer. Everything below is Tungacea's own styling.
 
    In the legal list it reads brighter than its neighbours, because it is an
-   action and not another page to read. In the bottom bar it is a quiet outlined
-   chip, reachable from every page even when the legal group is collapsed. */
+   action and not another page to read. That difference is enough on its own —
+   an oxblood dot in front of it was one signal too many and has been removed.
+   In the bottom bar it is a quiet outlined chip, reachable from every page even
+   when the legal group is collapsed. */
 .tungacea-footer .tungacea-footer__link.tungacea-footer__withdrawal {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.7rem;
   color: rgb(var(--color-foreground));
-}
-
-.tungacea-footer .tungacea-footer__link.tungacea-footer__withdrawal::before {
-  content: '';
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  flex: 0 0 auto;
-  background: rgb(var(--tungacea-accent-bright));
-  transform: translateY(-0.2rem);
 }
 
 .tungacea-footer .tungacea-footer__withdrawal--bottom {
