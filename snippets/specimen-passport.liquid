@@ -1,281 +1,248 @@
 {% comment %}
-  Tungacea — Specimen Passport (product page).
+  Tungacea — Botanische Dokumentation (Produktseite).
 
-  Upgrades the product page `specimen` block into a botanical archive record
-  while keeping the standard Dawn purchasing flow untouched. Rendered from
-  sections/main-product.liquid via:
-
+  Rendered from sections/main-product.liquid via:
     {% render 'specimen-passport', product: product, block: block %}
 
-  Data model is shared with the Specimen Product Cards. Primary values come
-  from product metafields (custom.*), with safe fallbacks to the older
-  metafields and to existing Theme Editor block values.
+  Everything here is composed from click values. The merchant selects from fixed
+  lists and types nothing; this snippet turns those values into sentences, and
+  because the values are fixed the sentences exist in every locale.
+
+  A field left empty produces no line at all — no "unknown", no gap.
+
+  Reads (all namespace `custom`):
+  - lieferumfang    Auswahl  — what the buyer receives
+  - mutterpflanze   Referenz — metaobject `mutterpflanze`
+  - stadium         Auswahl
+  - blaetter        Zahl
+  - blattlaenge_cm  Zahl
+  - bewurzelung     Auswahl  — also derives the experience hint
+  - zuechter        Referenz — metaobject `person`
+  - bezogen_von     Referenz — metaobject `person`
+  - specimen_id     Text
+  - aufnahmedatum   Datum
 
   Accepts:
   - product: {Object} Product Liquid object (required)
-  - block:   {Object} main-product `specimen` block (required, for settings/fallbacks)
+  - block:   {Object} main-product `specimen` block (required)
 {% endcomment %}
 
 {%- liquid
   assign mf = product.metafields.custom
 
-  # ---- Specimen ID (custom.specimen_id -> custom.plant_id -> block value) ----
-  assign passport_id = mf.specimen_id.value | default: mf.plant_id.value | default: block.settings.plant_id | default: '' | strip
+  assign sp_lieferumfang = mf.lieferumfang.value | default: '' | strip
+  assign sp_stadium = mf.stadium.value | default: '' | strip
+  assign sp_bewurzelung = mf.bewurzelung.value | default: '' | strip
+  assign sp_blaetter = mf.blaetter.value
+  assign sp_blattlaenge = mf.blattlaenge_cm.value
+  assign sp_id = mf.specimen_id.value | default: '' | strip
+  assign sp_datum = mf.aufnahmedatum.value
 
-  # ---- Single-line detail fields ----
-  assign passport_parentage = mf.parentage.value | default: block.settings.parentage | default: '' | strip
-  assign passport_genetics = mf.genetics.value | default: block.settings.genetics | default: '' | strip
-  assign passport_trait = mf.primary_trait.value | default: '' | strip
-  assign passport_stage = mf.growth_stage.value | default: '' | strip
-  assign passport_propagation = mf.propagation.value | default: '' | strip
-  assign passport_breeder = mf.breeder_source.value | default: block.settings.breeder | default: '' | strip
-  assign passport_origin = mf.origin.value | default: '' | strip
-  assign passport_rarity = mf.rarity.value | default: '' | strip
-  assign passport_photo = mf.photo_conditions.value | default: block.settings.photo_conditions | default: '' | strip
-  assign passport_saletype = mf.sale_type.value | default: '' | strip
+  assign mutter = mf.mutterpflanze.value
+  assign zuechter = mf.zuechter.value
+  assign bezogen = mf.bezogen_von.value
 
-  # ---- Rich-text fields (rendered safely by Shopify native metafield filters) ----
-  assign passport_care_plain = mf.care | metafield_text | strip
-  capture passport_care_html
-    echo mf.care | metafield_tag
-  endcapture
+  comment
+    Lieferumfang is the lead sentence. An explicit case, not a translation key
+    assembled at runtime: every key stays verifiable, and the stored values
+    carry umlauts that would not survive being turned into a handle.
+  endcomment
+  assign lead = ''
+  case sp_lieferumfang
+    when 'Dieses Exemplar'
+      assign lead = 'products.product.specimen.delivery_exact' | t
+    when 'Cutting vom abgebildeten Exemplar'
+      assign lead = 'products.product.specimen.delivery_cutting' | t
+    when 'Klon aus dieser Linie'
+      assign lead = 'products.product.specimen.delivery_clone' | t
+    when 'Sämling aus dieser Kreuzung'
+      assign lead = 'products.product.specimen.delivery_seedling' | t
+  endcase
 
-  assign passport_notes_plain = mf.specimen_notes | metafield_text | strip
-  capture passport_notes_html
-    echo mf.specimen_notes | metafield_tag
-  endcapture
+  comment
+    The experience hint is derived, never entered. It therefore cannot be
+    forgotten on a product where it matters. Two parts so the opening can be
+    set in bold without markup inside a translation string.
+  endcomment
+  assign rooting_label = ''
+  assign hint_title = ''
+  assign hint_body = ''
+  case sp_bewurzelung
+    when 'Unbewurzelt'
+      assign rooting_label = 'products.product.specimen.rooting_none' | t
+      assign hint_title = 'products.product.specimen.hint_unrooted_title' | t
+      assign hint_body = 'products.product.specimen.hint_unrooted_body' | t
+    when 'Frisch bewurzelt'
+      assign rooting_label = 'products.product.specimen.rooting_fresh' | t
+      assign hint_title = 'products.product.specimen.hint_fresh_title' | t
+      assign hint_body = 'products.product.specimen.hint_fresh_body' | t
+    when 'Etabliert bewurzelt'
+      assign rooting_label = 'products.product.specimen.rooting_established' | t
+  endcase
 
-  assign passport_shipping_mf_plain = mf.shipping_note | metafield_text | strip
-  capture passport_shipping_mf_html
-    echo mf.shipping_note | metafield_tag
-  endcapture
-  assign passport_shipping_html = ''
-  if passport_shipping_mf_plain != blank
-    assign passport_shipping_html = passport_shipping_mf_html
-  else
-    capture passport_shipping_block_html
-      echo block.settings.shipping_info
-    endcapture
-    assign passport_shipping_block_plain = passport_shipping_block_html | strip_html | strip
-    if passport_shipping_block_plain != blank
-      assign passport_shipping_html = passport_shipping_block_html
-    endif
+  assign stage_label = ''
+  case sp_stadium
+    when 'Cutting'
+      assign stage_label = 'products.product.specimen.stage_cutting' | t
+    when 'Sämling'
+      assign stage_label = 'products.product.specimen.stage_seedling' | t
+    when 'Jungpflanze'
+      assign stage_label = 'products.product.specimen.stage_young' | t
+    when 'Etabliert'
+      assign stage_label = 'products.product.specimen.stage_established' | t
+    when 'Mutterpflanze'
+      assign stage_label = 'products.product.specimen.stage_mother' | t
+  endcase
+
+  comment
+    Specs line: rooting, leaves, leaf length. Only the parts that exist. A leaf
+    count of zero is a real value, so it is tested for nil and not for
+    truthiness, which would swallow it.
+  endcomment
+  assign spec_parts = ''
+  if rooting_label != blank
+    assign spec_parts = spec_parts | append: rooting_label | append: '||'
+  elsif stage_label != blank
+    assign spec_parts = spec_parts | append: stage_label | append: '||'
   endif
-  assign passport_shipping_plain = passport_shipping_html | strip_html | strip
-
-  # ---- Exact specimen (boolean metafield, sale_type only as blank fallback) ----
-  assign passport_exact = false
-  if mf.exact_specimen.value == true
-    assign passport_exact = true
-  elsif mf.exact_specimen == blank
-    assign saletype_dc = passport_saletype | downcase
-    if saletype_dc contains 'exact specimen'
-      assign passport_exact = true
-    endif
+  if sp_blaetter != nil
+    assign leaves = 'products.product.specimen.leaves' | t: count: sp_blaetter
+    assign spec_parts = spec_parts | append: leaves | append: '||'
   endif
+  if sp_blattlaenge != nil
+    assign leaflen = 'products.product.specimen.leaf_length' | t: cm: sp_blattlaenge
+    assign spec_parts = spec_parts | append: leaflen | append: '||'
+  endif
+  assign spec_list = spec_parts | split: '||'
 
-  # ---- Status (custom.specimen_status, else derive Available/Sold) ----
-  assign status_raw = mf.specimen_status.value | default: '' | strip
-  assign status_label = status_raw
-  assign status_state = 'custom'
-  if status_raw == blank
-    if product.available
-      assign status_label = 'products.product.specimen_status.available' | t
-      assign status_state = 'available'
+  comment
+    Mother plant. The photo credit only appears when the photographer is
+    somebody else — an empty `fotograf` means the picture is Tung's own.
+  endcomment
+  assign mutter_name = ''
+  assign mutter_wo = ''
+  assign mutter_credit = ''
+  if mutter != blank
+    assign mutter_name = mutter.bezeichnung.value | default: '' | strip
+    assign mutter_besitzer = mutter.besitzer.value
+    if mutter_besitzer != blank
+      assign besitzer_name = mutter_besitzer.instagram.value | default: mutter_besitzer.name.value | strip
+      assign mutter_wo = 'products.product.specimen.mother_at' | t: who: besitzer_name
     else
-      assign status_label = 'products.product.specimen_status.sold' | t
-      assign status_state = 'sold'
+      assign mutter_wo = 'products.product.specimen.mother_own' | t
     endif
-  else
-    assign status_dc = status_raw | downcase
-    if status_dc contains 'reserv'
-      assign status_state = 'reserved'
-    elsif status_dc contains 'coming'
-      assign status_state = 'coming'
-    elsif status_dc contains 'sold'
-      assign status_state = 'sold'
-    elsif status_dc contains 'avail'
-      assign status_state = 'available'
+
+    assign fotograf = mutter.fotograf.value
+    if fotograf != blank
+      assign fotograf_name = fotograf.instagram.value | default: fotograf.name.value | strip
+      assign mutter_credit = 'products.product.specimen.photo_credit' | t: who: fotograf_name
     endif
   endif
 
-  # ---- Visibility: at least one meaningful field / note / exact value ----
-  # A derived Available/Sold status alone must NOT reveal the passport.
-  assign show_passport = false
-  if passport_id != blank or passport_parentage != blank or passport_genetics != blank or passport_trait != blank or passport_stage != blank or passport_propagation != blank or passport_breeder != blank or passport_origin != blank or passport_rarity != blank or passport_photo != blank or passport_saletype != blank or passport_care_plain != blank or passport_notes_plain != blank or passport_shipping_plain != blank or passport_exact
-    assign show_passport = true
+  assign zuechter_name = ''
+  if zuechter != blank
+    assign zuechter_name = zuechter.name.value | default: '' | strip
+  endif
+  assign bezogen_name = ''
+  if bezogen != blank
+    assign bezogen_name = bezogen.instagram.value | default: bezogen.name.value | strip
   endif
 
-  # ---- Localized labels (locale keys; optional Theme Editor override wins) ----
-  assign t_id = 'products.product.specimen.id_label' | t
-  assign t_parentage = 'products.product.specimen.parentage' | t
-  assign t_genetics = 'products.product.specimen.genetics' | t
-  assign t_trait = 'products.product.specimen.primary_trait' | t
-  assign t_stage = 'products.product.specimen.growth_stage' | t
-  assign t_propagation = 'products.product.specimen.propagation' | t
-  assign t_breeder = 'products.product.specimen.breeder' | t
-  assign t_origin = 'products.product.specimen.origin' | t
-  assign t_rarity = 'products.product.specimen.rarity' | t
-  assign t_care = 'products.product.specimen.care' | t
-  assign t_photo = 'products.product.specimen.photo_conditions' | t
-  assign t_saletype = 'products.product.specimen.sale_type' | t
-  assign t_notes = 'products.product.specimen.notes' | t
-  assign t_shipping = 'products.product.specimen.shipping' | t
-
-  assign lbl_parentage = block.settings.label_parentage | default: t_parentage
-  assign lbl_genetics = block.settings.label_genetics | default: t_genetics
-  assign lbl_trait = t_trait
-  assign lbl_stage = t_stage
-  assign lbl_propagation = t_propagation
-  assign lbl_breeder = block.settings.label_breeder | default: t_breeder
-  assign lbl_origin = t_origin
-  assign lbl_rarity = block.settings.label_rarity | default: t_rarity
-  assign lbl_care = block.settings.label_care | default: t_care
-  assign lbl_photo = block.settings.label_photo_conditions | default: t_photo
-  assign lbl_saletype = t_saletype
-  assign lbl_notes = t_notes
-  assign lbl_shipping = block.settings.label_shipping | default: t_shipping
-  assign lbl_id = block.settings.label_plant_id | default: t_id
-
-  # ---- Localized heading / eyebrow / exact-specimen notice (override wins) ----
-  assign passport_eyebrow = block.settings.eyebrow | default: '' | strip
-  if passport_eyebrow == blank
-    assign passport_eyebrow = 'products.product.specimen.eyebrow' | t
-  endif
-  assign passport_heading = block.settings.heading | default: '' | strip
-  if passport_heading == blank
-    assign passport_heading = 'products.product.specimen.heading' | t
-  endif
-  assign passport_exact_notice = block.settings.exact_notice | default: '' | strip
-  if passport_exact_notice == blank
-    assign passport_exact_notice = 'products.product.specimen.exact_notice' | t
+  assign has_lower = false
+  if zuechter_name != blank or bezogen_name != blank or sp_id != blank
+    assign has_lower = true
   endif
 
-  assign show_status = block.settings.show_status | default: true, allow_false: true
-  assign show_exact = block.settings.show_exact_notice | default: true, allow_false: true
-  assign framed = block.settings.show_archive_frame | default: true, allow_false: true
+  comment
+    The date format lives in the locale file. A German and an English reader do
+    not write the same date the same way, so the pattern is translated too.
+  endcomment
+  assign datum_fmt = ''
+  if sp_datum != nil
+    assign date_pattern = 'products.product.specimen.date_format' | t
+    assign datum_fmt = sp_datum | date: date_pattern
+  endif
+
+  assign has_anything = false
+  if lead != blank or spec_list.size > 0 or mutter_name != blank or has_lower
+    assign has_anything = true
+  endif
 -%}
 
-{%- if show_passport -%}
+{%- if has_anything -%}
+  {{ 'component-specimen-passport.css' | asset_url | stylesheet_tag }}
+
   <section
-    class="specimen-passport quick-add-hidden{% if framed %} specimen-passport--framed{% endif %}"
+    class="specimen-passport quick-add-hidden"
     aria-labelledby="SpecimenPassport-title-{{ block.id }}"
     {{ block.shopify_attributes }}
   >
     <header class="specimen-passport__header">
       <div class="specimen-passport__heading-group">
-        {%- if passport_eyebrow != blank -%}
-          <p class="specimen-passport__eyebrow">{{ passport_eyebrow | escape }}</p>
-        {%- endif -%}
+        <p class="specimen-passport__eyebrow">{{ 'products.product.specimen.eyebrow' | t }}</p>
         <h2 class="specimen-passport__title" id="SpecimenPassport-title-{{ block.id }}">
-          {{- passport_heading | escape -}}
+          {{- 'products.product.specimen.heading' | t -}}
         </h2>
       </div>
-
-      {%- if passport_id != blank or show_status -%}
-        <div class="specimen-passport__meta">
-          {%- if passport_id != blank -%}
-            <p class="specimen-passport__id">
-              <span class="visually-hidden">{{ lbl_id | escape }}:</span>
-              {{- passport_id | escape -}}
-            </p>
-          {%- endif -%}
-          {%- if show_status -%}
-            <p class="specimen-passport__status specimen-passport__status--{{ status_state }}">
-              {{- status_label | escape -}}
-            </p>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
     </header>
 
-    {%- if passport_exact and show_exact -%}
-      <p class="specimen-passport__exact" role="note">
-        {{- passport_exact_notice | escape -}}
+    {%- if lead != blank -%}
+      <p class="specimen-passport__lead" data-testid="specimen-lead">
+        <strong>{{ lead }}</strong>
+        {%- if datum_fmt != blank %}
+          {{ 'products.product.specimen.photographed_on' | t: date: datum_fmt }}
+        {%- endif -%}
       </p>
     {%- endif -%}
 
-    <dl class="specimen-passport__grid">
-      {%- if passport_parentage != blank -%}
-        <div class="specimen-passport__row">
-          <dt class="specimen-passport__label">{{ lbl_parentage | escape }}</dt>
-          <dd class="specimen-passport__value">{{ passport_parentage | escape }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if passport_genetics != blank -%}
-        <div class="specimen-passport__row">
-          <dt class="specimen-passport__label">{{ lbl_genetics | escape }}</dt>
-          <dd class="specimen-passport__value">{{ passport_genetics | escape }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if passport_trait != blank -%}
-        <div class="specimen-passport__row">
-          <dt class="specimen-passport__label">{{ lbl_trait | escape }}</dt>
-          <dd class="specimen-passport__value">{{ passport_trait | escape }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if passport_stage != blank -%}
-        <div class="specimen-passport__row">
-          <dt class="specimen-passport__label">{{ lbl_stage | escape }}</dt>
-          <dd class="specimen-passport__value">{{ passport_stage | escape }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if passport_propagation != blank -%}
-        <div class="specimen-passport__row">
-          <dt class="specimen-passport__label">{{ lbl_propagation | escape }}</dt>
-          <dd class="specimen-passport__value">{{ passport_propagation | escape }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if passport_breeder != blank -%}
-        <div class="specimen-passport__row">
-          <dt class="specimen-passport__label">{{ lbl_breeder | escape }}</dt>
-          <dd class="specimen-passport__value">{{ passport_breeder | escape }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if passport_origin != blank -%}
-        <div class="specimen-passport__row">
-          <dt class="specimen-passport__label">{{ lbl_origin | escape }}</dt>
-          <dd class="specimen-passport__value">{{ passport_origin | escape }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if passport_rarity != blank -%}
-        <div class="specimen-passport__row">
-          <dt class="specimen-passport__label">{{ lbl_rarity | escape }}</dt>
-          <dd class="specimen-passport__value">{{ passport_rarity | escape }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if passport_care_plain != blank -%}
-        <div class="specimen-passport__row">
-          <dt class="specimen-passport__label">{{ lbl_care | escape }}</dt>
-          <dd class="specimen-passport__value rte">{{ passport_care_html }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if passport_photo != blank -%}
-        <div class="specimen-passport__row">
-          <dt class="specimen-passport__label">{{ lbl_photo | escape }}</dt>
-          <dd class="specimen-passport__value">{{ passport_photo | escape }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if passport_saletype != blank -%}
-        <div class="specimen-passport__row">
-          <dt class="specimen-passport__label">{{ lbl_saletype | escape }}</dt>
-          <dd class="specimen-passport__value">{{ passport_saletype | escape }}</dd>
-        </div>
-      {%- endif -%}
-    </dl>
+    {%- if spec_list.size > 0 -%}
+      <p class="specimen-passport__specs" data-testid="specimen-specs">
+        {%- for part in spec_list -%}
+          {{- part -}}{%- unless forloop.last %} · {% endunless -%}
+        {%- endfor -%}
+      </p>
+    {%- endif -%}
 
-    {%- if passport_notes_plain != blank -%}
-      <div class="specimen-passport__note">
-        <p class="specimen-passport__note-label">{{ lbl_notes | escape }}</p>
-        <div class="specimen-passport__note-body rte">{{ passport_notes_html }}</div>
+    {%- if hint_title != blank -%}
+      <p class="specimen-passport__hint" role="note" data-testid="specimen-hint">
+        <strong>{{ hint_title }}</strong> {{ hint_body }}
+      </p>
+    {%- endif -%}
+
+    {%- if mutter_name != blank -%}
+      <div class="specimen-passport__mother" data-testid="specimen-mother">
+        <p class="specimen-passport__mother-label">{{ 'products.product.specimen.mother' | t }}</p>
+        <p class="specimen-passport__mother-name">{{ mutter_name | escape }}</p>
+        {%- if mutter_wo != blank -%}
+          <p class="specimen-passport__mother-where">{{ mutter_wo }}</p>
+        {%- endif -%}
+        {%- if mutter_credit != blank -%}
+          <p class="specimen-passport__credit">{{ mutter_credit }}</p>
+        {%- endif -%}
       </div>
     {%- endif -%}
 
-    {%- if passport_shipping_plain != blank -%}
-      <div class="specimen-passport__note">
-        <p class="specimen-passport__note-label">{{ lbl_shipping | escape }}</p>
-        <div class="specimen-passport__note-body rte">{{ passport_shipping_html }}</div>
-      </div>
+    {%- if has_lower -%}
+      <dl class="specimen-passport__grid">
+        {%- if zuechter_name != blank -%}
+          <div class="specimen-passport__row">
+            <dt class="specimen-passport__label">{{ 'products.product.specimen.breeder' | t }}</dt>
+            <dd class="specimen-passport__value" data-testid="specimen-breeder">{{ zuechter_name | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if bezogen_name != blank -%}
+          <div class="specimen-passport__row">
+            <dt class="specimen-passport__label">{{ 'products.product.specimen.sourced' | t }}</dt>
+            <dd class="specimen-passport__value" data-testid="specimen-sourced">{{ bezogen_name | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if sp_id != blank -%}
+          <div class="specimen-passport__row">
+            <dt class="specimen-passport__label">{{ 'products.product.specimen.id_label' | t }}</dt>
+            <dd class="specimen-passport__value" data-testid="specimen-id">{{ sp_id | escape }}</dd>
+          </div>
+        {%- endif -%}
+      </dl>
     {%- endif -%}
   </section>
 {%- endif -%}

@@ -111,6 +111,100 @@
   background: rgba(185, 178, 169, 0.32);
 }
 
+/* ---------- Lead, specs and the derived experience hint ----------
+   The lead is the one sentence answering "what do I actually get". The specs
+   line carries rooting, leaf count and leaf length — the three numbers that
+   decide whether a buyer is disappointed on arrival. The hint is derived from
+   the rooting state and never typed, so it cannot be missing where it matters. */
+.specimen-passport__lead {
+  margin: 2rem 0 0;
+  font-family: var(--font-body-family);
+  font-size: 1.5rem;
+  line-height: 1.5;
+  color: rgb(var(--color-foreground));
+}
+
+.specimen-passport__specs {
+  margin: 0.8rem 0 0;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: rgba(185, 178, 169, 0.72);
+}
+
+.specimen-passport__hint {
+  margin: 2rem 0 0;
+  padding: 1.2rem 0 1.2rem 1.6rem;
+  border-left: 2px solid rgb(var(--tungacea-accent-bright));
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: var(--tungacea-muted);
+}
+.specimen-passport__hint strong {
+  font-weight: 500;
+  color: rgb(var(--color-foreground));
+}
+
+/* ---------- Mother plant — context, clearly not the goods ---------- */
+.specimen-passport__mother {
+  margin: 2.8rem 0 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--tungacea-hairline);
+}
+.specimen-passport__mother-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 0 0.9rem;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--tungacea-muted);
+}
+.specimen-passport__mother-label::before {
+  content: '';
+  width: 1.6rem;
+  height: 1px;
+  flex: 0 0 auto;
+  background: var(--tungacea-hairline);
+}
+.specimen-passport__mother-name {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-heading-family);
+  font-style: italic;
+  font-size: 1.9rem;
+  line-height: 1.2;
+  color: rgb(var(--color-foreground));
+}
+.specimen-passport__mother-where {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--tungacea-muted);
+}
+.specimen-passport__credit {
+  margin: 1rem 0 0;
+  font-family: var(--font-body-family);
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: rgba(185, 178, 169, 0.72);
+}
+
+@media screen and (max-width: 749px) {
+  .specimen-passport__lead {
+    font-size: 1.4rem;
+  }
+  .specimen-passport__mother-name {
+    font-size: 1.7rem;
+  }
+}
+
 /* ---------- Exact specimen notice — prominent but quiet ---------- */
 .specimen-passport__exact {
   margin: 2rem 0 0;
