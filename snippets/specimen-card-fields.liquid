@@ -1,61 +1,81 @@
 {% comment %}
   Tungacea — Specimen Card fields resolver.
 
-  Reads the optional custom metafields for a product and derives the displayed
-  status, then echoes a single delimited payload the product card can split:
+  Reads the product metafields and echoes one delimited payload the shared
+  product card splits apart:
 
-    specimen_id || parentage || traits || status_state || status_label
+    specimen_id || kreuzung || specs || status_state || status_label
 
-  Kept as a dedicated snippet so the shared card-product snippet stays simple
-  and within Theme Check's Liquid complexity budget.
+  The card markup is unchanged; only what fills its slots is. Slot 2 used to
+  hold a typed parentage string and now carries the cross, inherited from the
+  referenced mother plant. Slot 3 used to hold trait and stage and now carries
+  the three numbers a buyer actually needs before clicking: stage, leaf count
+  and leaf length. A wrong expectation about size is the most common reason a
+  rare plant arrives to disappointment.
+
+  Availability is derived from Shopify itself. The former free-text status field
+  matched only English substrings, so a status typed in German fell through to a
+  neutral state — that whole class of mistake is gone with the field.
+
+  Kept as a dedicated snippet so the shared card stays within Theme Check's
+  Liquid complexity budget.
 
   Accepts:
   - product: {Object} Product Liquid object (required)
-
-  Metafields (namespace.key):
-  - custom.specimen_id
-  - custom.parentage
-  - custom.primary_trait
-  - custom.growth_stage
-  - custom.specimen_status
 {% endcomment %}
 {%- liquid
-  assign specimen_id = product.metafields.custom.specimen_id.value | default: '' | strip
-  assign specimen_parentage = product.metafields.custom.parentage.value | default: '' | strip
-  assign specimen_trait = product.metafields.custom.primary_trait.value | default: '' | strip
-  assign specimen_stage = product.metafields.custom.breeder_source.value | default: '' | strip
-  assign specimen_status_raw = product.metafields.custom.specimen_status.value | default: '' | strip
+  assign mf = product.metafields.custom
 
-  assign specimen_traits = ''
-  if specimen_trait != blank and specimen_stage != blank
-    assign specimen_traits = specimen_trait | append: ' · ' | append: specimen_stage
-  elsif specimen_trait != blank
-    assign specimen_traits = specimen_trait
-  elsif specimen_stage != blank
-    assign specimen_traits = specimen_stage
+  assign specimen_id = mf.specimen_id.value | default: '' | strip
+
+  comment
+    The cross comes from the mother plant entry, so it is entered once and every
+    clone of that mother inherits it.
+  endcomment
+  assign kreuzung = ''
+  assign mutter = mf.mutterpflanze.value
+  if mutter != blank
+    assign kreuzung = mutter.bezeichnung.value | default: '' | strip
   endif
 
-  assign specimen_status_label = specimen_status_raw
-  assign specimen_status_state = 'custom'
-  if specimen_status_raw == blank
-    if product.available
-      assign specimen_status_label = 'products.product.specimen_status.available' | t
-      assign specimen_status_state = 'available'
-    else
-      assign specimen_status_label = 'products.product.specimen_status.sold' | t
-      assign specimen_status_state = 'sold'
-    endif
+  assign stage_label = ''
+  case mf.stadium.value
+    when 'Cutting'
+      assign stage_label = 'products.product.specimen.stage_cutting' | t
+    when 'Sämling'
+      assign stage_label = 'products.product.specimen.stage_seedling' | t
+    when 'Jungpflanze'
+      assign stage_label = 'products.product.specimen.stage_young' | t
+    when 'Etabliert'
+      assign stage_label = 'products.product.specimen.stage_established' | t
+    when 'Mutterpflanze'
+      assign stage_label = 'products.product.specimen.stage_mother' | t
+  endcase
+
+  comment
+    A leaf count of zero is a real value, so it is tested for nil and not for
+    truthiness, which would drop it silently.
+  endcomment
+  assign spec_parts = ''
+  if stage_label != blank
+    assign spec_parts = spec_parts | append: stage_label | append: ' · '
+  endif
+  if mf.blaetter.value != nil
+    assign leaves = 'products.product.specimen.leaves' | t: count: mf.blaetter.value
+    assign spec_parts = spec_parts | append: leaves | append: ' · '
+  endif
+  if mf.blattlaenge_cm.value != nil
+    assign leaflen = 'products.product.specimen.leaf_length_short' | t: cm: mf.blattlaenge_cm.value
+    assign spec_parts = spec_parts | append: leaflen | append: ' · '
+  endif
+  assign specs = spec_parts | split: ' · ' | join: ' · ' | strip
+
+  if product.available
+    assign status_state = 'available'
+    assign status_label = 'products.product.specimen_status.available' | t
   else
-    assign specimen_status_downcase = specimen_status_raw | downcase
-    if specimen_status_downcase contains 'reserv'
-      assign specimen_status_state = 'reserved'
-    elsif specimen_status_downcase contains 'coming'
-      assign specimen_status_state = 'coming'
-    elsif specimen_status_downcase contains 'sold'
-      assign specimen_status_state = 'sold'
-    elsif specimen_status_downcase contains 'avail'
-      assign specimen_status_state = 'available'
-    endif
+    assign status_state = 'sold'
+    assign status_label = 'products.product.specimen_status.sold' | t
   endif
 -%}
-{{- specimen_id }}||{{ specimen_parentage }}||{{ specimen_traits }}||{{ specimen_status_state }}||{{ specimen_status_label -}}
+{{- specimen_id }}||{{ kreuzung }}||{{ specs }}||{{ status_state }}||{{ status_label -}}

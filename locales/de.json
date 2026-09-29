@@ -152,6 +152,7 @@
           "other": "{{ count }} Blätter"
         },
         "leaf_length": "Blattlänge ca. {{ cm }} cm",
+        "leaf_length_short": "{{ cm }} cm",
         "hint_unrooted_title": "Für erfahrene Hände.",
         "hint_unrooted_body": "Dieses Exemplar ist noch nicht bewurzelt — es anzutreiben gelingt nur bei stabiler Luftfeuchte und mit Geduld.",
         "hint_fresh_title": "Braucht noch Aufmerksamkeit.",
