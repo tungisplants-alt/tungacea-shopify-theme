@@ -122,6 +122,8 @@
   assign mutter_name = ''
   assign mutter_wo = ''
   assign mutter_credit = ''
+  assign mutter_fotos = empty
+  assign zeige_fotos = false
   if mutter != blank
     assign mutter_name = mutter.bezeichnung.value | default: '' | strip
     assign mutter_besitzer = mutter.besitzer.value
@@ -136,6 +138,23 @@
     if fotograf != blank
       assign fotograf_name = fotograf.instagram.value | default: fotograf.name.value | strip
       assign mutter_credit = 'products.product.specimen.photo_credit' | t: who: fotograf_name
+    endif
+
+    comment
+      The permission gate. A photograph taken by somebody else is only shown
+      when the permission switch is set on the mother plant entry. An empty
+      photographer means the picture is Tung's own, so nothing to ask.
+      Refusing to render is deliberate: a missing picture is a small problem, a
+      borrowed one on a sales page is not.
+    endcomment
+    assign mutter_fotos = mutter.fotos.value
+    if mutter_fotos.size > 0
+      assign freigabe = mutter.bildfreigabe.value
+      if fotograf == blank
+        assign zeige_fotos = true
+      elsif freigabe == true or freigabe == 'true'
+        assign zeige_fotos = true
+      endif
     endif
   endif
 
@@ -216,6 +235,29 @@
         {%- if mutter_wo != blank -%}
           <p class="specimen-passport__mother-where">{{ mutter_wo }}</p>
         {%- endif -%}
+
+        {%- comment -%}
+          Square tiles against the portrait product gallery. The difference in
+          shape says "another kind of picture" before anybody reads a caption.
+        {%- endcomment -%}
+        {%- if zeige_fotos -%}
+          <ul class="specimen-passport__mother-photos list-unstyled" role="list" data-testid="specimen-mother-photos">
+            {%- for foto in mutter_fotos limit: 6 -%}
+              <li class="specimen-passport__mother-photo">
+                <img
+                  src="{{ foto | image_url: width: 480 }}"
+                  srcset="{{ foto | image_url: width: 320 }} 320w, {{ foto | image_url: width: 480 }} 480w, {{ foto | image_url: width: 720 }} 720w"
+                  sizes="(min-width: 750px) 14rem, 30vw"
+                  alt="{{ mutter_name | escape }}"
+                  width="480"
+                  height="480"
+                  loading="lazy"
+                >
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
         {%- if mutter_credit != blank -%}
           <p class="specimen-passport__credit">{{ mutter_credit }}</p>
         {%- endif -%}

@@ -188,6 +188,36 @@
   line-height: 1.5;
   color: var(--tungacea-muted);
 }
+/* Square tiles, quieter than the product gallery. The shape alone says these
+   are a different kind of picture, before anybody reads the caption. */
+.specimen-passport__mother-photos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  max-width: 46rem;
+}
+.specimen-passport__mother-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border: 1px solid var(--tungacea-hairline);
+  opacity: 0.78;
+  transition: opacity 0.3s var(--tungacea-ease);
+}
+.specimen-passport__mother-photo img:hover {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .specimen-passport__mother-photo img {
+    transition: none;
+  }
+}
+
 .specimen-passport__credit {
   margin: 1rem 0 0;
   font-family: var(--font-body-family);
