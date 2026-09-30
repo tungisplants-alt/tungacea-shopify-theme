@@ -36,7 +36,22 @@
   assign mutter = mf.mutterpflanze.value
   if mutter != blank
     assign kreuzung = mutter.bezeichnung.value | default: '' | strip
+
+    comment
+      A mother plant is usually named after the cross, and so is the product,
+      plus a running number. The card would then print nearly the same line
+      twice. Both are reduced to bare letters and digits before comparing, so
+      that a times sign, an apostrophe or a trailing number does not hide the
+      duplication. If the title already carries the cross, the extra line goes.
+    endcomment
+    assign titel_norm = product.title | downcase | replace: '×', 'x' | remove: 'anthurium' | remove: ' ' | remove: '#' | remove: "'" | remove: '"' | remove: '-' | remove: '.'
+    assign kreuzung_norm = kreuzung | downcase | replace: '×', 'x' | remove: 'anthurium' | remove: ' ' | remove: '#' | remove: "'" | remove: '"' | remove: '-' | remove: '.'
+    if kreuzung_norm != blank and titel_norm contains kreuzung_norm
+      assign kreuzung = ''
+    endif
   endif
+
+  assign generation = mf.generation.value | default: '' | strip
 
   assign stage_label = ''
   case mf.stadium.value
@@ -53,16 +68,18 @@
   endcase
 
   comment
-    A leaf count of zero is a real value, so it is tested for nil and not for
-    truthiness, which would drop it silently.
+    The three facts a photograph cannot carry: how far along the plant is, which
+    generation it belongs to, and its size. Leaf count was dropped — it is
+    countable in the pictures and was taking a slot from something harder to see.
+    A length of zero would be nonsense, but the test for nil is kept so a real
+    zero could never vanish silently.
   endcomment
   assign spec_parts = ''
   if stage_label != blank
     assign spec_parts = spec_parts | append: stage_label | append: ' · '
   endif
-  if mf.blaetter.value != nil
-    assign leaves = 'products.product.specimen.leaves' | t: count: mf.blaetter.value
-    assign spec_parts = spec_parts | append: leaves | append: ' · '
+  if generation != blank
+    assign spec_parts = spec_parts | append: generation | append: ' · '
   endif
   if mf.blattlaenge_cm.value != nil
     assign leaflen = 'products.product.specimen.leaf_length_short' | t: cm: mf.blattlaenge_cm.value

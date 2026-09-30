@@ -147,16 +147,12 @@
         "mother_from_own": "Dein {{ thing }} stammt von dieser Pflanze aus meiner Sammlung. Sie selbst ist nicht im Angebot.",
         "rooting_none": "Unbewurzelt",
         "rooting_fresh": "Frisch bewurzelt",
-        "rooting_established": "Etabliert bewurzelt",
+        "rooting_established": "Gut bewurzelt",
         "stage_cutting": "Steckling",
         "stage_seedling": "Sämling",
         "stage_young": "Jungpflanze",
         "stage_established": "Etabliert",
         "stage_mother": "Mutterpflanze",
-        "leaves": {
-          "one": "{{ count }} Blatt",
-          "other": "{{ count }} Blätter"
-        },
         "leaf_length": "Blattlänge ca. {{ cm }} cm",
         "leaf_length_short": "{{ cm }} cm",
         "hint_unrooted_title": "Für erfahrene Hände.",

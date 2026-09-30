@@ -14,7 +14,7 @@
   - lieferumfang    Auswahl  — what the buyer receives
   - mutterpflanze   Referenz — metaobject `mutterpflanze`
   - stadium         Auswahl
-  - blaetter        Zahl
+  - generation      Auswahl
   - blattlaenge_cm  Zahl
   - bewurzelung     Auswahl  — also derives the experience hint
   - zuechter        Referenz — metaobject `person`
@@ -33,8 +33,8 @@
   assign sp_lieferumfang = mf.lieferumfang.value | default: '' | strip
   assign sp_stadium = mf.stadium.value | default: '' | strip
   assign sp_bewurzelung = mf.bewurzelung.value | default: '' | strip
-  assign sp_blaetter = mf.blaetter.value
   assign sp_blattlaenge = mf.blattlaenge_cm.value
+  assign sp_generation = mf.generation.value | default: '' | strip
   assign sp_id = mf.specimen_id.value | default: '' | strip
   assign sp_datum = mf.aufnahmedatum.value
 
@@ -83,7 +83,7 @@
       assign rooting_label = 'products.product.specimen.rooting_fresh' | t
       assign hint_title = 'products.product.specimen.hint_fresh_title' | t
       assign hint_body = 'products.product.specimen.hint_fresh_body' | t
-    when 'Etabliert bewurzelt'
+    when 'Gut bewurzelt'
       assign rooting_label = 'products.product.specimen.rooting_established' | t
   endcase
 
@@ -102,19 +102,21 @@
   endcase
 
   comment
-    Specs line: rooting, leaves, leaf length. Only the parts that exist. A leaf
-    count of zero is a real value, so it is tested for nil and not for
-    truthiness, which would swallow it.
+    Specs line: stage, generation, rooting, leaf length. Only the parts that
+    exist. Stage and rooting used to exclude each other, which hid the stage on
+    every product that had a rooting state — they answer different questions and
+    now stand side by side. Leaf count was dropped; it is countable in the
+    pictures and was taking a slot from something harder to see.
   endcomment
   assign spec_parts = ''
-  if rooting_label != blank
-    assign spec_parts = spec_parts | append: rooting_label | append: '||'
-  elsif stage_label != blank
+  if stage_label != blank
     assign spec_parts = spec_parts | append: stage_label | append: '||'
   endif
-  if sp_blaetter != nil
-    assign leaves = 'products.product.specimen.leaves' | t: count: sp_blaetter
-    assign spec_parts = spec_parts | append: leaves | append: '||'
+  if sp_generation != blank
+    assign spec_parts = spec_parts | append: sp_generation | append: '||'
+  endif
+  if rooting_label != blank
+    assign spec_parts = spec_parts | append: rooting_label | append: '||'
   endif
   if sp_blattlaenge != nil
     assign leaflen = 'products.product.specimen.leaf_length' | t: cm: sp_blattlaenge

@@ -162,10 +162,6 @@
         "stage_young": "Young plant",
         "stage_established": "Established",
         "stage_mother": "Mother plant",
-        "leaves": {
-          "one": "{{ count }} leaf",
-          "other": "{{ count }} leaves"
-        },
         "leaf_length": "Leaf length approx. {{ cm }} cm",
         "leaf_length_short": "{{ cm }} cm",
         "hint_unrooted_title": "For experienced hands.",
