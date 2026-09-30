@@ -344,6 +344,21 @@
         {%- if mutter_credit != blank -%}
           <p class="specimen-passport__credit">{{ mutter_credit }}</p>
         {%- endif -%}
+
+        {%- comment -%}
+          Der Weg zur eigenen Seite der Mutterpflanze. Er erscheint nur, wenn es
+          die Seite wirklich gibt: ein Eintrag im Entwurf hat keine Adresse, und
+          ein Link ins Leere ist schlimmer als kein Link.
+        {%- endcomment -%}
+        {%- if mutter.system.url != blank -%}
+          <a
+            href="{{ mutter.system.url }}"
+            class="specimen-passport__mother-link"
+            data-testid="specimen-mother-link"
+          >
+            {{- 'private_archive.more_about_mother' | t -}}
+          </a>
+        {%- endif -%}
       </div>
     {%- endif -%}
 

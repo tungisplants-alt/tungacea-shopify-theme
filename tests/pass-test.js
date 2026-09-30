@@ -39,9 +39,10 @@ engine.registerFilter('t', function (key, ...rest) {
 
 const person = (name, ig) => ({ name: { value: name }, instagram: { value: ig || null } });
 const FOTOS = ['cdn://a.jpg', 'cdn://b.jpg', 'cdn://c.jpg'];
-const mutter = (bez, besitzer, fotograf, fotos, freigabe) => ({
+const mutter = (bez, besitzer, fotograf, fotos, freigabe, url) => ({
   bezeichnung: { value: bez }, besitzer: { value: besitzer || null }, fotograf: { value: fotograf || null },
   fotos: { value: fotos || [] }, bildfreigabe: { value: freigabe === undefined ? null : freigabe },
+  system: { url: url || null },
 });
 const mf = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, { value: v }]));
 
@@ -101,6 +102,18 @@ const faelle = [
     erwartet: ['Züchter', 'Ree Gardens'], verboten: ['Du erhältst', 'Mutterpflanze'] },
 
   { name: 'Alles leer — keine Ausgabe', mf: mf({}), erwartet: [], verboten: [], leer: true },
+
+  { name: 'Mutterpflanze MIT eigener Seite — Knopf erscheint',
+    mf: mf({ lieferumfang: 'Dieses Exemplar',
+             mutterpflanze: mutter('Anthurium regale', null, null, FOTOS, null, '/pflanzen/anthurium-regale') }),
+    erwartet: ['specimen-mother-link', '/pflanzen/anthurium-regale', 'Mehr über die Mutterpflanze'],
+    verboten: [] },
+
+  { name: 'Mutterpflanze OHNE eigene Seite — kein Knopf ins Leere',
+    mf: mf({ lieferumfang: 'Dieses Exemplar',
+             mutterpflanze: mutter('Anthurium regale', null, null, FOTOS) }),
+    erwartet: ['Anthurium regale'],
+    verboten: ['specimen-mother-link', 'Mehr über die Mutterpflanze', 'href=""'] },
 
   // --- Bildfreigabe: die Sperre muss in beide Richtungen greifen ---
   { name: 'Eigenes Foto — wird gezeigt, ohne Freigabe zu brauchen',
