@@ -148,6 +148,12 @@
   color: rgb(var(--color-foreground));
 }
 
+/* After the whole mother plant block the hint is a new thought, not the next
+   line of the same one. It needs the distance to read that way. */
+.specimen-passport__mother + .specimen-passport__hint {
+  margin-top: 3rem;
+}
+
 /* ---------- Mother plant — context, clearly not the goods ---------- */
 .specimen-passport__mother {
   margin: 2.8rem 0 0;

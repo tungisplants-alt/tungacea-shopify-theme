@@ -270,12 +270,12 @@
       </p>
     {%- endif -%}
 
-    {%- if hint_title != blank -%}
-      <p class="specimen-passport__hint" role="note" data-testid="specimen-hint">
-        <strong>{{ hint_title }}</strong> {{ hint_body }}
-      </p>
-    {%- endif -%}
-
+    {%- comment -%}
+      The mother plant follows the lead sentence directly, because that sentence
+      points at her: the shorter the way to "shown below", the better it holds.
+      The experience hint comes after her — it is a caveat, and a caveat placed
+      second makes the whole record read like a warning.
+    {%- endcomment -%}
     {%- if mutter_name != blank -%}
       <div class="specimen-passport__mother" data-testid="specimen-mother">
         <p class="specimen-passport__mother-label">{{ 'products.product.specimen.mother' | t }}</p>
@@ -333,6 +333,12 @@
           <p class="specimen-passport__credit">{{ mutter_credit }}</p>
         {%- endif -%}
       </div>
+    {%- endif -%}
+
+    {%- if hint_title != blank -%}
+      <p class="specimen-passport__hint" role="note" data-testid="specimen-hint">
+        <strong>{{ hint_title }}</strong> {{ hint_body }}
+      </p>
     {%- endif -%}
 
     {%- if has_lower -%}
