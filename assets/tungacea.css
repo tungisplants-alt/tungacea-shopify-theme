@@ -69,6 +69,17 @@ h1, h2, h3, h4, h5,
   color: var(--tungacea-muted);
 }
 
+/* Legal fine print is not an editorial label. Set in caps at 0.32em it runs
+   over two lines, reads harder and claims more weight than it deserves —
+   right next to the price, where calm matters most. */
+.product__tax.caption,
+.product__tax .caption {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
 .caption-with-letter-spacing,
 .subtitle {
   font-size: 1.15rem;
