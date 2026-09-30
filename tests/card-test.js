@@ -26,7 +26,7 @@ engine.registerFilter('t', function (key, ...rest) {
 });
 
 const mf = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, { value: v }]));
-const mutter = b => ({ bezeichnung: { value: b } });
+const mutter = (b, gen) => ({ bezeichnung: { value: b }, generation: { value: gen || null } });
 
 const faelle = [
   { name: 'Die drei Hauptpunkte', available: true,
@@ -72,6 +72,17 @@ const faelle = [
     titel: 'Anthurium Testpflanze',
     mf: mf({ generation: 'Unbekannt' }),
     erwartet: ['', '', 'Generation unbekannt', 'available', 'Verfügbar'] },
+
+  { name: 'Karte erbt Generation von der Mutter', available: true,
+    titel: 'Anthurium Schwarze Perle',
+    mf: mf({ mutterpflanze: mutter('Anthurium luxurians × dressleri', 'F3'), stadium: 'Steckling' }),
+    erwartet: ['', 'Anthurium luxurians × dressleri', 'Steckling · Generation F3', 'available', 'Verfügbar'] },
+
+  { name: 'Eigene Generation schlaegt die geerbte', available: true,
+    titel: 'Anthurium Schwarze Perle',
+    mf: mf({ mutterpflanze: mutter('Anthurium luxurians × dressleri', 'F3'), generation: 'S2' }),
+    erwartet: ['', 'Anthurium luxurians × dressleri', 'Generation S2', 'available', 'Verfügbar'],
+    verboten: ['Generation F3'] },
 
   { name: 'Alles leer', available: true,
     titel: 'Anthurium Testpflanze',

@@ -34,7 +34,19 @@
   assign sp_stadium = mf.stadium.value | default: '' | strip
   assign sp_bewurzelung = mf.bewurzelung.value | default: '' | strip
   assign sp_blattlaenge = mf.blattlaenge_cm.value
+  comment
+    Generation und Zuechter erbt ein Cutting von seiner Mutter. Das ist
+    Biologie, keine Eingabe: ein abgeschnittenes Stueck hat zwangslaeufig
+    dieselbe Generation und denselben Zuechter wie die Pflanze, von der es
+    stammt. Steht am Produkt ein eigener Wert, gilt der — fuer die Faelle,
+    in denen die Ableitung nicht stimmt.
+  endcomment
+  assign mutter_quelle = mf.mutterpflanze.value
+
   assign gen_raw = mf.generation.value | default: '' | strip
+  if gen_raw == blank and mutter_quelle != blank
+    assign gen_raw = mutter_quelle.generation.value | default: '' | strip
+  endif
   assign sp_generation = ''
   if gen_raw == 'Species'
     assign sp_generation = gen_raw
@@ -49,6 +61,9 @@
 
   assign mutter = mf.mutterpflanze.value
   assign zuechter = mf.zuechter.value
+  if zuechter == blank and mutter_quelle != blank
+    assign zuechter = mutter_quelle.zuechter.value
+  endif
   assign bezogen = mf.bezogen_von.value
 
   comment

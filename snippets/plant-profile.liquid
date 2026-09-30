@@ -87,7 +87,36 @@
     assign generation = 'products.product.specimen.generation_prefixed' | t: value: gen_raw
   endif
 
+  comment
+    Der Rueckweg in den Laden. Von Hand gepflegte Angebote haben Vorrang; sie
+    sind der Ausnahmeweg, wenn ein Produkt bewusst nicht erscheinen soll oder
+    eines dazugehoert, das nicht auf diese Pflanze zeigt.
+
+    Sonst sucht die Seite selbst: jedes Produkt, dessen Feld Mutterpflanze auf
+    diesen Eintrag zeigt, gehoert hierher. Damit muss die Beziehung nur einmal
+    eingetragen werden, am Produkt — und der Rueckweg kann nicht vergessen
+    werden.
+
+    Verkaufte Exemplare bleiben stehen. Sie sind die Geschichte dieser Pflanze,
+    und eine Mutter ohne Nachkommen wirkt wie eine ohne Vergangenheit.
+  endcomment
   assign angebote = eintrag.angebote.value
+  assign eigene_wahl = false
+  if angebote.size > 0
+    assign eigene_wahl = true
+  endif
+
+  assign treffer = 0
+  if eigene_wahl
+    assign treffer = angebote.size
+  else
+    for produkt in collections.all.products limit: 100
+      assign pm = produkt.metafields.custom.mutterpflanze.value
+      if pm != blank and pm.system.handle == eintrag.system.handle
+        assign treffer = treffer | plus: 1
+      endif
+    endfor
+  endif
 -%}
 
 <div class="plant-profile" data-testid="plant-profile">
@@ -190,24 +219,26 @@
       </div>
     {%- endif -%}
 
-    {%- if angebote.size > 0 -%}
+    {%- if treffer > 0 -%}
       <section class="plant-profile__offers" data-testid="plant-profile-offers">
         <h2 class="plant-profile__offers-heading">{{ 'private_archive.offers_heading' | t }}</h2>
         <ul class="plant-profile__offers-list" role="list">
-          {%- for produkt in angebote -%}
-            <li class="plant-profile__offer">
-              <a href="{{ produkt.url }}" class="plant-profile__offer-link">
-                {{- produkt.title | escape -}}
-              </a>
-              {%- if produkt.available -%}
-                <span class="plant-profile__offer-price">{{ produkt.price | money }}</span>
-              {%- else -%}
-                <span class="plant-profile__offer-sold">
-                  {{- 'products.product.specimen_status.sold' | t -}}
-                </span>
+          {%- if eigene_wahl -%}
+            {%- for produkt in angebote -%}
+              {%- render 'plant-offer-row', produkt: produkt -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- for produkt in collections.all.products limit: 100 -%}
+              {%- assign pm = produkt.metafields.custom.mutterpflanze.value -%}
+              {%- if pm != blank and pm.system.handle == eintrag.system.handle -%}
+                {%- render 'plant-offer-row', produkt: produkt -%}
               {%- endif -%}
-            </li>
-          {%- endfor -%}
+            {%- endfor -%}
+          {%- endif -%}
+          {%- comment -%}
+            Die Zeile selbst steht in plant-offer-row, damit beide Wege dieselbe
+            Darstellung benutzen und nicht auseinanderlaufen koennen.
+          {%- endcomment -%}
         </ul>
       </section>
     {%- endif -%}

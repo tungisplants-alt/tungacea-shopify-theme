@@ -39,10 +39,12 @@ engine.registerFilter('t', function (key, ...rest) {
 
 const person = (name, ig) => ({ name: { value: name }, instagram: { value: ig || null } });
 const FOTOS = ['cdn://a.jpg', 'cdn://b.jpg', 'cdn://c.jpg'];
-const mutter = (bez, besitzer, fotograf, fotos, freigabe, url) => ({
+const mutter = (bez, besitzer, fotograf, fotos, freigabe, url, extra) => ({
   bezeichnung: { value: bez }, besitzer: { value: besitzer || null }, fotograf: { value: fotograf || null },
   fotos: { value: fotos || [] }, bildfreigabe: { value: freigabe === undefined ? null : freigabe },
   system: { url: url || null },
+  generation: { value: (extra && extra.generation) || null },
+  zuechter: { value: (extra && extra.zuechter) || null },
 });
 const mf = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, { value: v }]));
 
@@ -102,6 +104,26 @@ const faelle = [
     erwartet: ['Züchter', 'Ree Gardens'], verboten: ['Du erhältst', 'Mutterpflanze'] },
 
   { name: 'Alles leer — keine Ausgabe', mf: mf({}), erwartet: [], verboten: [], leer: true },
+
+  { name: 'Cutting erbt Generation und Zuechter von der Mutter',
+    mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Gut bewurzelt',
+             mutterpflanze: mutter('Anthurium regale #4', null, null, [], null, null,
+                                   { generation: 'F2', zuechter: ree }) }),
+    erwartet: ['Generation F2', 'Ree Gardens'],
+    verboten: [] },
+
+  { name: 'Eigener Wert am Produkt schlaegt den geerbten',
+    mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', generation: 'S1', zuechter: grower,
+             mutterpflanze: mutter('Anthurium regale #4', null, null, [], null, null,
+                                   { generation: 'F2', zuechter: ree }) }),
+    erwartet: ['Generation S1', 'Tropical Grower'],
+    verboten: ['Generation F2', 'Ree Gardens'] },
+
+  { name: 'Mutter ohne Generation — nichts wird erfunden',
+    mf: mf({ lieferumfang: 'Cutting der Mutterpflanze',
+             mutterpflanze: mutter('Anthurium regale #4', null, null, [], null, null, {}) }),
+    erwartet: ['Anthurium regale #4'],
+    verboten: ['Generation', 'Züchter'] },
 
   { name: 'Mutterpflanze MIT eigener Seite — Knopf erscheint',
     mf: mf({ lieferumfang: 'Dieses Exemplar',

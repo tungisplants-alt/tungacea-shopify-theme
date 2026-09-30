@@ -1,0 +1,24 @@
+{% comment %}
+  Tungacea — eine Angebotszeile auf der Pflanzenseite.
+
+  Eigene Datei, weil zwei Wege hierher führen: die von Hand gewählten Angebote
+  und die selbst gefundenen. Zwei Kopien derselben Zeile würden über kurz oder
+  lang auseinanderlaufen, und der Unterschied fiele niemandem auf.
+
+  Verkaufte Exemplare bleiben stehen. Sie sind die Geschichte dieser Pflanze.
+
+  Annahmen:
+  - produkt: {Object} Product Liquid object (Pflicht)
+{% endcomment %}
+<li class="plant-profile__offer">
+  <a href="{{ produkt.url }}" class="plant-profile__offer-link">
+    {{- produkt.title | escape -}}
+  </a>
+  {%- if produkt.available -%}
+    <span class="plant-profile__offer-price">{{ produkt.price | money }}</span>
+  {%- else -%}
+    <span class="plant-profile__offer-sold">
+      {{- 'products.product.specimen_status.sold' | t -}}
+    </span>
+  {%- endif -%}
+</li>

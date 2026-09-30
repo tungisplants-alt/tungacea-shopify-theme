@@ -100,14 +100,25 @@ function leseArchivkarten() {
 
     // Die alte Karte 5 trug unter "Seltenheit" tatsaechlich Herkunftsgeschichte.
     // Sie wandert in die Notiz, statt ein Feld wiederzubeleben, das Tung gestrichen hat.
-    let notiz = s.notes || '';
+    // Die alten Karten trugen HTML; das Feld ist seit dem Umbau Klartext.
+    // Ohne diese Umwandlung zeigt die Vorschau Marken, die es live nicht gibt.
+    const alsText = (h) => String(h || '')
+      .replace(/<\/p>\s*<p>/gi, '\n\n')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .trim();
+
+    let notiz = alsText(s.notes);
     if (s.rarity && !/hybrid mit individuell|individueller sämling|einzigartiger sämling/i.test(s.rarity)) {
-      notiz += '<p>' + s.rarity + '</p>';
+      notiz += (notiz ? '\n\n' : '') + s.rarity.trim();
       funde.push('Karte ' + (i + 1) + ': "Seltenheit" enthielt Herkunftsgeschichte, nach Notiz verschoben');
     }
     // Ein Zustandszusatz im Stadium gehoert in Text, nicht in einen Auswahlwert.
     if (/Reha/i.test(s.growth_stage || '')) {
-      notiz += '<p>Aktuell in Reha.</p>';
+      notiz += (notiz ? '\n\n' : '') + 'Aktuell in Reha.';
       funde.push('Karte ' + (i + 1) + ': "Aktuell in Reha" ist ein Zustand, kein Stadium — nach Notiz verschoben');
     }
 
@@ -147,17 +158,19 @@ function leseArchivkarten() {
   const fremdOk = JSON.parse(JSON.stringify(fremd));
   fremdOk.bildfreigabe = feld(true);
 
-  // Eigene Pflanze mit einem Angebot, damit der Rueckweg ins Produkt sichtbar ist.
-  const mitAngebot = JSON.parse(JSON.stringify(eintraege[0]));
-  mitAngebot.angebote = {
-    value: [
-      { title: 'Anthurium Ralph Lynam x Fort Sherman F2 #4', url: '/products/rlfs-4', available: true, price: 29900 },
-      { title: 'Anthurium Ralph Lynam x Fort Sherman F2 #1', url: '/products/rlfs-1', available: false, price: 0 },
-    ],
-  };
+  // Eigene Pflanze, deren Produkte die Seite SELBST findet: kein angebote-Feld,
+  // sondern Produkte, deren Feld mutterpflanze auf diesen Eintrag zeigt.
+  eintraege.forEach((e, i) => { e.system.handle = 'pflanze-' + (i + 1); });
+  const mitAngebot = eintraege[0];
 
-  // Gegenprobe: die fremde Pflanze wird MIT in die Liste gegeben. Sie darf in der
-  // Galerie nicht erscheinen. Ohne diesen Schritt waere der Filter behauptet, nicht geprueft.
+  const LADEN = [
+    { title: 'Anthurium Ralph Lynam x Fort Sherman F2 #4', url: '/products/rlfs-4', available: true, price: 29900,
+      metafields: { custom: { mutterpflanze: { value: { system: { handle: 'pflanze-1' } } } } } },
+    { title: 'Anthurium Ralph Lynam x Fort Sherman F2 #1', url: '/products/rlfs-1', available: false, price: 0,
+      metafields: { custom: { mutterpflanze: { value: { system: { handle: 'pflanze-1' } } } } } },
+    { title: 'Anthurium Luxurians x Dressleri', url: '/products/lux', available: true, price: 18000,
+      metafields: { custom: { mutterpflanze: { value: { system: { handle: 'pflanze-3' } } } } } },
+  ];
   const mitFremder = eintraege.concat([fremd]);
   const galerie = await engine.renderFile('plant-archive-gallery', { eintraege: mitFremder });
 
@@ -193,9 +206,9 @@ function leseArchivkarten() {
     console.error('FEHLER: die fremde Pflanze steht in der Galerie.');
     process.exit(1);
   }
-  const seiteEigen = await engine.renderFile('plant-profile', { eintrag: mitAngebot });
-  const seiteFremdGesperrt = await engine.renderFile('plant-profile', { eintrag: fremd });
-  const seiteFremdFrei = await engine.renderFile('plant-profile', { eintrag: fremdOk });
+  const seiteEigen = await engine.renderFile('plant-profile', { eintrag: mitAngebot, collections: { all: { products: LADEN } } });
+  const seiteFremdGesperrt = await engine.renderFile('plant-profile', { eintrag: fremd, collections: { all: { products: LADEN } } });
+  const seiteFremdFrei = await engine.renderFile('plant-profile', { eintrag: fremdOk, collections: { all: { products: LADEN } } });
 
   const css = ['tungacea.css', 'base.css', 'component-plant-archive.css', 'component-specimen-passport.css', 'component-specimen-card.css']
     .map(f => {

@@ -58,7 +58,15 @@
     F- and S-numbers are the same in both languages; only the admission that
     nobody knows needs translating.
   endcomment
+  comment
+    Fehlt die Generation am Produkt, kommt sie von der Mutter. Dieselbe
+    Ableitung wie in der Dokumentation, damit Karte und Produktseite nicht
+    auseinanderlaufen.
+  endcomment
   assign gen_raw = mf.generation.value | default: '' | strip
+  if gen_raw == blank and mutter != blank
+    assign gen_raw = mutter.generation.value | default: '' | strip
+  endif
   assign generation = ''
   if gen_raw == 'Species'
     assign generation = gen_raw
