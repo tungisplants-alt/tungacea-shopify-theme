@@ -37,7 +37,7 @@ engine.registerFilter('t', function (key, ...rest) {
   return hit;
 });
 
-const person = (name, ig) => ({ name: { value: name }, instagram: { value: ig || null } });
+const person = (name, ig, land) => ({ name: { value: name }, instagram: { value: ig || null }, land: { value: land || null } });
 const FOTOS = ['cdn://a.jpg', 'cdn://b.jpg', 'cdn://c.jpg'];
 const mutter = (bez, besitzer, fotograf, fotos, freigabe, url, extra) => ({
   bezeichnung: { value: bez }, besitzer: { value: besitzer || null }, fotograf: { value: fotograf || null },
@@ -104,6 +104,24 @@ const faelle = [
     erwartet: ['Züchter', 'Ree Gardens'], verboten: ['Du erhältst', 'Mutterpflanze'] },
 
   { name: 'Alles leer — keine Ausgabe', mf: mf({}), erwartet: [], verboten: [], leer: true },
+
+  { name: 'Herkunft des Zuechters steht neben dem Namen',
+    mf: mf({ zuechter: person('Tofusprinkles', null, 'USA'),
+             bezogen_von: person('Ree Gardens', '@ree', 'Niederlande') }),
+    erwartet: ['Tofusprinkles', '(USA)', '@ree', '(Niederlande)'],
+    verboten: [] },
+
+  { name: 'Zuechter ohne Land — keine leere Klammer',
+    mf: mf({ zuechter: person('Hoyahole', null, null) }),
+    erwartet: ['Hoyahole'],
+    verboten: ['()', 'specimen-passport__country'] },
+
+  { name: 'Geerbter Zuechter bringt sein Land mit',
+    mf: mf({ lieferumfang: 'Cutting der Mutterpflanze',
+             mutterpflanze: mutter('Anthurium regale #4', null, null, [], null, null,
+                                   { zuechter: person('Tofusprinkles', null, 'USA') }) }),
+    erwartet: ['Tofusprinkles', '(USA)'],
+    verboten: [] },
 
   { name: 'Cutting erbt Generation und Zuechter von der Mutter',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Gut bewurzelt',

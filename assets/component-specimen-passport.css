@@ -473,3 +473,9 @@
     transform: none;
   }
 }
+
+/* Das Land steht neben dem Namen, aber leiser. Es ordnet ein, es ist nicht
+   die Aussage. */
+.specimen-passport__country {
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+}

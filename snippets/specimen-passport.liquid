@@ -236,9 +236,21 @@
   if zuechter != blank
     assign zuechter_name = zuechter.name.value | default: '' | strip
   endif
+  comment
+    Das Land steht an der Person, nicht an der Pflanze. In Tungs altem Archiv
+    trug jeder Zuechter ueber alle Karten hinweg denselben Wert — Tofusprinkles
+    zweimal USA. Einmal eingetragen, gilt es fuer jede Pflanze dieser Herkunft.
+  endcomment
+  assign zuechter_land = ''
+  if zuechter != blank
+    assign zuechter_land = zuechter.land.value | default: '' | strip
+  endif
+
   assign bezogen_name = ''
+  assign bezogen_land = ''
   if bezogen != blank
     assign bezogen_name = bezogen.instagram.value | default: bezogen.name.value | strip
+    assign bezogen_land = bezogen.land.value | default: '' | strip
   endif
 
   assign has_lower = false
@@ -382,13 +394,19 @@
         {%- if zuechter_name != blank -%}
           <div class="specimen-passport__row">
             <dt class="specimen-passport__label">{{ 'products.product.specimen.breeder' | t }}</dt>
-            <dd class="specimen-passport__value" data-testid="specimen-breeder">{{ zuechter_name | escape }}</dd>
+            <dd class="specimen-passport__value" data-testid="specimen-breeder">
+              {{- zuechter_name | escape -}}
+              {%- if zuechter_land != blank %} <span class="specimen-passport__country">({{ zuechter_land | escape }})</span>{% endif -%}
+            </dd>
           </div>
         {%- endif -%}
         {%- if bezogen_name != blank -%}
           <div class="specimen-passport__row">
             <dt class="specimen-passport__label">{{ 'products.product.specimen.sourced' | t }}</dt>
-            <dd class="specimen-passport__value" data-testid="specimen-sourced">{{ bezogen_name | escape }}</dd>
+            <dd class="specimen-passport__value" data-testid="specimen-sourced">
+              {{- bezogen_name | escape -}}
+              {%- if bezogen_land != blank %} <span class="specimen-passport__country">({{ bezogen_land | escape }})</span>{% endif -%}
+            </dd>
           </div>
         {%- endif -%}
         {%- if sp_id != blank -%}
