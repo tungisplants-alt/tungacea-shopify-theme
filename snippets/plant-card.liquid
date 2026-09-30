@@ -29,9 +29,20 @@
     Sperre wie auf der Produktseite: ein fremder Fotograf ohne Freigabe bedeutet
     kein Bild. Leerer Fotograf heisst eigenes Bild.
   endcomment
+  comment
+    Das erste Foto wird erlaufen, nicht indiziert. Shopify liefert bei
+    fotos[0] auf einer Dateiliste nichts zurueck, und image_url bricht dann
+    mit invalid url input ab. Die Schleife ist das Muster, das im Pass
+    nachweislich funktioniert.
+  endcomment
   assign fotos = eintrag.fotos.value
+  assign erstes_foto = nil
+  for f in fotos limit: 1
+    assign erstes_foto = f
+  endfor
+
   assign zeige_foto = false
-  if fotos.size > 0
+  if erstes_foto != blank
     assign fotograf = eintrag.fotograf.value
     assign freigabe = eintrag.bildfreigabe.value
     if fotograf == blank
@@ -83,7 +94,7 @@
   <div class="plant-card__media">
     {%- if zeige_foto -%}
       {{
-        fotos[0]
+        erstes_foto
         | image_url: width: 800
         | image_tag:
           loading: 'lazy',
