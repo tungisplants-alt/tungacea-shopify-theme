@@ -241,21 +241,44 @@
           shape says "another kind of picture" before anybody reads a caption.
         {%- endcomment -%}
         {%- if zeige_fotos -%}
-          <ul class="specimen-passport__mother-photos list-unstyled" role="list" data-testid="specimen-mother-photos">
-            {%- for foto in mutter_fotos limit: 6 -%}
-              <li class="specimen-passport__mother-photo">
-                <img
-                  src="{{ foto | image_url: width: 480 }}"
-                  srcset="{{ foto | image_url: width: 320 }} 320w, {{ foto | image_url: width: 480 }} 480w, {{ foto | image_url: width: 720 }} 720w"
-                  sizes="(min-width: 750px) 14rem, 30vw"
-                  alt="{{ mutter_name | escape }}"
-                  width="480"
-                  height="480"
-                  loading="lazy"
-                >
-              </li>
-            {%- endfor -%}
-          </ul>
+          <script src="{{ 'specimen-lightbox.js' | asset_url }}" defer="defer"></script>
+          <specimen-lightbox>
+            <ul class="specimen-passport__mother-photos list-unstyled" role="list" data-testid="specimen-mother-photos">
+              {%- for foto in mutter_fotos limit: 6 -%}
+                <li>
+                  <button
+                    type="button"
+                    class="specimen-passport__mother-photo"
+                    data-lightbox-full="{{ foto | image_url: width: 1800 }}"
+                    data-lightbox-alt="{{ mutter_name | escape }}"
+                    aria-label="{{ 'products.product.specimen.photo_open' | t: name: mutter_name }}"
+                  >
+                    <img
+                      src="{{ foto | image_url: width: 480 }}"
+                      srcset="{{ foto | image_url: width: 320 }} 320w, {{ foto | image_url: width: 480 }} 480w, {{ foto | image_url: width: 720 }} 720w"
+                      sizes="(min-width: 750px) 14rem, 30vw"
+                      alt=""
+                      width="480"
+                      height="480"
+                      loading="lazy"
+                    >
+                  </button>
+                </li>
+              {%- endfor -%}
+            </ul>
+
+            <dialog class="specimen-lightbox" aria-label="{{ mutter_name | escape }}">
+              <button
+                type="button"
+                class="specimen-lightbox__close"
+                data-lightbox-close
+                aria-label="{{ 'products.product.specimen.photo_close' | t }}"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <img class="specimen-lightbox__image" data-lightbox-image src="" alt="">
+            </dialog>
+          </specimen-lightbox>
         {%- endif -%}
 
         {%- if mutter_credit != blank -%}

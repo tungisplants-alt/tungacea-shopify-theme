@@ -199,6 +199,18 @@
   list-style: none;
   max-width: 46rem;
 }
+/* The tile is a button, because it opens a dialog. Everything that makes a
+   button look like a button is stripped; the focus ring is not. */
+.specimen-passport__mother-photo {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  font: inherit;
+  color: inherit;
+}
 .specimen-passport__mother-photo img {
   display: block;
   width: 100%;
@@ -209,13 +221,62 @@
   opacity: 0.78;
   transition: opacity 0.3s var(--tungacea-ease);
 }
-.specimen-passport__mother-photo img:hover {
+.specimen-passport__mother-photo:hover img,
+.specimen-passport__mother-photo:focus-visible img {
   opacity: 1;
+}
+.specimen-passport__mother-photo:focus-visible {
+  outline: 0.2rem solid rgb(var(--color-foreground));
+  outline-offset: 0.3rem;
 }
 @media (prefers-reduced-motion: reduce) {
   .specimen-passport__mother-photo img {
     transition: none;
   }
+}
+
+/* ---------- Lightbox ---------- */
+.specimen-lightbox {
+  max-width: min(92vw, 110rem);
+  max-height: 92vh;
+  padding: 0;
+  border: 1px solid var(--tungacea-hairline);
+  background: var(--tungacea-black, #0a0a0a);
+  color: rgb(var(--color-foreground));
+  overflow: visible;
+}
+.specimen-lightbox::backdrop {
+  background: rgba(5, 5, 6, 0.88);
+}
+.specimen-lightbox__image {
+  display: block;
+  max-width: min(92vw, 110rem);
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+.specimen-lightbox__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  border: 0;
+  background: rgba(10, 10, 10, 0.86);
+  color: rgb(var(--color-foreground));
+  font-size: 2.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.specimen-lightbox__close:focus-visible {
+  outline: 0.2rem solid rgb(var(--color-foreground));
+  outline-offset: -0.4rem;
 }
 
 .specimen-passport__credit {
