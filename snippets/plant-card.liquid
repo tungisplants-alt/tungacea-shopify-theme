@@ -122,9 +122,18 @@
     endif
   endfor
 
+  comment
+    Die Linie ist eine Mehrfachauswahl: eine Kreuzung traegt beide Elternteile.
+    Sie wird mit einem Trennzeichen in ein Merkmal geschrieben, damit die Suche
+    im Browser gegen jeden einzelnen Wert vergleichen kann.
+  endcomment
+  assign linien = eintrag.linie.value | join: '|'
+
   assign suchtext = name
   assign suchtext = suchtext | append: ' ' | append: eintrag.kreuzung.value
   assign suchtext = suchtext | append: ' ' | append: zuechter_name
+  assign suchtext = suchtext | append: ' ' | append: linien | replace: '|', ' '
+  assign suchtext = suchtext | append: ' ' | append: eintrag.reinheit.value
   assign suchtext = suchtext | append: ' ' | append: eintrag.mutter_id.value
   assign suchtext = suchtext | append: ' ' | append: eintrag.merkmal.value
   assign suchtext = suchtext | downcase | strip
@@ -137,6 +146,8 @@
   data-generation="{{ eintrag.generation.value | escape }}"
   data-zuechter="{{ zuechter_name | escape }}"
   data-herkunft="{{ zuechter_land | escape }}"
+  data-linie="{{ linien | escape }}"
+  data-reinheit="{{ eintrag.reinheit.value | escape }}"
   data-angebot="{% if hat_angebot %}ja{% else %}nein{% endif %}"
 >
   <div class="plant-card__media">

@@ -628,6 +628,8 @@
     }
   },
   "private_archive": {
+    "facet_line": "Lineage",
+    "facet_purity": "Purity",
     "filters_heading": "Filters",
     "facet_offer": "Availability",
     "facet_offer_yes": "Offer available",

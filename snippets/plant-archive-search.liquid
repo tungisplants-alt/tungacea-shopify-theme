@@ -32,6 +32,8 @@
   assign generationen = ''
   assign zuechter_namen = ''
   assign herkuenfte = ''
+  assign linien = ''
+  assign reinheiten = ''
   assign mit_angebot = 0
   assign eigene = 0
 
@@ -47,6 +49,12 @@
     if e.generation.value != blank
       assign generationen = generationen | append: e.generation.value | append: '|'
     endif
+    if e.reinheit.value != blank
+      assign reinheiten = reinheiten | append: e.reinheit.value | append: '|'
+    endif
+    for l in e.linie.value
+      assign linien = linien | append: l | append: '|'
+    endfor
 
     assign z = e.zuechter.value
     if z != blank
@@ -75,6 +83,8 @@
   assign generationen_liste = generationen | split: '|' | uniq | sort
   assign zuechter_liste = zuechter_namen | split: '|' | uniq | sort
   assign herkunft_liste = herkuenfte | split: '|' | uniq | sort
+  assign linien_liste = linien | split: '|' | uniq | sort
+  assign reinheit_liste = reinheiten | split: '|' | uniq | sort
 
   comment
     Der Angebotsfilter lohnt nur, wenn er trennt: gibt es von allen oder von
@@ -86,7 +96,7 @@
   endif
 
   assign hat_filter = false
-  if stadien_liste.size > 1 or generationen_liste.size > 1 or zuechter_liste.size > 1 or herkunft_liste.size > 1 or zeige_angebot
+  if stadien_liste.size > 1 or generationen_liste.size > 1 or zuechter_liste.size > 1 or herkunft_liste.size > 1 or linien_liste.size > 1 or reinheit_liste.size > 1 or zeige_angebot
     assign hat_filter = true
   endif
 -%}
@@ -147,6 +157,45 @@
               >
                 {{- 'private_archive.facet_offer_yes' | t -}}
               </button>
+            </fieldset>
+          {%- endif -%}
+
+          {%- if linien_liste.size > 1 -%}
+            <fieldset class="plant-search__facet">
+              <legend class="plant-search__facet-label">
+                {{- 'private_archive.facet_line' | t -}}
+              </legend>
+              {%- for wert in linien_liste -%}
+                <button
+                  type="button"
+                  class="plant-search__chip"
+                  data-facet="linie"
+                  data-mehrfach="true"
+                  data-wert="{{ wert | escape }}"
+                  aria-pressed="false"
+                >
+                  {{- wert | escape -}}
+                </button>
+              {%- endfor -%}
+            </fieldset>
+          {%- endif -%}
+
+          {%- if reinheit_liste.size > 1 -%}
+            <fieldset class="plant-search__facet">
+              <legend class="plant-search__facet-label">
+                {{- 'private_archive.facet_purity' | t -}}
+              </legend>
+              {%- for wert in reinheit_liste -%}
+                <button
+                  type="button"
+                  class="plant-search__chip"
+                  data-facet="reinheit"
+                  data-wert="{{ wert | escape }}"
+                  aria-pressed="false"
+                >
+                  {{- wert | escape -}}
+                </button>
+              {%- endfor -%}
             </fieldset>
           {%- endif -%}
 

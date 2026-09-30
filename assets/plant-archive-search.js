@@ -11,6 +11,9 @@
  * findet, wäre schlimmer als gar keine.
  */
 class PlantArchiveSearch extends HTMLElement {
+  /* Merkmale, in denen mehrere Werte durch | getrennt stehen koennen. */
+  static MEHRFACH = new Set(['linie']);
+
   connectedCallback() {
     this.grid = document.querySelector('[data-testid="plant-archive-grid"]');
     if (!this.grid) return;
@@ -36,6 +39,8 @@ class PlantArchiveSearch extends HTMLElement {
     this.begriff = '';
     this.aktiv = {
       angebot: new Set(),
+      linie: new Set(),
+      reinheit: new Set(),
       stadium: new Set(),
       generation: new Set(),
       herkunft: new Set(),
@@ -109,7 +114,18 @@ class PlantArchiveSearch extends HTMLElement {
     }
     for (const [gruppe, menge] of Object.entries(this.aktiv)) {
       if (menge.size === 0) continue;
-      if (!menge.has(karte.dataset[gruppe] || '')) return false;
+      const roh = karte.dataset[gruppe] || '';
+      if (PlantArchiveSearch.MEHRFACH.has(gruppe)) {
+        /*
+         * Eine Kreuzung traegt mehrere Linien. Sie passt, sobald eine davon
+         * gewaehlt ist — wer nach Dressleri sucht, will auch die
+         * Luxurians x Dressleri sehen.
+         */
+        const eigene = roh ? roh.split('|') : [];
+        if (!eigene.some((w) => menge.has(w))) return false;
+      } else if (!menge.has(roh)) {
+        return false;
+      }
     }
     return true;
   }

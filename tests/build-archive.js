@@ -63,6 +63,24 @@ const BILD = {
 
 // Freitext-Stadium der alten Karten auf die Auswahlwerte abbilden, die Produkt
 // und Archiv gemeinsam benutzen. Was nicht passt, wird gemeldet statt geraten.
+// Fuer den Rohbau abgeleitet, nicht gesetzt: Tung traegt Linie und Reinheit
+// selbst ein. Hier nur, damit die neuen Filter etwas zu zeigen haben.
+const LINIEN_WOERTER = {
+  Papillilaminum: /papillilaminum|ralph lynam|fort sherman|pap|marie/i,
+  Dressleri: /dressleri/i,
+  Luxurians: /luxurians/i,
+  Crystallinum: /crystallinum|large select|angela/i,
+  Carlablackiae: /carlablackiae/i,
+  'BVEP/Antolakii': /bvep|antolakii/i,
+};
+
+const REINHEIT = {
+  'Papillilaminum-Hybrid': 'Hybrid',
+  'Crystallinum-Hybrid': 'Hybrid',
+  Komplexhybrid: 'Komplexhybrid',
+  Hybrid: 'Hybrid',
+};
+
 const STADIUM = {
   'Etablierte Mutterpflanze': 'Mutterpflanze',
   Elternpflanze: 'Mutterpflanze',
@@ -128,6 +146,10 @@ function leseArchivkarten() {
       generation: feld(/F2/.test(s.name || '') ? 'F2' : null),
       stadium: feld(stadium),
       merkmal: feld(s.primary_trait),
+      linie: { value: Object.entries(LINIEN_WOERTER)
+        .filter(([, muster]) => muster.test((s.name || '') + ' ' + (s.parentage || '')))
+        .map(([name]) => name) },
+      reinheit: feld(REINHEIT[s.genetics] || null),
       notiz: feld(notiz || null),
       mutter_id: feld(s.plant_id),
       zuechter: feld(s.breeder ? person(s.breeder, null, s.origin) : null),

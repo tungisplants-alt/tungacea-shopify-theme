@@ -183,7 +183,7 @@
 
     {%- liquid
       assign hat_tatsachen = false
-      if eintrag.kreuzung.value != blank or zuechter_name != blank or eintrag.mutter_id.value != blank
+      if eintrag.kreuzung.value != blank or zuechter_name != blank or eintrag.mutter_id.value != blank or eintrag.linie.value.size > 0 or eintrag.reinheit.value != blank
         assign hat_tatsachen = true
       endif
     -%}
@@ -193,6 +193,18 @@
           <div class="plant-profile__fact">
             <dt>{{ 'private_archive.labels.parentage' | t }}</dt>
             <dd>{{ eintrag.kreuzung.value | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if eintrag.linie.value.size > 0 -%}
+          <div class="plant-profile__fact">
+            <dt>{{ 'private_archive.facet_line' | t }}</dt>
+            <dd>{{ eintrag.linie.value | join: ' · ' | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if eintrag.reinheit.value != blank -%}
+          <div class="plant-profile__fact">
+            <dt>{{ 'private_archive.facet_purity' | t }}</dt>
+            <dd>{{ eintrag.reinheit.value | escape }}</dd>
           </div>
         {%- endif -%}
         {%- if zuechter_name != blank -%}
