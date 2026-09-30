@@ -1,0 +1,13 @@
+{
+  "name": "tungacea-theme-tests",
+  "private": true,
+  "type": "commonjs",
+  "description": "Prueft die ausgelieferten Liquid-Snippets gegen die echten Sprachdateien. Wird von Shopify nicht ins Theme uebernommen.",
+  "scripts": {
+    "test": "node liquid-lint.js && node pass-test.js && node card-test.js && node flags-test.js",
+    "vorschau": "node build-pass.js"
+  },
+  "dependencies": {
+    "liquidjs": "^10.29.0"
+  }
+}

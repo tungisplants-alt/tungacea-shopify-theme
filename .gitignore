@@ -20,3 +20,7 @@ credentials.json
 
 # dev-only exports, preview harnesses, test media (never ship to theme)
 exports/
+
+# Prüfstand-Laufergebnisse (die Prüfstände selbst gehören ins Repository)
+tests/*.html
+tests/cases.json
