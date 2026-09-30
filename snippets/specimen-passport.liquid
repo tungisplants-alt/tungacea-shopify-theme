@@ -43,20 +43,27 @@
   assign bezogen = mf.bezogen_von.value
 
   comment
-    Lieferumfang is the lead sentence. An explicit case, not a translation key
-    assembled at runtime: every key stays verifiable, and the stored values
-    carry umlauts that would not survive being turned into a handle.
+    Lieferumfang decides the lead sentence, but the wording depends on whether a
+    mother plant is actually shown further down. Pointing at a plant that is not
+    there would be worse than saying nothing, so the kind is noted here and the
+    sentence is built once the mother is resolved.
+
+    An explicit case, not a translation key assembled at runtime: every key
+    stays verifiable, and the stored values carry umlauts that would not
+    survive being turned into a handle.
   endcomment
-  assign lead = ''
+  assign delivery_kind = ''
+  assign thing_word = ''
   case sp_lieferumfang
     when 'Dieses Exemplar'
-      assign lead = 'products.product.specimen.delivery_exact' | t
-    when 'Cutting vom abgebildeten Exemplar'
-      assign lead = 'products.product.specimen.delivery_cutting' | t
-    when 'Klon aus dieser Linie'
-      assign lead = 'products.product.specimen.delivery_clone' | t
+      assign delivery_kind = 'exact'
+      assign thing_word = 'products.product.specimen.thing_exact' | t
+    when 'Cutting der Mutterpflanze'
+      assign delivery_kind = 'cutting'
+      assign thing_word = 'products.product.specimen.thing_cutting' | t
     when 'Sämling aus dieser Kreuzung'
-      assign lead = 'products.product.specimen.delivery_seedling' | t
+      assign delivery_kind = 'seedling'
+      assign thing_word = 'products.product.specimen.thing_seedling' | t
   endcase
 
   comment
@@ -82,7 +89,7 @@
 
   assign stage_label = ''
   case sp_stadium
-    when 'Cutting'
+    when 'Steckling'
       assign stage_label = 'products.product.specimen.stage_cutting' | t
     when 'Sämling'
       assign stage_label = 'products.product.specimen.stage_seedling' | t
@@ -129,6 +136,22 @@
     assign mutter_besitzer = mutter.besitzer.value
     if mutter_besitzer != blank
       assign besitzer_name = mutter_besitzer.instagram.value | default: mutter_besitzer.name.value | strip
+    endif
+
+    comment
+      The line under the photos names the relationship, not just the address.
+      Where the plant stands is a detail; that the offered plant comes from this
+      one, and that this one is not for sale, is the point. Without a known
+      Lieferumfang there is no relationship to state, so it falls back to the
+      plain location.
+    endcomment
+    if thing_word != blank
+      if besitzer_name != blank
+        assign mutter_wo = 'products.product.specimen.mother_from_at' | t: thing: thing_word, who: besitzer_name
+      else
+        assign mutter_wo = 'products.product.specimen.mother_from_own' | t: thing: thing_word
+      endif
+    elsif besitzer_name != blank
       assign mutter_wo = 'products.product.specimen.mother_at' | t: who: besitzer_name
     else
       assign mutter_wo = 'products.product.specimen.mother_own' | t
@@ -157,6 +180,31 @@
       endif
     endif
   endif
+
+  comment
+    The lead sentence, now that it is known whether a mother plant is shown.
+    The old wording said a cutting came from the specimen pictured, which was a
+    circle: the gallery shows what is being sold, so a cutting could not come
+    from it. It now points at the mother plant, and only when there is one to
+    point at.
+  endcomment
+  assign lead = ''
+  case delivery_kind
+    when 'exact'
+      assign lead = 'products.product.specimen.delivery_exact' | t
+    when 'cutting'
+      if mutter_name != blank
+        assign lead = 'products.product.specimen.delivery_cutting_mother' | t
+      else
+        assign lead = 'products.product.specimen.delivery_cutting_plain' | t
+      endif
+    when 'seedling'
+      if mutter_name != blank
+        assign lead = 'products.product.specimen.delivery_seedling_cross' | t
+      else
+        assign lead = 'products.product.specimen.delivery_seedling_plain' | t
+      endif
+  endcase
 
   assign zuechter_name = ''
   if zuechter != blank
