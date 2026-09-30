@@ -80,7 +80,17 @@ const person = (name, ig, land) => ({
 const feld = v => ({ value: v === undefined || v === '' ? null : v });
 
 function leseArchivkarten() {
-  const j = JSON.parse(strip(fs.readFileSync(path.join(THEME, 'templates/page.archive.json'), 'utf8')));
+  // Die sechs handgetippten Karten stehen seit der Umstellung nicht mehr in der
+  // Vorlage — dort liegt jetzt die datengetriebene Galerie. Fuer die Vorschau
+  // werden sie aus der Git-Historie geholt, damit dieser Bauer weiter zeigt,
+  // woher die Eintraege stammen.
+  let roh = strip(fs.readFileSync(path.join(THEME, 'templates/page.archive.json'), 'utf8'));
+  if (!roh.includes('main-private-archive')) {
+    roh = strip(require('child_process')
+      .execSync('git show HEAD:templates/page.archive.json', { cwd: THEME })
+      .toString('utf8'));
+  }
+  const j = JSON.parse(roh);
   const sec = j.sections[j.order[0]];
   const funde = [];
   const eintraege = (sec.block_order || []).map((id, i) => {
@@ -151,6 +161,30 @@ function leseArchivkarten() {
   // Galerie nicht erscheinen. Ohne diesen Schritt waere der Filter behauptet, nicht geprueft.
   const mitFremder = eintraege.concat([fremd]);
   const galerie = await engine.renderFile('plant-archive-gallery', { eintraege: mitFremder });
+
+  const mutterMitSeite = {
+    bezeichnung: { value: 'Anthurium Ralph Lynam × Fort Sherman F2' },
+    besitzer: { value: null }, fotograf: { value: null }, bildfreigabe: { value: null },
+    fotos: { value: [BILD['D2061F69-B3D6-438D-AD92-07975F7501BE.jpg']] },
+    system: { url: '/pflanzen/anthurium-ralph-lynam-x-fort-sherman-f2' },
+  };
+  const seiteProdukt = await engine.renderFile('specimen-passport', {
+    product: { metafields: { custom: {
+      lieferumfang: { value: 'Cutting der Mutterpflanze' },
+      bewurzelung: { value: 'Unbewurzelt' },
+      stadium: { value: 'Steckling' },
+      generation: { value: 'F2' },
+      blattlaenge_cm: { value: 10 },
+      specimen_id: { value: 'TA-1001' },
+      mutterpflanze: { value: mutterMitSeite },
+      zuechter: { value: person('Tofusprinkles', null) },
+    } } },
+    block: { id: 'b1', shopify_attributes: '' },
+  });
+  if (!seiteProdukt.includes('specimen-mother-link')) {
+    console.error('FEHLER: der Knopf fehlt in der Produktvorschau.');
+    process.exit(1);
+  }
   const kacheln = (galerie.match(/class="plant-card"/g) || []).length;
   if (kacheln !== eintraege.length) {
     console.error('FEHLER: ' + kacheln + ' Kacheln bei ' + mitFremder.length + ' Eintraegen — der Filter greift nicht.');
@@ -164,7 +198,7 @@ function leseArchivkarten() {
   const seiteFremdGesperrt = await engine.renderFile('plant-profile', { eintrag: fremd });
   const seiteFremdFrei = await engine.renderFile('plant-profile', { eintrag: fremdOk });
 
-  const css = ['tungacea.css', 'base.css', 'component-plant-archive.css', 'component-specimen-passport.css']
+  const css = ['tungacea.css', 'base.css', 'component-plant-archive.css', 'component-specimen-passport.css', 'component-specimen-card.css']
     .map(f => {
       const p = path.join(THEME, 'assets', f);
       return fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : '';
@@ -214,6 +248,7 @@ h1,h2,h3 { font-weight: 500; }
   ${funde.length ? '<div class="rohbau-funde"><strong>Beim Abbilden aufgefallen:</strong><ul>' +
     funde.map(f => '<li>' + f + '</li>').join('') + '</ul></div>' : ''}
 </div>
+${abschnitt(0, 'NEU — der Knopf auf der Produktseite', 'Unter dem Mutterblock, leiser als "In den Warenkorb". Er erscheint nur, wenn die Mutterpflanze wirklich eine eigene Seite hat.', seiteProdukt)}
 ${abschnitt(1, 'Die Galerie', 'Sechs Kacheln, jede anklickbar. Hochformat 4:5 wie die Mutterfotos am Produkt. Der Name ist der Link, die ganze Kachel ist das Klickziel.', galerie)}
 ${abschnitt(2, 'Eigene Pflanze — die Seite dahinter', 'Fotos, dein Merkmalssatz, die Tatsachen, deine Notiz. Unten der Rückweg: welche Angebote von dieser Pflanze stammen.', seiteEigen)}
 ${abschnitt(3, 'Fremde Pflanze OHNE Bildfreigabe', 'Erfundenes Beispiel. Die Pflanze wird genannt, die Fotos erscheinen nicht — dieselbe Sperre wie am Produkt. Diese Pflanze fehlt oben in der Galerie, und das ist Absicht.', seiteFremdGesperrt)}
