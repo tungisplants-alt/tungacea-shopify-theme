@@ -53,6 +53,15 @@
     -%}
 
     {%- if anzahl > 0 -%}
+      <script src="{{ 'plant-archive-search.js' | asset_url }}" defer="defer"></script>
+
+      {%- comment -%}
+        Die Leiste bekommt die ganze Menge und wendet dieselbe Besitzer-Regel
+        an wie das Raster. Sonst boete sie Zuechter an, deren Pflanzen gar
+        nicht in der Galerie stehen.
+      {%- endcomment -%}
+      {%- render 'plant-archive-search', eintraege: eintraege -%}
+
       <ul class="plant-archive__grid" role="list" data-testid="plant-archive-grid">
         {%- for eintrag in eintraege -%}
           {%- if eintrag.besitzer.value == blank -%}

@@ -80,16 +80,12 @@ const person = (name, ig, land) => ({
 const feld = v => ({ value: v === undefined || v === '' ? null : v });
 
 function leseArchivkarten() {
-  // Die sechs handgetippten Karten stehen seit der Umstellung nicht mehr in der
-  // Vorlage — dort liegt jetzt die datengetriebene Galerie. Fuer die Vorschau
-  // werden sie aus der Git-Historie geholt, damit dieser Bauer weiter zeigt,
-  // woher die Eintraege stammen.
-  let roh = strip(fs.readFileSync(path.join(THEME, 'templates/page.archive.json'), 'utf8'));
-  if (!roh.includes('main-private-archive')) {
-    roh = strip(require('child_process')
-      .execSync('git show HEAD:templates/page.archive.json', { cwd: THEME })
-      .toString('utf8'));
-  }
+  // Die sechs handgetippten Karten sind historische Eingangsdaten: sie stammen
+  // aus templates/page.archive.json, wie es vor der Umstellung aussah (Commit
+  // 46c6838a). Seit die Vorlage die Galerie traegt, gibt es sie dort nicht mehr,
+  // und ein Griff in die Git-Historie faellt mit jedem neuen Commit anders aus.
+  // Deshalb liegen sie hier als Abzug daneben.
+  const roh = strip(fs.readFileSync(path.join(__dirname, 'archiv-karten-2026-09-30.json'), 'utf8'));
   const j = JSON.parse(roh);
   const sec = j.sections[j.order[0]];
   const funde = [];
@@ -143,6 +139,9 @@ function leseArchivkarten() {
   fremd.besitzer = feld(person('secretfoliage', '@secretfoliage', 'Niederlande'));
   fremd.fotograf = feld(person('secretfoliage', '@secretfoliage', 'Niederlande'));
   fremd.bildfreigabe = feld(false);
+  // Unverwechselbarer Name, damit die Gegenprobe an der Kachel misst und nicht
+  // am Zuechternamen — den gibt es zu Recht auch als Schalter in der Suchleiste.
+  fremd.bezeichnung = feld('Beispielpflanze bei Dritten');
 
   // Fall B mit Freigabe: Fotos erscheinen, mit Nennung.
   const fremdOk = JSON.parse(JSON.stringify(fremd));
@@ -190,7 +189,7 @@ function leseArchivkarten() {
     console.error('FEHLER: ' + kacheln + ' Kacheln bei ' + mitFremder.length + ' Eintraegen — der Filter greift nicht.');
     process.exit(1);
   }
-  if (galerie.includes('secretfoliage')) {
+  if (galerie.includes('Beispielpflanze bei Dritten')) {
     console.error('FEHLER: die fremde Pflanze steht in der Galerie.');
     process.exit(1);
   }

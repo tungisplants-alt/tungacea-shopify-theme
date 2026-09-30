@@ -628,6 +628,15 @@
     }
   },
   "private_archive": {
+    "search_label": "Search the archive",
+    "search_placeholder": "Name, cross, breeder …",
+    "search_clear": "Reset",
+    "facet_stage": "Stage",
+    "facet_generation": "Generation",
+    "facet_breeder": "Breeder",
+    "count_all": "%anzahl% plants in the archive",
+    "count_some": "%treffer% of %gesamt% plants",
+    "count_none": "No plant matches that.",
     "unnamed": "Unnamed",
     "eyebrow_single": "FROM MY ARCHIVE",
     "owned_by": "This plant is held by {{ who }}.",

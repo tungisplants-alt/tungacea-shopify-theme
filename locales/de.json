@@ -628,6 +628,15 @@
     }
   },
   "private_archive": {
+    "search_label": "Archiv durchsuchen",
+    "search_placeholder": "Name, Kreuzung, Züchter …",
+    "search_clear": "Zurücksetzen",
+    "facet_stage": "Stadium",
+    "facet_generation": "Generation",
+    "facet_breeder": "Züchter",
+    "count_all": "%anzahl% Pflanzen im Archiv",
+    "count_some": "%treffer% von %gesamt% Pflanzen",
+    "count_none": "Keine Pflanze passt dazu.",
     "unnamed": "Ohne Bezeichnung",
     "eyebrow_single": "AUS MEINEM ARCHIV",
     "owned_by": "Diese Pflanze steht bei {{ who }}.",

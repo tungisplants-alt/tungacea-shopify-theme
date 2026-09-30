@@ -347,3 +347,158 @@
   letter-spacing: 0.16em;
   color: var(--pl-muted);
 }
+
+/* Suche und Filter
+   -------------------------------------------------------------------------
+   Eine Bibliothek ist nicht laut. Das Feld ist eine Linie, kein Kasten; die
+   Schalter sind Wörter mit Unterstrich, keine Knöpfe. Was zählt, ist die Zeile
+   darunter, die sagt, wie viel gerade zu sehen ist.
+
+   Die Leiste ist in der Vorlage `hidden`; erst das Skript nimmt die Marke weg.
+   Ohne JavaScript bleibt sie unsichtbar und die Galerie vollständig. */
+
+.plant-search {
+  display: block;
+  margin-bottom: 4rem;
+}
+
+.plant-search[hidden] {
+  display: none;
+}
+
+.plant-search__field {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 1.6rem;
+  max-width: 48rem;
+  border-bottom: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
+  transition: border-color 0.3s var(--pl-ease, ease);
+}
+
+.plant-search__field:focus-within {
+  border-bottom-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.8);
+}
+
+.plant-search__input {
+  flex: 1 1 auto;
+  appearance: none;
+  background: none;
+  border: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: 1.6rem;
+  line-height: 1.6;
+  padding: 0.8rem 0;
+  min-width: 0;
+}
+
+.plant-search__input::placeholder {
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  opacity: 0.7;
+}
+
+.plant-search__input:focus {
+  outline: none;
+}
+
+/* Das native Kreuz in search-Feldern sieht in jedem Browser anders aus und
+   passt in keinem zur Seite. Eigener Knopf, eigene Sprache. */
+.plant-search__input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.plant-search__clear {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0.4rem 0;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  font-family: inherit;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  transition: color 0.25s var(--pl-ease, ease);
+}
+
+.plant-search__clear:hover {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-search__clear:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
+}
+
+.plant-search__facets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem 3.2rem;
+  margin-top: 2.4rem;
+}
+
+.plant-search__facet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.8rem 1.6rem;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.plant-search__facet-label {
+  padding: 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  opacity: 0.7;
+}
+
+.plant-search__chip {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0.2rem 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: 1.3rem;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s var(--pl-ease, ease), color 0.25s var(--pl-ease, ease);
+}
+
+.plant-search__chip:hover {
+  border-bottom-color: var(--pl-line, rgba(242, 238, 232, 0.14));
+}
+
+.plant-search__chip[aria-pressed='true'] {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  border-bottom-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.8);
+}
+
+.plant-search__chip:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
+}
+
+.plant-search__count {
+  margin: 2.4rem 0 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+}
+
+@media screen and (max-width: 749px) {
+  .plant-search__facets {
+    gap: 1.6rem 2.4rem;
+  }
+
+  .plant-search__facet {
+    width: 100%;
+  }
+}

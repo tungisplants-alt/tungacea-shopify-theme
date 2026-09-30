@@ -89,8 +89,33 @@
     assign teile = teile | append: generation | append: ' · '
   endif
   assign leise = teile | split: ' · ' | join: ' · ' | strip
+
+  comment
+    Der Suchtext der Kachel. Er enthaelt alles, wonach jemand suchen wuerde:
+    Name, Kreuzung, Zuechter und die Exemplar-ID. Kleingeschrieben, damit die
+    Suche ohne Ruecksicht auf Gross- und Kleinschreibung vergleichen kann.
+  endcomment
+  assign zuechter_eintrag = eintrag.zuechter.value
+  assign zuechter_name = ''
+  if zuechter_eintrag != blank
+    assign zuechter_name = zuechter_eintrag.name.value | default: '' | strip
+  endif
+
+  assign suchtext = name
+  assign suchtext = suchtext | append: ' ' | append: eintrag.kreuzung.value
+  assign suchtext = suchtext | append: ' ' | append: zuechter_name
+  assign suchtext = suchtext | append: ' ' | append: eintrag.mutter_id.value
+  assign suchtext = suchtext | append: ' ' | append: eintrag.merkmal.value
+  assign suchtext = suchtext | downcase | strip
 -%}
-<article class="plant-card" data-testid="plant-card">
+<article
+  class="plant-card"
+  data-testid="plant-card"
+  data-suche="{{ suchtext | escape }}"
+  data-stadium="{{ eintrag.stadium.value | escape }}"
+  data-generation="{{ eintrag.generation.value | escape }}"
+  data-zuechter="{{ zuechter_name | escape }}"
+>
   <div class="plant-card__media">
     {%- if zeige_foto -%}
       {{
