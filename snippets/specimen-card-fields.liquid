@@ -52,12 +52,21 @@
   endif
 
   comment
-    F- and S-numbers and Species are read the same in both languages and pass
-    through unchanged. Only the admission that nobody knows needs translating.
+    F2 on its own is a code only insiders read, so the word Generation goes in
+    front of it. Species is not a generation and would read as nonsense with
+    that prefix — it stands alone, and it is a word anybody can look up.
+    F- and S-numbers are the same in both languages; only the admission that
+    nobody knows needs translating.
   endcomment
-  assign generation = mf.generation.value | default: '' | strip
-  if generation == 'Unbekannt'
-    assign generation = 'products.product.specimen.generation_unknown' | t
+  assign gen_raw = mf.generation.value | default: '' | strip
+  assign generation = ''
+  if gen_raw == 'Species'
+    assign generation = gen_raw
+  elsif gen_raw == 'Unbekannt'
+    assign gen_word = 'products.product.specimen.generation_unknown' | t
+    assign generation = 'products.product.specimen.generation_prefixed' | t: value: gen_word
+  elsif gen_raw != blank
+    assign generation = 'products.product.specimen.generation_prefixed' | t: value: gen_raw
   endif
 
   assign stage_label = ''
