@@ -1,0 +1,215 @@
+{% comment %}
+  Tungacea — Seite einer Pflanze aus dem Archiv.
+
+  Der Rumpf der eigenen Seite eines Metaobjekt-Eintrags. Dieselben Daten, aus
+  denen die Produktseite ihren Mutterblock baut, hier in ganzer Länge: Bilder,
+  Tatsachen, Tungs eigene Notiz.
+
+  Drei Fälle, die sich hier unterscheiden müssen:
+  - eigene Pflanze: alles wird gezeigt;
+  - Pflanze bei Dritten: wird gezeigt und benannt, Fotos nur mit Freigabe;
+  - Referenzbild einer Kreuzung: gehört nicht in die Archiv-Galerie.
+
+  Die Fotosperre ist hier strenger zu nehmen als am Produkt. Eine eigene Adresse
+  wird von Suchmaschinen erfasst; eine Erwähnung in einem Absatz nicht im selben
+  Maß. Deshalb greift dieselbe Regel, aber es gibt keinen Weg daran vorbei.
+
+  Annahmen:
+  - eintrag: {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
+{% endcomment %}
+{{ 'component-plant-archive.css' | asset_url | stylesheet_tag }}
+{{ 'component-specimen-passport.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign name = eintrag.bezeichnung.value | default: '' | strip
+  if name == blank
+    assign name = 'private_archive.unnamed' | t
+  endif
+
+  assign besitzer = eintrag.besitzer.value
+  assign fremd = false
+  if besitzer != blank
+    assign fremd = true
+  endif
+
+  assign besitzer_name = ''
+  if fremd
+    assign besitzer_name = besitzer.instagram.value | default: besitzer.name.value | strip
+  endif
+
+  assign fotograf = eintrag.fotograf.value
+  assign fotograf_name = ''
+  if fotograf != blank
+    assign fotograf_name = fotograf.instagram.value | default: fotograf.name.value | strip
+  endif
+
+  assign fotos = eintrag.fotos.value
+  assign zeige_fotos = false
+  if fotos.size > 0
+    assign freigabe = eintrag.bildfreigabe.value
+    if fotograf == blank
+      assign zeige_fotos = true
+    elsif freigabe == true or freigabe == 'true'
+      assign zeige_fotos = true
+    endif
+  endif
+
+  assign zuechter = eintrag.zuechter.value
+  assign zuechter_name = ''
+  assign zuechter_land = ''
+  if zuechter != blank
+    assign zuechter_name = zuechter.instagram.value | default: zuechter.name.value | strip
+    assign zuechter_land = zuechter.land.value | default: '' | strip
+  endif
+
+  assign stage_label = ''
+  case eintrag.stadium.value
+    when 'Steckling'
+      assign stage_label = 'products.product.specimen.stage_cutting' | t
+    when 'Sämling'
+      assign stage_label = 'products.product.specimen.stage_seedling' | t
+    when 'Jungpflanze'
+      assign stage_label = 'products.product.specimen.stage_young' | t
+    when 'Etabliert'
+      assign stage_label = 'products.product.specimen.stage_established' | t
+    when 'Mutterpflanze'
+      assign stage_label = 'products.product.specimen.stage_mother' | t
+  endcase
+
+  assign gen_raw = eintrag.generation.value | default: '' | strip
+  assign generation = ''
+  if gen_raw == 'Species'
+    assign generation = gen_raw
+  elsif gen_raw == 'Unbekannt'
+    assign gen_word = 'products.product.specimen.generation_unknown' | t
+    assign generation = 'products.product.specimen.generation_prefixed' | t: value: gen_word
+  elsif gen_raw != blank
+    assign generation = 'products.product.specimen.generation_prefixed' | t: value: gen_raw
+  endif
+
+  assign angebote = eintrag.angebote.value
+-%}
+
+<div class="plant-profile" data-testid="plant-profile">
+  <div class="page-width">
+    <header class="plant-profile__head">
+      <p class="plant-profile__eyebrow caption-with-letter-spacing">
+        {{- 'private_archive.eyebrow_single' | t -}}
+      </p>
+      <h1 class="plant-profile__name">{{ name | escape }}</h1>
+
+      {%- if fremd and besitzer_name != blank -%}
+        <p class="plant-profile__owner" data-testid="plant-profile-owner">
+          {{- 'private_archive.owned_by' | t: who: besitzer_name -}}
+        </p>
+      {%- endif -%}
+
+      {%- assign kopfzeile = '' -%}
+      {%- if stage_label != blank -%}
+        {%- assign kopfzeile = kopfzeile | append: stage_label | append: ' · ' -%}
+      {%- endif -%}
+      {%- if generation != blank -%}
+        {%- assign kopfzeile = kopfzeile | append: generation | append: ' · ' -%}
+      {%- endif -%}
+      {%- assign kopfzeile = kopfzeile | split: ' · ' | join: ' · ' | strip -%}
+      {%- if kopfzeile != blank -%}
+        <p class="plant-profile__specs" data-testid="plant-profile-specs">{{ kopfzeile }}</p>
+      {%- endif -%}
+    </header>
+
+    {%- if zeige_fotos -%}
+      <specimen-lightbox class="plant-profile__photos" data-testid="plant-profile-photos">
+        {%- for foto in fotos -%}
+          <button
+            type="button"
+            class="plant-profile__photo"
+            data-lightbox-full="{{ foto | image_url: width: 1800 }}"
+            data-lightbox-alt="{{ name | escape }}"
+          >
+            {{
+              foto
+              | image_url: width: 900
+              | image_tag:
+                loading: 'lazy',
+                alt: name,
+                sizes: '(min-width: 990px) 33vw, 50vw',
+                widths: '400, 600, 900',
+                class: 'plant-profile__photo-image'
+            }}
+          </button>
+        {%- endfor -%}
+      </specimen-lightbox>
+      {%- if fotograf_name != blank -%}
+        <p class="plant-profile__credit" data-testid="plant-profile-credit">
+          {{- 'products.product.specimen.photo_credit' | t: who: fotograf_name -}}
+        </p>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if eintrag.merkmal.value != blank -%}
+      <p class="plant-profile__trait" data-testid="plant-profile-trait">
+        {{- eintrag.merkmal.value | escape -}}
+      </p>
+    {%- endif -%}
+
+    {%- liquid
+      assign hat_tatsachen = false
+      if eintrag.kreuzung.value != blank or zuechter_name != blank or eintrag.mutter_id.value != blank
+        assign hat_tatsachen = true
+      endif
+    -%}
+    {%- if hat_tatsachen -%}
+      <dl class="plant-profile__facts" data-testid="plant-profile-facts">
+        {%- if eintrag.kreuzung.value != blank -%}
+          <div class="plant-profile__fact">
+            <dt>{{ 'private_archive.labels.parentage' | t }}</dt>
+            <dd>{{ eintrag.kreuzung.value | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if zuechter_name != blank -%}
+          <div class="plant-profile__fact">
+            <dt>{{ 'private_archive.labels.breeder' | t }}</dt>
+            <dd>
+              {{- zuechter_name | escape -}}
+              {%- if zuechter_land != blank %} <span class="plant-profile__country">({{ zuechter_land | escape }})</span>{% endif -%}
+            </dd>
+          </div>
+        {%- endif -%}
+        {%- if eintrag.mutter_id.value != blank -%}
+          <div class="plant-profile__fact">
+            <dt>{{ 'private_archive.labels.plant_id' | t }}</dt>
+            <dd>{{ eintrag.mutter_id.value | escape }}</dd>
+          </div>
+        {%- endif -%}
+      </dl>
+    {%- endif -%}
+
+    {%- if eintrag.notiz.value != blank -%}
+      <div class="plant-profile__note rte" data-testid="plant-profile-note">
+        {{- eintrag.notiz.value -}}
+      </div>
+    {%- endif -%}
+
+    {%- if angebote.size > 0 -%}
+      <section class="plant-profile__offers" data-testid="plant-profile-offers">
+        <h2 class="plant-profile__offers-heading">{{ 'private_archive.offers_heading' | t }}</h2>
+        <ul class="plant-profile__offers-list" role="list">
+          {%- for produkt in angebote -%}
+            <li class="plant-profile__offer">
+              <a href="{{ produkt.url }}" class="plant-profile__offer-link">
+                {{- produkt.title | escape -}}
+              </a>
+              {%- if produkt.available -%}
+                <span class="plant-profile__offer-price">{{ produkt.price | money }}</span>
+              {%- else -%}
+                <span class="plant-profile__offer-sold">
+                  {{- 'products.product.specimen_status.sold' | t -}}
+                </span>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </section>
+    {%- endif -%}
+  </div>
+</div>

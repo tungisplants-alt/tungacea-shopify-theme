@@ -1,0 +1,396 @@
+/*
+ * Tungacea — Archiv-Galerie und Pflanzenseite.
+ *
+ * Die alte Archivkarte trug Bild, Tatsachen und einen Aufklapper in einem Stück.
+ * Sechs davon ergaben eine Seite, die man scrollt statt durchsucht. Hier ist die
+ * Kachel klein und still, und die Tiefe liegt hinter einem Klick.
+ *
+ * Die Bildkacheln stehen im Hochformat 4/5 — dieselbe Entscheidung wie bei den
+ * Mutterpflanzenfotos auf der Produktseite: auf den ersten Blick mehr Pflanze.
+ */
+
+.plant-archive {
+  --pl-line: var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  --pl-line-soft: var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.08));
+  --pl-muted: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  --pl-ease: var(--tungacea-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+}
+
+.plant-archive__intro {
+  max-width: 62rem;
+  margin-bottom: 4.8rem;
+}
+
+.plant-archive__eyebrow {
+  margin: 0 0 1.2rem;
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-archive__heading {
+  margin: 0 0 1.6rem;
+  font-size: clamp(2.8rem, 4vw, 4.2rem);
+  line-height: 1.15;
+}
+
+.plant-archive__lead {
+  color: var(--pl-muted);
+  max-width: 54rem;
+}
+
+/* Galerie
+   ----------------------------------------------------------------------- */
+
+.plant-archive__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.4rem 1.6rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media screen and (min-width: 750px) {
+  .plant-archive__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3.2rem 2.4rem;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .plant-archive__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.plant-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.plant-card__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--pl-line-soft);
+}
+
+.plant-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s var(--pl-ease);
+}
+
+.plant-card__image--placeholder {
+  opacity: 0.22;
+  object-fit: contain;
+  padding: 18%;
+}
+
+@media (hover: hover) {
+  .plant-card:hover .plant-card__image {
+    transform: scale(1.035);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plant-card__image {
+    transition: none;
+  }
+
+  .plant-card:hover .plant-card__image {
+    transform: none;
+  }
+}
+
+.plant-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.plant-card__name {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.35;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/*
+ * Der Link deckt die ganze Kachel ab, bleibt aber ein einziges Ziel in der
+ * Tabulatorreihenfolge. Der Fokusrahmen gehört daher auf die Kachel, nicht auf
+ * den Text — sonst umschliesst er zwei Zeilen und zeigt nicht, was passiert.
+ */
+.plant-card__link {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.25s var(--pl-ease);
+}
+
+.plant-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.plant-card__link:hover {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-card__link:focus-visible {
+  outline: none;
+}
+
+.plant-card:has(.plant-card__link:focus-visible) {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 4px;
+}
+
+.plant-card__meta {
+  margin: 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--pl-muted);
+}
+
+/* Einzelseite
+   ----------------------------------------------------------------------- */
+
+.plant-profile {
+  --pl-line: var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  --pl-line-soft: var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.08));
+  --pl-muted: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  --pl-ease: var(--tungacea-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+  padding-block: 5.6rem 8rem;
+}
+
+.plant-profile__head {
+  max-width: 68rem;
+  margin-bottom: 3.2rem;
+}
+
+.plant-profile__eyebrow {
+  margin: 0 0 1.2rem;
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-profile__name {
+  margin: 0 0 1.2rem;
+  font-size: clamp(2.4rem, 3.6vw, 3.8rem);
+  line-height: 1.15;
+}
+
+.plant-profile__owner {
+  margin: 0 0 0.8rem;
+  color: var(--pl-muted);
+}
+
+.plant-profile__specs {
+  margin: 0;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--pl-muted);
+}
+
+.plant-profile__photos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+@media screen and (min-width: 750px) {
+  .plant-profile__photos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.6rem;
+  }
+}
+
+.plant-profile__photo {
+  appearance: none;
+  padding: 0;
+  border: 1px solid var(--pl-line-soft);
+  background: rgba(0, 0, 0, 0.28);
+  cursor: zoom-in;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+
+.plant-profile__photo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.plant-profile__photo:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
+}
+
+.plant-profile__credit {
+  margin: 0 0 3.2rem;
+  font-size: 1.1rem;
+  color: var(--pl-muted);
+}
+
+.plant-profile__trait {
+  max-width: 62rem;
+  margin: 0 0 3.2rem;
+  font-size: 1.7rem;
+  line-height: 1.55;
+}
+
+.plant-profile__facts {
+  display: grid;
+  gap: 0;
+  max-width: 62rem;
+  margin: 0 0 3.2rem;
+  border-top: 1px solid var(--pl-line-soft);
+}
+
+.plant-profile__fact {
+  display: grid;
+  grid-template-columns: minmax(10rem, 28%) 1fr;
+  gap: 1.6rem;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--pl-line-soft);
+}
+
+.plant-profile__fact dt {
+  margin: 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--pl-muted);
+}
+
+.plant-profile__fact dd {
+  margin: 0;
+}
+
+.plant-profile__country {
+  color: var(--pl-muted);
+}
+
+/*
+ * Tungs eigener Text. Er ist der Grund, warum es das Archiv gibt, und darf
+ * deshalb nicht wie eine Fussnote aussehen.
+ */
+.plant-profile__note {
+  max-width: 62rem;
+  margin: 0 0 4rem;
+  padding-left: 2rem;
+  border-left: 2px solid rgba(var(--tungacea-accent, 150, 45, 58), 0.55);
+  color: var(--pl-muted);
+}
+
+.plant-profile__note > *:first-child {
+  margin-top: 0;
+}
+
+.plant-profile__note > *:last-child {
+  margin-bottom: 0;
+}
+
+.plant-profile__offers {
+  max-width: 62rem;
+  padding-top: 2.4rem;
+  border-top: 1px solid var(--pl-line);
+}
+
+.plant-profile__offers-heading {
+  margin: 0 0 1.6rem;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--pl-muted);
+}
+
+.plant-profile__offers-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plant-profile__offer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.6rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--pl-line-soft);
+}
+
+.plant-profile__offer-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s var(--pl-ease);
+}
+
+.plant-profile__offer-link:hover {
+  border-bottom-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.8);
+}
+
+.plant-profile__offer-sold {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--pl-muted);
+}
+
+/*
+ * Der Knopf auf der Produktseite, der zur Pflanzenseite führt. Er steht im
+ * Mutterblock der Dokumentation und muss dort leiser sein als "In den
+ * Warenkorb" — es ist ein Weg zu mehr Information, kein Kaufweg.
+ */
+.specimen-passport__mother-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+  padding: 0.8rem 1.4rem;
+  border: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
+  color: inherit;
+  text-decoration: none;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  transition: border-color 0.25s var(--pl-ease), color 0.25s var(--pl-ease);
+}
+
+.specimen-passport__mother-link:hover {
+  border-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.7);
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.specimen-passport__mother-link:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
+}
+
+.specimen-passport__mother-link::after {
+  content: '→';
+  transition: transform 0.25s var(--pl-ease);
+}
+
+.specimen-passport__mother-link:hover::after {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .specimen-passport__mother-link::after,
+  .specimen-passport__mother-link:hover::after {
+    transition: none;
+    transform: none;
+  }
+}

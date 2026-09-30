@@ -628,6 +628,11 @@
     }
   },
   "private_archive": {
+    "unnamed": "Unnamed",
+    "eyebrow_single": "FROM MY ARCHIVE",
+    "owned_by": "This plant is held by {{ who }}.",
+    "offers_heading": "Offers from this plant",
+    "more_about_mother": "More about the mother plant",
     "eyebrow": "MY ARCHIVE",
     "heading": "A glimpse of what’s growing.",
     "intro": "Here I document mother plants, my own crosses, and other Anthuriums from my collection. Over time, they may become the source of cuttings and offspring that join the collection as new specimens.",

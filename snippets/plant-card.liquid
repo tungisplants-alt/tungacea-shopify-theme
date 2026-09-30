@@ -1,0 +1,112 @@
+{% comment %}
+  Tungacea — Archivkachel einer Pflanze.
+
+  Eine Kachel der Archiv-Galerie. Bild, Name und eine leise Zeile; die Tiefe
+  liegt auf der eigenen Seite des Eintrags. Die alte Archivkarte trug alles
+  inline und wurde dadurch zu einer Seite mit sechs Aufklappern.
+
+  Die Kachel ist als Ganzes anklickbar: der Link liegt auf dem Namen und deckt
+  über ein Pseudoelement die ganze Karte ab. So bleibt genau ein Ziel in der
+  Tabulatorreihenfolge und Vorlesegeräte hören den Namen, nicht "Link".
+
+  Ohne eigene Seite (Eintrag ist Entwurf, oder die Fähigkeit Online Store ist
+  nicht eingeschaltet) wird die Kachel still zur reinen Anzeige. Ein Link ins
+  Leere ist schlimmer als kein Link.
+
+  Annahmen:
+  - eintrag: {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
+{% endcomment %}
+{%- liquid
+  assign name = eintrag.bezeichnung.value | default: '' | strip
+  if name == blank
+    assign name = 'private_archive.unnamed' | t
+  endif
+
+  assign ziel = eintrag.system.url
+
+  comment
+    Erstes Foto als Kachelbild, aber nur, wenn es gezeigt werden darf. Dieselbe
+    Sperre wie auf der Produktseite: ein fremder Fotograf ohne Freigabe bedeutet
+    kein Bild. Leerer Fotograf heisst eigenes Bild.
+  endcomment
+  assign fotos = eintrag.fotos.value
+  assign zeige_foto = false
+  if fotos.size > 0
+    assign fotograf = eintrag.fotograf.value
+    assign freigabe = eintrag.bildfreigabe.value
+    if fotograf == blank
+      assign zeige_foto = true
+    elsif freigabe == true or freigabe == 'true'
+      assign zeige_foto = true
+    endif
+  endif
+
+  comment
+    Die leise Zeile unter dem Namen. Stadium und Generation sind dieselben
+    Auswahlwerte wie am Produkt, damit Archiv und Laden dasselbe Wort benutzen.
+  endcomment
+  assign stage_label = ''
+  case eintrag.stadium.value
+    when 'Steckling'
+      assign stage_label = 'products.product.specimen.stage_cutting' | t
+    when 'Sämling'
+      assign stage_label = 'products.product.specimen.stage_seedling' | t
+    when 'Jungpflanze'
+      assign stage_label = 'products.product.specimen.stage_young' | t
+    when 'Etabliert'
+      assign stage_label = 'products.product.specimen.stage_established' | t
+    when 'Mutterpflanze'
+      assign stage_label = 'products.product.specimen.stage_mother' | t
+  endcase
+
+  assign gen_raw = eintrag.generation.value | default: '' | strip
+  assign generation = ''
+  if gen_raw == 'Species'
+    assign generation = gen_raw
+  elsif gen_raw == 'Unbekannt'
+    assign gen_word = 'products.product.specimen.generation_unknown' | t
+    assign generation = 'products.product.specimen.generation_prefixed' | t: value: gen_word
+  elsif gen_raw != blank
+    assign generation = 'products.product.specimen.generation_prefixed' | t: value: gen_raw
+  endif
+
+  assign teile = ''
+  if stage_label != blank
+    assign teile = teile | append: stage_label | append: ' · '
+  endif
+  if generation != blank
+    assign teile = teile | append: generation | append: ' · '
+  endif
+  assign leise = teile | split: ' · ' | join: ' · ' | strip
+-%}
+<article class="plant-card" data-testid="plant-card">
+  <div class="plant-card__media">
+    {%- if zeige_foto -%}
+      {{
+        fotos[0]
+        | image_url: width: 800
+        | image_tag:
+          loading: 'lazy',
+          alt: name,
+          sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw',
+          widths: '300, 400, 600, 800',
+          class: 'plant-card__image'
+      }}
+    {%- else -%}
+      {{ 'image' | placeholder_svg_tag: 'plant-card__image plant-card__image--placeholder' }}
+    {%- endif -%}
+  </div>
+
+  <div class="plant-card__body">
+    <h3 class="plant-card__name">
+      {%- if ziel != blank -%}
+        <a href="{{ ziel }}" class="plant-card__link" data-testid="plant-card-link">{{ name | escape }}</a>
+      {%- else -%}
+        {{ name | escape }}
+      {%- endif -%}
+    </h3>
+    {%- if leise != blank -%}
+      <p class="plant-card__meta" data-testid="plant-card-meta">{{ leise }}</p>
+    {%- endif -%}
+  </div>
+</article>

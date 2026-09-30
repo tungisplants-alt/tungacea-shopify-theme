@@ -1,0 +1,67 @@
+{% comment %}
+  Tungacea — Archiv-Galerie.
+
+  Einleitung und Kachelraster. Die Einträge kommen aus der Metaobjekt-Definition,
+  nicht aus Theme-Blöcken: eine neue Pflanze anzulegen heisst dann einen Eintrag
+  schreiben, nicht neunzehn Felder in einer Vorlage tippen.
+
+  Fremde Pflanzen gehören nicht in diese Galerie. Sie heisst Privatarchiv, und
+  eine fremde Pflanze darin behauptet Besitz. Vom Produkt aus bleibt sie
+  verlinkt, also erreichbar, ohne vereinnahmt zu werden. Wer gefiltert wird,
+  entscheidet das Feld besitzer.
+
+  Annahmen:
+  - eintraege: {Array} Metaobjekt-Einträge vom Typ mutterpflanze (Pflicht)
+  - eyebrow, heading, intro: {String} optional, sonst aus den Sprachdateien
+{% endcomment %}
+{{ 'component-plant-archive.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign titel = heading | default: '' | strip
+  if titel == blank
+    assign titel = 'private_archive.heading' | t
+  endif
+
+  assign oberzeile = eyebrow | default: '' | strip
+  if oberzeile == blank
+    assign oberzeile = 'private_archive.eyebrow' | t
+  endif
+
+-%}
+
+<div class="plant-archive" data-testid="plant-archive">
+  <div class="page-width">
+    <header class="plant-archive__intro">
+      {%- if oberzeile != blank -%}
+        <p class="plant-archive__eyebrow caption-with-letter-spacing">{{ oberzeile | escape }}</p>
+      {%- endif -%}
+      <h1 class="plant-archive__heading">{{ titel | escape }}</h1>
+      {%- if intro != blank -%}
+        <div class="plant-archive__lead rte">{{ intro }}</div>
+      {%- else -%}
+        <div class="plant-archive__lead rte"><p>{{ 'private_archive.intro' | t }}</p></div>
+      {%- endif -%}
+    </header>
+
+    {%- liquid
+      assign anzahl = 0
+      for eintrag in eintraege
+        if eintrag.besitzer.value == blank
+          assign anzahl = anzahl | plus: 1
+        endif
+      endfor
+    -%}
+
+    {%- if anzahl > 0 -%}
+      <ul class="plant-archive__grid" role="list" data-testid="plant-archive-grid">
+        {%- for eintrag in eintraege -%}
+          {%- if eintrag.besitzer.value == blank -%}
+            <li>
+              {%- render 'plant-card', eintrag: eintrag -%}
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</div>
