@@ -51,7 +51,14 @@
     endif
   endif
 
+  comment
+    F- and S-numbers and Species are read the same in both languages and pass
+    through unchanged. Only the admission that nobody knows needs translating.
+  endcomment
   assign generation = mf.generation.value | default: '' | strip
+  if generation == 'Unbekannt'
+    assign generation = 'products.product.specimen.generation_unknown' | t
+  endif
 
   assign stage_label = ''
   case mf.stadium.value

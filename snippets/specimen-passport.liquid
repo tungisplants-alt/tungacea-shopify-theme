@@ -35,6 +35,9 @@
   assign sp_bewurzelung = mf.bewurzelung.value | default: '' | strip
   assign sp_blattlaenge = mf.blattlaenge_cm.value
   assign sp_generation = mf.generation.value | default: '' | strip
+  if sp_generation == 'Unbekannt'
+    assign sp_generation = 'products.product.specimen.generation_unknown' | t
+  endif
   assign sp_id = mf.specimen_id.value | default: '' | strip
   assign sp_datum = mf.aufnahmedatum.value
 
