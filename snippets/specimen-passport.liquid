@@ -336,12 +336,6 @@
       </div>
     {%- endif -%}
 
-    {%- if hint_title != blank -%}
-      <p class="specimen-passport__hint" role="note" data-testid="specimen-hint">
-        <strong>{{ hint_title }}</strong> {{ hint_body }}
-      </p>
-    {%- endif -%}
-
     {%- if has_lower -%}
       <dl class="specimen-passport__grid">
         {%- if zuechter_name != blank -%}
@@ -363,6 +357,17 @@
           </div>
         {%- endif -%}
       </dl>
+    {%- endif -%}
+
+    {%- comment -%}
+      The experience hint closes the record. Everything above it is what the
+      specimen is and where it comes from; this is the one caveat, and a caveat
+      belongs after the case it qualifies, not in front of it.
+    {%- endcomment -%}
+    {%- if hint_title != blank -%}
+      <p class="specimen-passport__hint" role="note" data-testid="specimen-hint">
+        <strong>{{ hint_title }}</strong> {{ hint_body }}
+      </p>
     {%- endif -%}
   </section>
 {%- endif -%}
