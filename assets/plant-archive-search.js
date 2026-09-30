@@ -48,6 +48,17 @@ class PlantArchiveSearch extends HTMLElement {
     };
 
     this.ausklapper = this.querySelector('.plant-search__filters');
+
+    /*
+     * Jede Kategorie ist ein eigener Ausklapper. Welcher zu welcher Gruppe
+     * gehoert, verrät der erste Schalter darin — so muss die Zuordnung nicht
+     * zusätzlich im Markup stehen und kann nicht auseinanderlaufen.
+     */
+    this.gruppenKnoten = new Map();
+    this.querySelectorAll('.plant-search__group').forEach((knoten) => {
+      const ersterSchalter = knoten.querySelector('.plant-search__chip');
+      if (ersterSchalter) this.gruppenKnoten.set(ersterSchalter.dataset.facet, knoten);
+    });
     this.marke = this.querySelector('.plant-search__badge');
 
     if (this.feld) {
@@ -156,6 +167,22 @@ class PlantArchiveSearch extends HTMLElement {
     if (this.ausklapper) {
       this.ausklapper.classList.toggle('is-aktiv', gesetzteFilter > 0);
     }
+
+    this.gruppenKnoten.forEach((knoten, gruppe) => {
+      const anzahl = (this.aktiv[gruppe] || new Set()).size;
+      const marke = knoten.querySelector('.plant-search__group-badge');
+      if (marke) {
+        marke.textContent = anzahl > 0 ? String(anzahl) : '';
+        marke.hidden = anzahl === 0;
+      }
+      /*
+       * Eine Kategorie mit gesetztem Filter klappt auf. Zugeklappt waere
+       * nicht zu sehen, wo die Einschraenkung sitzt — nur dass es eine gibt.
+       * Zugeklappt wird nie von selbst: das waere ein Griff in die Hand des
+       * Benutzers, waehrend er noch auswaehlt.
+       */
+      if (anzahl > 0 && !knoten.open) knoten.open = true;
+    });
 
     if (!this.zaehler) return;
     if (treffer === 0) {

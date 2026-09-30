@@ -143,7 +143,9 @@ function leseArchivkarten() {
     return {
       bezeichnung: feld(s.name),
       kreuzung: feld(s.parentage),
-      generation: feld(/F2/.test(s.name || '') ? 'F2' : null),
+      // Abgeleitet, nicht gesetzt: F2 steht im Namen, alles andere mit
+      // Kreuzungszeichen ist im Rohbau F1. Die echten Werte trägt Tung ein.
+      generation: feld(/F2/.test(s.name || '') ? 'F2' : (/\sx\s|×/i.test(s.name || '') ? 'F1' : null)),
       stadium: feld(stadium),
       merkmal: feld(s.primary_trait),
       linie: { value: Object.entries(LINIEN_WOERTER)

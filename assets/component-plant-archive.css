@@ -591,63 +591,136 @@
   transition: transform 0.25s var(--pl-ease, ease);
 }
 
-.plant-search__filters[open] .plant-search__chevron {
+/* Nur der Pfeil des eigenen Ausklappers, nicht jeder Pfeil darin. Ohne den
+   direkten Nachfahren traf diese Regel auch die Pfeile der Kategorien, und
+   die zeigten dauerhaft nach oben. */
+.plant-search__filters[open] > .plant-search__summary .plant-search__chevron {
   transform: rotate(-135deg) translate(-0.2rem, -0.2rem);
 }
 
+/* Der Filterkasten
+   -------------------------------------------------------------------------
+   Kein Rahmen, keine harte Kante: eine etwas hellere Fläche, die sich vom
+   Hintergrund abhebt, ohne ihn zu zerschneiden. Tung: „nur leichter Kontrast,
+   nicht starke Linien."
+
+   Jede Kategorie ist selbst ein Ausklapper. Eingeklappt sind es sieben ruhige
+   Zeilen — das trägt auch, wenn die Liste in einem Jahr doppelt so lang ist.
+   Eine Kategorie mit gesetztem Filter klappt von selbst auf, sonst wäre nicht
+   zu sehen, wo die Einschränkung sitzt. */
+
 .plant-search__facets {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.6rem 3.2rem;
-  margin-top: 1.6rem;
-  padding: 2rem 2.4rem;
-  border: 1px solid var(--pl-line-soft, rgba(242, 238, 232, 0.08));
-  border-left: 2px solid rgba(var(--tungacea-oxblood, 110, 28, 40), 0.6);
-  background: rgba(0, 0, 0, 0.18);
+  margin-top: 1.2rem;
+  padding: 0.8rem 1.6rem;
+  background: rgba(242, 238, 232, 0.035);
 }
 
-.plant-search__facet {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.6rem;
-  border: 0;
-  padding: 0;
-  margin: 0;
-  min-width: 0;
+.plant-search__group {
+  border-top: 1px solid rgba(242, 238, 232, 0.05);
 }
 
-.plant-search__facet-label {
-  padding: 0;
+.plant-search__group:first-child {
+  border-top: 0;
+}
+
+.plant-search__group-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.1rem 0;
+  list-style: none;
+  cursor: pointer;
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  opacity: 0.72;
+  transition: opacity 0.25s var(--pl-ease, ease), color 0.25s var(--pl-ease, ease);
+}
+
+.plant-search__group-summary::-webkit-details-marker {
+  display: none;
+}
+
+.plant-search__group-summary:hover,
+.plant-search__group[open] .plant-search__group-summary {
+  opacity: 1;
+}
+
+.plant-search__group-summary:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 2px;
+}
+
+.plant-search__group-name {
+  flex: 1 1 auto;
+}
+
+/* Der Chevron der Kategorie sitzt rechts und ist kleiner als der des
+   Hauptausklappers — eine Ebene tiefer, also leiser. */
+.plant-search__group[open] > .plant-search__group-summary .plant-search__chevron {
+  transform: rotate(-135deg) translate(-0.15rem, -0.15rem);
+}
+
+.plant-search__group-summary .plant-search__chevron {
+  width: 0.55rem;
+  height: 0.55rem;
   opacity: 0.6;
+}
+
+.plant-search__group-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.9);
+  color: #f2eee8;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+}
+
+.plant-search__group-badge[hidden] {
+  display: none;
+}
+
+/* Die Optionen als Kacheln, aneinandergereiht und umbrechend. So wächst eine
+   lange Liste in die Breite statt in die Länge. */
+
+.plant-search__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0 0 1.4rem;
 }
 
 .plant-search__chip {
   appearance: none;
-  background: none;
-  border: 1px solid transparent;
-  padding: 0.3rem 0.9rem;
-  color: inherit;
+  border: 0;
+  padding: 0.55rem 1.1rem;
+  background: rgba(242, 238, 232, 0.06);
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
   font-family: inherit;
   font-size: 1.3rem;
+  line-height: 1.3;
   cursor: pointer;
-  transition: border-color 0.25s var(--pl-ease, ease),
-    color 0.25s var(--pl-ease, ease),
-    background-color 0.25s var(--pl-ease, ease);
+  transition: background-color 0.22s var(--pl-ease, ease), color 0.22s var(--pl-ease, ease);
 }
 
 .plant-search__chip:hover {
-  border-color: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.7);
+  background: rgba(242, 238, 232, 0.11);
+  color: #f2eee8;
 }
 
 .plant-search__chip[aria-pressed='true'] {
-  color: #f2eee8;
   background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.85);
-  border-color: rgba(var(--tungacea-accent-bright, 177, 61, 76), 0.8);
+  color: #f2eee8;
+}
+
+.plant-search__chip[aria-pressed='true']:hover {
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 1);
 }
 
 .plant-search__chip:focus-visible {
@@ -687,9 +760,7 @@
   }
 
   .plant-search__facets {
-    flex-direction: column;
-    gap: 1.6rem;
-    padding: 1.6rem;
+    padding: 0.6rem 1.2rem;
   }
 }
 
@@ -698,7 +769,8 @@
   .plant-search__word,
   .plant-search__chip,
   .plant-search__chevron,
-  .plant-search__icon {
+  .plant-search__icon,
+  .plant-search__group-summary {
     transition: none;
   }
 }

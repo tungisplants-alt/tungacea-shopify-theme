@@ -144,150 +144,178 @@
 
         <div class="plant-search__facets">
           {%- if zeige_angebot -%}
-            <fieldset class="plant-search__facet">
-              <legend class="plant-search__facet-label">
-                {{- 'private_archive.facet_offer' | t -}}
-              </legend>
-              <button
-                type="button"
-                class="plant-search__chip plant-search__chip--offer"
-                data-facet="angebot"
-                data-wert="ja"
-                aria-pressed="false"
-              >
-                {{- 'private_archive.facet_offer_yes' | t -}}
-              </button>
-            </fieldset>
+            <details class="plant-search__group">
+              <summary class="plant-search__group-summary">
+                <span class="plant-search__group-name">{{ 'private_archive.facet_offer' | t }}</span>
+                <span class="plant-search__group-badge" hidden></span>
+                <span class="plant-search__chevron" aria-hidden="true"></span>
+              </summary>
+              <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_offer' | t }}">
+                <button
+                  type="button"
+                  class="plant-search__chip plant-search__chip--offer"
+                  data-facet="angebot"
+                  data-wert="ja"
+                  aria-pressed="false"
+                >
+                  {{- 'private_archive.facet_offer_yes' | t -}}
+                </button>
+              </div>
+            </details>
           {%- endif -%}
 
           {%- if linien_liste.size > 1 -%}
-            <fieldset class="plant-search__facet">
-              <legend class="plant-search__facet-label">
-                {{- 'private_archive.facet_line' | t -}}
-              </legend>
-              {%- for wert in linien_liste -%}
-                <button
-                  type="button"
-                  class="plant-search__chip"
-                  data-facet="linie"
-                  data-mehrfach="true"
-                  data-wert="{{ wert | escape }}"
-                  aria-pressed="false"
-                >
-                  {{- wert | escape -}}
-                </button>
-              {%- endfor -%}
-            </fieldset>
+            <details class="plant-search__group">
+              <summary class="plant-search__group-summary">
+                <span class="plant-search__group-name">{{ 'private_archive.facet_line' | t }}</span>
+                <span class="plant-search__group-badge" hidden></span>
+                <span class="plant-search__chevron" aria-hidden="true"></span>
+              </summary>
+              <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_line' | t }}">
+                {%- for wert in linien_liste -%}
+                  <button
+                    type="button"
+                    class="plant-search__chip"
+                    data-facet="linie"
+                    data-mehrfach="true"
+                    data-wert="{{ wert | escape }}"
+                    aria-pressed="false"
+                  >
+                    {{- wert | escape -}}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </details>
           {%- endif -%}
 
           {%- if reinheit_liste.size > 1 -%}
-            <fieldset class="plant-search__facet">
-              <legend class="plant-search__facet-label">
-                {{- 'private_archive.facet_purity' | t -}}
-              </legend>
-              {%- for wert in reinheit_liste -%}
-                <button
-                  type="button"
-                  class="plant-search__chip"
-                  data-facet="reinheit"
-                  data-wert="{{ wert | escape }}"
-                  aria-pressed="false"
-                >
-                  {{- wert | escape -}}
-                </button>
-              {%- endfor -%}
-            </fieldset>
+            <details class="plant-search__group">
+              <summary class="plant-search__group-summary">
+                <span class="plant-search__group-name">{{ 'private_archive.facet_purity' | t }}</span>
+                <span class="plant-search__group-badge" hidden></span>
+                <span class="plant-search__chevron" aria-hidden="true"></span>
+              </summary>
+              <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_purity' | t }}">
+                {%- for wert in reinheit_liste -%}
+                  <button
+                    type="button"
+                    class="plant-search__chip"
+                    data-facet="reinheit"
+                    data-wert="{{ wert | escape }}"
+                    aria-pressed="false"
+                  >
+                    {{- wert | escape -}}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </details>
           {%- endif -%}
 
           {%- if stadien_liste.size > 1 -%}
-            <fieldset class="plant-search__facet">
-              <legend class="plant-search__facet-label">
-                {{- 'private_archive.facet_stage' | t -}}
-              </legend>
-              {%- for wert in stadien_liste -%}
-                {%- liquid
-                  assign wert_label = wert
-                  case wert
-                    when 'Steckling'
-                      assign wert_label = 'products.product.specimen.stage_cutting' | t
-                    when 'Sämling'
-                      assign wert_label = 'products.product.specimen.stage_seedling' | t
-                    when 'Jungpflanze'
-                      assign wert_label = 'products.product.specimen.stage_young' | t
-                    when 'Etabliert'
-                      assign wert_label = 'products.product.specimen.stage_established' | t
-                    when 'Mutterpflanze'
-                      assign wert_label = 'products.product.specimen.stage_mother' | t
-                  endcase
-                -%}
-                <button
-                  type="button"
-                  class="plant-search__chip"
-                  data-facet="stadium"
-                  data-wert="{{ wert | escape }}"
-                  aria-pressed="false"
-                >
-                  {{- wert_label | escape -}}
-                </button>
-              {%- endfor -%}
-            </fieldset>
+            <details class="plant-search__group">
+              <summary class="plant-search__group-summary">
+                <span class="plant-search__group-name">{{ 'private_archive.facet_stage' | t }}</span>
+                <span class="plant-search__group-badge" hidden></span>
+                <span class="plant-search__chevron" aria-hidden="true"></span>
+              </summary>
+              <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_stage' | t }}">
+                {%- for wert in stadien_liste -%}
+                  {%- liquid
+                    assign wert_label = wert
+                    case wert
+                      when 'Steckling'
+                        assign wert_label = 'products.product.specimen.stage_cutting' | t
+                      when 'Sämling'
+                        assign wert_label = 'products.product.specimen.stage_seedling' | t
+                      when 'Jungpflanze'
+                        assign wert_label = 'products.product.specimen.stage_young' | t
+                      when 'Etabliert'
+                        assign wert_label = 'products.product.specimen.stage_established' | t
+                      when 'Mutterpflanze'
+                        assign wert_label = 'products.product.specimen.stage_mother' | t
+                    endcase
+                  -%}
+                  <button
+                    type="button"
+                    class="plant-search__chip"
+                    data-facet="stadium"
+                    data-wert="{{ wert | escape }}"
+                    aria-pressed="false"
+                  >
+                    {{- wert_label | escape -}}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </details>
           {%- endif -%}
 
           {%- if generationen_liste.size > 1 -%}
-            <fieldset class="plant-search__facet">
-              <legend class="plant-search__facet-label">
-                {{- 'private_archive.facet_generation' | t -}}
-              </legend>
-              {%- for wert in generationen_liste -%}
-                <button
-                  type="button"
-                  class="plant-search__chip"
-                  data-facet="generation"
-                  data-wert="{{ wert | escape }}"
-                  aria-pressed="false"
-                >
-                  {{- wert | escape -}}
-                </button>
-              {%- endfor -%}
-            </fieldset>
+            <details class="plant-search__group">
+              <summary class="plant-search__group-summary">
+                <span class="plant-search__group-name">{{ 'private_archive.facet_generation' | t }}</span>
+                <span class="plant-search__group-badge" hidden></span>
+                <span class="plant-search__chevron" aria-hidden="true"></span>
+              </summary>
+              <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_generation' | t }}">
+                {%- for wert in generationen_liste -%}
+                  <button
+                    type="button"
+                    class="plant-search__chip"
+                    data-facet="generation"
+                    data-wert="{{ wert | escape }}"
+                    aria-pressed="false"
+                  >
+                    {{- wert | escape -}}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </details>
           {%- endif -%}
 
           {%- if herkunft_liste.size > 1 -%}
-            <fieldset class="plant-search__facet">
-              <legend class="plant-search__facet-label">
-                {{- 'private_archive.facet_origin' | t -}}
-              </legend>
-              {%- for wert in herkunft_liste -%}
-                <button
-                  type="button"
-                  class="plant-search__chip"
-                  data-facet="herkunft"
-                  data-wert="{{ wert | escape }}"
-                  aria-pressed="false"
-                >
-                  {{- wert | escape -}}
-                </button>
-              {%- endfor -%}
-            </fieldset>
+            <details class="plant-search__group">
+              <summary class="plant-search__group-summary">
+                <span class="plant-search__group-name">{{ 'private_archive.facet_origin' | t }}</span>
+                <span class="plant-search__group-badge" hidden></span>
+                <span class="plant-search__chevron" aria-hidden="true"></span>
+              </summary>
+              <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_origin' | t }}">
+                {%- for wert in herkunft_liste -%}
+                  <button
+                    type="button"
+                    class="plant-search__chip"
+                    data-facet="herkunft"
+                    data-wert="{{ wert | escape }}"
+                    aria-pressed="false"
+                  >
+                    {{- wert | escape -}}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </details>
           {%- endif -%}
 
           {%- if zuechter_liste.size > 1 -%}
-            <fieldset class="plant-search__facet">
-              <legend class="plant-search__facet-label">
-                {{- 'private_archive.facet_breeder' | t -}}
-              </legend>
-              {%- for wert in zuechter_liste -%}
-                <button
-                  type="button"
-                  class="plant-search__chip"
-                  data-facet="zuechter"
-                  data-wert="{{ wert | escape }}"
-                  aria-pressed="false"
-                >
-                  {{- wert | escape -}}
-                </button>
-              {%- endfor -%}
-            </fieldset>
+            <details class="plant-search__group">
+              <summary class="plant-search__group-summary">
+                <span class="plant-search__group-name">{{ 'private_archive.facet_breeder' | t }}</span>
+                <span class="plant-search__group-badge" hidden></span>
+                <span class="plant-search__chevron" aria-hidden="true"></span>
+              </summary>
+              <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_breeder' | t }}">
+                {%- for wert in zuechter_liste -%}
+                  <button
+                    type="button"
+                    class="plant-search__chip"
+                    data-facet="zuechter"
+                    data-wert="{{ wert | escape }}"
+                    aria-pressed="false"
+                  >
+                    {{- wert | escape -}}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </details>
           {%- endif -%}
         </div>
       </details>
