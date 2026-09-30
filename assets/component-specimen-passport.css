@@ -194,8 +194,9 @@
   line-height: 1.5;
   color: var(--tungacea-muted);
 }
-/* Square tiles, quieter than the product gallery. The shape alone says these
-   are a different kind of picture, before anybody reads the caption. */
+/* Portrait, like the product gallery, so a whole plant is visible at a glance
+   instead of a cropped middle. The shape therefore no longer separates these
+   from the goods — the label above them and the muted treatment do that. */
 .specimen-passport__mother-photos {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -203,7 +204,7 @@
   margin: 1.6rem 0 0;
   padding: 0;
   list-style: none;
-  max-width: 46rem;
+  max-width: 58rem;
 }
 /* The tile is a button, because it opens a dialog. Everything that makes a
    button look like a button is stripped; the focus ring is not. */
@@ -221,7 +222,7 @@
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   border: 1px solid var(--tungacea-hairline);
   opacity: 0.78;

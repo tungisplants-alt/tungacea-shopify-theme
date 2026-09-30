@@ -285,8 +285,9 @@
         {%- endif -%}
 
         {%- comment -%}
-          Square tiles against the portrait product gallery. The difference in
-          shape says "another kind of picture" before anybody reads a caption.
+          Portrait, like the product gallery, so a whole plant is visible at a
+          glance instead of a cropped middle. The width and height attributes
+          match that ratio, otherwise the page jumps while the images load.
         {%- endcomment -%}
         {%- if zeige_fotos -%}
           <script src="{{ 'specimen-lightbox.js' | asset_url }}" defer="defer"></script>
@@ -304,10 +305,10 @@
                     <img
                       src="{{ foto | image_url: width: 480 }}"
                       srcset="{{ foto | image_url: width: 320 }} 320w, {{ foto | image_url: width: 480 }} 480w, {{ foto | image_url: width: 720 }} 720w"
-                      sizes="(min-width: 750px) 14rem, 30vw"
+                      sizes="(min-width: 750px) 18rem, 30vw"
                       alt=""
                       width="480"
-                      height="480"
+                      height="600"
                       loading="lazy"
                     >
                   </button>
