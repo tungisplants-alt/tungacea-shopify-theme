@@ -20,7 +20,7 @@
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
-  {%- render 'plant-profile', eintrag: metaobject -%}
+  {%- render 'plant-profile', eintrag: metaobject, produkte: collections.all.products -%}
 </div>
 
 {% schema %}

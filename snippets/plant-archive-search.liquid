@@ -1,54 +1,94 @@
 {% comment %}
   Tungacea — Suchleiste des Archivs.
 
-  Ein Feld und drei Gruppen ruhiger Schalter. Die Schalter entstehen aus den
-  Einträgen selbst: nur Werte, die wirklich vorkommen, werden angeboten. Ein
-  Filter, der auf null Pflanzen zeigt, ist eine Sackgasse mit Beschriftung.
+  Ein Suchfeld, das als Suchfeld zu erkennen ist: umrandeter Kasten, Lupe links,
+  das Wort Suche rechts. Die erste Fassung war nur eine Linie und wurde deshalb
+  übersehen.
+
+  Darunter die Filter, eingeklappt. Sie sind mehr geworden, und offen nähmen sie
+  der Galerie den Platz — das Archiv soll nach Pflanzen aussehen, nicht nach
+  Formular. Ist ein Filter gesetzt, zeigt der Ausklapper eine Zahl, damit eine
+  aktive Einschränkung im eingeklappten Zustand nicht unsichtbar bleibt.
+
+  Die Schalter entstehen aus den Einträgen selbst: nur Werte, die wirklich
+  vorkommen, werden angeboten. Ein Filter, der auf null Pflanzen zeigt, ist eine
+  Sackgasse mit Beschriftung. Eine Gruppe mit nur einem Wert trennt nichts und
+  erscheint gar nicht erst.
 
   Alles läuft im Browser, weil es um wenige Dutzend Einträge geht. Ohne
-  JavaScript bleibt die Leiste unsichtbar und die Galerie vollständig sichtbar —
-  eine Suche, die nichts findet, weil ein Skript fehlt, wäre schlimmer als gar
-  keine.
+  JavaScript bleibt die Leiste unsichtbar und die Galerie vollständig — eine
+  Suche, die nichts findet, weil ein Skript fehlt, wäre schlimmer als gar keine.
 
   Annahmen:
-  - eintraege: {Array} bereits auf eigene Pflanzen gefilterte Einträge (Pflicht)
+  - eintraege: {Array} Einträge vom Typ mutterpflanze (Pflicht)
 {% endcomment %}
 {%- liquid
   comment
     Vorkommende Werte je Gruppe sammeln. Liquid hat kein Set, deshalb der Weg
-    über eine Zeichenkette mit Trennzeichen und uniq.
+    über eine Zeichenkette mit Trennzeichen und uniq. Fremde Pflanzen bleiben
+    aussen vor, genau wie im Raster.
   endcomment
   assign stadien = ''
   assign generationen = ''
   assign zuechter_namen = ''
+  assign herkuenfte = ''
+  assign mit_angebot = 0
+  assign eigene = 0
 
   for e in eintraege
     if e.besitzer.value != blank
       continue
     endif
+    assign eigene = eigene | plus: 1
+
     if e.stadium.value != blank
       assign stadien = stadien | append: e.stadium.value | append: '|'
     endif
     if e.generation.value != blank
       assign generationen = generationen | append: e.generation.value | append: '|'
     endif
+
     assign z = e.zuechter.value
     if z != blank
       assign zname = z.name.value | default: '' | strip
       if zname != blank
         assign zuechter_namen = zuechter_namen | append: zname | append: '|'
       endif
+      assign zland = z.land.value | default: '' | strip
+      if zland != blank
+        assign herkuenfte = herkuenfte | append: zland | append: '|'
+      endif
     endif
+
+    for produkt in produkte limit: 100
+      if produkt.available
+        assign pm = produkt.metafields.custom.mutterpflanze.value
+        if pm != blank and pm.system.handle == e.system.handle
+          assign mit_angebot = mit_angebot | plus: 1
+          break
+        endif
+      endif
+    endfor
   endfor
 
   assign stadien_liste = stadien | split: '|' | uniq | sort
   assign generationen_liste = generationen | split: '|' | uniq | sort
   assign zuechter_liste = zuechter_namen | split: '|' | uniq | sort
+  assign herkunft_liste = herkuenfte | split: '|' | uniq | sort
 
   comment
-    Eine Gruppe mit nur einem Wert trennt nichts. Sie wird weggelassen, damit
-    die Leiste nicht mit Schaltern zuwächst, die alle Kacheln zeigen.
+    Der Angebotsfilter lohnt nur, wenn er trennt: gibt es von allen oder von
+    keiner Pflanze etwas, waere er ein Schalter ohne Wirkung.
   endcomment
+  assign zeige_angebot = false
+  if mit_angebot > 0 and mit_angebot < eigene
+    assign zeige_angebot = true
+  endif
+
+  assign hat_filter = false
+  if stadien_liste.size > 1 or generationen_liste.size > 1 or zuechter_liste.size > 1 or herkunft_liste.size > 1 or zeige_angebot
+    assign hat_filter = true
+  endif
 -%}
 
 <plant-archive-search
@@ -59,10 +99,18 @@
   data-text-teil="{{ 'private_archive.count_some' | t }}"
   data-text-keine="{{ 'private_archive.count_none' | t }}"
 >
-  <div class="plant-search__field">
-    <label class="visually-hidden" for="PlantSearchInput">
-      {{- 'private_archive.search_label' | t -}}
-    </label>
+  {%- comment -%}
+    Das ganze Feld ist ein label. Ein Klick auf die Lupe oder auf das Wort setzt
+    den Schreibzeiger ins Feld. Das Wort sieht aus wie ein Knopf, ist aber
+    keiner — ein Knopf, der nichts tut, wäre eine Lüge.
+  {%- endcomment -%}
+  <label class="plant-search__field" for="PlantSearchInput">
+    <span class="plant-search__icon" aria-hidden="true">
+      <svg viewBox="0 0 20 20" focusable="false" role="presentation">
+        <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle>
+        <line x1="12.6" y1="12.6" x2="17.5" y2="17.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line>
+      </svg>
+    </span>
     <input
       type="search"
       id="PlantSearchInput"
@@ -72,6 +120,143 @@
       spellcheck="false"
       data-testid="plant-search-input"
     >
+    <span class="plant-search__word">{{ 'private_archive.search_label' | t }}</span>
+  </label>
+
+  <div class="plant-search__bar">
+    {%- if hat_filter -%}
+      <details class="plant-search__filters" data-testid="plant-search-filters">
+        <summary class="plant-search__summary">
+          <span class="plant-search__summary-text">{{ 'private_archive.filters_heading' | t }}</span>
+          <span class="plant-search__badge" hidden data-testid="plant-search-badge"></span>
+          <span class="plant-search__chevron" aria-hidden="true"></span>
+        </summary>
+
+        <div class="plant-search__facets">
+          {%- if zeige_angebot -%}
+            <fieldset class="plant-search__facet">
+              <legend class="plant-search__facet-label">
+                {{- 'private_archive.facet_offer' | t -}}
+              </legend>
+              <button
+                type="button"
+                class="plant-search__chip plant-search__chip--offer"
+                data-facet="angebot"
+                data-wert="ja"
+                aria-pressed="false"
+              >
+                {{- 'private_archive.facet_offer_yes' | t -}}
+              </button>
+            </fieldset>
+          {%- endif -%}
+
+          {%- if stadien_liste.size > 1 -%}
+            <fieldset class="plant-search__facet">
+              <legend class="plant-search__facet-label">
+                {{- 'private_archive.facet_stage' | t -}}
+              </legend>
+              {%- for wert in stadien_liste -%}
+                {%- liquid
+                  assign wert_label = wert
+                  case wert
+                    when 'Steckling'
+                      assign wert_label = 'products.product.specimen.stage_cutting' | t
+                    when 'Sämling'
+                      assign wert_label = 'products.product.specimen.stage_seedling' | t
+                    when 'Jungpflanze'
+                      assign wert_label = 'products.product.specimen.stage_young' | t
+                    when 'Etabliert'
+                      assign wert_label = 'products.product.specimen.stage_established' | t
+                    when 'Mutterpflanze'
+                      assign wert_label = 'products.product.specimen.stage_mother' | t
+                  endcase
+                -%}
+                <button
+                  type="button"
+                  class="plant-search__chip"
+                  data-facet="stadium"
+                  data-wert="{{ wert | escape }}"
+                  aria-pressed="false"
+                >
+                  {{- wert_label | escape -}}
+                </button>
+              {%- endfor -%}
+            </fieldset>
+          {%- endif -%}
+
+          {%- if generationen_liste.size > 1 -%}
+            <fieldset class="plant-search__facet">
+              <legend class="plant-search__facet-label">
+                {{- 'private_archive.facet_generation' | t -}}
+              </legend>
+              {%- for wert in generationen_liste -%}
+                <button
+                  type="button"
+                  class="plant-search__chip"
+                  data-facet="generation"
+                  data-wert="{{ wert | escape }}"
+                  aria-pressed="false"
+                >
+                  {{- wert | escape -}}
+                </button>
+              {%- endfor -%}
+            </fieldset>
+          {%- endif -%}
+
+          {%- if herkunft_liste.size > 1 -%}
+            <fieldset class="plant-search__facet">
+              <legend class="plant-search__facet-label">
+                {{- 'private_archive.facet_origin' | t -}}
+              </legend>
+              {%- for wert in herkunft_liste -%}
+                <button
+                  type="button"
+                  class="plant-search__chip"
+                  data-facet="herkunft"
+                  data-wert="{{ wert | escape }}"
+                  aria-pressed="false"
+                >
+                  {{- wert | escape -}}
+                </button>
+              {%- endfor -%}
+            </fieldset>
+          {%- endif -%}
+
+          {%- if zuechter_liste.size > 1 -%}
+            <fieldset class="plant-search__facet">
+              <legend class="plant-search__facet-label">
+                {{- 'private_archive.facet_breeder' | t -}}
+              </legend>
+              {%- for wert in zuechter_liste -%}
+                <button
+                  type="button"
+                  class="plant-search__chip"
+                  data-facet="zuechter"
+                  data-wert="{{ wert | escape }}"
+                  aria-pressed="false"
+                >
+                  {{- wert | escape -}}
+                </button>
+              {%- endfor -%}
+            </fieldset>
+          {%- endif -%}
+        </div>
+      </details>
+    {%- endif -%}
+
+    {%- comment -%}
+      Die Zählzeile ist das, was eine Galerie zu einem Bestand macht: sie sagt,
+      wie viel es insgesamt gibt und wie viel gerade zu sehen ist. Sie wird vom
+      Skript beschrieben und ist eine höfliche Live-Region, damit ein
+      Vorlesegerät die neue Zahl nennt, ohne die Eingabe zu unterbrechen.
+    {%- endcomment -%}
+    <p
+      class="plant-search__count"
+      role="status"
+      aria-live="polite"
+      data-testid="plant-search-count"
+    ></p>
+
     <button
       type="button"
       class="plant-search__clear"
@@ -81,93 +266,4 @@
       {{- 'private_archive.search_clear' | t -}}
     </button>
   </div>
-
-  {%- if stadien_liste.size > 1 or generationen_liste.size > 1 or zuechter_liste.size > 1 -%}
-    <div class="plant-search__facets">
-      {%- if stadien_liste.size > 1 -%}
-        <fieldset class="plant-search__facet">
-          <legend class="plant-search__facet-label">
-            {{- 'private_archive.facet_stage' | t -}}
-          </legend>
-          {%- for wert in stadien_liste -%}
-            {%- liquid
-              assign wert_label = wert
-              case wert
-                when 'Steckling'
-                  assign wert_label = 'products.product.specimen.stage_cutting' | t
-                when 'Sämling'
-                  assign wert_label = 'products.product.specimen.stage_seedling' | t
-                when 'Jungpflanze'
-                  assign wert_label = 'products.product.specimen.stage_young' | t
-                when 'Etabliert'
-                  assign wert_label = 'products.product.specimen.stage_established' | t
-                when 'Mutterpflanze'
-                  assign wert_label = 'products.product.specimen.stage_mother' | t
-              endcase
-            -%}
-            <button
-              type="button"
-              class="plant-search__chip"
-              data-facet="stadium"
-              data-wert="{{ wert | escape }}"
-              aria-pressed="false"
-            >
-              {{- wert_label | escape -}}
-            </button>
-          {%- endfor -%}
-        </fieldset>
-      {%- endif -%}
-
-      {%- if generationen_liste.size > 1 -%}
-        <fieldset class="plant-search__facet">
-          <legend class="plant-search__facet-label">
-            {{- 'private_archive.facet_generation' | t -}}
-          </legend>
-          {%- for wert in generationen_liste -%}
-            <button
-              type="button"
-              class="plant-search__chip"
-              data-facet="generation"
-              data-wert="{{ wert | escape }}"
-              aria-pressed="false"
-            >
-              {{- wert | escape -}}
-            </button>
-          {%- endfor -%}
-        </fieldset>
-      {%- endif -%}
-
-      {%- if zuechter_liste.size > 1 -%}
-        <fieldset class="plant-search__facet">
-          <legend class="plant-search__facet-label">
-            {{- 'private_archive.facet_breeder' | t -}}
-          </legend>
-          {%- for wert in zuechter_liste -%}
-            <button
-              type="button"
-              class="plant-search__chip"
-              data-facet="zuechter"
-              data-wert="{{ wert | escape }}"
-              aria-pressed="false"
-            >
-              {{- wert | escape -}}
-            </button>
-          {%- endfor -%}
-        </fieldset>
-      {%- endif -%}
-    </div>
-  {%- endif -%}
-
-  {%- comment -%}
-    Die Zählzeile ist das, was eine Galerie zu einem Bestand macht: sie sagt,
-    wie viel es insgesamt gibt und wie viel gerade zu sehen ist. Sie wird vom
-    Skript beschrieben und ist eine höfliche Live-Region, damit ein
-    Vorlesegerät die neue Zahl nennt, ohne die Eingabe zu unterbrechen.
-  {%- endcomment -%}
-  <p
-    class="plant-search__count"
-    role="status"
-    aria-live="polite"
-    data-testid="plant-search-count"
-  ></p>
 </plant-archive-search>

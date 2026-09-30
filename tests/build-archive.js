@@ -172,7 +172,7 @@ function leseArchivkarten() {
       metafields: { custom: { mutterpflanze: { value: { system: { handle: 'pflanze-3' } } } } } },
   ];
   const mitFremder = eintraege.concat([fremd]);
-  const galerie = await engine.renderFile('plant-archive-gallery', { eintraege: mitFremder });
+  const galerie = await engine.renderFile('plant-archive-gallery', { eintraege: mitFremder, produkte: LADEN });
 
   const mutterMitSeite = {
     bezeichnung: { value: 'Anthurium Ralph Lynam × Fort Sherman F2' },
@@ -206,9 +206,9 @@ function leseArchivkarten() {
     console.error('FEHLER: die fremde Pflanze steht in der Galerie.');
     process.exit(1);
   }
-  const seiteEigen = await engine.renderFile('plant-profile', { eintrag: mitAngebot, collections: { all: { products: LADEN } } });
-  const seiteFremdGesperrt = await engine.renderFile('plant-profile', { eintrag: fremd, collections: { all: { products: LADEN } } });
-  const seiteFremdFrei = await engine.renderFile('plant-profile', { eintrag: fremdOk, collections: { all: { products: LADEN } } });
+  const seiteEigen = await engine.renderFile('plant-profile', { eintrag: mitAngebot, produkte: LADEN });
+  const seiteFremdGesperrt = await engine.renderFile('plant-profile', { eintrag: fremd, produkte: LADEN });
+  const seiteFremdFrei = await engine.renderFile('plant-profile', { eintrag: fremdOk, produkte: LADEN });
 
   const css = ['tungacea.css', 'base.css', 'component-plant-archive.css', 'component-specimen-passport.css', 'component-specimen-card.css']
     .map(f => {

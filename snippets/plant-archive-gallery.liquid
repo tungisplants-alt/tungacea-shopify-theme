@@ -12,6 +12,7 @@
 
   Annahmen:
   - eintraege: {Array} Metaobjekt-Einträge vom Typ mutterpflanze (Pflicht)
+  - produkte:  {Array} Produkte des Ladens, für Angebot und Rückweg
   - eyebrow, heading, intro: {String} optional, sonst aus den Sprachdateien
 {% endcomment %}
 {{ 'component-plant-archive.css' | asset_url | stylesheet_tag }}
@@ -60,13 +61,13 @@
         an wie das Raster. Sonst boete sie Zuechter an, deren Pflanzen gar
         nicht in der Galerie stehen.
       {%- endcomment -%}
-      {%- render 'plant-archive-search', eintraege: eintraege -%}
+      {%- render 'plant-archive-search', eintraege: eintraege, produkte: produkte -%}
 
       <ul class="plant-archive__grid" role="list" data-testid="plant-archive-grid">
         {%- for eintrag in eintraege -%}
           {%- if eintrag.besitzer.value == blank -%}
             <li>
-              {%- render 'plant-card', eintrag: eintrag -%}
+              {%- render 'plant-card', eintrag: eintrag, produkte: produkte -%}
             </li>
           {%- endif -%}
         {%- endfor -%}

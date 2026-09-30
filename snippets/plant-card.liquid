@@ -101,6 +101,27 @@
     assign zuechter_name = zuechter_eintrag.name.value | default: '' | strip
   endif
 
+  assign zuechter_land = ''
+  if zuechter_eintrag != blank
+    assign zuechter_land = zuechter_eintrag.land.value | default: '' | strip
+  endif
+
+  comment
+    Gibt es von dieser Pflanze gerade etwas zu kaufen? Dieselbe Regel wie auf
+    ihrer eigenen Seite: ein Produkt, dessen Feld Mutterpflanze hierher zeigt.
+    Verkauftes zaehlt nicht — die Frage lautet, ob sich ein Klick jetzt lohnt.
+  endcomment
+  assign hat_angebot = false
+  for produkt in produkte limit: 100
+    if produkt.available
+      assign pm = produkt.metafields.custom.mutterpflanze.value
+      if pm != blank and pm.system.handle == eintrag.system.handle
+        assign hat_angebot = true
+        break
+      endif
+    endif
+  endfor
+
   assign suchtext = name
   assign suchtext = suchtext | append: ' ' | append: eintrag.kreuzung.value
   assign suchtext = suchtext | append: ' ' | append: zuechter_name
@@ -115,6 +136,8 @@
   data-stadium="{{ eintrag.stadium.value | escape }}"
   data-generation="{{ eintrag.generation.value | escape }}"
   data-zuechter="{{ zuechter_name | escape }}"
+  data-herkunft="{{ zuechter_land | escape }}"
+  data-angebot="{% if hat_angebot %}ja{% else %}nein{% endif %}"
 >
   <div class="plant-card__media">
     {%- if zeige_foto -%}
@@ -143,6 +166,17 @@
     </h3>
     {%- if leise != blank -%}
       <p class="plant-card__meta" data-testid="plant-card-meta">{{ leise }}</p>
+    {%- endif -%}
+
+    {%- comment -%}
+      Ein Wort, kein Knopf. Wer im Archiv stoebert, soll sehen koennen, von
+      welcher Pflanze es gerade etwas gibt — ohne dass die Sammlung zum Laden
+      wird. Es ist eine wahre Angabe, keine Werbung.
+    {%- endcomment -%}
+    {%- if hat_angebot -%}
+      <p class="plant-card__offer" data-testid="plant-card-offer">
+        {{- 'private_archive.has_offer' | t -}}
+      </p>
     {%- endif -%}
   </div>
 </article>

@@ -348,14 +348,40 @@
   color: var(--pl-muted);
 }
 
+/* Der leise Hinweis auf der Kachel
+   -------------------------------------------------------------------------
+   Ein Wort, kein Knopf. Wer im Archiv stöbert, soll sehen können, von welcher
+   Pflanze es gerade etwas gibt — ohne dass die Sammlung zum Laden wird. */
+
+.plant-card__offer {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-card__offer::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgba(var(--tungacea-accent-bright, 177, 61, 76), 1);
+  flex: none;
+}
+
 /* Suche und Filter
    -------------------------------------------------------------------------
-   Eine Bibliothek ist nicht laut. Das Feld ist eine Linie, kein Kasten; die
-   Schalter sind Wörter mit Unterstrich, keine Knöpfe. Was zählt, ist die Zeile
-   darunter, die sagt, wie viel gerade zu sehen ist.
+   Die erste Fassung war eine Linie und wurde übersehen. Jetzt ein Kasten mit
+   Lupe und dem Wort Suche — beides Teil des label, also auf ganzer Fläche
+   klickbar.
 
-   Die Leiste ist in der Vorlage `hidden`; erst das Skript nimmt die Marke weg.
-   Ohne JavaScript bleibt sie unsichtbar und die Galerie vollständig. */
+   Das Oxblood trägt hier Bedeutung, keine Dekoration: der Kasten glimmt beim
+   Tippen auf, das Wort sitzt auf einer Weinfläche, ein gesetzter Filter wird
+   gefüllt und der Ausklapper bekommt eine Zahl. Ungesetzt bleibt alles grau. */
 
 .plant-search {
   display: block;
@@ -367,17 +393,42 @@
 }
 
 .plant-search__field {
-  position: relative;
   display: flex;
-  align-items: baseline;
-  gap: 1.6rem;
-  max-width: 48rem;
-  border-bottom: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
-  transition: border-color 0.3s var(--pl-ease, ease);
+  align-items: stretch;
+  max-width: 52rem;
+  border: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
+  background: rgba(0, 0, 0, 0.22);
+  cursor: text;
+  transition: border-color 0.3s var(--pl-ease, ease), box-shadow 0.3s var(--pl-ease, ease);
+}
+
+.plant-search__field:hover {
+  border-color: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.75);
 }
 
 .plant-search__field:focus-within {
-  border-bottom-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.8);
+  border-color: rgba(var(--tungacea-accent-bright, 177, 61, 76), 0.9);
+  box-shadow: 0 0 0 1px rgba(var(--tungacea-oxblood, 110, 28, 40), 0.45);
+}
+
+.plant-search__icon {
+  display: flex;
+  align-items: center;
+  padding-left: 1.4rem;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  opacity: 0.75;
+  transition: color 0.3s var(--pl-ease, ease), opacity 0.3s var(--pl-ease, ease);
+}
+
+.plant-search__field:focus-within .plant-search__icon {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  opacity: 1;
+}
+
+.plant-search__icon svg {
+  width: 1.8rem;
+  height: 1.8rem;
+  display: block;
 }
 
 .plant-search__input {
@@ -387,43 +438,88 @@
   border: 0;
   color: inherit;
   font-family: inherit;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   line-height: 1.6;
-  padding: 0.8rem 0;
+  padding: 1.2rem;
   min-width: 0;
 }
 
 .plant-search__input::placeholder {
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .plant-search__input:focus {
   outline: none;
 }
 
-/* Das native Kreuz in search-Feldern sieht in jedem Browser anders aus und
-   passt in keinem zur Seite. Eigener Knopf, eigene Sprache. */
+/* Das native Kreuz sieht in jedem Browser anders aus und passt in keinem zur
+   Seite. Zurückgesetzt wird über den eigenen Knopf unter der Leiste. */
 .plant-search__input::-webkit-search-cancel-button {
   appearance: none;
 }
 
+.plant-search__word {
+  display: flex;
+  align-items: center;
+  padding: 0 1.8rem;
+  background: rgba(var(--tungacea-wine, 78, 20, 30), 0.55);
+  border-left: 1px solid rgba(var(--tungacea-oxblood, 110, 28, 40), 0.55);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  white-space: nowrap;
+  transition: background-color 0.3s var(--pl-ease, ease);
+}
+
+.plant-search__field:hover .plant-search__word,
+.plant-search__field:focus-within .plant-search__word {
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.72);
+}
+
+/* Zeile unter dem Feld: Zählzeile, Zurücksetzen, Ausklapper */
+
+.plant-search__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1.2rem 2.4rem;
+  margin-top: 1.6rem;
+}
+
+.plant-search__count {
+  order: 1;
+  margin: 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+}
+
 .plant-search__clear {
+  order: 2;
   appearance: none;
   background: none;
   border: 0;
-  padding: 0.4rem 0;
+  padding: 0;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
   font-family: inherit;
   font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   cursor: pointer;
-  transition: color 0.25s var(--pl-ease, ease);
+  border-bottom: 1px solid rgba(var(--tungacea-oxblood, 110, 28, 40), 0.7);
+  transition: color 0.25s var(--pl-ease, ease), border-color 0.25s var(--pl-ease, ease);
+}
+
+.plant-search__clear[hidden] {
+  display: none;
 }
 
 .plant-search__clear:hover {
   color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  border-bottom-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
 }
 
 .plant-search__clear:focus-visible {
@@ -431,18 +527,90 @@
   outline-offset: 3px;
 }
 
+.plant-search__filters {
+  order: 3;
+  flex: 1 1 100%;
+}
+
+.plant-search__summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: max-content;
+  padding: 0.4rem 0;
+  list-style: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  transition: color 0.25s var(--pl-ease, ease);
+}
+
+.plant-search__summary::-webkit-details-marker {
+  display: none;
+}
+
+.plant-search__summary:hover {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-search__summary:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
+}
+
+.plant-search__filters.is-aktiv .plant-search__summary-text {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-search__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.8rem;
+  height: 1.8rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.9);
+  color: #f2eee8;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.plant-search__badge[hidden] {
+  display: none;
+}
+
+.plant-search__chevron {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(45deg) translate(-0.15rem, -0.15rem);
+  transition: transform 0.25s var(--pl-ease, ease);
+}
+
+.plant-search__filters[open] .plant-search__chevron {
+  transform: rotate(-135deg) translate(-0.2rem, -0.2rem);
+}
+
 .plant-search__facets {
   display: flex;
   flex-wrap: wrap;
   gap: 1.6rem 3.2rem;
-  margin-top: 2.4rem;
+  margin-top: 1.6rem;
+  padding: 2rem 2.4rem;
+  border: 1px solid var(--pl-line-soft, rgba(242, 238, 232, 0.08));
+  border-left: 2px solid rgba(var(--tungacea-oxblood, 110, 28, 40), 0.6);
+  background: rgba(0, 0, 0, 0.18);
 }
 
 .plant-search__facet {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.8rem 1.6rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
   border: 0;
   padding: 0;
   margin: 0;
@@ -451,54 +619,86 @@
 
 .plant-search__facet-label {
   padding: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .plant-search__chip {
   appearance: none;
   background: none;
-  border: 0;
-  padding: 0.2rem 0;
+  border: 1px solid transparent;
+  padding: 0.3rem 0.9rem;
   color: inherit;
   font-family: inherit;
   font-size: 1.3rem;
   cursor: pointer;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.25s var(--pl-ease, ease), color 0.25s var(--pl-ease, ease);
+  transition: border-color 0.25s var(--pl-ease, ease),
+    color 0.25s var(--pl-ease, ease),
+    background-color 0.25s var(--pl-ease, ease);
 }
 
 .plant-search__chip:hover {
-  border-bottom-color: var(--pl-line, rgba(242, 238, 232, 0.14));
+  border-color: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.7);
 }
 
 .plant-search__chip[aria-pressed='true'] {
-  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
-  border-bottom-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.8);
+  color: #f2eee8;
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.85);
+  border-color: rgba(var(--tungacea-accent-bright, 177, 61, 76), 0.8);
 }
 
 .plant-search__chip:focus-visible {
   outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
-.plant-search__count {
-  margin: 2.4rem 0 0;
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+/* Der Angebotsfilter ist der einzige, der auf den Laden zeigt. Er trägt
+   denselben Punkt wie die Kachel, damit beide erkennbar zusammengehören. */
+.plant-search__chip--offer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.plant-search__chip--offer::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgba(var(--tungacea-accent-bright, 177, 61, 76), 1);
+  flex: none;
+}
+
+.plant-search__chip--offer[aria-pressed='true']::before {
+  background: #f2eee8;
 }
 
 @media screen and (max-width: 749px) {
-  .plant-search__facets {
-    gap: 1.6rem 2.4rem;
+  .plant-search__field {
+    max-width: none;
   }
 
-  .plant-search__facet {
-    width: 100%;
+  .plant-search__word {
+    padding: 0 1.2rem;
+    letter-spacing: 0.14em;
+  }
+
+  .plant-search__facets {
+    flex-direction: column;
+    gap: 1.6rem;
+    padding: 1.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plant-search__field,
+  .plant-search__word,
+  .plant-search__chip,
+  .plant-search__chevron,
+  .plant-search__icon {
+    transition: none;
   }
 }

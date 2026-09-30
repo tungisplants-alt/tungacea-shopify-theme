@@ -118,7 +118,7 @@ const faelle = [
       try {
         html = await engine.renderFile('plant-profile', {
           eintrag: f.eintrag,
-          collections: { all: { products: LADEN } },
+          produkte: LADEN,
         });
       } catch (e) {
         fails++; checks++;

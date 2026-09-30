@@ -628,7 +628,12 @@
     }
   },
   "private_archive": {
-    "search_label": "Archiv durchsuchen",
+    "filters_heading": "Filter",
+    "facet_offer": "Verfügbarkeit",
+    "facet_offer_yes": "Angebot vorhanden",
+    "facet_origin": "Herkunft",
+    "has_offer": "Angebot vorhanden",
+    "search_label": "Suche",
     "search_placeholder": "Name, Kreuzung, Züchter …",
     "search_clear": "Zurücksetzen",
     "facet_stage": "Stadium",

@@ -24,8 +24,15 @@
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  {%- comment -%}
+    Der Produktbestand wird ausdruecklich hineingereicht, nicht in den Snippets
+    als globales Objekt vorausgesetzt. Ein render isoliert den Namensraum, und
+    eine Annahme darueber, was darin sichtbar bleibt, laesst sich ausserhalb von
+    Shopify nicht pruefen.
+  {%- endcomment -%}
   {%- render 'plant-archive-gallery',
     eintraege: shop.metaobjects.mutterpflanze.values,
+    produkte: collections.all.products,
     eyebrow: section.settings.eyebrow,
     heading: section.settings.heading,
     intro: section.settings.intro

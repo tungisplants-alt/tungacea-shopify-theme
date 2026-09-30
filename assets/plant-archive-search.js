@@ -34,7 +34,16 @@ class PlantArchiveSearch extends HTMLElement {
     };
 
     this.begriff = '';
-    this.aktiv = { stadium: new Set(), generation: new Set(), zuechter: new Set() };
+    this.aktiv = {
+      angebot: new Set(),
+      stadium: new Set(),
+      generation: new Set(),
+      herkunft: new Set(),
+      zuechter: new Set(),
+    };
+
+    this.ausklapper = this.querySelector('.plant-search__filters');
+    this.marke = this.querySelector('.plant-search__badge');
 
     if (this.feld) {
       this.feld.addEventListener('input', () => {
@@ -113,10 +122,23 @@ class PlantArchiveSearch extends HTMLElement {
       if (sichtbar) treffer += 1;
     });
 
+    const gesetzteFilter = Object.values(this.aktiv)
+      .reduce((summe, menge) => summe + menge.size, 0);
+
     if (this.loeschen) {
-      const etwasGesetzt = this.begriff !== '' ||
-        Object.values(this.aktiv).some((m) => m.size > 0);
-      this.loeschen.hidden = !etwasGesetzt;
+      this.loeschen.hidden = this.begriff === '' && gesetzteFilter === 0;
+    }
+
+    /*
+     * Eingeklappt waere eine gesetzte Einschraenkung sonst unsichtbar, und die
+     * Galerie zeigte ohne erkennbaren Grund weniger Pflanzen.
+     */
+    if (this.marke) {
+      this.marke.textContent = gesetzteFilter > 0 ? String(gesetzteFilter) : '';
+      this.marke.hidden = gesetzteFilter === 0;
+    }
+    if (this.ausklapper) {
+      this.ausklapper.classList.toggle('is-aktiv', gesetzteFilter > 0);
     }
 
     if (!this.zaehler) return;

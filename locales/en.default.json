@@ -628,7 +628,12 @@
     }
   },
   "private_archive": {
-    "search_label": "Search the archive",
+    "filters_heading": "Filters",
+    "facet_offer": "Availability",
+    "facet_offer_yes": "Offer available",
+    "facet_origin": "Origin",
+    "has_offer": "Offer available",
+    "search_label": "Search",
     "search_placeholder": "Name, cross, breeder …",
     "search_clear": "Reset",
     "facet_stage": "Stage",
