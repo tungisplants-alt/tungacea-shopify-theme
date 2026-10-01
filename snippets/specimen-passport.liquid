@@ -142,8 +142,19 @@
   if rooting_label != blank
     assign spec_parts = spec_parts | append: rooting_label | append: '||'
   endif
+  comment
+    Mehrere Exemplare in einem Produkt haben nicht dieselbe Blattlaenge. Ist der
+    obere Wert gesetzt und wirklich groesser, steht eine Spanne statt einer Zahl.
+    Die Spanne wird in denselben Satz gereicht wie die einzelne Zahl — so gibt es
+    keinen zweiten Uebersetzungsschluessel, der auseinanderlaufen koennte.
+  endcomment
   if sp_blattlaenge != nil
-    assign leaflen = 'products.product.specimen.leaf_length' | t: cm: sp_blattlaenge
+    assign cm_text = sp_blattlaenge
+    assign blatt_bis = mf.blattlaenge_bis_cm.value
+    if blatt_bis != nil and blatt_bis > sp_blattlaenge
+      assign cm_text = sp_blattlaenge | append: '–' | append: blatt_bis
+    endif
+    assign leaflen = 'products.product.specimen.leaf_length' | t: cm: cm_text
     assign spec_parts = spec_parts | append: leaflen | append: '||'
   endif
   assign spec_list = spec_parts | split: '||'

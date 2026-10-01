@@ -84,6 +84,12 @@ const faelle = [
     erwartet: ['', 'Anthurium luxurians × dressleri', 'Generation S2', 'available', 'Verfügbar'],
     verboten: ['Generation F3'] },
 
+  { name: 'Spanne auf der Karte', available: true,
+    titel: 'Anthurium Testpflanze',
+    mf: mf({ blattlaenge_cm: 10, blattlaenge_bis_cm: 14 }),
+    erwartet: ['', '', '10–14 cm', 'available', 'Verfügbar'],
+    verboten: ['· 10 cm'] },
+
   { name: 'Alles leer', available: true,
     titel: 'Anthurium Testpflanze',
     mf: mf({}),

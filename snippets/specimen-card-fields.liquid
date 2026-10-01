@@ -105,8 +105,19 @@
   if generation != blank
     assign spec_parts = spec_parts | append: generation | append: ' · '
   endif
+  comment
+    Mehrere Exemplare in einem Produkt haben nicht dieselbe Blattlaenge. Ist der
+    obere Wert gesetzt und wirklich groesser, steht eine Spanne statt einer Zahl.
+    Die Spanne wird in denselben Satz gereicht wie die einzelne Zahl — so gibt es
+    keinen zweiten Uebersetzungsschluessel, der auseinanderlaufen koennte.
+  endcomment
   if mf.blattlaenge_cm.value != nil
-    assign leaflen = 'products.product.specimen.leaf_length_short' | t: cm: mf.blattlaenge_cm.value
+    assign cm_text = mf.blattlaenge_cm.value
+    assign blatt_bis = mf.blattlaenge_bis_cm.value
+    if blatt_bis != nil and blatt_bis > mf.blattlaenge_cm.value
+      assign cm_text = mf.blattlaenge_cm.value | append: '–' | append: blatt_bis
+    endif
+    assign leaflen = 'products.product.specimen.leaf_length_short' | t: cm: cm_text
     assign spec_parts = spec_parts | append: leaflen | append: ' · '
   endif
   assign specs = spec_parts | split: ' · ' | join: ' · ' | strip

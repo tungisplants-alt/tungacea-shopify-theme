@@ -212,6 +212,7 @@ function leseArchivkarten() {
       stadium: { value: 'Steckling' },
       generation: { value: 'F2' },
       blattlaenge_cm: { value: 10 },
+      blattlaenge_bis_cm: { value: 14 },
       specimen_id: { value: 'TA-1001' },
       mutterpflanze: { value: mutterMitSeite },
       zuechter: { value: person('Tofusprinkles', null, 'USA') },

@@ -106,6 +106,26 @@ const faelle = [
 
   { name: 'Alles leer — keine Ausgabe', mf: mf({}), erwartet: [], verboten: [], leer: true },
 
+  { name: 'Spanne statt einer Zahl bei mehreren Exemplaren',
+    mf: mf({ lieferumfang: 'Dieses Exemplar', blattlaenge_cm: 10, blattlaenge_bis_cm: 14 }),
+    erwartet: ['Blattlänge ca. 10–14 cm'],
+    verboten: ['ca. 10 cm'] },
+
+  { name: 'Oberer Wert gleich dem unteren — keine Scheinspanne',
+    mf: mf({ lieferumfang: 'Dieses Exemplar', blattlaenge_cm: 12, blattlaenge_bis_cm: 12 }),
+    erwartet: ['Blattlänge ca. 12 cm'],
+    verboten: ['12–12'] },
+
+  { name: 'Oberer Wert kleiner — wird nicht geglaubt',
+    mf: mf({ lieferumfang: 'Dieses Exemplar', blattlaenge_cm: 20, blattlaenge_bis_cm: 8 }),
+    erwartet: ['Blattlänge ca. 20 cm'],
+    verboten: ['20–8', '8–20'] },
+
+  { name: 'Nur oberer Wert, unterer fehlt — gar keine Angabe',
+    mf: mf({ lieferumfang: 'Dieses Exemplar', blattlaenge_bis_cm: 14 }),
+    erwartet: ['genau dieses Exemplar'],
+    verboten: ['Blattlänge'] },
+
   { name: 'Nummer der Mutterpflanze steht neben ihrem Namen',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze',
              mutterpflanze: mutter('Anthurium regale #4', null, null, [], null, null,
