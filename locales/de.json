@@ -628,6 +628,7 @@
     }
   },
   "private_archive": {
+    "specimen_range": "Exemplare {{ von }} bis {{ bis }}",
     "facet_line": "Linie",
     "facet_purity": "Reinheit",
     "filters_heading": "Filter",

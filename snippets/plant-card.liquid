@@ -175,6 +175,16 @@
         {{ name | escape }}
       {%- endif -%}
     </h3>
+    {%- comment -%}
+      Die Exemplar-ID steht an der Pflanze, nicht in einer zweiten Liste. Damit
+      ist das Archiv selbst das Register: es kann nicht veralten, weil es die
+      Daten liest. Für Besucher ist es die Herkunftsangabe, für Tung die
+      Übersicht, welche Nummern vergeben sind.
+    {%- endcomment -%}
+    {%- if eintrag.mutter_id.value != blank -%}
+      <p class="plant-card__id" data-testid="plant-card-id">{{ eintrag.mutter_id.value | escape }}</p>
+    {%- endif -%}
+
     {%- if leise != blank -%}
       <p class="plant-card__meta" data-testid="plant-card-meta">{{ leise }}</p>
     {%- endif -%}

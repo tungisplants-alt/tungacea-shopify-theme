@@ -479,3 +479,11 @@
 .specimen-passport__country {
   color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
 }
+
+/* Die Nummer der Mutterpflanze steht neben ihrem Namen, leiser. Sie sagt dem
+   Käufer, woher sein Exemplar stammt. */
+.specimen-passport__mother-id {
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  opacity: 0.8;
+  letter-spacing: 0.08em;
+}

@@ -199,7 +199,8 @@ function leseArchivkarten() {
   const galerie = await engine.renderFile('plant-archive-gallery', { eintraege: mitFremder, produkte: LADEN });
 
   const mutterMitSeite = {
-    bezeichnung: { value: 'Anthurium Ralph Lynam × Fort Sherman F2' },
+    bezeichnung: { value: 'Anthurium Ralph Lynam × Fort Sherman F2 #4' },
+    mutter_id: { value: 'TA-1001' },
     besitzer: { value: null }, fotograf: { value: null }, bildfreigabe: { value: null },
     fotos: { value: [BILD['D2061F69-B3D6-438D-AD92-07975F7501BE.jpg']] },
     system: { url: '/pflanzen/anthurium-ralph-lynam-x-fort-sherman-f2' },

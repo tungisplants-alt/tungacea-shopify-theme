@@ -317,7 +317,15 @@
     {%- if mutter_name != blank -%}
       <div class="specimen-passport__mother" data-testid="specimen-mother">
         <p class="specimen-passport__mother-label">{{ 'products.product.specimen.mother' | t }}</p>
-        <p class="specimen-passport__mother-name">{{ mutter_name | escape }}</p>
+        {%- comment -%}
+          Die Nummer der Mutterpflanze, nicht die des Produkts. Sie sagt, woher
+          das Exemplar stammt — und sie muss nicht eingetragen werden, weil das
+          Produkt ohnehin auf die Mutter zeigt. So kann sie nie falsch sein.
+        {%- endcomment -%}
+        <p class="specimen-passport__mother-name">
+          {{- mutter_name | escape -}}
+          {%- if mutter.mutter_id.value != blank %} <span class="specimen-passport__mother-id">{{ mutter.mutter_id.value | escape }}</span>{% endif -%}
+        </p>
         {%- if mutter_wo != blank -%}
           <p class="specimen-passport__mother-where">{{ mutter_wo }}</p>
         {%- endif -%}

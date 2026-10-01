@@ -45,6 +45,25 @@
     </header>
 
     {%- liquid
+      comment
+        Die Spanne der vergebenen Nummern. Sie wird aus den Eintraegen gerechnet,
+        steht also nie auf einem alten Stand — und die naechste freie Nummer ist
+        die obere plus eins. Eine getippte Notiz "zuletzt vergeben" waere ab der
+        naechsten Pflanze falsch und wuerde trotzdem geglaubt.
+
+        Sortiert wird als Zeichenkette. Das traegt, solange die Nummern gleich
+        viele Stellen haben; ab TA-10000 muesste es neu bedacht werden.
+      endcomment
+      assign id_roh = ''
+      for eintrag in eintraege
+        if eintrag.besitzer.value == blank and eintrag.mutter_id.value != blank
+          assign id_roh = id_roh | append: eintrag.mutter_id.value | append: '|'
+        endif
+      endfor
+      assign id_liste = id_roh | split: '|' | sort
+      assign id_von = id_liste | first
+      assign id_bis = id_liste | last
+
       assign anzahl = 0
       for eintrag in eintraege
         if eintrag.besitzer.value == blank
@@ -52,6 +71,12 @@
         endif
       endfor
     -%}
+
+    {%- if id_liste.size > 0 -%}
+      <p class="plant-archive__range" data-testid="plant-archive-range">
+        {{- 'private_archive.specimen_range' | t: von: id_von, bis: id_bis -}}
+      </p>
+    {%- endif -%}
 
     {%- if anzahl > 0 -%}
       <script src="{{ 'plant-archive-search.js' | asset_url }}" defer="defer"></script>

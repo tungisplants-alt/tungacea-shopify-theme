@@ -628,6 +628,7 @@
     }
   },
   "private_archive": {
+    "specimen_range": "Specimens {{ von }} to {{ bis }}",
     "facet_line": "Lineage",
     "facet_purity": "Purity",
     "filters_heading": "Filters",

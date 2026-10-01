@@ -44,6 +44,7 @@ const mutter = (bez, besitzer, fotograf, fotos, freigabe, url, extra) => ({
   fotos: { value: fotos || [] }, bildfreigabe: { value: freigabe === undefined ? null : freigabe },
   system: { url: url || null },
   generation: { value: (extra && extra.generation) || null },
+  mutter_id: { value: (extra && extra.mutter_id) || null },
   zuechter: { value: (extra && extra.zuechter) || null },
 });
 const mf = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, { value: v }]));
@@ -104,6 +105,19 @@ const faelle = [
     erwartet: ['Züchter', 'Ree Gardens'], verboten: ['Du erhältst', 'Mutterpflanze'] },
 
   { name: 'Alles leer — keine Ausgabe', mf: mf({}), erwartet: [], verboten: [], leer: true },
+
+  { name: 'Nummer der Mutterpflanze steht neben ihrem Namen',
+    mf: mf({ lieferumfang: 'Cutting der Mutterpflanze',
+             mutterpflanze: mutter('Anthurium regale #4', null, null, [], null, null,
+                                   { mutter_id: 'TA-1042' }) }),
+    erwartet: ['Anthurium regale #4', 'specimen-passport__mother-id', 'TA-1042'],
+    verboten: [] },
+
+  { name: 'Mutterpflanze ohne Nummer — keine leere Marke',
+    mf: mf({ lieferumfang: 'Cutting der Mutterpflanze',
+             mutterpflanze: mutter('Anthurium regale #4', null, null, [], null, null, {}) }),
+    erwartet: ['Anthurium regale #4'],
+    verboten: ['specimen-passport__mother-id'] },
 
   { name: 'Herkunft des Zuechters steht neben dem Namen',
     mf: mf({ zuechter: person('Tofusprinkles', null, 'USA'),
