@@ -1027,3 +1027,35 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
     padding: 1.2rem 1.2rem 1.4rem;
   }
 }
+
+/* Judge.me — Angleichung an die Seite
+   -------------------------------------------------------------------------
+   Judge.me baut sein Markup per Skript und bringt eigene Schrift und Farben
+   mit. Die Farben setzt das Widget selbst (Einstellungen am Block), die
+   Schrift nicht — dafür sind diese Regeln da.
+
+   Bewusst zurückhaltend: Judge.me stellt allen eigenen Klassen `jdgm-` voran,
+   und nur darauf wird hier gezielt. Regeln auf einzelne Bausteine wären
+   geraten, solange der Laden hinter dem Zugangscode steht und das gerenderte
+   Markup niemand gesehen hat. Was nach dem ersten Blick auf die echte Seite
+   noch nicht sitzt, kommt gezielt dazu. */
+
+[class*='jdgm-'] {
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+}
+
+/* Überschriften innerhalb der Bewertungen folgen der Seite, nicht der App. */
+[class*='jdgm-'] h1,
+[class*='jdgm-'] h2,
+[class*='jdgm-'] h3 {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  letter-spacing: 0.01em;
+}
+
+/* Links in der Akzentfarbe, die auf Dunkel lesbar ist — Oxblood selbst wäre
+   auf dem Kartenhintergrund 1,62:1 und damit unbrauchbar. Nachgerechnet. */
+[class*='jdgm-'] a:not([class*='button']) {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
