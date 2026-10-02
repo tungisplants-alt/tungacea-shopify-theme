@@ -1059,3 +1059,53 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 [class*='jdgm-'] a:not([class*='button']) {
   color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
 }
+
+/* Judge.me — Farben und Knopf
+   -------------------------------------------------------------------------
+   Nachtrag vom 2. Oktober, nachdem das Widget zum ersten Mal zu sehen war:
+   Judge.mes Vorgaben sind für helle Themes gemacht. Auf dunklem Grund stand
+   der Text in Dunkelgrau und war praktisch unlesbar, der Knopf in Türkis.
+
+   Diese Regeln zielen auf Teilzeichenketten der Klassennamen (`star`, `btn`),
+   nicht auf vollständige Namen. Ein Selektor, der nicht trifft, bewirkt
+   nichts — das ist der Unterschied zu einem geratenen Blocknamen, der still
+   durchfällt. Trifft er, sitzt die Farbe. */
+
+/* Aller Text erbt die Seitenfarbe, statt Judge.mes Dunkelgrau mitzubringen. */
+[class*='jdgm-'] {
+  color: inherit;
+}
+
+/* Sterne in der Akzentfarbe, die auf Dunkel lesbar ist. Oxblood wäre hier
+   1,62:1 und damit unbrauchbar — nachgerechnet. */
+[class*='jdgm-'] [class*='star'] {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+/* Der Knopf trägt die Knopffarbe der Seite statt Judge.mes Türkis. Scharfe
+   Ecken wie alle Knöpfe hier, und dieselbe Versalienschrift. */
+[class*='jdgm-'] [class*='btn'],
+[class*='jdgm-'] button[class*='jdgm'] {
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 1);
+  color: #f5f1eb;
+  border: 1px solid rgba(var(--tungacea-accent-bright, 177, 61, 76), 0.55);
+  border-radius: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 1rem 2rem;
+  transition: background-color 0.25s var(--tungacea-ease, ease);
+}
+
+[class*='jdgm-'] [class*='btn']:hover,
+[class*='jdgm-'] button[class*='jdgm']:hover {
+  background: rgba(var(--tungacea-accent-bright, 177, 61, 76), 1);
+}
+
+/* Trennlinien und Rahmen der App sind für Weiss gedacht und verschwinden auf
+   Dunkel oder schneiden zu hart; auf die Haarlinie der Seite gesetzt. */
+[class*='jdgm-'][class*='widget'],
+[class*='jdgm-'][class*='rev'] {
+  border-color: var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+}
