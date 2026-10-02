@@ -146,7 +146,13 @@
       {%- endif -%}
     </header>
 
+    {%- comment -%}
+      Das Skript und der Dialog gehoeren zum Element. Fehlt eines von beiden,
+      bricht specimen-lightbox in der ersten Zeile still ab — die Knoepfe sind
+      dann da und tun nichts. Genau so war es hier vier Tage lang.
+    {%- endcomment -%}
     {%- if zeige_fotos -%}
+      <script src="{{ 'specimen-lightbox.js' | asset_url }}" defer="defer"></script>
       <specimen-lightbox class="plant-profile__photos" data-testid="plant-profile-photos">
         {%- for foto in fotos -%}
           <button
@@ -167,6 +173,18 @@
             }}
           </button>
         {%- endfor -%}
+
+        <dialog class="specimen-lightbox" aria-label="{{ name | escape }}">
+          <button
+            type="button"
+            class="specimen-lightbox__close"
+            data-lightbox-close
+            aria-label="{{ 'products.product.specimen.photo_close' | t }}"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <img class="specimen-lightbox__image" data-lightbox-image src="" alt="">
+        </dialog>
       </specimen-lightbox>
       {%- if fotograf_name != blank -%}
         <p class="plant-profile__credit" data-testid="plant-profile-credit">

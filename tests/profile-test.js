@@ -100,6 +100,15 @@ const faelle = [
     verboten: ['Cutting A', 'Cutting B'],
   },
   {
+    name: 'Lightbox ist vollstaendig, nicht nur vorhanden',
+    eintrag: pflanze('mutter-fuenf', {
+      fotos: { value: ['cdn://a.jpg', 'cdn://b.jpg'] },
+    }),
+    erwartet: ['<specimen-lightbox', 'specimen-lightbox.js', '<dialog',
+               'data-lightbox-image', 'data-lightbox-close', 'data-lightbox-full'],
+    verboten: [],
+  },
+  {
     name: 'Besitzer gesetzt — Seite nennt ihn',
     eintrag: pflanze('mutter-vier', {
       besitzer: feld({ name: { value: 'Ree Gardens' }, instagram: { value: null } }),
