@@ -105,7 +105,6 @@
     "badge_corner_radius": 0,
     "sale_badge_color_scheme": "scheme-3",
     "sold_out_badge_color_scheme": "scheme-4",
-    "specimen_new_days": 7,
     "brand_headline": "",
     "brand_description": "<p></p>",
     "brand_image_width": 100,
@@ -149,14 +148,19 @@
         "settings": {
           "style": "button",
           "bold": true,
-          "underline": false,
+          "underline": true,
           "underline_thickness": 1,
           "link_color": "",
           "size": "middle",
-          "border_radius": 0,
-          "text_color": "#f5f1eb",
-          "background_color": "#6e1c28"
+          "border_radius": 4,
+          "text_color": "#ffffff",
+          "background_color": "#000000"
         }
+      },
+      "14060646107696862457": {
+        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {
