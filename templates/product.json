@@ -120,10 +120,17 @@
         "padding_top": 56,
         "padding_bottom": 40
       }
+    },
+    "1790930519e12b1f1c": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
     "main",
-    "related-products"
+    "related-products",
+    "1790930519e12b1f1c"
   ]
 }
