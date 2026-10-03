@@ -76,6 +76,25 @@
       assign stage_label = 'products.product.specimen.stage_mother' | t
   endcase
 
+  comment
+    Reinheit ist eine geschlossene Liste aus drei Werten, also wird sie wie das
+    Stadium auf Sprachschluessel abgebildet statt roh ausgegeben. Vorher stand
+    hier der deutsche Datenwert und blieb auch auf der englischen Seite deutsch.
+
+    Anders als oben wird der Rohwert vorbelegt und nur im Treffer ueberschrieben.
+    Ein unbekannter Wert erscheint dann deutsch, statt stillschweigend ganz zu
+    verschwinden.
+  endcomment
+  assign reinheit_label = eintrag.reinheit.value | default: '' | strip
+  case reinheit_label
+    when 'Reine Art'
+      assign reinheit_label = 'products.product.specimen.purity_species' | t
+    when 'Hybrid'
+      assign reinheit_label = 'products.product.specimen.purity_hybrid' | t
+    when 'Komplexhybrid'
+      assign reinheit_label = 'products.product.specimen.purity_complex' | t
+  endcase
+
   assign gen_raw = eintrag.generation.value | default: '' | strip
   assign generation = ''
   if gen_raw == 'Species'
@@ -222,7 +241,7 @@
         {%- if eintrag.reinheit.value != blank -%}
           <div class="plant-profile__fact">
             <dt>{{ 'private_archive.facet_purity' | t }}</dt>
-            <dd>{{ eintrag.reinheit.value | escape }}</dd>
+            <dd>{{ reinheit_label | escape }}</dd>
           </div>
         {%- endif -%}
         {%- if zuechter_name != blank -%}

@@ -197,6 +197,23 @@
               </summary>
               <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_purity' | t }}">
                 {%- for wert in reinheit_liste -%}
+                  {%- liquid
+                    comment
+                      Nur die Aufschrift wird uebersetzt. data-wert bleibt der
+                      Rohwert, weil das Skript damit gegen data-reinheit an der
+                      Kachel vergleicht — ein uebersetztes data-wert wuerde auf
+                      der englischen Seite nichts mehr treffen.
+                    endcomment
+                    assign wert_label = wert
+                    case wert
+                      when 'Reine Art'
+                        assign wert_label = 'products.product.specimen.purity_species' | t
+                      when 'Hybrid'
+                        assign wert_label = 'products.product.specimen.purity_hybrid' | t
+                      when 'Komplexhybrid'
+                        assign wert_label = 'products.product.specimen.purity_complex' | t
+                    endcase
+                  -%}
                   <button
                     type="button"
                     class="plant-search__chip"
@@ -204,7 +221,7 @@
                     data-wert="{{ wert | escape }}"
                     aria-pressed="false"
                   >
-                    {{- wert | escape -}}
+                    {{- wert_label | escape -}}
                   </button>
                 {%- endfor -%}
               </div>

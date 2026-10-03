@@ -116,6 +116,30 @@ const faelle = [
     erwartet: ['plant-profile-owner', 'Ree Gardens'],
     verboten: [],
   },
+  // Reinheit stand bis zum 3. Oktober als roher Datenwert in der Seite und
+  // blieb damit auch im englischen Laden deutsch. Der Waechter unten kannte
+  // die Woerter nicht, und keine Testpflanze trug ueberhaupt eine Reinheit —
+  // deshalb war der Fehler fuer 322 gruene Pruefungen unsichtbar.
+  {
+    name: 'Reinheit Komplexhybrid erscheint',
+    eintrag: pflanze('mutter-sechs', { reinheit: feld('Komplexhybrid') }),
+    erwartet: ['Komplexhybrid'],
+    verboten: [],
+  },
+  {
+    name: 'Reinheit Reine Art erscheint',
+    eintrag: pflanze('mutter-sieben', { reinheit: feld('Reine Art') }),
+    erwartet: ['Reine Art'],
+    verboten: [],
+  },
+  // Gegenprobe zum Rueckfall: ein Wert, den der case nicht kennt, muss
+  // sichtbar bleiben. Verschwindet er, ist die Abbildung eine stille Falle.
+  {
+    name: 'Unbekannte Reinheit verschwindet nicht',
+    eintrag: pflanze('mutter-acht', { reinheit: feld('Naturhybrid') }),
+    erwartet: ['Naturhybrid'],
+    verboten: [],
+  },
 ];
 
 (async () => {
@@ -150,7 +174,12 @@ const faelle = [
         }
       } else {
         checks++;
-        if (/Verkauft|Angebote von dieser Pflanze|Diese Pflanze steht bei/.test(html)) {
+        // Diese Liste ist der eigentliche Waechter gegen deutschen Text auf der
+        // englischen Seite. Sie kannte "Komplexhybrid" und "Reine Art" nicht,
+        // und genau dort stand der Fehler. Wer hier ein Feld ergaenzt, dessen
+        // Werte Tung auf Deutsch eintraegt, traegt das Wort hier mit ein.
+        const deutsch = /Verkauft|Angebote von dieser Pflanze|Diese Pflanze steht bei|Komplexhybrid|Reine Art/;
+        if (deutsch.test(html)) {
           fails++; console.log('FEHLER [en] ' + f.name + ': deutscher Text im englischen Lauf');
         }
       }
