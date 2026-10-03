@@ -49,13 +49,22 @@ const pflanze = extra => Object.assign({
   angebote: { value: [] },
 }, extra || {});
 
+const zuechter = (name, land) => feld({
+  name: { value: name }, instagram: { value: null }, land: { value: land },
+});
+
 // Eine Gruppe erscheint erst ab zwei verschiedenen Werten — ein Filter mit
 // einem Wert trennt nichts. Deshalb braucht jede geprüfte Gruppe hier
 // mindestens zwei Einträge mit verschiedenen Werten.
 const EINTRAEGE = [
-  pflanze({ reinheit: feld('Komplexhybrid'), stadium: feld('Mutterpflanze') }),
-  pflanze({ reinheit: feld('Reine Art'), stadium: feld('Jungpflanze') }),
-  pflanze({ reinheit: feld('Hybrid'), stadium: feld('Steckling') }),
+  pflanze({ reinheit: feld('Komplexhybrid'), stadium: feld('Mutterpflanze'),
+            zuechter: zuechter('Tungacea', 'Deutschland') }),
+  pflanze({ reinheit: feld('Reine Art'), stadium: feld('Jungpflanze'),
+            zuechter: zuechter('secretfoliage', 'Niederlande') }),
+  pflanze({ reinheit: feld('Hybrid'), stadium: feld('Steckling'),
+            zuechter: zuechter('Variegated_Stingray', 'Schweiz') }),
+  // Ein Land, das die Zuordnung nicht kennt: es muss sichtbar bleiben.
+  pflanze({ zuechter: zuechter('Jemand', 'Belgien') }),
   // Eine fremde Pflanze: sie darf keine Werte in die Leiste einspeisen.
   pflanze({ reinheit: feld('Naturhybrid'), besitzer: feld({ name: { value: 'Ree Gardens' } }) }),
 ];
@@ -70,6 +79,17 @@ const faelle = [
     name: 'Stadium-Schalter tragen die uebersetzte Aufschrift',
     de: ['>Mutterpflanze<', '>Jungpflanze<'],
     en: ['>Mother plant<', '>Young plant<'],
+  },
+  {
+    name: 'Herkunft-Schalter tragen den uebersetzten Laendernamen',
+    de: ['>Deutschland<', '>Niederlande<', '>Schweiz<'],
+    en: ['>Germany<', '>Netherlands<', '>Switzerland<'],
+  },
+  {
+    // Rueckfall: ein Land ohne Zuordnung bleibt stehen, statt zu verschwinden.
+    name: 'Unbekanntes Land verschwindet nicht',
+    de: ['>Belgien<'],
+    en: ['>Belgien<'],
   },
 ];
 
@@ -102,7 +122,8 @@ const faelle = [
 
   // Der Kern: data-wert bleibt in BEIDEN Sprachen der deutsche Rohwert.
   for (const loc of ['de', 'en']) {
-    for (const roh of ['Komplexhybrid', 'Reine Art', 'Mutterpflanze', 'Jungpflanze']) {
+    for (const roh of ['Komplexhybrid', 'Reine Art', 'Mutterpflanze', 'Jungpflanze',
+                       'Deutschland', 'Niederlande', 'Schweiz']) {
       checks++;
       if (!html[loc].includes('data-wert="' + roh + '"')) {
         fails++;
@@ -115,7 +136,8 @@ const faelle = [
   // Kein deutscher Auswahlwert als Aufschrift im englischen Lauf. Die Prüfung
   // zielt auf >Wort<, damit sie nicht am data-wert hängenbleibt, der dort
   // richtigerweise deutsch ist.
-  for (const deutsch of ['>Komplexhybrid<', '>Reine Art<', '>Mutterpflanze<', '>Jungpflanze<']) {
+  for (const deutsch of ['>Komplexhybrid<', '>Reine Art<', '>Mutterpflanze<', '>Jungpflanze<',
+                         '>Deutschland<', '>Niederlande<', '>Schweiz<']) {
     checks++;
     if (html.en.includes(deutsch)) {
       fails++;

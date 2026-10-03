@@ -256,7 +256,12 @@ const faelle = [
         for (const v of f.verboten) { checks++; if (html.includes(v)) { fails++; console.log('FEHLER ' + f.name + ': enthaelt "' + v + '"'); } }
       } else {
         checks++;
-        if (/Du erhältst|Blätter|Bei @|Aus meiner Sammlung/.test(html)) {
+        // Die Laendernamen stehen hier, weil der Pass sie zweimal zeigt — beim
+        // Zuechter und bei der Bezugsquelle — und sie als deutscher Freitext am
+        // Personen-Eintrag liegen. Die erwartet-Listen oben laufen nur im
+        // deutschen Durchgang, also war diese Stelle vorher unbewacht.
+        const deutsch = /Du erhältst|Blätter|Bei @|Aus meiner Sammlung|\(Niederlande\)|\(Deutschland\)|\(Schweiz\)/;
+        if (deutsch.test(html)) {
           fails++; console.log('FEHLER [en] ' + f.name + ': deutscher Text im englischen Lauf');
         }
       }

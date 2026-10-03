@@ -1,0 +1,34 @@
+{% comment %}
+  Tungacea — Ländername in der Sprache der Seite.
+
+  Das Land steht als deutscher Freitext am Personen-Eintrag (`land`) und wurde
+  an vier Stellen roh ausgegeben: auf der Pflanzenseite, zweimal auf der
+  Produktseite (Züchter und Bezugsquelle) und als Aufschrift der
+  Herkunft-Schalter im Archiv. Ein englischer Besucher las dort „Niederlande“.
+
+  Die Zuordnung steht bewusst nur hier. Viermal derselbe `case` wäre viermal
+  dieselbe Stelle zum Vergessen — und genau so ist die Reinheit entstanden,
+  die über Monate unübersetzt blieb, während Stadium und Generation es längst
+  waren.
+
+  Ein Land, das hier nicht steht, erscheint unverändert auf Deutsch. Das ist
+  gewollt: sichtbar und richtig ist besser als verschwunden. Wer ein Land
+  ergänzt, trägt es hier und in beiden Sprachdateien nach.
+
+  Annahmen:
+  - wert: {String} der rohe Wert aus `land`, darf leer sein
+{% endcomment %}
+{%- liquid
+  assign land_label = wert | default: '' | strip
+  case land_label
+    when 'Deutschland'
+      assign land_label = 'private_archive.country_germany' | t
+    when 'Schweiz'
+      assign land_label = 'private_archive.country_switzerland' | t
+    when 'Niederlande'
+      assign land_label = 'private_archive.country_netherlands' | t
+    when 'USA'
+      assign land_label = 'private_archive.country_usa' | t
+  endcase
+  echo land_label | escape
+-%}

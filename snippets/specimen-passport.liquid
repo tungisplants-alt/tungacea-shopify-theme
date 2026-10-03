@@ -415,7 +415,7 @@
             <dt class="specimen-passport__label">{{ 'products.product.specimen.breeder' | t }}</dt>
             <dd class="specimen-passport__value" data-testid="specimen-breeder">
               {{- zuechter_name | escape -}}
-              {%- if zuechter_land != blank %} <span class="specimen-passport__country">({{ zuechter_land | escape }})</span>{% endif -%}
+              {%- if zuechter_land != blank %} <span class="specimen-passport__country">({%- render 'land-name', wert: zuechter_land -%})</span>{% endif -%}
             </dd>
           </div>
         {%- endif -%}
@@ -424,7 +424,7 @@
             <dt class="specimen-passport__label">{{ 'products.product.specimen.sourced' | t }}</dt>
             <dd class="specimen-passport__value" data-testid="specimen-sourced">
               {{- bezogen_name | escape -}}
-              {%- if bezogen_land != blank %} <span class="specimen-passport__country">({{ bezogen_land | escape }})</span>{% endif -%}
+              {%- if bezogen_land != blank %} <span class="specimen-passport__country">({%- render 'land-name', wert: bezogen_land -%})</span>{% endif -%}
             </dd>
           </div>
         {%- endif -%}

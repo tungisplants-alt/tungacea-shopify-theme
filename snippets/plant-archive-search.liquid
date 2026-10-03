@@ -305,7 +305,12 @@
                     data-wert="{{ wert | escape }}"
                     aria-pressed="false"
                   >
-                    {{- wert | escape -}}
+                    {%- comment -%}
+                      Wie bei der Reinheit: nur die Aufschrift wird uebersetzt,
+                      data-wert bleibt der deutsche Rohwert fuer den Vergleich
+                      mit data-herkunft an der Kachel.
+                    {%- endcomment -%}
+                    {%- render 'land-name', wert: wert -%}
                   </button>
                 {%- endfor -%}
               </div>

@@ -140,6 +140,17 @@ const faelle = [
     erwartet: ['Naturhybrid'],
     verboten: [],
   },
+  // Das Land des Zuechters steht als deutscher Freitext am Personen-Eintrag.
+  // Ohne einen Fall, der ueberhaupt ein Land setzt, laeuft der Waechter unten
+  // ins Leere — genau wie zuvor bei der Reinheit.
+  {
+    name: 'Land des Zuechters wird uebersetzt',
+    eintrag: pflanze('mutter-neun', {
+      zuechter: feld({ name: { value: 'secretfoliage' }, instagram: { value: null }, land: { value: 'Niederlande' } }),
+    }),
+    erwartet: ['secretfoliage', '(Niederlande)'],
+    verboten: [],
+  },
 ];
 
 (async () => {
@@ -178,7 +189,7 @@ const faelle = [
         // englischen Seite. Sie kannte "Komplexhybrid" und "Reine Art" nicht,
         // und genau dort stand der Fehler. Wer hier ein Feld ergaenzt, dessen
         // Werte Tung auf Deutsch eintraegt, traegt das Wort hier mit ein.
-        const deutsch = /Verkauft|Angebote von dieser Pflanze|Diese Pflanze steht bei|Komplexhybrid|Reine Art/;
+        const deutsch = /Verkauft|Angebote von dieser Pflanze|Diese Pflanze steht bei|Komplexhybrid|Reine Art|\(Niederlande\)|\(Deutschland\)|\(Schweiz\)/;
         if (deutsch.test(html)) {
           fails++; console.log('FEHLER [en] ' + f.name + ': deutscher Text im englischen Lauf');
         }

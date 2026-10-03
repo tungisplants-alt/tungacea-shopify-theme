@@ -249,7 +249,7 @@
             <dt>{{ 'private_archive.labels.breeder' | t }}</dt>
             <dd>
               {{- zuechter_name | escape -}}
-              {%- if zuechter_land != blank %} <span class="plant-profile__country">({{ zuechter_land | escape }})</span>{% endif -%}
+              {%- if zuechter_land != blank %} <span class="plant-profile__country">({%- render 'land-name', wert: zuechter_land -%})</span>{% endif -%}
             </dd>
           </div>
         {%- endif -%}
