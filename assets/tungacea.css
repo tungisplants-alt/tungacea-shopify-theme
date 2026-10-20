@@ -1109,3 +1109,123 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 [class*='jdgm-'][class*='rev'] {
   border-color: var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
 }
+
+/* Shopify-Einwilligungsbanner — Angleichung an die Seite
+   -------------------------------------------------------------------------
+   Shopifys Banner kommt als weisser Kasten mit fast schwarzem Text und sass
+   als Fremdkoerper auf der dunklen Startseite.
+
+   Anders als bei Judge.me ist hier nichts abgeschottet: Das Banner liegt im
+   normalen DOM, ohne Shadow Root, ohne iframe, und Shopifys eigenes
+   Stylesheet enthaelt **null** !important. Die Selektoren unten sind am
+   gerenderten Banner abgelesen, nicht geraten.
+
+   Zustimmen und Ablehnen sind **absichtlich gleich** gestaltet: gleiche
+   Flaeche, gleiche Farbe, gleiche Groesse. Ein hervorgehobenes Akzeptieren
+   neben einem blassen Ablehnen gilt als Dark Pattern und ist abmahnfaehig.
+   Wer hier etwas aendert, aendert beide zusammen.
+
+   Gemessen am Ergebnis: Titel 15,78:1 — Fliesstext 8,57:1 — Link 4,75:1 —
+   Knoepfe 10,04:1. */
+
+#shopify-pc__banner.shopify-pc__banner__dialog,
+#shopify-pc__prefs__dialog {
+  background: #151517;
+  color: rgba(242, 238, 232, 0.88);
+  border-radius: 0;
+  border-top: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.55);
+}
+
+#shopify-pc__prefs__dialog {
+  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+}
+
+#shopify-pc__prefs__overlay {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+#shopify-pc__banner__body-title,
+#shopify-pc__prefs__header-title {
+  color: #f2eee8;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Shopify faerbt h3, p und label im Dialog direkt. Sammelselektoren verlieren
+   dagegen, deshalb hier mit derselben ID-Spezifitaet. */
+#shopify-pc__prefs__dialog h3,
+#shopify-pc__prefs__dialog label,
+#shopify-pc__banner h3,
+#shopify-pc__banner label {
+  color: #f2eee8;
+}
+
+#shopify-pc__prefs__dialog p,
+#shopify-pc__prefs__dialog li,
+#shopify-pc__prefs__dialog span,
+#shopify-pc__banner p,
+#shopify-pc__banner span {
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+}
+
+#shopify-pc__prefs__dialog a,
+#shopify-pc__banner a,
+#shopify-pc__banner__body-policy-link {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  text-underline-offset: 3px;
+}
+
+/* Gleichwertig: siehe Kopfkommentar. */
+#shopify-pc__banner__btn-accept,
+#shopify-pc__banner__btn-decline,
+#shopify-pc__prefs__header-accept,
+#shopify-pc__prefs__header-decline,
+#shopify-pc__prefs__header-save {
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 1);
+  color: #f5f1eb;
+  border: 1px solid rgba(242, 238, 232, 0.28);
+  border-radius: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 1.2rem 2.6rem;
+  transition: background-color 0.25s var(--tungacea-ease, ease);
+}
+
+#shopify-pc__banner__btn-accept:hover,
+#shopify-pc__banner__btn-decline:hover,
+#shopify-pc__prefs__header-accept:hover,
+#shopify-pc__prefs__header-decline:hover,
+#shopify-pc__prefs__header-save:hover {
+  background: rgba(var(--tungacea-accent-bright, 177, 61, 76), 1);
+}
+
+/* Die dritte Schaltflaeche ist keine Zustimmungsentscheidung und darf
+   deshalb zuruecktreten. */
+#shopify-pc__banner__btn-manage-prefs {
+  background: transparent;
+  color: rgba(242, 238, 232, 0.88);
+  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  border-radius: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 1.2rem 2.6rem;
+}
+
+#shopify-pc__prefs__header-close {
+  color: rgba(242, 238, 232, 0.88);
+}
+
+#shopify-pc__prefs__dialog input[type='checkbox'] {
+  accent-color: rgba(var(--tungacea-oxblood, 110, 28, 40), 1);
+  width: 18px;
+  height: 18px;
+}
+
+.shopify-pc__prefs__option + .shopify-pc__prefs__option {
+  border-top: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+}
