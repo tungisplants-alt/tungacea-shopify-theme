@@ -57,9 +57,13 @@ const zuechter = (name, land) => feld({
 // einem Wert trennt nichts. Deshalb braucht jede geprüfte Gruppe hier
 // mindestens zwei Einträge mit verschiedenen Werten.
 const EINTRAEGE = [
+  // line_other-Fall: "Sonstige" ist der einzige deutsche Wert in einer Liste
+  // aus botanischen Eigennamen. Ohne diesen Fall laeuft der Waechter ins Leere.
   pflanze({ reinheit: feld('Komplexhybrid'), stadium: feld('Mutterpflanze'),
+            linie: { value: ['Sonstige'] },
             zuechter: zuechter('Tungacea', 'Deutschland') }),
   pflanze({ reinheit: feld('Reine Art'), stadium: feld('Jungpflanze'),
+            linie: { value: ['Papillilaminum'] },
             zuechter: zuechter('secretfoliage', 'Niederlande') }),
   pflanze({ reinheit: feld('Hybrid'), stadium: feld('Steckling'),
             zuechter: zuechter('Variegated_Stingray', 'Schweiz') }),
@@ -79,6 +83,11 @@ const faelle = [
     name: 'Stadium-Schalter tragen die uebersetzte Aufschrift',
     de: ['>Mutterpflanze<', '>Jungpflanze<'],
     en: ['>Mother plant<', '>Young plant<'],
+  },
+  {
+    name: 'Linie: Sonstige wird uebersetzt, botanische Namen nicht',
+    de: ['>Sonstige<', '>Papillilaminum<'],
+    en: ['>Other<', '>Papillilaminum<'],
   },
   {
     name: 'Herkunft-Schalter tragen den uebersetzten Laendernamen',
@@ -123,7 +132,7 @@ const faelle = [
   // Der Kern: data-wert bleibt in BEIDEN Sprachen der deutsche Rohwert.
   for (const loc of ['de', 'en']) {
     for (const roh of ['Komplexhybrid', 'Reine Art', 'Mutterpflanze', 'Jungpflanze',
-                       'Deutschland', 'Niederlande', 'Schweiz']) {
+                       'Deutschland', 'Niederlande', 'Schweiz', 'Sonstige']) {
       checks++;
       if (!html[loc].includes('data-wert="' + roh + '"')) {
         fails++;
@@ -137,7 +146,7 @@ const faelle = [
   // zielt auf >Wort<, damit sie nicht am data-wert hängenbleibt, der dort
   // richtigerweise deutsch ist.
   for (const deutsch of ['>Komplexhybrid<', '>Reine Art<', '>Mutterpflanze<', '>Jungpflanze<',
-                         '>Deutschland<', '>Niederlande<', '>Schweiz<']) {
+                         '>Deutschland<', '>Niederlande<', '>Schweiz<', '>Sonstige<']) {
     checks++;
     if (html.en.includes(deutsch)) {
       fails++;

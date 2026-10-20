@@ -181,7 +181,11 @@
                     data-wert="{{ wert | escape }}"
                     aria-pressed="false"
                   >
-                    {{- wert | escape -}}
+                    {%- comment -%}
+                      data-wert bleibt der Rohwert fuer den Vergleich mit der
+                      Kachel; nur die Aufschrift geht durch das Sprachsnippet.
+                    {%- endcomment -%}
+                    {%- render 'linie-name', wert: wert -%}
                   </button>
                 {%- endfor -%}
               </div>

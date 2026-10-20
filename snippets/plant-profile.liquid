@@ -235,7 +235,17 @@
         {%- if eintrag.linie.value.size > 0 -%}
           <div class="plant-profile__fact">
             <dt>{{ 'private_archive.facet_line' | t }}</dt>
-            <dd>{{ eintrag.linie.value | join: ' · ' | escape }}</dd>
+            {%- comment -%}
+              Einzeln durchgereicht statt mit join verbunden: nur so kommt
+              jeder Wert am Sprachsnippet vorbei. „Sonstige“ ist der einzige
+              deutsche Eintrag zwischen lauter botanischen Namen.
+            {%- endcomment -%}
+            <dd>
+              {%- for l in eintrag.linie.value -%}
+                {%- unless forloop.first %} · {% endunless -%}
+                {%- render 'linie-name', wert: l -%}
+              {%- endfor -%}
+            </dd>
           </div>
         {%- endif -%}
         {%- if eintrag.reinheit.value != blank -%}

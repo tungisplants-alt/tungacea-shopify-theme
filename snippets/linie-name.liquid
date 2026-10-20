@@ -1,0 +1,26 @@
+{% comment %}
+  Tungacea — Linienname in der Sprache der Seite.
+
+  Die Auswahlliste `linie` enthaelt botanische Eigennamen (Papillilaminum,
+  Crystallinum, Dressleri …) und genau einen deutschen Sammelwert:
+  „Sonstige“. Auf der englischen Seite stand er deutsch zwischen lauter
+  lateinischen Namen.
+
+  Der Waechter sprachwert-lint.js hatte `linie` pauschal als sprachneutral
+  eingestuft — fuer sechs von sieben Werten stimmt das. Eine Einordnung, die
+  fast immer richtig ist, ist die unauffaelligste Art, falsch zu sein.
+
+  Ein Wert, der hier nicht steht, wird unveraendert durchgereicht. Das ist
+  gewollt: botanische Namen sollen gerade nicht uebersetzt werden.
+
+  Annahmen:
+  - wert: {String} ein einzelner Wert aus `linie`
+{% endcomment %}
+{%- liquid
+  assign linie_label = wert | default: '' | strip
+  case linie_label
+    when 'Sonstige'
+      assign linie_label = 'private_archive.line_other' | t
+  endcase
+  echo linie_label | escape
+-%}

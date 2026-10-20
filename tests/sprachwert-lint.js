@@ -32,11 +32,16 @@ const ORDNER = ['snippets', 'sections', 'blocks'];
 // Werte trägt Tung auf Deutsch ein → müssen übersetzt werden.
 const UEBERSETZT = new Set([
   'stadium', 'reinheit', 'generation', 'bewurzelung', 'lieferumfang', 'land',
+  // `linie` stand bis zum 20. Oktober unter NEUTRAL. Das stimmte fuer sechs
+  // von sieben Werten — nur "Sonstige" ist deutsch, und genau der stand auf
+  // der englischen Seite. Eine Einordnung, die fast immer richtig ist, ist
+  // die unauffaelligste Art, falsch zu sein.
+  'linie',
 ]);
 
 // Sprachneutral: botanische Namen, Kennungen, Zahlen, Verweise.
 const NEUTRAL = new Set([
-  'bezeichnung', 'kreuzung', 'linie', 'mutter_id', 'specimen_id',
+  'bezeichnung', 'kreuzung', 'mutter_id', 'specimen_id',
   'name', 'instagram', 'website',
   'blattlaenge_cm', 'blattlaenge_bis_cm', 'aufnahmedatum',
   'fotos', 'fotograf', 'bildfreigabe', 'besitzer', 'zuechter', 'bezogen_von',
