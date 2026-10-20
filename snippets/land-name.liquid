@@ -1,4 +1,4 @@
-{% comment %}
+{%- comment -%}
   Tungacea — Ländername in der Sprache der Seite.
 
   Das Land steht als deutscher Freitext am Personen-Eintrag (`land`) und wurde
@@ -17,7 +17,7 @@
 
   Annahmen:
   - wert: {String} der rohe Wert aus `land`, darf leer sein
-{% endcomment %}
+{%- endcomment -%}
 {%- liquid
   assign land_label = wert | default: '' | strip
   case land_label

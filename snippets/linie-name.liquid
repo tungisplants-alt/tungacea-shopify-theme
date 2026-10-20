@@ -1,4 +1,4 @@
-{% comment %}
+{%- comment -%}
   Tungacea — Linienname in der Sprache der Seite.
 
   Die Auswahlliste `linie` enthaelt botanische Eigennamen (Papillilaminum,
@@ -15,7 +15,7 @@
 
   Annahmen:
   - wert: {String} ein einzelner Wert aus `linie`
-{% endcomment %}
+{%- endcomment -%}
 {%- liquid
   assign linie_label = wert | default: '' | strip
   case linie_label

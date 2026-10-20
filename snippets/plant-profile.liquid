@@ -243,7 +243,8 @@
             <dd>
               {%- for l in eintrag.linie.value -%}
                 {%- unless forloop.first %} · {% endunless -%}
-                {%- render 'linie-name', wert: l -%}
+                {%- capture tg_linie -%}{%- render 'linie-name', wert: l -%}{%- endcapture -%}
+                {{- tg_linie | strip -}}
               {%- endfor -%}
             </dd>
           </div>
@@ -259,7 +260,7 @@
             <dt>{{ 'private_archive.labels.breeder' | t }}</dt>
             <dd>
               {{- zuechter_name | escape -}}
-              {%- if zuechter_land != blank %} <span class="plant-profile__country">({%- render 'land-name', wert: zuechter_land -%})</span>{% endif -%}
+              {%- if zuechter_land != blank %} <span class="plant-profile__country">{%- capture tg_land -%}{%- render 'land-name', wert: zuechter_land -%}{%- endcapture -%}({{ tg_land | strip }})</span>{% endif -%}
             </dd>
           </div>
         {%- endif -%}
