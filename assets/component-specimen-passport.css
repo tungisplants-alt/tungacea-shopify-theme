@@ -296,6 +296,24 @@
   color: rgba(185, 178, 169, 0.72);
 }
 
+/* Nachweis am einzelnen Mutterfoto. Die Kacheln sind hier klein und stehen zu
+   dritt, deshalb eine Stufe kleiner als die alte Sammelzeile — sie soll das
+   Bild begleiten und nicht mit ihm um Aufmerksamkeit ringen. */
+.specimen-passport__mother-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  min-width: 0;
+}
+
+.specimen-passport__mother-credit {
+  font-family: var(--font-body-family);
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: rgba(185, 178, 169, 0.72);
+}
+
 @media screen and (max-width: 749px) {
   .specimen-passport__lead {
     font-size: 1.4rem;

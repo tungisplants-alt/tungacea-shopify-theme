@@ -43,9 +43,47 @@
     assign fotograf_name = fotograf.instagram.value | default: fotograf.name.value | strip
   endif
 
+  comment
+    Bildnachweis pro Foto. Das alte Feld fotos trug einen Fotografen fuer den
+    ganzen Eintrag. Sobald ein eigenes und ein fremdes Bild zusammenstehen, ist
+    jede Nennung dort falsch: entweder fehlt sie beim fremden Bild, oder sie
+    behauptet beim eigenen eine fremde Urheberschaft. Genau das stand bei
+    TA-1005.
+
+    Liegt bilder vor, gilt diese Liste. Sonst bleibt der alte Weg Zeile fuer
+    Zeile unveraendert, damit nicht umgehaengte Eintraege nicht dunkel werden.
+  endcomment
+  assign bilder = eintrag.bilder.value
+  assign hat_bilder = false
+  if bilder.size > 0
+    assign hat_bilder = true
+  endif
+
+  comment
+    Die Sperre wird jetzt je Bild gezaehlt, nicht fuer den Eintrag entschieden.
+    Ein fremdes Bild ohne Freigabe faellt heraus, die eigenen bleiben stehen.
+    Vorher nahm ein einziges ungeklaertes Bild die ganze Galerie mit.
+  endcomment
+  assign bilder_sichtbar = 0
+  if hat_bilder
+    for bn in bilder
+      assign bn_fotograf = bn.fotograf.value
+      assign bn_freigabe = bn.bildfreigabe.value
+      if bn_fotograf == blank
+        assign bilder_sichtbar = bilder_sichtbar | plus: 1
+      elsif bn_freigabe == true or bn_freigabe == 'true'
+        assign bilder_sichtbar = bilder_sichtbar | plus: 1
+      endif
+    endfor
+  endif
+
   assign fotos = eintrag.fotos.value
   assign zeige_fotos = false
-  if fotos.size > 0
+  if hat_bilder
+    if bilder_sichtbar > 0
+      assign zeige_fotos = true
+    endif
+  elsif fotos.size > 0
     assign freigabe = eintrag.bildfreigabe.value
     if fotograf == blank
       assign zeige_fotos = true
@@ -173,25 +211,80 @@
     {%- if zeige_fotos -%}
       <script src="{{ 'specimen-lightbox.js' | asset_url }}" defer="defer"></script>
       <specimen-lightbox class="plant-profile__photos" data-testid="plant-profile-photos">
-        {%- for foto in fotos -%}
-          <button
-            type="button"
-            class="plant-profile__photo"
-            data-lightbox-full="{{ foto | image_url: width: 1800 }}"
-            data-lightbox-alt="{{ name | escape }}"
-          >
-            {{
-              foto
-              | image_url: width: 900
-              | image_tag:
-                loading: 'lazy',
-                alt: name,
-                sizes: '(min-width: 990px) 33vw, 50vw',
-                widths: '400, 600, 900',
-                class: 'plant-profile__photo-image'
-            }}
-          </button>
-        {%- endfor -%}
+        {%- if hat_bilder -%}
+          {%- comment -%}
+            Jedes Bild traegt seinen eigenen Nachweis, direkt darunter. Eine
+            Zeile unter der ganzen Galerie konnte nicht sagen, welches Bild
+            gemeint ist — bei zwei Bildern aus zwei Quellen war sie zwangslaeufig
+            unwahr. Der figure/figcaption-Verbund ist zudem die Form, die
+            Vorlesegeraete als Bild mit Beschriftung ansagen.
+          {%- endcomment -%}
+          {%- for bn in bilder -%}
+            {%- liquid
+              assign bn_foto = bn.bild.value
+              assign bn_fotograf = bn.fotograf.value
+              assign bn_freigabe = bn.bildfreigabe.value
+              assign bn_zeigen = false
+              if bn_foto
+                if bn_fotograf == blank
+                  assign bn_zeigen = true
+                elsif bn_freigabe == true or bn_freigabe == 'true'
+                  assign bn_zeigen = true
+                endif
+              endif
+            -%}
+            {%- if bn_zeigen -%}
+              {%- capture bn_nachweis -%}
+                {%- render 'foto-nachweis', fotograf: bn_fotograf -%}
+              {%- endcapture -%}
+              {%- assign bn_nachweis = bn_nachweis | strip -%}
+              <figure class="plant-profile__figure">
+                <button
+                  type="button"
+                  class="plant-profile__photo"
+                  data-lightbox-full="{{ bn_foto | image_url: width: 1800 }}"
+                  data-lightbox-alt="{{ name | escape }}"
+                >
+                  {{
+                    bn_foto
+                    | image_url: width: 900
+                    | image_tag:
+                      loading: 'lazy',
+                      alt: name,
+                      sizes: '(min-width: 990px) 33vw, 50vw',
+                      widths: '400, 600, 900',
+                      class: 'plant-profile__photo-image'
+                  }}
+                </button>
+                {%- if bn_nachweis != blank -%}
+                  <figcaption class="plant-profile__figure-credit" data-testid="plant-profile-photo-credit">
+                    {{- bn_nachweis -}}
+                  </figcaption>
+                {%- endif -%}
+              </figure>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for foto in fotos -%}
+            <button
+              type="button"
+              class="plant-profile__photo"
+              data-lightbox-full="{{ foto | image_url: width: 1800 }}"
+              data-lightbox-alt="{{ name | escape }}"
+            >
+              {{
+                foto
+                | image_url: width: 900
+                | image_tag:
+                  loading: 'lazy',
+                  alt: name,
+                  sizes: '(min-width: 990px) 33vw, 50vw',
+                  widths: '400, 600, 900',
+                  class: 'plant-profile__photo-image'
+              }}
+            </button>
+          {%- endfor -%}
+        {%- endif -%}
 
         <dialog class="specimen-lightbox" aria-label="{{ name | escape }}">
           <button
@@ -205,11 +298,19 @@
           <img class="specimen-lightbox__image" data-lightbox-image src="" alt="">
         </dialog>
       </specimen-lightbox>
-      {%- if fotograf_name != blank -%}
-        <p class="plant-profile__credit" data-testid="plant-profile-credit">
-          {{- 'products.product.specimen.photo_credit' | t: who: fotograf_name -}}
-        </p>
-      {%- endif -%}
+      {%- comment -%}
+        Die Sammelzeile unter der Galerie gilt nur noch im alten Weg, wo ein
+        Fotograf fuer den ganzen Eintrag steht. Mit Bildnachweisen stehen die
+        Nennungen am jeweiligen Bild; eine zusaetzliche Sammelzeile wuerde
+        dieselbe Aussage ein zweites Mal und ungenauer treffen.
+      {%- endcomment -%}
+      {%- unless hat_bilder -%}
+        {%- if fotograf_name != blank -%}
+          <p class="plant-profile__credit" data-testid="plant-profile-credit">
+            {{- 'products.product.specimen.photo_credit' | t: who: fotograf_name -}}
+          </p>
+        {%- endif -%}
+      {%- endunless -%}
     {%- endif -%}
 
     {%- if eintrag.merkmal.value != blank -%}

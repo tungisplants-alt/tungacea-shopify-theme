@@ -61,6 +61,27 @@ Fehler wären sonst durchgerutscht.
 mit Freigabe, fremdes ohne, fremdes mit ausdrücklichem `false`. Nur der erste
 und der zweite dürfen ein Bild ausgeben.
 
+**Die vier Zustände galten für den ganzen Eintrag — das war die Lücke.** Das
+Feld `fotograf` stand an der Pflanze, nicht am Bild. Bei TA-1005 standen ein
+eigenes und ein fremdes Foto zusammen, und die eine Sammelzeile schrieb beide
+Bilder derselben Person zu. Seitdem trägt jedes Bild seinen eigenen Nachweis
+(`bilder` → Metaobjekt `bildnachweis`), und die Sperre wird **je Bild** gestellt.
+Gezählt wird dabei, nicht nur gesucht: „ist der Nachweis da" war bei einem und
+bei zwei Nachweisen gleich grün. Dafür gibt es in `pass-test.js` und
+`profile-test.js` die Liste `genau`.
+
+**`archivkachel-test.js` ist neu, weil `plant-card.liquid` keinen Lauf hatte.**
+Der Vorschau-Bauer zählte Kacheln, sah aber nie in eine hinein. Die Kachel nimmt
+jetzt das erste Bild, das gezeigt werden **darf** — ein gesperrtes Bild an
+Position eins darf die Kachel nicht leeren, wenn eigene dahinterstehen.
+
+**`nil` ist in liquidjs nicht `blank`, in Shopify schon.** `{% if x != blank %}`
+war auf dem Prüfstand wahr, wo Shopify falsch sagt; eine Pflanze ganz ohne Fotos
+bekam dort ein `img` mit leerer Adresse statt des Platzhalters. Das war ein
+Fehler des Messgeräts, nicht des Themes. Vorhandensein wird deshalb am
+Wahrheitswert geprüft (`{% if foto %}`) — der verhält sich auf beiden Motoren
+gleich.
+
 **`pass-test.js` prüft auch die Reihenfolge**, nicht nur den Inhalt: Hinweis
 hinter Mutterpflanze, Hinweis hinter Züchter, Einstiegssatz vor allem. Ein
 Vorbehalt gehört hinter die Sache, die er einschränkt.

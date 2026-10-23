@@ -35,20 +35,57 @@
     mit invalid url input ab. Die Schleife ist das Muster, das im Pass
     nachweislich funktioniert.
   endcomment
-  assign fotos = eintrag.fotos.value
+  comment
+    Liegen Bildnachweise vor, wird das erste Bild genommen, das gezeigt werden
+    DARF, nicht einfach das erste. Sonst entscheidet ein fremdes Bild ohne
+    Freigabe an Position eins darueber, dass die Kachel leer bleibt, obwohl
+    eigene Bilder dahinter stehen. Die Kachel selbst nennt keinen Fotografen —
+    dafuer ist sie zu klein; die Nennung steht auf der Seite am Bild.
+  endcomment
+  comment
+    Vorhandensein wird am Wahrheitswert geprueft, nicht mit != blank. Shopify
+    zaehlt nil zu blank, liquidjs im Pruefstand nicht — eine Pflanze ganz ohne
+    Fotos lieferte dort ein img mit leerer Adresse statt des Platzhalters.
+    Der Wahrheitswert verhaelt sich auf beiden Motoren gleich, und ein eigener
+    Schalter sagt ohnehin genauer, was gemeint ist.
+  endcomment
+  assign bilder = eintrag.bilder.value
   assign erstes_foto = nil
-  for f in fotos limit: 1
-    assign erstes_foto = f
-  endfor
-
   assign zeige_foto = false
-  if erstes_foto != blank
-    assign fotograf = eintrag.fotograf.value
-    assign freigabe = eintrag.bildfreigabe.value
-    if fotograf == blank
-      assign zeige_foto = true
-    elsif freigabe == true or freigabe == 'true'
-      assign zeige_foto = true
+
+  if bilder.size > 0
+    for bn in bilder
+      if zeige_foto == false
+        assign bn_foto = bn.bild.value
+        assign bn_fotograf = bn.fotograf.value
+        assign bn_freigabe = bn.bildfreigabe.value
+        if bn_foto
+          if bn_fotograf == blank
+            assign erstes_foto = bn_foto
+            assign zeige_foto = true
+          elsif bn_freigabe == true or bn_freigabe == 'true'
+            assign erstes_foto = bn_foto
+            assign zeige_foto = true
+          endif
+        endif
+      endif
+    endfor
+  else
+    assign fotos = eintrag.fotos.value
+    assign hat_foto = false
+    for f in fotos limit: 1
+      assign erstes_foto = f
+      assign hat_foto = true
+    endfor
+
+    if hat_foto
+      assign fotograf = eintrag.fotograf.value
+      assign freigabe = eintrag.bildfreigabe.value
+      if fotograf == blank
+        assign zeige_foto = true
+      elsif freigabe == true or freigabe == 'true'
+        assign zeige_foto = true
+      endif
     endif
   endif
 

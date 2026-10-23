@@ -46,6 +46,16 @@ const mutter = (bez, besitzer, fotograf, fotos, freigabe, url, extra) => ({
   generation: { value: (extra && extra.generation) || null },
   mutter_id: { value: (extra && extra.mutter_id) || null },
   zuechter: { value: (extra && extra.zuechter) || null },
+  bilder: { value: (extra && extra.bilder) || [] },
+});
+
+// Ein Bildnachweis: ein Foto mit eigenem Fotografen und eigener Freigabe.
+// fotograf == null heisst "von Tung", wie im Theme.
+const bild = (datei, fotograf, freigabe) => ({
+  titel: { value: datei },
+  bild: { value: 'cdn://' + datei },
+  fotograf: { value: fotograf || null },
+  bildfreigabe: { value: freigabe === undefined ? null : freigabe },
 });
 const mf = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, { value: v }]));
 
@@ -216,6 +226,43 @@ const faelle = [
     mf: mf({ lieferumfang: 'Dieses Exemplar',
              mutterpflanze: mutter('Anthurium regale', null, null, []) }),
     erwartet: ['Anthurium regale'], verboten: ['specimen-mother-photos'] },
+
+  // --- Bildnachweis pro Foto ---
+  // Das Feld fotograf galt fuer die ganze Mutterpflanze. Bei TA-1005 standen ein
+  // eigenes und ein fremdes Bild zusammen, und die eine Sammelzeile schrieb
+  // beide Bilder derselben Person zu. Gezaehlt wird, nicht nur gesucht: "ist
+  // der Nachweis da" war bei einem und bei zwei Nachweisen gleich gruen.
+  { name: 'Zwei Quellen — nur das fremde Bild wird genannt',
+    mf: mf({ lieferumfang: 'Dieses Exemplar',
+             mutterpflanze: mutter('Anthurium regale', null, null, [], null, null,
+                                   { bilder: [bild('eigenes.jpg', null, null),
+                                              bild('fremdes.jpg', grower, true)] }) }),
+    erwartet: ['specimen-mother-photos', 'cdn://eigenes.jpg', 'cdn://fremdes.jpg', 'Foto: @tropicalgrower'],
+    verboten: ['specimen-passport__credit'],
+    genau: [['specimen-passport__mother-figure', 2], ['specimen-mother-photo-credit', 1]] },
+
+  { name: 'Zwei Quellen, fremdes Bild ohne Freigabe — eigenes bleibt',
+    mf: mf({ lieferumfang: 'Dieses Exemplar',
+             mutterpflanze: mutter('Anthurium regale', null, null, [], null, null,
+                                   { bilder: [bild('eigenes.jpg', null, null),
+                                              bild('fremdes.jpg', grower, false)] }) }),
+    erwartet: ['cdn://eigenes.jpg'],
+    verboten: ['cdn://fremdes.jpg', '@tropicalgrower'],
+    genau: [['specimen-passport__mother-figure', 1], ['specimen-mother-photo-credit', 0]] },
+
+  { name: 'Alle Bilder ungeklaert — kein Streifen, kein leeres Geruest',
+    mf: mf({ lieferumfang: 'Dieses Exemplar',
+             mutterpflanze: mutter('Anthurium regale', null, null, [], null, null,
+                                   { bilder: [bild('fremdes.jpg', grower, false)] }) }),
+    erwartet: ['Anthurium regale'],
+    verboten: ['specimen-mother-photos', 'cdn://fremdes.jpg', '<dialog'] },
+
+  // Der alte Weg bleibt unveraendert, solange keine Mutter umgehaengt ist.
+  { name: 'Alter Weg ohne bilder: Sammelzeile wie zuvor',
+    mf: mf({ lieferumfang: 'Dieses Exemplar',
+             mutterpflanze: mutter('Anthurium regale', grower, grower, FOTOS, true) }),
+    erwartet: ['specimen-passport__credit', 'Foto: @tropicalgrower'],
+    verboten: ['specimen-passport__mother-figure', 'specimen-mother-photo-credit'] },
 ];
 
 (async () => {
@@ -254,6 +301,13 @@ const faelle = [
         }
         for (const e of f.erwartet) { checks++; if (!html.includes(e)) { fails++; console.log('FEHLER ' + f.name + ': fehlt "' + e + '"'); } }
         for (const v of f.verboten) { checks++; if (html.includes(v)) { fails++; console.log('FEHLER ' + f.name + ': enthaelt "' + v + '"'); } }
+        // Zaehlende Pruefung. Bei zwei Bildern aus zwei Quellen liegt der Fehler
+        // in der Anzahl der Nennungen, nicht in ihrem Vorhandensein.
+        for (const [muster, soll] of f.genau || []) {
+          checks++;
+          const ist = html.split(muster).length - 1;
+          if (ist !== soll) { fails++; console.log('FEHLER ' + f.name + ': "' + muster + '" ' + ist + 'x statt ' + soll + 'x'); }
+        }
       } else {
         checks++;
         // Die Laendernamen stehen hier, weil der Pass sie zweimal zeigt — beim

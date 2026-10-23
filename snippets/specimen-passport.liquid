@@ -167,6 +167,8 @@
   assign mutter_wo = ''
   assign mutter_credit = ''
   assign mutter_fotos = empty
+  assign mutter_bilder = empty
+  assign hat_bilder = false
   assign zeige_fotos = false
   if mutter != blank
     assign mutter_name = mutter.bezeichnung.value | default: '' | strip
@@ -206,9 +208,35 @@
       photographer means the picture is Tung's own, so nothing to ask.
       Refusing to render is deliberate: a missing picture is a small problem, a
       borrowed one on a sales page is not.
+
+      Mit Bildnachweisen wird dieselbe Sperre je Bild gestellt. Ein einziges
+      ungeklaertes Bild nahm vorher den ganzen Mutterblock mit, und eine
+      Sammelzeile konnte bei zwei Quellen nicht sagen, welches Bild sie meint.
+      Fehlt das Feld, bleibt der alte Weg unveraendert.
     endcomment
+    assign mutter_bilder = mutter.bilder.value
+    assign hat_bilder = false
+    if mutter_bilder.size > 0
+      assign hat_bilder = true
+    endif
+
     assign mutter_fotos = mutter.fotos.value
-    if mutter_fotos.size > 0
+    if hat_bilder
+      assign bilder_sichtbar = 0
+      for bn in mutter_bilder
+        assign bn_fotograf = bn.fotograf.value
+        assign bn_freigabe = bn.bildfreigabe.value
+        if bn_fotograf == blank
+          assign bilder_sichtbar = bilder_sichtbar | plus: 1
+        elsif bn_freigabe == true or bn_freigabe == 'true'
+          assign bilder_sichtbar = bilder_sichtbar | plus: 1
+        endif
+      endfor
+      if bilder_sichtbar > 0
+        assign zeige_fotos = true
+      endif
+      assign mutter_credit = ''
+    elsif mutter_fotos.size > 0
       assign freigabe = mutter.bildfreigabe.value
       if fotograf == blank
         assign zeige_fotos = true
@@ -350,27 +378,77 @@
           <script src="{{ 'specimen-lightbox.js' | asset_url }}" defer="defer"></script>
           <specimen-lightbox>
             <ul class="specimen-passport__mother-photos list-unstyled" role="list" data-testid="specimen-mother-photos">
-              {%- for foto in mutter_fotos limit: 6 -%}
-                <li>
-                  <button
-                    type="button"
-                    class="specimen-passport__mother-photo"
-                    data-lightbox-full="{{ foto | image_url: width: 1800 }}"
-                    data-lightbox-alt="{{ mutter_name | escape }}"
-                    aria-label="{{ 'products.product.specimen.photo_open' | t: name: mutter_name }}"
-                  >
-                    <img
-                      src="{{ foto | image_url: width: 480 }}"
-                      srcset="{{ foto | image_url: width: 320 }} 320w, {{ foto | image_url: width: 480 }} 480w, {{ foto | image_url: width: 720 }} 720w"
-                      sizes="(min-width: 750px) 18rem, 30vw"
-                      alt=""
-                      width="480"
-                      height="600"
-                      loading="lazy"
+              {%- if hat_bilder -%}
+                {%- for bn in mutter_bilder limit: 6 -%}
+                  {%- liquid
+                    assign bn_foto = bn.bild.value
+                    assign bn_fotograf = bn.fotograf.value
+                    assign bn_freigabe = bn.bildfreigabe.value
+                    assign bn_zeigen = false
+                    if bn_foto
+                      if bn_fotograf == blank
+                        assign bn_zeigen = true
+                      elsif bn_freigabe == true or bn_freigabe == 'true'
+                        assign bn_zeigen = true
+                      endif
+                    endif
+                  -%}
+                  {%- if bn_zeigen -%}
+                    {%- capture bn_nachweis -%}
+                      {%- render 'foto-nachweis', fotograf: bn_fotograf -%}
+                    {%- endcapture -%}
+                    {%- assign bn_nachweis = bn_nachweis | strip -%}
+                    <li>
+                      <figure class="specimen-passport__mother-figure">
+                        <button
+                          type="button"
+                          class="specimen-passport__mother-photo"
+                          data-lightbox-full="{{ bn_foto | image_url: width: 1800 }}"
+                          data-lightbox-alt="{{ mutter_name | escape }}"
+                          aria-label="{{ 'products.product.specimen.photo_open' | t: name: mutter_name }}"
+                        >
+                          <img
+                            src="{{ bn_foto | image_url: width: 480 }}"
+                            srcset="{{ bn_foto | image_url: width: 320 }} 320w, {{ bn_foto | image_url: width: 480 }} 480w, {{ bn_foto | image_url: width: 720 }} 720w"
+                            sizes="(min-width: 750px) 18rem, 30vw"
+                            alt=""
+                            width="480"
+                            height="600"
+                            loading="lazy"
+                          >
+                        </button>
+                        {%- if bn_nachweis != blank -%}
+                          <figcaption class="specimen-passport__mother-credit" data-testid="specimen-mother-photo-credit">
+                            {{- bn_nachweis -}}
+                          </figcaption>
+                        {%- endif -%}
+                      </figure>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- else -%}
+                {%- for foto in mutter_fotos limit: 6 -%}
+                  <li>
+                    <button
+                      type="button"
+                      class="specimen-passport__mother-photo"
+                      data-lightbox-full="{{ foto | image_url: width: 1800 }}"
+                      data-lightbox-alt="{{ mutter_name | escape }}"
+                      aria-label="{{ 'products.product.specimen.photo_open' | t: name: mutter_name }}"
                     >
-                  </button>
-                </li>
-              {%- endfor -%}
+                      <img
+                        src="{{ foto | image_url: width: 480 }}"
+                        srcset="{{ foto | image_url: width: 320 }} 320w, {{ foto | image_url: width: 480 }} 480w, {{ foto | image_url: width: 720 }} 720w"
+                        sizes="(min-width: 750px) 18rem, 30vw"
+                        alt=""
+                        width="480"
+                        height="600"
+                        loading="lazy"
+                      >
+                    </button>
+                  </li>
+                {%- endfor -%}
+              {%- endif -%}
             </ul>
 
             <dialog class="specimen-lightbox" aria-label="{{ mutter_name | escape }}">

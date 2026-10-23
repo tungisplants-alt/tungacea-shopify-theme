@@ -97,6 +97,15 @@ const person = (name, ig, land) => ({
 
 const feld = v => ({ value: v === undefined || v === '' ? null : v });
 
+// Ein Bildnachweis: ein Foto mit eigenem Fotografen und eigener Freigabe.
+// fotograf == null heisst "von Tung" — genau wie im Theme.
+const bildnachweis = (titel, bild, fotograf, freigabe) => ({
+  titel: feld(titel),
+  bild: feld(bild),
+  fotograf: feld(fotograf || null),
+  bildfreigabe: feld(freigabe === undefined ? null : freigabe),
+});
+
 function leseArchivkarten() {
   // Die sechs handgetippten Karten sind historische Eingangsdaten: sie stammen
   // aus templates/page.archive.json, wie es vor der Umstellung aussah (Commit
@@ -159,6 +168,9 @@ function leseArchivkarten() {
       fotos: { value: url ? [url] : [] },
       fotograf: feld(null),
       bildfreigabe: feld(null),
+      // Die sechs Altkarten bleiben auf dem alten Weg. Genau das ist der Punkt:
+      // ein Eintrag ohne bilder muss unveraendert aussehen.
+      bilder: { value: [] },
       angebote: { value: [] },
       system: { url: '/pages/archiv/' + (i + 1) },
     };
@@ -232,7 +244,72 @@ function leseArchivkarten() {
     console.error('FEHLER: die fremde Pflanze steht in der Galerie.');
     process.exit(1);
   }
+  // Der echte Fall TA-1005: Bild 1 von Tung, Bild 2 von Yolanda. Auf dem alten
+  // Weg war jede Nennung hier falsch — entweder fehlte sie bei Bild 2, oder sie
+  // schrieb Bild 1 einer fremden Person zu.
+  const YOLANDA = person('Yolanda Picklesauce', '@yolanda_picklesauce', 'USA');
+  const gemischt = JSON.parse(JSON.stringify(eintraege[0]));
+  gemischt.bezeichnung = feld('Anthurium Ralph Lynam x Fort Sherman F2 #1');
+  gemischt.mutter_id = feld('TA-1005');
+  gemischt.merkmal = feld('Meine Lieblings RLFS F2 aus dem Batch von Tofusprinkles');
+  gemischt.notiz = feld('Ursprünglich im Besitz von Yolanda. Dieser individuelle RLFS F2 ist in der EU noch nicht weit verbreitet.');
+  gemischt.bilder = { value: [
+    bildnachweis('TA-1005 Bild 1', BILD['D2061F69-B3D6-438D-AD92-07975F7501BE.jpg'], null, null),
+    bildnachweis('TA-1005 Bild 2', BILD['C372B873-FFE4-4B3E-A5C1-DB36AA2BA68D.jpg'], YOLANDA, true),
+  ] };
+
+  // Gegenprobe: dasselbe, aber Bild 2 ohne Freigabe. Bild 2 verschwindet, Bild 1
+  // bleibt. Auf dem alten Weg nahm ein ungeklaertes Bild die ganze Galerie mit.
+  const gemischtGesperrt = JSON.parse(JSON.stringify(gemischt));
+  gemischtGesperrt.bilder = { value: [
+    bildnachweis('TA-1005 Bild 1', BILD['D2061F69-B3D6-438D-AD92-07975F7501BE.jpg'], null, null),
+    bildnachweis('TA-1005 Bild 2', BILD['C372B873-FFE4-4B3E-A5C1-DB36AA2BA68D.jpg'], YOLANDA, false),
+  ] };
+
+  const seiteGemischt = await engine.renderFile('plant-profile', { eintrag: gemischt, produkte: LADEN });
+  const seiteGemischtGesperrt = await engine.renderFile('plant-profile', { eintrag: gemischtGesperrt, produkte: LADEN });
+
+  // Dieselbe gemischte Mutter am Produkt, damit der Pass mitgeprueft wird.
+  const mutterGemischt = Object.assign({}, gemischt, {
+    system: { url: '/pflanzen/anthurium-ralph-lynam-x-fort-sherman-f2-1', handle: 'pflanze-5' },
+  });
+  const passGemischt = await engine.renderFile('specimen-passport', {
+    product: { metafields: { custom: {
+      lieferumfang: { value: 'Cutting der Mutterpflanze' },
+      bewurzelung: { value: 'Unbewurzelt' },
+      stadium: { value: 'Steckling' },
+      generation: { value: 'F2' },
+      specimen_id: { value: 'TA-1011' },
+      mutterpflanze: { value: mutterGemischt },
+      zuechter: { value: person('Tofusprinkles', null, 'USA') },
+    } } },
+    block: { id: 'b2', shopify_attributes: '' },
+  });
+
   const seiteEigen = await engine.renderFile('plant-profile', { eintrag: mitAngebot, produkte: LADEN });
+
+  // Gegenproben am gerenderten HTML, nicht am Code. Eine leere Liste ist kein
+  // geprueftes Ergebnis: hier wird gezaehlt.
+  const zaehle = (html, muster) => (html.match(muster) || []).length;
+  const pruefungen = [
+    ['gemischt: zwei Bilder stehen da', zaehle(seiteGemischt, /class="plant-profile__figure"/g), 2],
+    ['gemischt: genau EIN Nachweis, am zweiten Bild', zaehle(seiteGemischt, /plant-profile__figure-credit/g), 1],
+    ['gemischt: keine Sammelzeile unter der Galerie', zaehle(seiteGemischt, /class="plant-profile__credit"/g), 0],
+    ['gesperrt: nur noch ein Bild', zaehle(seiteGemischtGesperrt, /class="plant-profile__figure"/g), 1],
+    ['gesperrt: kein Nachweis, weil das fremde Bild fehlt', zaehle(seiteGemischtGesperrt, /plant-profile__figure-credit/g), 0],
+    ['alter Weg: unveraendert, kein figure', zaehle(seiteEigen, /class="plant-profile__figure"/g), 0],
+    ['Pass: zwei Mutterfotos', zaehle(passGemischt, /specimen-passport__mother-figure/g), 2],
+    ['Pass: genau EIN Nachweis am Bild', zaehle(passGemischt, /specimen-mother-photo-credit/g), 1],
+  ];
+  let bnFehler = 0;
+  for (const [was, ist, soll] of pruefungen) {
+    if (ist !== soll) {
+      bnFehler++;
+      console.error('FEHLER ' + was + ': ' + ist + ' statt ' + soll);
+    }
+  }
+  if (bnFehler) process.exit(1);
+  console.log(pruefungen.length + ' Bildnachweis-Gegenproben bestanden.');
   const seiteFremdGesperrt = await engine.renderFile('plant-profile', { eintrag: fremd, produkte: LADEN });
   const seiteFremdFrei = await engine.renderFile('plant-profile', { eintrag: fremdOk, produkte: LADEN });
 
@@ -291,6 +368,9 @@ ${abschnitt(1, 'Die Galerie', 'Sechs Kacheln, jede anklickbar. Hochformat 4:5 wi
 ${abschnitt(2, 'Eigene Pflanze — die Seite dahinter', 'Fotos, dein Merkmalssatz, die Tatsachen, deine Notiz. Unten der Rückweg: welche Angebote von dieser Pflanze stammen.', seiteEigen)}
 ${abschnitt(3, 'Fremde Pflanze OHNE Bildfreigabe', 'Erfundenes Beispiel. Die Pflanze wird genannt, die Fotos erscheinen nicht — dieselbe Sperre wie am Produkt. Diese Pflanze fehlt oben in der Galerie, und das ist Absicht.', seiteFremdGesperrt)}
 ${abschnitt(4, 'Dieselbe Pflanze MIT Bildfreigabe', 'Erfundenes Beispiel. Jetzt erscheinen die Fotos, mit Nennung des Fotografen.', seiteFremdFrei)}
+${abschnitt(5, 'NEU — TA-1005: zwei Bilder, zwei Quellen', 'Der echte Fall. Bild 1 ist von dir und bleibt ohne Nennung. Bild 2 ist von Yolanda und trägt die Nennung direkt unter sich. Die alte Sammelzeile unter der Galerie ist weg — sie hätte beide Bilder Yolanda zugeschrieben.', seiteGemischt)}
+${abschnitt(6, 'NEU — Gegenprobe: Bild 2 ohne Freigabe', 'Nur der Schalter "Bildfreigabe" an Bild 2 steht auf Nein. Das fremde Bild verschwindet, dein eigenes bleibt stehen. Vorher nahm ein ungeklärtes Bild die ganze Galerie mit.', seiteGemischtGesperrt)}
+${abschnitt(7, 'NEU — dieselbe Mutter auf der Produktseite', 'Derselbe Mutterblock, den ein Kunde beim Kauf sieht. Auch hier hängt die Nennung am einzelnen Bild.', passGemischt)}
 </body></html>`;
 
   const ziel = path.join(__dirname, 'archiv-vorschau.html');

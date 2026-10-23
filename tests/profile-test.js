@@ -52,9 +52,21 @@ const pflanze = (handle, extra) => Object.assign({
   merkmal: feld(null), notiz: feld(null), mutter_id: feld(null),
   zuechter: feld(null), besitzer: feld(null),
   fotos: { value: [] }, fotograf: feld(null), bildfreigabe: feld(null),
+  bilder: { value: [] },
   angebote: { value: [] },
   system: { handle: handle, url: '/pflanzen/' + handle },
 }, extra || {});
+
+// Ein Bildnachweis: ein Foto mit eigenem Fotografen und eigener Freigabe.
+// fotograf == null heisst "von Tung", wie im Theme.
+const bild = (datei, fotograf, freigabe) => ({
+  titel: feld(datei),
+  bild: feld('cdn://' + datei),
+  fotograf: feld(fotograf || null),
+  bildfreigabe: feld(freigabe === undefined ? null : freigabe),
+});
+
+const fremdePerson = (name, ig) => ({ name: { value: name }, instagram: { value: ig || null } });
 
 // Ein Produkt, das auf einen Eintrag zeigt.
 const produkt = (titel, handle, verfuegbar, preis) => ({
@@ -151,6 +163,60 @@ const faelle = [
     erwartet: ['secretfoliage', '(Niederlande)'],
     verboten: [],
   },
+  // Bildnachweis pro Foto. Das Feld fotograf galt fuer den ganzen Eintrag, und
+  // bei TA-1005 standen ein eigenes und ein fremdes Bild zusammen: die eine
+  // Sammelzeile schrieb beide Bilder Yolanda zu. Nur eine Zaehlung faellt hier
+  // auf — eine Suche nach "ist der Nachweis da" war in beiden Faellen gruen.
+  {
+    name: 'Eigenes und fremdes Bild: nur das fremde wird genannt',
+    eintrag: pflanze('mutter-zehn', {
+      bilder: { value: [
+        bild('eigenes.jpg', null, null),
+        bild('fremdes.jpg', fremdePerson('Yolanda Picklesauce', '@yolanda_picklesauce'), true),
+      ] },
+    }),
+    erwartet: ['plant-profile-photo-credit', '@yolanda_picklesauce'],
+    verboten: ['class="plant-profile__credit"'],
+    genau: [['plant-profile__figure"', 2], ['plant-profile-photo-credit', 1]],
+  },
+  // Gegenprobe: dasselbe ohne Freigabe. Das fremde Bild faellt heraus, das
+  // eigene bleibt. Vorher nahm ein ungeklaertes Bild die ganze Galerie mit.
+  {
+    name: 'Fremdes Bild ohne Freigabe faellt heraus, eigenes bleibt',
+    eintrag: pflanze('mutter-elf', {
+      bilder: { value: [
+        bild('eigenes.jpg', null, null),
+        bild('fremdes.jpg', fremdePerson('Yolanda Picklesauce', '@yolanda_picklesauce'), false),
+      ] },
+    }),
+    erwartet: ['<specimen-lightbox', 'cdn://eigenes.jpg'],
+    verboten: ['cdn://fremdes.jpg', '@yolanda_picklesauce'],
+    genau: [['plant-profile__figure"', 1], ['plant-profile-photo-credit', 0]],
+  },
+  // Und die Sperre bleibt vollstaendig: sind ALLE Bilder ungeklaert, erscheint
+  // keine Galerie. Sonst stuende ein leeres Lightbox-Geruest auf der Seite.
+  {
+    name: 'Alle Bilder ungeklaert — keine Galerie',
+    eintrag: pflanze('mutter-zwoelf', {
+      bilder: { value: [
+        bild('fremdes.jpg', fremdePerson('Yolanda Picklesauce', '@yolanda_picklesauce'), false),
+      ] },
+    }),
+    erwartet: [],
+    verboten: ['<specimen-lightbox', 'cdn://fremdes.jpg'],
+  },
+  // Der alte Weg muss unveraendert bleiben, solange kein Eintrag umgehaengt ist.
+  // Neun der zehn Archiveintraege stehen noch darauf.
+  {
+    name: 'Alter Weg ohne bilder: Sammelzeile wie zuvor',
+    eintrag: pflanze('mutter-dreizehn', {
+      fotos: { value: ['cdn://alt.jpg'] },
+      fotograf: feld(fremdePerson('Yolanda Picklesauce', '@yolanda_picklesauce')),
+      bildfreigabe: feld(true),
+    }),
+    erwartet: ['class="plant-profile__credit"', '@yolanda_picklesauce'],
+    verboten: ['plant-profile__figure"', 'plant-profile-photo-credit'],
+  },
 ];
 
 (async () => {
@@ -178,6 +244,16 @@ const faelle = [
         for (const v of f.verboten) {
           checks++;
           if (html.includes(v)) { fails++; console.log('FEHLER ' + f.name + ': enthaelt "' + v + '"'); }
+        }
+        // Zaehlende Pruefung. "Ist der Nachweis da" war bei einem und bei zwei
+        // Nachweisen gleich gruen; der Fehler lag in der Anzahl.
+        for (const [muster, soll] of f.genau || []) {
+          checks++;
+          const ist = html.split(muster).length - 1;
+          if (ist !== soll) {
+            fails++;
+            console.log('FEHLER ' + f.name + ': "' + muster + '" ' + ist + 'x statt ' + soll + 'x');
+          }
         }
         if (process.env.ZEIGE) {
           console.log('\n--- ' + f.name + ' ---');

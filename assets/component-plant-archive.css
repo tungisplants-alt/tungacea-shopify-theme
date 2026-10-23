@@ -241,6 +241,24 @@
   color: var(--pl-muted);
 }
 
+/* Ein Bild und sein Nachweis sind ein Paar. Das figure-Element ist das
+   Rasterfeld, damit die Beschriftung die Breite ihres Bildes hat und nicht die
+   des Rasters — bei zwei Bildern aus zwei Quellen entscheidet die Breite
+   darueber, welchem Bild der Leser die Nennung zuordnet. */
+.plant-profile__figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  min-width: 0;
+}
+
+.plant-profile__figure-credit {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  color: var(--pl-muted);
+}
+
 .plant-profile__trait {
   max-width: 62rem;
   margin: 0 0 3.2rem;
