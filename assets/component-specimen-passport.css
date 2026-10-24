@@ -193,7 +193,7 @@
      stehen Namen, Bilder und Knoepfe auf einer Linie — auch wenn ein Name
      umbricht und der andere nicht. Mit einer blossen Mindesthoehe kippte das:
      gemessen 117 gegen 94 Pixel, und das Zeichen wanderte um 23 Pixel. */
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto auto auto auto;
   column-gap: 2.4rem;
   row-gap: 1.2rem;
   align-items: stretch;
@@ -221,8 +221,11 @@
 .specimen-passport__cross .specimen-passport__mother-media {
   grid-row: 2;
 }
-.specimen-passport__cross .specimen-passport__mother-foot {
+.specimen-passport__cross .specimen-passport__mother-credit-row {
   grid-row: 3;
+}
+.specimen-passport__cross .specimen-passport__mother-foot {
+  grid-row: 4;
 }
 .specimen-passport__cross .specimen-passport__mother-media {
   display: flex;
@@ -251,16 +254,15 @@
    Mindesthoehe, das Bild eine feste Hoehe. Aus beidem ergibt sich der
    Versatz. Ohne feste Masse wandert das Zeichen, sobald ein Pflanzenname
    umbricht. */
-/* Das Zeichen sitzt in der Bildzeile und ist dort zentriert — es haengt damit
-   an derselben Zeile wie die Bilder und kann nicht mehr verrutschen. */
+/* Das Zeichen haengt an der Bildzeile und ist dort zentriert. Gerechnet statt
+   gehaengt war es falsch, sobald es gar kein Bild gab: haben beide Eltern
+   keine Fotos, ist die Zeile leer — gemessen stand das Zeichen dann bei 210px
+   in einem 294px hohen Block, also weit unter den Namen im Nichts. Der
+   Fotonachweis hat die Zeile dafuer verlassen, sonst zoege er sie in die
+   Laenge und das Zeichen mit sich. */
 .specimen-passport__cross-sign {
   grid-row: 2;
-  /* Nicht in der Zeile zentriert, sondern auf der Bildmitte: der Fotonachweis
-     steht nur auf einer Seite und verlaengert die Zeile — gemessen 13px
-     Versatz. Das Bild beginnt am Zeilenanfang und hat eine feste Hoehe, also
-     laesst sich die Mitte ausrechnen. */
-  align-self: start;
-  margin-top: calc(var(--kreuz-bild) / 2 - 0.5em);
+  align-self: center;
   font-family: var(--font-heading-family);
   font-size: 4rem;
   line-height: 1;

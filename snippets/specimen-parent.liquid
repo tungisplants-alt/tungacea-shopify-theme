@@ -226,9 +226,12 @@
       </specimen-lightbox>
     {%- endif -%}
 
-    {%- if p_credit != blank -%}
-      <p class="specimen-passport__credit">{{ p_credit }}</p>
-    {%- endif -%}
+    </div>
+
+    <div class="specimen-passport__mother-credit-row">
+      {%- if p_credit != blank -%}
+        <p class="specimen-passport__credit">{{ p_credit }}</p>
+      {%- endif -%}
     </div>
 
     <div class="specimen-passport__mother-foot">
