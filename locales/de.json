@@ -165,6 +165,8 @@
         "hint_fresh_title": "Braucht noch Aufmerksamkeit.",
         "hint_fresh_body": "Es sind Wurzelansätze vorhanden, aber jung — bis zur vollständigen Etablierung sollte sie noch in hoher Luftfeuchte stehen.",
         "mother": "Mutterpflanze",
+        "parent_mother": "Mutterpflanze",
+        "parent_father": "Vaterpflanze",
         "mother_at": "Bei {{ who }} — nicht im Angebot.",
         "mother_own": "Aus meiner Sammlung — nicht im Angebot.",
         "photo_credit": "Foto: {{ who }}",

@@ -13,6 +13,8 @@
   Reads (all namespace `custom`):
   - lieferumfang    Auswahl  — what the buyer receives
   - mutterpflanze   Referenz — metaobject `mutterpflanze`
+  - vaterpflanze    Referenz — metaobject `mutterpflanze`; nur bei Saemlingen.
+                    Gesetzt heisst: zwei Eltern, und es wird nichts abgeleitet.
   - stadium         Auswahl
   - generation      Auswahl
   - blattlaenge_cm  Zahl
@@ -40,8 +42,24 @@
     dieselbe Generation und denselben Zuechter wie die Pflanze, von der es
     stammt. Steht am Produkt ein eigener Wert, gilt der — fuer die Faelle,
     in denen die Ableitung nicht stimmt.
+
+    Bei einem Saemling traegt diese Begruendung nicht mehr. Zwei F2-Eltern
+    ergeben keine F2, und zwei Zuechter lassen sich nicht zu einem verrechnen.
+    Sobald ein zweiter Elternteil eingetragen ist, wird deshalb nichts mehr
+    abgeleitet: lieber keine Angabe als die halbe Wahrheit. Ein am Produkt
+    eingetragener Wert gilt weiterhin.
   endcomment
-  assign mutter_quelle = mf.mutterpflanze.value
+  assign mutter = mf.mutterpflanze.value
+  assign vater = mf.vaterpflanze.value
+  assign hat_zwei = false
+  if mutter != blank and vater != blank
+    assign hat_zwei = true
+  endif
+
+  assign mutter_quelle = mutter
+  if hat_zwei
+    assign mutter_quelle = blank
+  endif
 
   assign gen_raw = mf.generation.value | default: '' | strip
   if gen_raw == blank and mutter_quelle != blank
@@ -59,7 +77,6 @@
   assign sp_id = mf.specimen_id.value | default: '' | strip
   assign sp_datum = mf.aufnahmedatum.value
 
-  assign mutter = mf.mutterpflanze.value
   assign zuechter = mf.zuechter.value
   if zuechter == blank and mutter_quelle != blank
     assign zuechter = mutter_quelle.zuechter.value
@@ -160,90 +177,21 @@
   assign spec_list = spec_parts | split: '||'
 
   comment
-    Mother plant. The photo credit only appears when the photographer is
-    somebody else — an empty `fotograf` means the picture is Tung's own.
+    Nur die Namen werden hier aufgeloest. Die Darstellung traegt das Snippet
+    specimen-parent, einmal je Elternteil; der Leitsatz unten braucht
+    lediglich zu wissen, ob ueberhaupt ein Elternteil gezeigt wird.
   endcomment
   assign mutter_name = ''
-  assign mutter_wo = ''
-  assign mutter_credit = ''
-  assign mutter_fotos = empty
-  assign mutter_bilder = empty
-  assign hat_bilder = false
-  assign zeige_fotos = false
   if mutter != blank
     assign mutter_name = mutter.bezeichnung.value | default: '' | strip
-    assign mutter_besitzer = mutter.besitzer.value
-    if mutter_besitzer != blank
-      assign besitzer_name = mutter_besitzer.instagram.value | default: mutter_besitzer.name.value | strip
-    endif
-
-    comment
-      The line under the photos names the relationship, not just the address.
-      Where the plant stands is a detail; that the offered plant comes from this
-      one, and that this one is not for sale, is the point. Without a known
-      Lieferumfang there is no relationship to state, so it falls back to the
-      plain location.
-    endcomment
-    if thing_word != blank
-      if besitzer_name != blank
-        assign mutter_wo = 'products.product.specimen.mother_from_at' | t: thing: thing_word, who: besitzer_name
-      else
-        assign mutter_wo = 'products.product.specimen.mother_from_own' | t: thing: thing_word
-      endif
-    elsif besitzer_name != blank
-      assign mutter_wo = 'products.product.specimen.mother_at' | t: who: besitzer_name
-    else
-      assign mutter_wo = 'products.product.specimen.mother_own' | t
-    endif
-
-    assign fotograf = mutter.fotograf.value
-    if fotograf != blank
-      assign fotograf_name = fotograf.instagram.value | default: fotograf.name.value | strip
-      assign mutter_credit = 'products.product.specimen.photo_credit' | t: who: fotograf_name
-    endif
-
-    comment
-      The permission gate. A photograph taken by somebody else is only shown
-      when the permission switch is set on the mother plant entry. An empty
-      photographer means the picture is Tung's own, so nothing to ask.
-      Refusing to render is deliberate: a missing picture is a small problem, a
-      borrowed one on a sales page is not.
-
-      Mit Bildnachweisen wird dieselbe Sperre je Bild gestellt. Ein einziges
-      ungeklaertes Bild nahm vorher den ganzen Mutterblock mit, und eine
-      Sammelzeile konnte bei zwei Quellen nicht sagen, welches Bild sie meint.
-      Fehlt das Feld, bleibt der alte Weg unveraendert.
-    endcomment
-    assign mutter_bilder = mutter.bilder.value
-    assign hat_bilder = false
-    if mutter_bilder.size > 0
-      assign hat_bilder = true
-    endif
-
-    assign mutter_fotos = mutter.fotos.value
-    if hat_bilder
-      assign bilder_sichtbar = 0
-      for bn in mutter_bilder
-        assign bn_fotograf = bn.fotograf.value
-        assign bn_freigabe = bn.bildfreigabe.value
-        if bn_fotograf == blank
-          assign bilder_sichtbar = bilder_sichtbar | plus: 1
-        elsif bn_freigabe == true or bn_freigabe == 'true'
-          assign bilder_sichtbar = bilder_sichtbar | plus: 1
-        endif
-      endfor
-      if bilder_sichtbar > 0
-        assign zeige_fotos = true
-      endif
-      assign mutter_credit = ''
-    elsif mutter_fotos.size > 0
-      assign freigabe = mutter.bildfreigabe.value
-      if fotograf == blank
-        assign zeige_fotos = true
-      elsif freigabe == true or freigabe == 'true'
-        assign zeige_fotos = true
-      endif
-    endif
+  endif
+  assign vater_name = ''
+  if vater != blank
+    assign vater_name = vater.bezeichnung.value | default: '' | strip
+  endif
+  assign eltern_da = false
+  if mutter_name != blank or vater_name != blank
+    assign eltern_da = true
   endif
 
   comment
@@ -264,7 +212,7 @@
         assign lead = 'products.product.specimen.delivery_cutting_plain' | t
       endif
     when 'seedling'
-      if mutter_name != blank
+      if eltern_da
         assign lead = 'products.product.specimen.delivery_seedling_cross' | t
       else
         assign lead = 'products.product.specimen.delivery_seedling_plain' | t
@@ -308,7 +256,7 @@
   endif
 
   assign has_anything = false
-  if lead != blank or spec_list.size > 0 or mutter_name != blank or has_lower
+  if lead != blank or spec_list.size > 0 or eltern_da or has_lower
     assign has_anything = true
   endif
 -%}
@@ -353,137 +301,21 @@
       The experience hint comes after her — it is a caveat, and a caveat placed
       second makes the whole record read like a warning.
     {%- endcomment -%}
-    {%- if mutter_name != blank -%}
-      <div class="specimen-passport__mother" data-testid="specimen-mother">
-        <p class="specimen-passport__mother-label">{{ 'products.product.specimen.mother' | t }}</p>
-        {%- comment -%}
-          Die Nummer der Mutterpflanze, nicht die des Produkts. Sie sagt, woher
-          das Exemplar stammt — und sie muss nicht eingetragen werden, weil das
-          Produkt ohnehin auf die Mutter zeigt. So kann sie nie falsch sein.
-        {%- endcomment -%}
-        <p class="specimen-passport__mother-name">
-          {{- mutter_name | escape -}}
-          {%- if mutter.mutter_id.value != blank %} <span class="specimen-passport__mother-id">{{ mutter.mutter_id.value | escape }}</span>{% endif -%}
-        </p>
-        {%- if mutter_wo != blank -%}
-          <p class="specimen-passport__mother-where">{{ mutter_wo }}</p>
-        {%- endif -%}
-
-        {%- comment -%}
-          Portrait, like the product gallery, so a whole plant is visible at a
-          glance instead of a cropped middle. The width and height attributes
-          match that ratio, otherwise the page jumps while the images load.
-        {%- endcomment -%}
-        {%- if zeige_fotos -%}
-          <script src="{{ 'specimen-lightbox.js' | asset_url }}" defer="defer"></script>
-          <specimen-lightbox>
-            <ul class="specimen-passport__mother-photos list-unstyled" role="list" data-testid="specimen-mother-photos">
-              {%- if hat_bilder -%}
-                {%- for bn in mutter_bilder limit: 6 -%}
-                  {%- liquid
-                    assign bn_foto = bn.bild.value
-                    assign bn_fotograf = bn.fotograf.value
-                    assign bn_freigabe = bn.bildfreigabe.value
-                    assign bn_zeigen = false
-                    if bn_foto
-                      if bn_fotograf == blank
-                        assign bn_zeigen = true
-                      elsif bn_freigabe == true or bn_freigabe == 'true'
-                        assign bn_zeigen = true
-                      endif
-                    endif
-                  -%}
-                  {%- if bn_zeigen -%}
-                    {%- capture bn_nachweis -%}
-                      {%- render 'foto-nachweis', fotograf: bn_fotograf -%}
-                    {%- endcapture -%}
-                    {%- assign bn_nachweis = bn_nachweis | strip -%}
-                    <li>
-                      <figure class="specimen-passport__mother-figure">
-                        <button
-                          type="button"
-                          class="specimen-passport__mother-photo"
-                          data-lightbox-full="{{ bn_foto | image_url: width: 1800 }}"
-                          data-lightbox-alt="{{ mutter_name | escape }}"
-                          aria-label="{{ 'products.product.specimen.photo_open' | t: name: mutter_name }}"
-                        >
-                          <img
-                            src="{{ bn_foto | image_url: width: 480 }}"
-                            srcset="{{ bn_foto | image_url: width: 320 }} 320w, {{ bn_foto | image_url: width: 480 }} 480w, {{ bn_foto | image_url: width: 720 }} 720w"
-                            sizes="(min-width: 750px) 18rem, 30vw"
-                            alt=""
-                            width="480"
-                            height="600"
-                            loading="lazy"
-                          >
-                        </button>
-                        {%- if bn_nachweis != blank -%}
-                          <figcaption class="specimen-passport__mother-credit" data-testid="specimen-mother-photo-credit">
-                            {{- bn_nachweis -}}
-                          </figcaption>
-                        {%- endif -%}
-                      </figure>
-                    </li>
-                  {%- endif -%}
-                {%- endfor -%}
-              {%- else -%}
-                {%- for foto in mutter_fotos limit: 6 -%}
-                  <li>
-                    <button
-                      type="button"
-                      class="specimen-passport__mother-photo"
-                      data-lightbox-full="{{ foto | image_url: width: 1800 }}"
-                      data-lightbox-alt="{{ mutter_name | escape }}"
-                      aria-label="{{ 'products.product.specimen.photo_open' | t: name: mutter_name }}"
-                    >
-                      <img
-                        src="{{ foto | image_url: width: 480 }}"
-                        srcset="{{ foto | image_url: width: 320 }} 320w, {{ foto | image_url: width: 480 }} 480w, {{ foto | image_url: width: 720 }} 720w"
-                        sizes="(min-width: 750px) 18rem, 30vw"
-                        alt=""
-                        width="480"
-                        height="600"
-                        loading="lazy"
-                      >
-                    </button>
-                  </li>
-                {%- endfor -%}
-              {%- endif -%}
-            </ul>
-
-            <dialog class="specimen-lightbox" aria-label="{{ mutter_name | escape }}">
-              <button
-                type="button"
-                class="specimen-lightbox__close"
-                data-lightbox-close
-                aria-label="{{ 'products.product.specimen.photo_close' | t }}"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <img class="specimen-lightbox__image" data-lightbox-image src="" alt="">
-            </dialog>
-          </specimen-lightbox>
-        {%- endif -%}
-
-        {%- if mutter_credit != blank -%}
-          <p class="specimen-passport__credit">{{ mutter_credit }}</p>
-        {%- endif -%}
-
-        {%- comment -%}
-          Der Weg zur eigenen Seite der Mutterpflanze. Er erscheint nur, wenn es
-          die Seite wirklich gibt: ein Eintrag im Entwurf hat keine Adresse, und
-          ein Link ins Leere ist schlimmer als kein Link.
-        {%- endcomment -%}
-        {%- if mutter.system.url != blank -%}
-          <a
-            href="{{ mutter.system.url }}"
-            class="specimen-passport__mother-link"
-            data-testid="specimen-mother-link"
-          >
-            {{- 'private_archive.more_about_mother' | t -}}
-          </a>
-        {%- endif -%}
-      </div>
+    {%- comment -%}
+      Ein Cutting hat eine Mutterpflanze, ein Saemling zwei Eltern. Es ist
+      derselbe Block, ein- oder zweimal gerendert — keine zweite Darstellung
+      daneben, die auseinanderlaufen koennte. Die Rolle steuert nur das
+      Etikett und die Herkunftszeile.
+    {%- endcomment -%}
+    {%- if mutter != blank -%}
+      {%- if hat_zwei -%}
+        {%- render 'specimen-parent', eintrag: mutter, rolle: 'mutter', thing_word: thing_word -%}
+      {%- else -%}
+        {%- render 'specimen-parent', eintrag: mutter, rolle: 'einzeln', thing_word: thing_word -%}
+      {%- endif -%}
+    {%- endif -%}
+    {%- if vater != blank -%}
+      {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word -%}
     {%- endif -%}
 
     {%- if has_lower -%}

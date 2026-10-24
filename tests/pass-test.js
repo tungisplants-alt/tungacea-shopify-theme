@@ -63,6 +63,40 @@ const grower = person('Tropical Grower', '@tropicalgrower');
 const ree = person('Ree Gardens', null);
 
 const faelle = [
+  // --- Saemlinge haben zwei Eltern -------------------------------------
+  // Beide Eltern tragen Generation und Zuechter, das Produkt selbst nicht.
+  // Nichts davon darf erscheinen: aus F2 x F1 folgt keine Generation, und
+  // zwei Zuechter lassen sich nicht zu einem verrechnen.
+  { name: 'Saemling mit zwei Eltern — Ableitung muss schweigen',
+    mf: mf({ lieferumfang: 'Sämling aus dieser Kreuzung', stadium: 'Sämling',
+             bewurzelung: 'Frisch bewurzelt', specimen_id: 'TA-1011',
+             mutterpflanze: mutter('Anthurium papillilaminum', grower, null, FOTOS, undefined, null,
+                                   { generation: 'F2', zuechter: ree }),
+             vaterpflanze: mutter('Anthurium dressleri', null, null, FOTOS, undefined, null,
+                                  { generation: 'F1', zuechter: grower }) }),
+    erwartet: ['Mutterpflanze', 'Vaterpflanze', 'Anthurium papillilaminum', 'Anthurium dressleri',
+               'Sämling aus der unten gezeigten Kreuzung'],
+    verboten: ['Generation F2', 'Generation F1', 'Ree Gardens', 'Tropical Grower'] },
+
+  // Gegenstueck: ein Elternteil, der bisherige Weg. Hier MUSS geerbt werden.
+  { name: 'Saemling mit einem Elternteil — Ableitung greift weiter',
+    mf: mf({ lieferumfang: 'Sämling aus dieser Kreuzung', stadium: 'Sämling',
+             bewurzelung: 'Frisch bewurzelt', specimen_id: 'TA-1012',
+             mutterpflanze: mutter('Anthurium luxurians × dressleri', null, null, FOTOS, undefined, null,
+                                   { generation: 'F2', zuechter: ree }) }),
+    erwartet: ['Mutterpflanze', 'Generation F2', 'Ree Gardens', 'TA-1012'],
+    verboten: ['Vaterpflanze'] },
+
+  // Randfall: nur der Vater ist bekannt. Er traegt dann sein eigenes Etikett,
+  // und abgeleitet wird trotzdem nichts — die Ableitung haengt an der Mutter.
+  { name: 'Nur Vaterpflanze eingetragen',
+    mf: mf({ lieferumfang: 'Sämling aus dieser Kreuzung', stadium: 'Sämling',
+             specimen_id: 'TA-1013',
+             vaterpflanze: mutter('Anthurium dressleri', null, null, FOTOS, undefined, null,
+                                  { generation: 'F1', zuechter: grower }) }),
+    erwartet: ['Vaterpflanze', 'Anthurium dressleri'],
+    verboten: ['Mutterpflanze', 'Generation F1', 'Tropical Grower'] },
+
   { name: 'Cutting, fremde Mutter, fremdes Foto',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Frisch bewurzelt',
              generation: 'F2', blattlaenge_cm: 12, specimen_id: 'TNG-0147',

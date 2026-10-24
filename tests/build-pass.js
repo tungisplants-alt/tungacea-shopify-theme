@@ -30,6 +30,9 @@ const person = (n, ig) => ({ name: { value: n }, instagram: { value: ig || null 
 const F=['https://cdn.shopify.com/s/files/1/1062/9349/4085/files/DCCFFEF4-8348-4E2F-A47B-AA1252A55363.jpg?v=1790464665','https://cdn.shopify.com/s/files/1/1062/9349/4085/files/30FB627E-281F-44BC-A6EC-B429E57E4B81.jpg?v=1790464664','https://cdn.shopify.com/s/files/1/1062/9349/4085/files/66D3254C-CAA5-4D89-A32C-FD6A8FF38D79.jpg?v=1790464556'];
 const mutter = (b, bes, fot, fotos, frei) => ({ bezeichnung: { value: b }, besitzer: { value: bes || null }, fotograf: { value: fot || null }, fotos: { value: fotos || [] }, bildfreigabe: { value: frei === undefined ? null : frei } });
 const mf = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, { value: v }]));
+// Generation und Zuechter an einem Elterneintrag — nur so laesst sich pruefen,
+// ob die Ableitung bei zwei Eltern wirklich schweigt.
+const erbe = (eintrag, gen, z) => Object.assign({}, eintrag, { generation: { value: gen }, zuechter: { value: z } });
 const grower = person('Tropical Grower', '@tropicalgrower');
 const ree = person('Ree Gardens', null);
 
@@ -49,6 +52,20 @@ const faelle = [
     lieferumfang: 'Cutting der Mutterpflanze', stadium: 'Steckling', bewurzelung: 'Unbewurzelt', 
     specimen_id: 'TNG-0104' })],
   ['Fast nichts ausgefüllt', mf({ lieferumfang: 'Dieses Exemplar', blattlaenge_cm: 18 })],
+  // Saemling mit zwei Eltern. Beide Eltern tragen Generation und Zuechter,
+  // das Produkt selbst nicht — es darf trotzdem nichts davon erscheinen:
+  // aus F2 × F1 folgt keine Generation, und zwei Zuechter ergeben keinen.
+  ['Sämling · zwei Eltern · nichts wird abgeleitet', mf({
+    lieferumfang: 'Sämling aus dieser Kreuzung', stadium: 'Sämling',
+    bewurzelung: 'Frisch bewurzelt', blattlaenge_cm: 7, specimen_id: 'TA-1011',
+    mutterpflanze: erbe(mutter('Anthurium papillilaminum', grower, grower, F, true), 'F2', ree),
+    vaterpflanze: erbe(mutter('Anthurium dressleri', null, null, F), 'F1', grower) })],
+  // Gegenstueck: nur ein Elternteil eingetragen. Der bisherige Weg bleibt
+  // unveraendert, die Ableitung greift weiterhin.
+  ['Sämling · nur ein Elternteil · Ableitung greift', mf({
+    lieferumfang: 'Sämling aus dieser Kreuzung', stadium: 'Sämling',
+    bewurzelung: 'Frisch bewurzelt', specimen_id: 'TA-1012',
+    mutterpflanze: erbe(mutter('Anthurium luxurians × dressleri', null, null, F), 'F2', ree) })],
 ];
 
 (async () => {
