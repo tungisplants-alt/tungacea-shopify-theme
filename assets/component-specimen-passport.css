@@ -167,57 +167,130 @@
    Schreibweise des Fachs, FSRL × Grim Reaper. Untereinander gesetzt lasen sie
    sich wie zwei getrennte Herkuenfte statt wie eine Kreuzung. */
 .specimen-passport__cross {
+  --kreuz-bild: 30rem;
   margin: 2.8rem 0 0;
   padding-top: 2rem;
   border-top: 1px solid var(--tungacea-hairline);
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  gap: 2.4rem;
+  /* Drei Zeilen: Kopf, Bild, Fuss. Beide Eltern teilen sie sich, deshalb
+     stehen Namen, Bilder und Knoepfe auf einer Linie — auch wenn ein Name
+     umbricht und der andere nicht. Mit einer blossen Mindesthoehe kippte das:
+     gemessen 117 gegen 94 Pixel, und das Zeichen wanderte um 23 Pixel. */
+  grid-template-rows: auto auto auto;
+  column-gap: 2.4rem;
+  row-gap: 1.2rem;
   align-items: stretch;
+}
+/* Die Bloecke loesen sich im Raster auf: Kopf, Bild und Fuss beider Eltern
+   werden direkte Zeilen desselben Grids und stehen dadurch zwangslaeufig auf
+   einer Linie. Die Spalte steuert die Rolle, die ohnehin am Element steht.
+
+   subgrid waere der naheliegende Weg und wird auch unterstuetzt, half hier
+   aber nicht: ein Item, das alle Zeilen ueberspannt, traegt nichts zu ihrer
+   Hoehe bei — gemessen blieben die Bilder bei langem Namen 20 Pixel
+   auseinander. */
+.specimen-passport__cross > .specimen-passport__mother {
+  display: contents;
+}
+.specimen-passport__cross > [data-rolle='mutter'] > * {
+  grid-column: 1;
+}
+.specimen-passport__cross > [data-rolle='vater'] > * {
+  grid-column: 3;
+}
+.specimen-passport__cross .specimen-passport__mother-head {
+  grid-row: 1;
+}
+.specimen-passport__cross .specimen-passport__mother-media {
+  grid-row: 2;
+}
+.specimen-passport__cross .specimen-passport__mother-foot {
+  grid-row: 3;
+}
+.specimen-passport__cross .specimen-passport__mother-media {
+  display: flex;
+  flex-direction: column;
+}
+.specimen-passport__cross .specimen-passport__mother-foot {
+  align-self: end;
 }
 /* Der Trenner sitzt jetzt an der Zeile, nicht mehr an den Bloecken — sonst
    staenden drei Linien uebereinander. */
+/* Kein eigener Abstand und kein Trenner mehr am Block — beides sitzt an der
+   Zeile. Die frueher hier stehende Flex-Spalte ist entfallen: sie hat das
+   spaeter gesetzte display:contents ueberschrieben, und damit lagen die
+   Abschnitte wieder nicht im gemeinsamen Raster. */
 .specimen-passport__cross > .specimen-passport__mother {
   margin: 0;
   padding-top: 0;
   border-top: 0;
-  /* Spalte, damit der Knopf unten andocken kann: der Fotonachweis steht nur
-     bei fremden Bildern da, und ohne das haengen die beiden Knoepfe auf
-     verschiedenen Hoehen. */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
-.specimen-passport__cross .specimen-passport__mother-link {
-  margin-top: auto;
-}
+/* Das Zeichen sitzt auf der Achse der beiden Bilder, nicht in der Mitte der
+   Spalte. Zentriert zur ganzen Zeile stand es rechnerisch richtig, aber
+   optisch zwischen Bildunterkante und Knopf — gemessen 9px ueber der
+   Bildmitte, und genau das wirkte unruhig.
+
+   Damit das haelt, sind beide Masse festgelegt: der Kopf hat eine
+   Mindesthoehe, das Bild eine feste Hoehe. Aus beidem ergibt sich der
+   Versatz. Ohne feste Masse wandert das Zeichen, sobald ein Pflanzenname
+   umbricht. */
+/* Das Zeichen sitzt in der Bildzeile und ist dort zentriert — es haengt damit
+   an derselben Zeile wie die Bilder und kann nicht mehr verrutschen. */
 .specimen-passport__cross-sign {
-  align-self: center;
+  grid-row: 2;
+  /* Nicht in der Zeile zentriert, sondern auf der Bildmitte: der Fotonachweis
+     steht nur auf einer Seite und verlaengert die Zeile — gemessen 13px
+     Versatz. Das Bild beginnt am Zeilenanfang und hat eine feste Hoehe, also
+     laesst sich die Mitte ausrechnen. */
+  align-self: start;
+  margin-top: calc(var(--kreuz-bild) / 2 - 0.5em);
   font-family: var(--font-heading-family);
   font-size: 4rem;
   line-height: 1;
   color: var(--tungacea-muted);
 }
-/* Ein Bild je Elternteil. Zwei Reihen nebeneinander waren mehr Bild als
-   Aussage; die uebrigen Fotos stehen auf der Seite der Pflanze selbst. */
+/* Ein Bild je Elternteil, in fester Hoehe. Zwei Reihen nebeneinander waren
+   mehr Bild als Aussage; die uebrigen Fotos stehen auf der Seite der Pflanze
+   selbst. Gleiche Hoehe heisst auch: die Bilder stehen auf einer Linie, egal
+   welches Seitenverhaeltnis das Foto hat. */
 .specimen-passport__cross .specimen-passport__mother-photos {
   grid-template-columns: minmax(0, 26rem);
   max-width: none;
+  margin-top: 0;
+}
+.specimen-passport__cross .specimen-passport__mother-photo,
+.specimen-passport__cross .specimen-passport__mother-figure {
+  height: var(--kreuz-bild);
+}
+.specimen-passport__cross .specimen-passport__mother-photo img {
+  height: 100%;
+  object-fit: cover;
 }
 
 @media screen and (max-width: 749px) {
-  /* Auf dem Telefon untereinander; das Zeichen bleibt als Scharnier dazwischen
-     stehen, damit die Kreuzung lesbar bleibt. */
+  /* Auf dem Telefon bleiben beide Eltern nebeneinander — untereinander liest
+     es sich wieder wie zwei getrennte Herkuenfte statt wie eine Kreuzung.
+     Stattdessen wird alles kleiner: schmalerer Abstand, kleineres Zeichen,
+     niedrigeres Bild, und der Kopf darf mehr Zeilen brauchen. */
   .specimen-passport__cross {
-    grid-template-columns: 1fr;
-    gap: 1.6rem;
+    --kreuz-bild: 16rem;
+    gap: 1rem;
   }
   .specimen-passport__cross-sign {
-    align-self: start;
-    justify-self: start;
+    font-size: 2.4rem;
   }
-  .specimen-passport__cross .specimen-passport__mother-photos {
-    grid-template-columns: minmax(0, 22rem);
+  .specimen-passport__cross .specimen-passport__mother-name {
+    font-size: 1.5rem;
+  }
+  .specimen-passport__cross .specimen-passport__mother-where,
+  .specimen-passport__cross .specimen-passport__mother-credit {
+    font-size: 1.1rem;
+  }
+  .specimen-passport__cross .specimen-passport__mother-link {
+    font-size: 1.1rem;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
   }
 }
 .specimen-passport__mother-label {

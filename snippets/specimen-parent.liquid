@@ -109,7 +109,8 @@
 
 {%- if p_name != blank -%}
   <div class="specimen-passport__mother" data-testid="specimen-mother" data-rolle="{{ rolle }}">
-    <p class="specimen-passport__mother-label">{{ p_label }}</p>
+    <div class="specimen-passport__mother-head">
+      <p class="specimen-passport__mother-label">{{ p_label }}</p>
     {%- comment -%}
       Die Nummer des Eintrags, nicht die des Produkts. Sie sagt, woher das
       Exemplar stammt — und sie muss nicht eingetragen werden, weil das Produkt
@@ -119,15 +120,21 @@
       {{- p_name | escape -}}
       {%- if eintrag.mutter_id.value != blank %} <span class="specimen-passport__mother-id">{{ eintrag.mutter_id.value | escape }}</span>{% endif -%}
     </p>
-    {%- if p_wo != blank -%}
-      <p class="specimen-passport__mother-where">{{ p_wo }}</p>
-    {%- endif -%}
+      {%- if p_wo != blank -%}
+        <p class="specimen-passport__mother-where">{{ p_wo }}</p>
+      {%- endif -%}
+    </div>
 
     {%- comment -%}
       Hochformat wie die Produktgalerie, damit eine ganze Pflanze zu sehen ist
       statt einer beschnittenen Mitte. Breite und Hoehe passen zum Verhaeltnis,
       sonst springt die Seite waehrend des Ladens.
+
+      Der Bildbereich steht immer da, auch leer: in der Kreuzung richten sich
+      die beiden Eltern zeilenweise aneinander aus, und das geht nur, wenn
+      beide dieselben drei Abschnitte haben.
     {%- endcomment -%}
+    <div class="specimen-passport__mother-media">
     {%- if zeige_fotos -%}
       <script src="{{ 'specimen-lightbox.js' | asset_url }}" defer="defer"></script>
       <specimen-lightbox>
@@ -222,6 +229,9 @@
     {%- if p_credit != blank -%}
       <p class="specimen-passport__credit">{{ p_credit }}</p>
     {%- endif -%}
+    </div>
+
+    <div class="specimen-passport__mother-foot">
 
     {%- comment -%}
       Der Weg zur eigenen Seite im Archiv. Er erscheint nur, wenn es die Seite
@@ -237,5 +247,6 @@
         {{- p_link_text -}}
       </a>
     {%- endif -%}
+    </div>
   </div>
 {%- endif -%}
