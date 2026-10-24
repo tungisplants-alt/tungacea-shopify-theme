@@ -166,8 +166,24 @@
 /* Kreuzung: beide Eltern nebeneinander mit dem Zeichen dazwischen — die
    Schreibweise des Fachs, FSRL × Grim Reaper. Untereinander gesetzt lasen sie
    sich wie zwei getrennte Herkuenfte statt wie eine Kreuzung. */
+/* Die Kreuzung richtet sich nach der SPALTE, nicht nach dem Fenster. Auf der
+   Produktseite ist die Infospalte bei media_size "large" nur 35% breit —
+   rund 380px bei einem 1440px-Fenster, also schmaler als ein Telefon. Eine
+   Medienabfrage sieht davon nichts und haette dort die grossen Werte
+   angewandt. */
+.specimen-passport {
+  container-type: inline-size;
+  container-name: pass;
+}
+
 .specimen-passport__cross {
-  --kreuz-bild: 30rem;
+  /* Die Bildhoehe folgt der Spaltenbreite, damit das Hochformat erhalten
+     bleibt: eine Spalte ist etwa 45% des Containers, mal 1,25 ergibt 56cqi.
+     Bei fester Hoehe wurde das Bild in mittleren Breiten querformatig —
+     gemessen 255 breit zu 160 hoch, und eine hochformatige Pflanze wird dabei
+     oben und unten abgeschnitten. Nach oben gedeckelt, sonst wachsen die
+     Bilder in einer breiten Spalte ins Riesige. */
+  --kreuz-bild: min(56cqi, 30rem);
   margin: 2.8rem 0 0;
   padding-top: 2rem;
   border-top: 1px solid var(--tungacea-hairline);
@@ -268,13 +284,12 @@
   object-fit: cover;
 }
 
-@media screen and (max-width: 749px) {
-  /* Auf dem Telefon bleiben beide Eltern nebeneinander — untereinander liest
-     es sich wieder wie zwei getrennte Herkuenfte statt wie eine Kreuzung.
-     Stattdessen wird alles kleiner: schmalerer Abstand, kleineres Zeichen,
-     niedrigeres Bild, und der Kopf darf mehr Zeilen brauchen. */
+/* 560px ist der Punkt, an dem zwei Bilder zu je 26rem plus Abstand und
+   Zeichen nicht mehr nebeneinander passen. Darunter wird alles kleiner, statt
+   umzubrechen: untereinander liest es sich wieder wie zwei getrennte
+   Herkuenfte statt wie eine Kreuzung. */
+@container pass (max-width: 560px) {
   .specimen-passport__cross {
-    --kreuz-bild: 16rem;
     gap: 1rem;
   }
   .specimen-passport__cross-sign {
