@@ -126,8 +126,11 @@ const faelle = [
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Frisch bewurzelt', 
              mutterpflanze: mutter('Anthurium regale', grower, null, FOTOS) }),
     erwartet: ['Du erhältst ein Cutting der unten gezeigten Mutterpflanze.',
-               'Dein Cutting stammt von dieser Pflanze bei @tropicalgrower. Sie selbst ist nicht im Angebot.'],
-    verboten: ['Du erhältst ein Cutting.'] },
+               'Dein Cutting stammt von dieser Pflanze bei @tropicalgrower.'],
+    // Dass die Mutterpflanze nicht im Angebot ist, sagt der Satz nicht mehr:
+    // es ist selbsterklaerend, und gibt es doch ein Cutting von ihr, steht es
+    // auf ihrer Archivseite. Hier festgehalten, damit es nicht zurueckkehrt.
+    verboten: ['Du erhältst ein Cutting.', 'nicht im Angebot'] },
 
   { name: 'Sämling MIT Mutterpflanze, eigene Sammlung',
     mf: mf({ lieferumfang: 'Sämling aus dieser Kreuzung', 
