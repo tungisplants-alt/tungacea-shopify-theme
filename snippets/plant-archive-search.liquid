@@ -71,7 +71,11 @@
     for produkt in produkte limit: 100
       if produkt.available
         assign pm = produkt.metafields.custom.mutterpflanze.value
+        assign pv = produkt.metafields.custom.vaterpflanze.value
         if pm != blank and pm.system.handle == e.system.handle
+          assign mit_angebot = mit_angebot | plus: 1
+          break
+        elsif pv != blank and pv.system.handle == e.system.handle
           assign mit_angebot = mit_angebot | plus: 1
           break
         endif

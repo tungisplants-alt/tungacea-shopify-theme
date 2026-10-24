@@ -69,12 +69,17 @@ const bild = (datei, fotograf, freigabe) => ({
 const fremdePerson = (name, ig) => ({ name: { value: name }, instagram: { value: ig || null } });
 
 // Ein Produkt, das auf einen Eintrag zeigt.
-const produkt = (titel, handle, verfuegbar, preis) => ({
+// vater: der zweite Elternteil eines Saemlings. Eine Pflanze muss ihre
+// Angebote auch dann finden, wenn sie dort nicht die Mutter ist.
+const produkt = (titel, handle, verfuegbar, preis, vater) => ({
   title: titel,
   url: '/products/' + titel.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
   available: verfuegbar,
   price: preis,
-  metafields: { custom: { mutterpflanze: { value: handle ? { system: { handle: handle } } : null } } },
+  metafields: { custom: {
+    mutterpflanze: { value: handle ? { system: { handle: handle } } : null },
+    vaterpflanze: { value: vater ? { system: { handle: vater } } : null },
+  } },
 });
 
 const LADEN = [
@@ -82,6 +87,8 @@ const LADEN = [
   produkt('Cutting B', 'mutter-eins', false, 19900),
   produkt('Fremdes Cutting', 'mutter-zwei', true, 9900),
   produkt('Produkt ohne Mutter', null, true, 4900),
+  // Mutter ist mutter-zwei, Vater ist mutter-eins: beide muessen ihn finden.
+  produkt('Saemling aus Kreuzung', 'mutter-zwei', true, 15900, 'mutter-eins'),
 ];
 
 const faelle = [
@@ -90,6 +97,8 @@ const faelle = [
     eintrag: pflanze('mutter-eins'),
     erwartet: ['plant-profile-offers', 'Cutting A', '299,00 €', 'Cutting B', 'Verkauft'],
     verboten: ['Fremdes Cutting', 'Produkt ohne Mutter'],
+    // 'Saemling aus Kreuzung' steht hier bewusst in keiner der beiden Listen —
+    // der eigene Fall unten prueft ihn, und zwar auf Anwesenheit.
   },
   {
     name: 'Eine Pflanze ohne Produkte zeigt keinen leeren Block',
@@ -100,8 +109,16 @@ const faelle = [
   {
     name: 'Fremde Mutter sammelt nur ihre eigenen ein',
     eintrag: pflanze('mutter-zwei'),
-    erwartet: ['Fremdes Cutting'],
+    erwartet: ['Fremdes Cutting', 'Saemling aus Kreuzung'],
     verboten: ['Cutting A', 'Cutting B'],
+  },
+  {
+    // Punkt 3 des Auftrags: der Rueckweg muss beide Rollen finden. Sonst zeigt
+    // eine Pflanze ihre Cuttings und ihre Saemlinge an zwei Stellen.
+    name: 'Findet auch den Saemling, an dem sie Vater ist',
+    eintrag: pflanze('mutter-eins'),
+    erwartet: ['Saemling aus Kreuzung', '159,00 €', 'Cutting A'],
+    verboten: ['Fremdes Cutting'],
   },
   {
     name: 'Von Hand gewaehlte Angebote haben Vorrang',
