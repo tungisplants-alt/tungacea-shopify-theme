@@ -28,7 +28,7 @@ engine.registerFilter('t', function (key, ...rest) {
 
 const person = (n, ig) => ({ name: { value: n }, instagram: { value: ig || null } });
 const F=['https://cdn.shopify.com/s/files/1/1062/9349/4085/files/DCCFFEF4-8348-4E2F-A47B-AA1252A55363.jpg?v=1790464665','https://cdn.shopify.com/s/files/1/1062/9349/4085/files/30FB627E-281F-44BC-A6EC-B429E57E4B81.jpg?v=1790464664','https://cdn.shopify.com/s/files/1/1062/9349/4085/files/66D3254C-CAA5-4D89-A32C-FD6A8FF38D79.jpg?v=1790464556'];
-const mutter = (b, bes, fot, fotos, frei) => ({ bezeichnung: { value: b }, besitzer: { value: bes || null }, fotograf: { value: fot || null }, fotos: { value: fotos || [] }, bildfreigabe: { value: frei === undefined ? null : frei } });
+const mutter = (b, bes, fot, fotos, frei, url) => ({ bezeichnung: { value: b }, besitzer: { value: bes || null }, fotograf: { value: fot || null }, fotos: { value: fotos || [] }, bildfreigabe: { value: frei === undefined ? null : frei }, system: { url: url || '/pages/pflanzen/beispiel' } });
 const mf = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, { value: v }]));
 // Generation und Zuechter an einem Elterneintrag — nur so laesst sich pruefen,
 // ob die Ableitung bei zwei Eltern wirklich schweigt.

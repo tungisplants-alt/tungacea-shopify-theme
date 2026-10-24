@@ -70,12 +70,13 @@ const faelle = [
   { name: 'Saemling mit zwei Eltern — Ableitung muss schweigen',
     mf: mf({ lieferumfang: 'Sämling aus dieser Kreuzung', stadium: 'Sämling',
              bewurzelung: 'Frisch bewurzelt', specimen_id: 'TA-1011',
-             mutterpflanze: mutter('Anthurium papillilaminum', grower, null, FOTOS, undefined, null,
+             mutterpflanze: mutter('Anthurium papillilaminum', grower, null, FOTOS, undefined, '/pages/pflanzen/papillilaminum',
                                    { generation: 'F2', zuechter: ree }),
-             vaterpflanze: mutter('Anthurium dressleri', null, null, FOTOS, undefined, null,
+             vaterpflanze: mutter('Anthurium dressleri', null, null, FOTOS, undefined, '/pages/pflanzen/dressleri',
                                   { generation: 'F1', zuechter: grower }) }),
     erwartet: ['Mutterpflanze', 'Vaterpflanze', 'Anthurium papillilaminum', 'Anthurium dressleri',
-               'Sämling aus der unten gezeigten Kreuzung'],
+               'Sämling aus der unten gezeigten Kreuzung',
+               'Mehr über die Mutterpflanze', 'Mehr über die Vaterpflanze'],
     verboten: ['Generation F2', 'Generation F1', 'Ree Gardens', 'Tropical Grower'] },
 
   // Gegenstueck: ein Elternteil, der bisherige Weg. Hier MUSS geerbt werden.

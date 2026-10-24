@@ -162,6 +162,64 @@
   padding-top: 2rem;
   border-top: 1px solid var(--tungacea-hairline);
 }
+
+/* Kreuzung: beide Eltern nebeneinander mit dem Zeichen dazwischen — die
+   Schreibweise des Fachs, FSRL × Grim Reaper. Untereinander gesetzt lasen sie
+   sich wie zwei getrennte Herkuenfte statt wie eine Kreuzung. */
+.specimen-passport__cross {
+  margin: 2.8rem 0 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--tungacea-hairline);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 2.4rem;
+  align-items: stretch;
+}
+/* Der Trenner sitzt jetzt an der Zeile, nicht mehr an den Bloecken — sonst
+   staenden drei Linien uebereinander. */
+.specimen-passport__cross > .specimen-passport__mother {
+  margin: 0;
+  padding-top: 0;
+  border-top: 0;
+  /* Spalte, damit der Knopf unten andocken kann: der Fotonachweis steht nur
+     bei fremden Bildern da, und ohne das haengen die beiden Knoepfe auf
+     verschiedenen Hoehen. */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.specimen-passport__cross .specimen-passport__mother-link {
+  margin-top: auto;
+}
+.specimen-passport__cross-sign {
+  align-self: center;
+  font-family: var(--font-heading-family);
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--tungacea-muted);
+}
+/* Ein Bild je Elternteil. Zwei Reihen nebeneinander waren mehr Bild als
+   Aussage; die uebrigen Fotos stehen auf der Seite der Pflanze selbst. */
+.specimen-passport__cross .specimen-passport__mother-photos {
+  grid-template-columns: minmax(0, 26rem);
+  max-width: none;
+}
+
+@media screen and (max-width: 749px) {
+  /* Auf dem Telefon untereinander; das Zeichen bleibt als Scharnier dazwischen
+     stehen, damit die Kreuzung lesbar bleibt. */
+  .specimen-passport__cross {
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+  }
+  .specimen-passport__cross-sign {
+    align-self: start;
+    justify-self: start;
+  }
+  .specimen-passport__cross .specimen-passport__mother-photos {
+    grid-template-columns: minmax(0, 22rem);
+  }
+}
 .specimen-passport__mother-label {
   display: inline-flex;
   align-items: center;

@@ -14,9 +14,13 @@
   - rolle:      {String} 'einzeln' | 'mutter' | 'vater' (Pflicht)
                 'einzeln' ist der bisherige Fall mit genau einer Mutterpflanze.
   - thing_word: {String} uebersetztes Wort fuer das Angebotene (optional)
+  - max_fotos:  {Number} wie viele Bilder hoechstens (optional, Vorgabe 6).
+                In der Kreuzung steht eins je Elternteil: zwei Reihen
+                nebeneinander waren mehr Bild als Aussage.
 {% endcomment %}
 
 {%- liquid
+  assign bild_grenze = max_fotos | default: 6
   assign p_name = eintrag.bezeichnung.value | default: '' | strip
 
   assign p_besitzer = eintrag.besitzer.value
@@ -45,10 +49,16 @@
   endif
 
   assign p_label = 'products.product.specimen.mother' | t
+  assign p_link_text = 'private_archive.more_about_mother' | t
   if rolle == 'mutter'
     assign p_label = 'products.product.specimen.parent_mother' | t
   elsif rolle == 'vater'
     assign p_label = 'products.product.specimen.parent_father' | t
+    comment
+      Der Weg zum Vater darf nicht "Mehr ueber die Mutterpflanze" heissen.
+      Derselbe Knopf an zwei Rollen braucht zwei Beschriftungen.
+    endcomment
+    assign p_link_text = 'private_archive.more_about_father' | t
   endif
 
   assign fotograf = eintrag.fotograf.value
@@ -123,7 +133,7 @@
       <specimen-lightbox>
         <ul class="specimen-passport__mother-photos list-unstyled" role="list" data-testid="specimen-mother-photos">
           {%- if hat_bilder -%}
-            {%- for bn in p_bilder limit: 6 -%}
+            {%- for bn in p_bilder limit: bild_grenze -%}
               {%- liquid
                 assign bn_foto = bn.bild.value
                 assign bn_fotograf = bn.fotograf.value
@@ -171,7 +181,7 @@
               {%- endif -%}
             {%- endfor -%}
           {%- else -%}
-            {%- for foto in p_fotos limit: 6 -%}
+            {%- for foto in p_fotos limit: bild_grenze -%}
               <li>
                 <button
                   type="button"
@@ -224,7 +234,7 @@
         class="specimen-passport__mother-link"
         data-testid="specimen-mother-link"
       >
-        {{- 'private_archive.more_about_mother' | t -}}
+        {{- p_link_text -}}
       </a>
     {%- endif -%}
   </div>

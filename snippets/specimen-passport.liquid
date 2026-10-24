@@ -307,15 +307,25 @@
       daneben, die auseinanderlaufen koennte. Die Rolle steuert nur das
       Etikett und die Herkunftszeile.
     {%- endcomment -%}
-    {%- if mutter != blank -%}
-      {%- if hat_zwei -%}
-        {%- render 'specimen-parent', eintrag: mutter, rolle: 'mutter', thing_word: thing_word -%}
-      {%- else -%}
+    {%- if hat_zwei -%}
+      {%- comment -%}
+        Die Kreuzungsschreibweise des Fachs: Mutter × Vater nebeneinander, das
+        Zeichen dazwischen. Untereinander gesetzt sah es aus wie zwei getrennte
+        Herkuenfte statt wie eine Kreuzung. Das Zeichen ist dekorativ — die
+        Etiketten tragen die Bedeutung, auch ohne Bildschirm.
+      {%- endcomment -%}
+      <div class="specimen-passport__cross" data-testid="specimen-cross">
+        {%- render 'specimen-parent', eintrag: mutter, rolle: 'mutter', thing_word: thing_word, max_fotos: 1 -%}
+        <span class="specimen-passport__cross-sign" aria-hidden="true">&times;</span>
+        {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word, max_fotos: 1 -%}
+      </div>
+    {%- else -%}
+      {%- if mutter != blank -%}
         {%- render 'specimen-parent', eintrag: mutter, rolle: 'einzeln', thing_word: thing_word -%}
       {%- endif -%}
-    {%- endif -%}
-    {%- if vater != blank -%}
-      {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word -%}
+      {%- if vater != blank -%}
+        {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word -%}
+      {%- endif -%}
     {%- endif -%}
 
     {%- if has_lower -%}
