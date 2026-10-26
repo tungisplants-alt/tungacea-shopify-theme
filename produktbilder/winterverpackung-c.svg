@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+<defs>
+  <radialGradient id="waerme" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#6E1C28" stop-opacity="0.95"/>
+    <stop offset="1" stop-color="#6E1C28" stop-opacity="0"/>
+  </radialGradient>
+
+</defs>
+<rect width="1200" height="1200" fill="#0a0a0a"/>
+
+  <circle cx="600" cy="600" r="470" fill="url(#waerme)" opacity="0.72"/>
+  <rect x="330" y="390" width="540" height="440" rx="14" fill="#141315"
+        stroke="#f2eee8" stroke-opacity="0.68" stroke-width="12"/>
+  <g transform="translate(600 618) scale(1.12) translate(-100 -120)">
+    <path d="M100,38 C88,14 60,4 42,16 C18,32 14,62 22,90 C34,130 66,186 100,235 C134,186 166,130 178,90 C186,62 182,32 158,16 C140,4 112,14 100,38 Z" fill="#f2eee8"/>
+    <path d="M100,40 V6" stroke="#f2eee8" stroke-width="9" stroke-linecap="round"/>
+  </g>
+
+</svg>
