@@ -30,7 +30,11 @@
   height: 1.8rem;
   flex: 0 0 1.8rem;
   margin: 0.2rem 0 0;
-  border: 1px solid rgba(var(--color-foreground), 0.34);
+  /* Fester Wert, keine Schema-Variable: --color-foreground wird nur innerhalb
+     der Farbschema-Klassen gesetzt, nicht global. Ohne diesen Kontext ist die
+     Regel ungueltig und das Kaestchen verschwindet ganz — appearance:none hat
+     das native ja schon entfernt. */
+  border: 1px solid rgba(242, 238, 232, 0.42);
   background: transparent;
   cursor: pointer;
   position: relative;
@@ -48,8 +52,9 @@
   top: 0.2rem;
   width: 0.5rem;
   height: 1rem;
-  border: solid rgb(var(--color-background));
-  border-width: 0 1.5px 1.5px 0;
+  /* Hell, nicht dunkel: Der Haken liegt auf dem oxblutroten Kasten. */
+  border: solid #f2eee8;
+  border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
 
