@@ -38,8 +38,8 @@
           "type": "winterpack",
           "settings": {
             "produkt": "winterverpackung",
-            "ueberschrift": "Winterverpackung",
-            "hinweis": "Heatpack und Isolierfolie. Unter 10 °C empfohlen."
+            "ueberschrift": "",
+            "hinweis": ""
           }
         },
         "buy_buttons": {
