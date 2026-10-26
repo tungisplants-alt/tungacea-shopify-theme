@@ -123,3 +123,25 @@
     display: none;
   }
 }
+
+/* Pfeile und "1 / 2" am Desktop ausblenden.
+ *
+ * Dawn will das selbst — die Regel dafuer steht in section-main-product.css
+ * und haengt an `.product__media-container`. Diese Klasse kommt in der
+ * Auszeichnung nirgends vor; die Regel greift also nie. Stehen blieb ein
+ * Zaehler, der nichts tut: Die Bilderliste traegt am Desktop nur
+ * `slider--mobile`, ist dort also kein Schieber, und ein Klick auf den Pfeil
+ * ging ins Leere.
+ *
+ * Gewechselt wird am Desktop ueber die Miniaturen links. Zwei Bedienwege fuer
+ * dieselbe Sache, von denen einer nicht funktioniert, sind schlechter als
+ * einer.
+ *
+ * Die Pfeile der Miniaturenspalte sind davon nicht betroffen — sie liegen als
+ * `.slider-button` direkt in `.thumbnail-slider`, nicht in `.slider-buttons`.
+ */
+@media screen and (min-width: 750px) {
+  media-gallery .slider-buttons {
+    display: none;
+  }
+}
