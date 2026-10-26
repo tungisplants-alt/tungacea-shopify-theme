@@ -167,7 +167,19 @@
   opacity: 1;
 }
 
-.thumbnail[aria-current] {
+/* Doppeltes Attribut statt Verlass auf die Reihenfolge.
+ *
+ * Dawns Regel `.thumbnail[aria-current]` setzt eine weisse 1px-Linie und
+ * steht in section-main-product.css — die wird NACH dieser Datei geladen,
+ * weil das Stylesheet des Abschnitts spaeter in der Auszeichnung steht als
+ * das Snippet. Bei gleicher Spezifitaet gewinnt dann Dawn. Sichtbar war das
+ * als roter Rahmen, der nach dem Laden sofort wieder weiss wurde — Tungs
+ * "fuer eine Millisekunde".
+ *
+ * `[aria-current][aria-current]` zaehlt zweimal und gewinnt unabhaengig von
+ * der Ladereihenfolge. Kein !important: Das gewinnt zwar auch, nimmt aber
+ * jeder spaeteren Regel die Chance, ohne denselben Hammer auszukommen. */
+.thumbnail-list__item .thumbnail[aria-current][aria-current] {
   box-shadow: inset 0 0 0 0.2rem #cc6070;
   border-color: #cc6070;
 }
