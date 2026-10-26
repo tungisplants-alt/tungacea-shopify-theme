@@ -132,6 +132,9 @@
         "rare": "Selten",
         "sale": "Sale"
       },
+      "winterpack": {
+        "title": "Winterverpackung"
+      },
       "specimen": {
         "date_format": "%-d.%-m.%Y",
         "photographed_on": "Fotografiert am {{ date }}.",

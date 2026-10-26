@@ -1,0 +1,69 @@
+{% comment %}
+  Tungacea — Winterverpackung (Produktseite).
+
+  Eine kostenpflichtige Zusatzleistung, die Shopify ohne App nicht kennt:
+  Ein Kontrollkaestchen allein berechnet nichts. Deshalb liegt dahinter ein
+  eigenes Produkt, das beim Kauf mitgelegt wird. Der Kunde sieht es als zweite
+  Position im Warenkorb und kann es dort auch wieder entfernen — das ist der
+  Preis dafuer, ohne App auszukommen, und zugleich eine zweite Gelegenheit zu
+  pruefen, ob es wirklich dabei ist.
+
+  **Das Kaestchen ist bewusst NICHT vorausgewaehlt.** Vorausgewaehlte
+  kostenpflichtige Zusatzleistungen sind nach § 312a Abs. 3 BGB unwirksam; der
+  Kunde muss aktiv zustimmen.
+
+  Der Preis kommt aus dem Produkt, nicht aus einer Einstellung. Sonst stuende
+  derselbe Betrag an zwei Stellen im System, und irgendwann zeigt die Seite
+  3,90 € waehrend der Warenkorb 4,90 € rechnet.
+
+  Accepts:
+  - block: {Object} main-product `winterpack` block (required)
+{% endcomment %}
+
+{%- liquid
+  assign wp = block.settings.produkt
+  assign variante = wp.selected_or_first_available_variant
+
+  comment
+    Ohne Produkt, ohne Variante oder ohne Verfuegbarkeit erscheint gar nichts.
+    Ein Kaestchen, das nichts in den Warenkorb legen kann, waere schlimmer als
+    keines: der Kunde haekelt es an und bekommt trotzdem keinen Schutz.
+  endcomment
+  assign zeigen = false
+  if wp != blank and variante != blank and variante.available
+    assign zeigen = true
+  endif
+
+  assign ueberschrift = block.settings.ueberschrift | default: '' | strip
+  if ueberschrift == blank
+    assign ueberschrift = 'products.product.winterpack.title' | t
+  endif
+  assign hinweis = block.settings.hinweis | default: '' | strip
+-%}
+
+{%- if zeigen -%}
+  {{ 'component-winter-pack.css' | asset_url | stylesheet_tag }}
+
+  <div class="winter-pack" {{ block.shopify_attributes }}>
+    <label class="winter-pack__zeile" for="WinterPack-{{ block.id }}">
+      <input
+        type="checkbox"
+        id="WinterPack-{{ block.id }}"
+        class="winter-pack__box"
+        data-winter-pack
+        data-variante="{{ variante.id }}"
+      >
+      <span class="winter-pack__text">
+        <span class="winter-pack__titel">
+          {{- ueberschrift | escape -}}
+          <span class="winter-pack__preis">+ {{ variante.price | money }}</span>
+        </span>
+        {%- if hinweis != blank -%}
+          <span class="winter-pack__sub">{{ hinweis | escape }}</span>
+        {%- endif -%}
+      </span>
+    </label>
+  </div>
+
+  <script src="{{ 'winter-pack.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

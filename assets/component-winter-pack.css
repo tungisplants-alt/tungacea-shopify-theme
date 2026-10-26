@@ -1,0 +1,92 @@
+/*
+ * Winterverpackung auf der Produktseite.
+ *
+ * Haarlinien statt Kasten: Die Variantenfelder darueber und der Kaufknopf
+ * darunter sind bereits Rechtecke. Ein drittes haette eine Kante erzeugt, die
+ * an nichts ausgerichtet ist, und ein umrandeter Kasten liest sich wie ein
+ * Warnfeld. Die waagerechte Haarlinie ist dagegen die Trennsprache, die auf
+ * dieser Seite ohnehin gilt.
+ */
+.winter-pack {
+  margin: 0 0 2rem;
+  border-top: 1px solid var(--tungacea-hairline);
+  border-bottom: 1px solid var(--tungacea-hairline);
+  padding: 1.4rem 0;
+}
+
+.winter-pack__zeile {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  cursor: pointer;
+}
+
+/* Die Breite muss in die Flex-Basis: mit `flex: 0 0 auto` drueckt der
+   Container das Kaestchen auf 2px zusammen. */
+.winter-pack__box {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.8rem;
+  height: 1.8rem;
+  flex: 0 0 1.8rem;
+  margin: 0.2rem 0 0;
+  border: 1px solid rgba(var(--color-foreground), 0.34);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.winter-pack__box:checked {
+  background: rgb(var(--tungacea-accent));
+  border-color: rgb(var(--tungacea-accent));
+}
+
+.winter-pack__box:checked::after {
+  content: '';
+  position: absolute;
+  left: 0.55rem;
+  top: 0.2rem;
+  width: 0.5rem;
+  height: 1rem;
+  border: solid rgb(var(--color-background));
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+
+.winter-pack__box:focus-visible {
+  outline: 2px solid #cc6070;
+  outline-offset: 2px;
+}
+
+.winter-pack__text {
+  display: block;
+}
+
+.winter-pack__titel {
+  display: block;
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+}
+
+.winter-pack__preis {
+  color: var(--tungacea-muted);
+  margin-left: 0.4rem;
+}
+
+.winter-pack__sub {
+  display: block;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: var(--tungacea-muted);
+  margin-top: 0.3rem;
+}
+
+/* In schmalen Spalten enger, aber nicht kleiner: Die Infospalte der
+   Produktseite ist bei media_size "large" nur rund 409px breit. Schrift dort
+   zu verkleinern laesst die Seite nach Telefon aussehen. */
+@media screen and (max-width: 749px) {
+  .winter-pack {
+    padding: 1.2rem 0;
+  }
+}

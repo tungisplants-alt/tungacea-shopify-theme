@@ -200,6 +200,8 @@
                       {{ product.description }}
                     </div>
                   {%- endif -%}
+                {%- when 'winterpack' -%}
+                  {% render 'winter-pack', block: block %}
                 {%- when 'specimen' -%}
                   {% render 'specimen-passport', product: product, block: block %}
                 {%- when 'sku' -%}
@@ -951,6 +953,35 @@
       "type": "description",
       "name": "t:sections.main-product.blocks.description.name",
       "limit": 1
+    },
+    {
+      "type": "winterpack",
+      "name": "Winterverpackung",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Ein Kontrollkästchen allein berechnet nichts — dahinter muss ein eigenes Produkt liegen, das beim Kauf mitgelegt wird. Der Preis kommt aus diesem Produkt, nicht aus einer Einstellung hier. Zum saisonalen Abschalten den Block über das Augensymbol ausblenden; die Einstellungen bleiben erhalten."
+        },
+        {
+          "type": "product",
+          "id": "produkt",
+          "label": "Produkt für die Winterverpackung"
+        },
+        {
+          "type": "text",
+          "id": "ueberschrift",
+          "label": "Überschrift",
+          "default": "Winterverpackung"
+        },
+        {
+          "type": "text",
+          "id": "hinweis",
+          "label": "Hinweis darunter",
+          "default": "Heatpack und Isolierfolie. Unter 10 °C empfohlen.",
+          "info": "Das Kästchen ist bewusst nicht vorausgewählt: Vorausgewählte kostenpflichtige Zusatzleistungen sind nach § 312a Abs. 3 BGB unwirksam."
+        }
+      ]
     },
     {
       "type": "specimen",
