@@ -194,7 +194,10 @@ const faelle = [
     }),
     erwartet: ['plant-profile-photo-credit', '@yolanda_picklesauce'],
     verboten: ['class="plant-profile__credit"'],
-    genau: [['plant-profile__figure"', 2], ['plant-profile-photo-credit', 1]],
+    // Die Bahn umschliesst die Bilder. Dass der Dialog der Lightbox NICHT
+    // darin liegt, prueft die Reihenfolge-Pruefung unten am Ende der Datei.
+    genau: [['plant-profile__figure"', 2], ['plant-profile-photo-credit', 1],
+             ['plant-profile__track', 1]],
   },
   // Gegenprobe: dasselbe ohne Freigabe. Das fremde Bild faellt heraus, das
   // eigene bleibt. Vorher nahm ein ungeklaertes Bild die ganze Galerie mit.

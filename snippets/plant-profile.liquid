@@ -223,7 +223,15 @@
     {%- endcomment -%}
     {%- if zeige_fotos -%}
       <script src="{{ 'specimen-lightbox.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'plant-gallery.js' | asset_url }}" defer="defer"></script>
       <specimen-lightbox class="plant-profile__photos" data-testid="plant-profile-photos">
+        {%- comment -%}
+          Die Bahn umschliesst nur die Bilder, nicht den Dialog der Lightbox.
+          Waere der Dialog Teil der Bahn, wuerde er beim Scrollen mitgezogen.
+          Miniaturen und Punkte setzt plant-gallery.js daneben; ohne
+          JavaScript bleibt eine Bahn, die man wischen kann.
+        {%- endcomment -%}
+        <div class="plant-profile__track" data-pflanzen-galerie>
         {%- if hat_bilder -%}
           {%- comment -%}
             Jedes Bild traegt seinen eigenen Nachweis, direkt darunter. Eine
@@ -298,6 +306,7 @@
             </button>
           {%- endfor -%}
         {%- endif -%}
+        </div>
 
         <dialog class="specimen-lightbox" aria-label="{{ name | escape }}">
           <button

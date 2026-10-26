@@ -199,17 +199,141 @@
   color: var(--pl-muted);
 }
 
+/* Galerie wie auf der Produktseite: ein grosses Bild, Miniaturen links,
+   auf dem Telefon wischen mit Punkten im Bild. Vorher lagen alle Fotos als
+   zwei- bis dreispaltiges Raster nebeneinander — bei einer Pflanze mit sechs
+   Aufnahmen war das eine Kachelwand statt eines Portraets. */
 .plant-profile__photos {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.2rem;
+  position: relative;
   margin-bottom: 1.2rem;
 }
 
+/* Die Bahn. Ohne JavaScript bleibt genau sie uebrig, und sie laesst sich
+   wischen — das ist die Rueckfallebene, nicht ein Rest. */
+.plant-profile__track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.plant-profile__track::-webkit-scrollbar {
+  display: none;
+}
+
+.plant-profile__track > * {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+/* Miniaturen und Punkte entstehen erst durch plant-gallery.js; ohne das
+   Skript darf das Raster nicht greifen, sonst bliebe eine leere Spalte. */
+.plant-profile__thumbs,
+.plant-profile__dots {
+  display: none;
+}
+
+/* --- ab Tablet: Miniaturen als Spalte links ---------------------------- */
 @media screen and (min-width: 750px) {
-  .plant-profile__photos {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.6rem;
+  .plant-profile__photos.hat-galerie {
+    display: grid;
+    grid-template-columns: 7.6rem minmax(0, 1fr);
+    column-gap: 1.2rem;
+    align-items: start;
+    /* Begrenzt, weil die Pflanzenseite anders als die Produktseite keine
+       zweite Spalte hat: Ein 4:5-Bild ueber die volle Seitenbreite waere
+       ueber 1300px hoch. Die Breite zu begrenzen laesst das Hochformat
+       unangetastet — eine Hoehenbegrenzung wuerde das Bild beschneiden, und
+       bei einer Pflanze im Hochformat schneidet man dann die Blaetter ab. */
+    max-width: 70rem;
+  }
+
+  .plant-profile__photos.hat-galerie .plant-profile__thumbs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-height: 62rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .plant-profile__photos.hat-galerie .plant-profile__thumbs::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.plant-profile__thumb {
+  appearance: none;
+  padding: 0;
+  border: 1px solid var(--pl-line-soft);
+  background: rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  opacity: 0.55;
+  transition: opacity 0.18s ease;
+}
+
+.plant-profile__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.plant-profile__thumb:hover,
+.plant-profile__thumb.ist-hier {
+  opacity: 1;
+}
+
+/* outline, nicht box-shadow: Ein innerer Schatten laege unter dem Bild und
+   waere zugedeckt, ein aeusserer wuerde am Rand der scrollenden Spalte
+   abgeschnitten. Der negative Versatz legt die Linie nach innen. */
+.plant-profile__thumb.ist-hier {
+  outline: 0.2rem solid #cc6070;
+  outline-offset: -0.2rem;
+  border-color: #cc6070;
+}
+
+.plant-profile__thumb:focus-visible {
+  outline: 2px solid #cc6070;
+  outline-offset: 3px;
+}
+
+/* --- bis Telefon: Punkte im Bild --------------------------------------- */
+@media screen and (max-width: 749px) {
+  .plant-profile__photos.hat-galerie .plant-profile__dots {
+    position: absolute;
+    left: 50%;
+    bottom: 1.4rem;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    background: rgba(10, 10, 10, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .plant-profile__dot {
+    appearance: none;
+    border: 0;
+    padding: 0;
+    width: 0.6rem;
+    height: 0.3rem;
+    background: rgba(242, 238, 232, 0.42);
+    cursor: pointer;
+    transition: width 0.22s ease, background-color 0.22s ease;
+  }
+
+  .plant-profile__dot.ist-hier {
+    width: 1.8rem;
+    background: #cc6070;
   }
 }
 
