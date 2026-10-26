@@ -34,6 +34,14 @@
             "swatch_shape": "circle"
           }
         },
+        "winterpack": {
+          "type": "winterpack",
+          "settings": {
+            "produkt": "winterverpackung",
+            "ueberschrift": "Winterverpackung",
+            "hinweis": "Heatpack und Isolierfolie. Unter 10 °C empfohlen."
+          }
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -75,10 +83,6 @@
           "settings": {
             "share_label": "Teilen"
           }
-        },
-        "winterpack": {
-          "type": "winterpack",
-          "settings": {}
         }
       },
       "block_order": [
@@ -128,18 +132,23 @@
     },
     "1790930519e12b1f1c": {
       "type": "apps",
-      "settings": {
-        "include_margins": true
-      },
       "blocks": {
         "judgeme_review_widget": {
           "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {}
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
         }
       },
       "block_order": [
         "judgeme_review_widget"
-      ]
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
