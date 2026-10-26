@@ -264,9 +264,6 @@
      fielen sonst durch und standen in voller Seitenbreite da. */
   .plant-profile__photos {
     max-width: 70rem;
-    /* Mittig statt links: Die Begrenzung allein liess den Block am linken
-       Rand kleben, waehrend rechts die halbe Seite leer blieb. */
-    margin-inline: auto;
   }
 
   .plant-profile__photos.hat-galerie {
@@ -349,6 +346,42 @@
 .plant-profile__thumb:focus-visible {
   outline: 2px solid #cc6070;
   outline-offset: 3px;
+}
+
+/* --- ab Laptop: zwei Spalten wie auf der Produktseite -------------------
+   Bilder links, Dokumentation rechts. Vorher stand die Galerie allein oben
+   und schob alle Daten weit nach unten; rechts daneben blieb die halbe
+   Seite leer. */
+@media screen and (min-width: 990px) {
+  .plant-profile > .page-width {
+    display: grid;
+    grid-template-columns: minmax(0, 46%) minmax(0, 1fr);
+    column-gap: 4.8rem;
+    align-items: start;
+  }
+
+  /* Alles gehoert nach rechts, ausser der Medienspalte. */
+  .plant-profile > .page-width > * {
+    grid-column: 2;
+  }
+
+  /* Die Medienspalte ueberspannt alle Zeilen: Stuende sie nur in Zeile 1,
+     waere diese Zeile so hoch wie das Bild, und die Ueberschrift daneben
+     schwebte in der Mitte eines 600px hohen Kastens. */
+  /* Der Selektor muss mindestens so spezifisch sein wie die Sammelregel
+     darueber — .plant-profile > .page-width > * zaehlt (0,2,0), ein blosses
+     .plant-profile__media nur (0,1,0). Die Medienspalte landete damit
+     ebenfalls rechts, und links blieb die halbe Seite leer. */
+  .plant-profile > .page-width > .plant-profile__media {
+    grid-column: 1;
+    grid-row: 1 / span 99;
+  }
+
+  /* Die Angebote stehen unter beiden Spalten — sie gehoeren zur Pflanze,
+     nicht zur Dokumentation. */
+  .plant-profile > .page-width > .plant-profile__offers {
+    grid-column: 1 / -1;
+  }
 }
 
 /* --- bis Telefon: Punkte im Bild --------------------------------------- */
