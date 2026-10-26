@@ -102,7 +102,7 @@
         "media_size": "medium",
         "constrain_to_viewport": false,
         "media_fit": "contain",
-        "gallery_layout": "thumbnail_slider",
+        "gallery_layout": "thumbnail",
         "mobile_thumbnails": "hide",
         "media_position": "left",
         "image_zoom": "lightbox",
