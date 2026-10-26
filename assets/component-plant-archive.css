@@ -244,29 +244,42 @@
 
 /* --- ab Tablet: Miniaturen als Spalte links ---------------------------- */
 @media screen and (min-width: 750px) {
+  /* Die Groessenregeln haengen bewusst NICHT an .hat-galerie. Diese Klasse
+     setzt das Skript erst ab zwei Bildern — Eintraege mit genau einem Foto
+     fielen sonst durch und standen in voller Seitenbreite da. */
+  .plant-profile__photos {
+    max-width: 70rem;
+  }
+
   .plant-profile__photos.hat-galerie {
     display: grid;
     grid-template-columns: 7.6rem minmax(0, 1fr);
     column-gap: 1.2rem;
     align-items: start;
-    /* Begrenzt, weil die Pflanzenseite anders als die Produktseite keine
-       zweite Spalte hat. */
-    max-width: 70rem;
   }
 
-  /* Die Breite allein reichte nicht: Bei 4:5 wurden aus rund 61rem Breite
-     76rem Hoehe — ein Bild, das hoeher ist als der Bildschirm. Deshalb gibt
-     die HOEHE das Mass vor, die Breite folgt ihr. Beschnitten wird trotzdem
-     nichts: Das Seitenverhaeltnis bleibt, nur der Kasten ist kleiner. */
-  .plant-profile__photos.hat-galerie .plant-profile__figure {
+  /* Kein festes Seitenverhaeltnis mehr. 4:5 mit object-fit: cover hat jedes
+     Foto auf dieses Mass geschnitten — bei einem breiteren Bild fehlten
+     links und rechts die Blattspitzen. Jetzt gibt das Bild sein eigenes
+     Verhaeltnis vor, begrenzt wird nur die Hoehe. Der Knopf legt sich um das
+     Bild, statt ihm eine Form vorzugeben. */
+  .plant-profile__photos .plant-profile__figure {
     align-items: flex-start;
   }
 
-  .plant-profile__photos.hat-galerie .plant-profile__photo {
-    height: min(68vh, 62rem);
+  .plant-profile__photos .plant-profile__photo {
+    aspect-ratio: auto;
+    height: auto;
     width: auto;
     max-width: 100%;
-    aspect-ratio: 4 / 5;
+  }
+
+  .plant-profile__photos .plant-profile__photo-image {
+    width: auto;
+    height: auto;
+    max-height: min(68vh, 62rem);
+    max-width: 100%;
+    object-fit: contain;
   }
 
   .plant-profile__photos.hat-galerie .plant-profile__thumbs {
