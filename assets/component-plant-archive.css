@@ -204,6 +204,12 @@
    zwei- bis dreispaltiges Raster nebeneinander — bei einer Pflanze mit sechs
    Aufnahmen war das eine Kachelwand statt eines Portraets. */
 .plant-profile__photos {
+  /* <specimen-lightbox> ist ein eigenes Element und damit standardmaessig
+     INLINE. Fuer ein inline-Element ist der Bezugsrahmen absolut
+     positionierter Kinder nicht der Kasten, sondern die Zeilenbox — die
+     Punkte landeten dadurch am linken Rand statt mittig. Am Desktop fiel es
+     nicht auf, weil dort display:grid gesetzt wird. */
+  display: block;
   position: relative;
   margin-bottom: 1.2rem;
 }
@@ -244,11 +250,23 @@
     column-gap: 1.2rem;
     align-items: start;
     /* Begrenzt, weil die Pflanzenseite anders als die Produktseite keine
-       zweite Spalte hat: Ein 4:5-Bild ueber die volle Seitenbreite waere
-       ueber 1300px hoch. Die Breite zu begrenzen laesst das Hochformat
-       unangetastet — eine Hoehenbegrenzung wuerde das Bild beschneiden, und
-       bei einer Pflanze im Hochformat schneidet man dann die Blaetter ab. */
+       zweite Spalte hat. */
     max-width: 70rem;
+  }
+
+  /* Die Breite allein reichte nicht: Bei 4:5 wurden aus rund 61rem Breite
+     76rem Hoehe — ein Bild, das hoeher ist als der Bildschirm. Deshalb gibt
+     die HOEHE das Mass vor, die Breite folgt ihr. Beschnitten wird trotzdem
+     nichts: Das Seitenverhaeltnis bleibt, nur der Kasten ist kleiner. */
+  .plant-profile__photos.hat-galerie .plant-profile__figure {
+    align-items: flex-start;
+  }
+
+  .plant-profile__photos.hat-galerie .plant-profile__photo {
+    height: min(68vh, 62rem);
+    width: auto;
+    max-width: 100%;
+    aspect-ratio: 4 / 5;
   }
 
   .plant-profile__photos.hat-galerie .plant-profile__thumbs {
