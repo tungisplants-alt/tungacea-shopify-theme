@@ -1,24 +1,28 @@
 /*
  * Winterverpackung: legt das Zusatzprodukt bei jedem Klick in den Warenkorb.
  *
- * Vorgeschichte in zwei Schritten.
+ * Vorgeschichte in drei Schritten.
  *
- * Erst hing sich das Skript in den Submit des Kaufformulars ein und legte die
- * Verpackung beim Kauf dazu. Das kam nie im Warenkorb an — Dawns
- * <product-form> faengt den Submit selbst ab.
+ * 1. Submit des Kaufformulars abfangen — kam nie im Warenkorb an, weil Dawns
+ *    <product-form> den Submit selbst abfaengt.
+ * 2. Ein Kontrollkaestchen, das den Warenkorb SPIEGELTE. Der Warenkorb aendert
+ *    sich aber auch anderswo, und beim Zurueckblaettern kommt die Seite aus
+ *    dem Zwischenspeicher: Haken gesetzt, Warenkorb leer, naechster Klick
+ *    entfernte statt zu legen.
+ * 3. Ein Knopf. Er behauptet nichts und kann deshalb nicht veralten.
  *
- * Dann war es ein Kontrollkaestchen, das den Warenkorb SPIEGELTE: beim Laden
- * nachgezogen, beim Anhaken gelegt, beim Abwaehlen entfernt. Der Warenkorb
- * aendert sich aber auch anderswo — auf der Warenkorbseite, in der Schublade,
- * in einem zweiten Tab, und beim Zurueckblaettern liefert der Browser die
- * Seite aus dem Zwischenspeicher, ohne dass irgendetwas neu laedt. Dann stand
- * der Haken, waehrend das Produkt laengst entfernt war, und der naechste Klick
- * entfernte es ein zweites Mal statt es zu legen. Genau dieser Fall ist Tung
- * beim Durchprobieren begegnet.
+ * Und ein vierter Punkt, den Tung fand: Die Zahl im Kopf stimmte, die
+ * Schublade war leer. Nur die Blase wurde aufgefrischt, der Inhalt nicht.
+ * Dawn loest das, indem es bei /cart/add.js gleich die gerenderten
+ * ABSCHNITTE mitbestellt (`sections`) und sie einsetzt. Genau das tut dieses
+ * Skript jetzt auch — mit den Methoden des Warenkorb-Elements selbst, damit
+ * hier keine zweite Vorstellung davon entsteht, was ein Abschnitt ist.
  *
- * Jetzt ist es ein Knopf. Ein Knopf ist eine Handlung, kein Zustand — er kann
- * nicht veralten, weil er nichts behauptet. Er legt jedes Mal eine dazu; was
- * im Warenkorb liegt, sagt der Warenkorb.
+ * Absichtlich NICHT uebernommen: Dawns `renderContents` ruft am Ende
+ * `open()`. Fuer eine Zusatzleistung von 3,90 € waere es zu viel, bei jedem
+ * Klick die Schublade aufzureissen — zumal mehrfaches Hinzufuegen erlaubt ist
+ * und sie dann mehrfach aufspringt. Der Zaehler und der Knopf melden; die
+ * Schublade ist richtig, sobald sie jemand oeffnet.
  */
 (function () {
   'use strict';
@@ -30,13 +34,50 @@
   var id = Number(knopf.dataset.variante);
   if (!id) return;
 
+  // Schublade oder Benachrichtigung — je nachdem, was im Theme eingestellt
+  // ist. Steht der Warenkorb als eigene Seite, ist das hier null, und es
+  // bleibt beim Auffrischen der Blase.
+  var korb = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
+
   var textFeld = knopf.querySelector('.winter-pack__knopf-text');
   var labelStart = textFeld ? textFeld.textContent : '';
   var labelFertig = knopf.dataset.labelFertig || labelStart;
   var uhr = null;
 
-  function zaehlerAuffrischen() {
-    // Die Warenkorbblase im Kopf neu holen, damit die Zahl stimmt.
+  function abschnitteBestellen() {
+    if (!korb || typeof korb.getSectionsToRender !== 'function') return null;
+    try {
+      return korb.getSectionsToRender().map(function (a) { return a.id; });
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function abschnitteEinsetzen(antwort) {
+    if (!korb || !antwort || !antwort.sections) return false;
+    var eingesetzt = false;
+    try {
+      // Wie Dawn: War der Warenkorb leer, traegt die Schublade noch die
+      // Leer-Klasse und bliebe sonst leer aussehen.
+      var innen = korb.querySelector('.drawer__inner');
+      if (innen) innen.classList.remove('is-empty');
+
+      korb.getSectionsToRender().forEach(function (a) {
+        var ziel = a.selector ? document.querySelector(a.selector) : document.getElementById(a.id);
+        var html = antwort.sections[a.id];
+        if (!ziel || !html) return;
+        ziel.innerHTML = korb.getSectionInnerHTML(html, a.selector);
+        eingesetzt = true;
+      });
+    } catch (e) {
+      return false;
+    }
+    return eingesetzt;
+  }
+
+  function blaseNachholen() {
+    // Rueckweg, wenn es kein Warenkorb-Element gibt oder das Einsetzen
+    // scheiterte: wenigstens die Zahl im Kopf stimmt dann.
     return fetch(wurzel + '?section_id=cart-icon-bubble')
       .then(function (a) { return a.ok ? a.text() : null; })
       .then(function (text) {
@@ -59,26 +100,35 @@
     knopf.disabled = true;
     if (uhr) { clearTimeout(uhr); uhr = null; }
 
+    var koerper = { items: [{ id: id, quantity: 1 }] };
+    var abschnitte = abschnitteBestellen();
+    if (abschnitte) {
+      koerper.sections = abschnitte;
+      koerper.sections_url = window.location.pathname;
+    }
+
     fetch(wurzel + 'cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ items: [{ id: id, quantity: 1 }] }),
+      body: JSON.stringify(koerper),
     })
       .then(function (a) {
         if (!a.ok) throw new Error('add fehlgeschlagen');
         return a.json();
       })
-      .then(zaehlerAuffrischen)
+      .then(function (antwort) {
+        if (!abschnitteEinsetzen(antwort)) return blaseNachholen();
+      })
       .then(function () {
-        // Oertliche Rueckmeldung: Sie sagt nur, dass DIESER Klick durchging,
-        // und behauptet nichts ueber den Inhalt des Warenkorbs.
+        // Oertliche Rueckmeldung: Sie sagt, dass DIESER Klick durchging, und
+        // behauptet nichts ueber den Inhalt des Warenkorbs.
         knopf.classList.add('ist-fertig');
         if (textFeld) textFeld.textContent = labelFertig;
         uhr = setTimeout(ruecksetzen, 2200);
       })
       .catch(function () {
-        // Scheitert es, bleibt der Knopf wie er war. Lieber kein Zeichen als
-        // ein falsches: Eine Bestaetigung ohne Ware waere das Schlimmste.
+        // Lieber kein Zeichen als ein falsches: Eine Bestaetigung ohne Ware
+        // waere das Schlimmste.
         ruecksetzen();
       })
       .then(function () {
