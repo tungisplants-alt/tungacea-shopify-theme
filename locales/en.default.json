@@ -143,7 +143,9 @@
       },
       "winterpack": {
         "title": "Winter packaging",
-        "hint": "Heat pack and thermal wrap. Recommended below 10 °C."
+        "hint": "Heat pack and thermal wrap. Recommended below 10 °C.",
+        "add": "Add",
+        "added": "Added"
       },
       "specimen": {
         "date_format": "%b %-d, %Y",

@@ -1,20 +1,27 @@
 {% comment %}
   Tungacea — Winterverpackung (Produktseite).
 
-  Eine kostenpflichtige Zusatzleistung, die Shopify ohne App nicht kennt:
-  Ein Kontrollkaestchen allein berechnet nichts. Deshalb liegt dahinter ein
-  eigenes Produkt, das beim Kauf mitgelegt wird. Der Kunde sieht es als zweite
-  Position im Warenkorb und kann es dort auch wieder entfernen — das ist der
-  Preis dafuer, ohne App auszukommen, und zugleich eine zweite Gelegenheit zu
-  pruefen, ob es wirklich dabei ist.
+  Eine kostenpflichtige Zusatzleistung, die Shopify ohne App nicht kennt.
+  Dahinter liegt ein eigenes Produkt, das beim Klick in den Warenkorb wandert.
+  Der Kunde sieht es als zweite Position und kann es dort entfernen.
 
-  **Das Kaestchen ist bewusst NICHT vorausgewaehlt.** Vorausgewaehlte
-  kostenpflichtige Zusatzleistungen sind nach § 312a Abs. 3 BGB unwirksam; der
-  Kunde muss aktiv zustimmen.
+  **Ein Knopf, kein Kontrollkaestchen.** Das Kaestchen war ein Spiegel des
+  Warenkorbs, und der Warenkorb aendert sich auch anderswo — auf der
+  Warenkorbseite, in der Schublade, in einem zweiten Tab. Davon erfuhr diese
+  Seite nichts. Stand der Haken und war das Produkt entfernt, entfernte der
+  naechste Klick es ein zweites Mal statt es zu legen: Der Kunde sah einen
+  gesetzten Haken und einen leeren Warenkorb. Ein Knopf hat keinen Zustand,
+  der veralten kann.
+
+  Mehrfaches Hinzufuegen ist damit moeglich. Das ist gewollt: Im Normalfall
+  reicht eine, aber wer mehrere Pflanzen kauft, soll nicht an einer Sperre
+  haengenbleiben, und doppelt Gelegtes steht sichtbar im Warenkorb.
+
+  Rechtlich ist der Knopf die staerkere Form: Nichts ist vorausgewaehlt, der
+  Kunde fuegt ausdruecklich hinzu (vgl. § 312a Abs. 3 BGB).
 
   Der Preis kommt aus dem Produkt, nicht aus einer Einstellung. Sonst stuende
-  derselbe Betrag an zwei Stellen im System, und irgendwann zeigt die Seite
-  3,90 € waehrend der Warenkorb 4,90 € rechnet.
+  derselbe Betrag an zwei Stellen im System.
 
   Accepts:
   - block: {Object} main-product `winterpack` block (required)
@@ -26,8 +33,8 @@
 
   comment
     Ohne Produkt, ohne Variante oder ohne Verfuegbarkeit erscheint gar nichts.
-    Ein Kaestchen, das nichts in den Warenkorb legen kann, waere schlimmer als
-    keines: der Kunde haekelt es an und bekommt trotzdem keinen Schutz.
+    Ein Knopf, der nichts in den Warenkorb legen kann, waere schlimmer als
+    keiner.
   endcomment
   assign zeigen = false
   if wp != blank and variante != blank and variante.available
@@ -38,10 +45,10 @@
   if ueberschrift == blank
     assign ueberschrift = 'products.product.winterpack.title' | t
   endif
+
   comment
     Leer heisst uebersetzt, nicht stumm. Ein eigener Text waere sonst in
-    beiden Sprachen derselbe — genau der Fehler, den Reinheit und
-    Laendernamen am 3. Oktober schon einmal hatten.
+    beiden Sprachen derselbe.
   endcomment
   assign hinweis = block.settings.hinweis | default: '' | strip
   if hinweis == blank
@@ -53,14 +60,7 @@
   {{ 'component-winter-pack.css' | asset_url | stylesheet_tag }}
 
   <div class="winter-pack" {{ block.shopify_attributes }}>
-    <label class="winter-pack__zeile" for="WinterPack-{{ block.id }}">
-      <input
-        type="checkbox"
-        id="WinterPack-{{ block.id }}"
-        class="winter-pack__box"
-        data-winter-pack
-        data-variante="{{ variante.id }}"
-      >
+    <div class="winter-pack__zeile">
       <span class="winter-pack__text">
         <span class="winter-pack__titel">
           {{- ueberschrift | escape -}}
@@ -70,7 +70,24 @@
           <span class="winter-pack__sub">{{ hinweis | escape }}</span>
         {%- endif -%}
       </span>
-    </label>
+
+      {%- comment -%}
+        Die Rueckmeldung steht im Knopf selbst und wird per aria-live
+        angesagt. Sie ist rein oertlich — sie behauptet nichts ueber den
+        Warenkorb, sondern nur, dass dieser Klick durchging.
+      {%- endcomment -%}
+      <button
+        type="button"
+        class="winter-pack__knopf"
+        data-winter-pack
+        data-variante="{{ variante.id }}"
+        data-label-fertig="{{ 'products.product.winterpack.added' | t | escape }}"
+        aria-live="polite"
+      >
+        <span class="winter-pack__plus" aria-hidden="true">+</span>
+        <span class="winter-pack__knopf-text">{{ 'products.product.winterpack.add' | t | escape }}</span>
+      </button>
+    </div>
   </div>
 
   <script src="{{ 'winter-pack.js' | asset_url }}" defer="defer"></script>

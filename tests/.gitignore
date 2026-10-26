@@ -1,0 +1,5 @@
+# Vorschau-Erzeugnisse: entstehen aus den _*.js-Skripten, gehoeren nicht ins
+# Repository. Shopify liefert tests/ ohnehin nicht aus.
+*.html
+*.png
+node_modules/

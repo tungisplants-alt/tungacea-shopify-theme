@@ -1,10 +1,11 @@
 // Prueft das ausgelieferte Snippet winter-pack.liquid gegen die echten
 // Sprachdateien.
 //
-// Der wichtigste Fall steht ganz unten: Das Kaestchen darf NIE vorausgewaehlt
-// sein. Vorausgewaehlte kostenpflichtige Zusatzleistungen sind nach
-// § 312a Abs. 3 BGB unwirksam. Das ist keine Geschmacksfrage, deshalb haengt
-// hier eine Pruefung daran und nicht nur ein Kommentar.
+// Seit dem 26. Oktober ist es ein Knopf, kein Kontrollkaestchen: Das Kaestchen
+// spiegelte den Warenkorb, und der aendert sich auch anderswo. Zwei Pruefungen
+// haengen daran, dass es nie wieder eines wird — ein Kaestchen koennte wieder
+// veralten, und ein vorausgewaehltes waere nach § 312a Abs. 3 BGB zusaetzlich
+// unwirksam.
 const fs = require('fs');
 const path = require('path');
 const { Liquid } = require('liquidjs');
@@ -66,7 +67,8 @@ const faelle = [
       'Heatpack und Isolierfolie. Unter 10 °C empfohlen.',
       'data-winter-pack',
       'data-variante="99887766"',
-      'type="checkbox"',
+      '<button',
+      'type="button"',
     ],
   },
   {
@@ -106,14 +108,33 @@ const faelle = [
     verboten: ['Winter packaging', 'thermal wrap'],
   },
   {
-    name: 'RECHT: Das Kaestchen ist nicht vorausgewaehlt (§ 312a Abs. 3 BGB)',
+    // Kein Kontrollkaestchen mehr — weder angehakt noch leer. Ein Kaestchen
+    // waere wieder ein Zustand, der veralten kann, und ein vorausgewaehltes
+    // waere nach § 312a Abs. 3 BGB unwirksam.
+    name: 'Kein Kontrollkaestchen, sondern ein Knopf (Zustand und § 312a Abs. 3 BGB)',
     block: {
       id: 'b1',
       shopify_attributes: '',
       settings: { produkt: produkt(390, true), ueberschrift: 'Winterverpackung' },
     },
-    erwartet: ['type="checkbox"'],
-    verboten: ['checked'],
+    erwartet: ['type="button"'],
+    verboten: ['type="checkbox"', 'checked'],
+  },
+  {
+    // Beide Beschriftungen muessen uebersetzt sein — die im Knopf und die
+    // nach dem Klick. Die zweite steckt in einem data-Attribut und waere
+    // sonst die naechste Stelle, an der Deutsch auf der englischen Seite
+    // stehen bleibt.
+    name: 'Knopfbeschriftung und Bestaetigung sind uebersetzt',
+    block: {
+      id: 'b1',
+      shopify_attributes: '',
+      settings: { produkt: produkt(390, true), ueberschrift: '', hinweis: '' },
+    },
+    erwartet: {
+      de: ['>Hinzufügen<', 'data-label-fertig="Hinzugefügt"'],
+      en: ['>Add<', 'data-label-fertig="Added"'],
+    },
   },
 ];
 

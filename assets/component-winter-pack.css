@@ -4,8 +4,11 @@
  * Haarlinien statt Kasten: Die Variantenfelder darueber und der Kaufknopf
  * darunter sind bereits Rechtecke. Ein drittes haette eine Kante erzeugt, die
  * an nichts ausgerichtet ist, und ein umrandeter Kasten liest sich wie ein
- * Warnfeld. Die waagerechte Haarlinie ist dagegen die Trennsprache, die auf
- * dieser Seite ohnehin gilt.
+ * Warnfeld.
+ *
+ * Farben stehen hier als feste Werte. --color-foreground und
+ * --color-background setzt Dawn nur INNERHALB der Farbschema-Klassen; ohne
+ * diesen Kontext ist die Regel ungueltig, und das Element verschwindet ganz.
  */
 .winter-pack {
   margin: 0 0 2rem;
@@ -16,54 +19,14 @@
 
 .winter-pack__zeile {
   display: flex;
-  align-items: flex-start;
-  gap: 1.2rem;
-  cursor: pointer;
-}
-
-/* Die Breite muss in die Flex-Basis: mit `flex: 0 0 auto` drueckt der
-   Container das Kaestchen auf 2px zusammen. */
-.winter-pack__box {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 1.8rem;
-  height: 1.8rem;
-  flex: 0 0 1.8rem;
-  margin: 0.2rem 0 0;
-  /* Fester Wert, keine Schema-Variable: --color-foreground wird nur innerhalb
-     der Farbschema-Klassen gesetzt, nicht global. Ohne diesen Kontext ist die
-     Regel ungueltig und das Kaestchen verschwindet ganz — appearance:none hat
-     das native ja schon entfernt. */
-  border: 1px solid rgba(242, 238, 232, 0.42);
-  background: transparent;
-  cursor: pointer;
-  position: relative;
-}
-
-/* Der Haken ist ein SVG im Hintergrund, kein gedrehtes Pseudoelement. Nach
-   einer Drehung um 45 Grad deckt sich die Bounding Box nicht mehr mit der
-   Form, und jede Positionsangabe waere geraten — hier zentriert
-   background-position: center exakt.
-
-   Haken, kein Kreuz: Ein x bedeutet in Oberflaechen "schliessen" oder
-   "abwaehlen", und auf derselben Produktseite steht es bereits als
-   Kreuzungszeichen zwischen Mutter und Vater. */
-.winter-pack__box:checked {
-  background-color: rgb(var(--tungacea-accent));
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath d='M1 5.2 L4.4 8.6 L11 1.6' fill='none' stroke='%23f2eee8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 1.1rem auto;
-  border-color: rgb(var(--tungacea-accent));
-}
-
-.winter-pack__box:focus-visible {
-  outline: 2px solid #cc6070;
-  outline-offset: 2px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
 }
 
 .winter-pack__text {
   display: block;
+  min-width: 0; /* sonst schiebt langer Text den Knopf aus der Zeile */
 }
 
 .winter-pack__titel {
@@ -86,9 +49,65 @@
   margin-top: 0.3rem;
 }
 
-/* In schmalen Spalten enger, aber nicht kleiner: Die Infospalte der
-   Produktseite ist bei media_size "large" nur rund 409px breit. Schrift dort
-   zu verkleinern laesst die Seite nach Telefon aussehen. */
+/* ---------------------------------------------------------------- Knopf
+   Ein Knopf statt eines Kontrollkaestchens: Das Kaestchen spiegelte den
+   Warenkorb, und der aendert sich auch anderswo. Ein Knopf ist eine
+   Handlung, kein Zustand — er kann nicht veralten. */
+.winter-pack__knopf {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.4rem;
+  border: 1px solid rgba(242, 238, 232, 0.42);
+  background: transparent;
+  color: #f2eee8;
+  font-family: var(--font-body-family);
+  font-size: 1.1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.winter-pack__knopf:hover {
+  background: rgba(242, 238, 232, 0.09);
+  border-color: rgba(242, 238, 232, 0.68);
+}
+
+.winter-pack__knopf:focus-visible {
+  outline: 2px solid #cc6070;
+  outline-offset: 2px;
+}
+
+.winter-pack__knopf[disabled] {
+  cursor: default;
+  opacity: 0.72;
+}
+
+.winter-pack__plus {
+  font-size: 1.5rem;
+  line-height: 1;
+  /* Das Plus sitzt optisch zu tief, weil die Ziffernlinie hoeher liegt als
+     die Versalhoehe der Beschriftung daneben. */
+  margin-top: -0.15rem;
+}
+
+/* Bestaetigt: Oxblood als FLAECHE mit hellem Label (11,2:1). Als Vordergrund
+   auf Dunkel waere derselbe Ton 1,62:1 und praktisch unsichtbar. */
+.winter-pack__knopf.ist-fertig {
+  background: #6e1c28;
+  border-color: #6e1c28;
+  color: #f2eee8;
+}
+
+.winter-pack__knopf.ist-fertig .winter-pack__plus {
+  display: none;
+}
+
+/* Schmale Spalte: enger, aber nicht kleiner. Die Infospalte der Produktseite
+   ist bei media_size "large" nur rund 409px breit; dort Schrift zu
+   verkleinern laesst die Seite nach Telefon aussehen. */
 @media screen and (max-width: 749px) {
   .winter-pack {
     padding: 1.2rem 0;

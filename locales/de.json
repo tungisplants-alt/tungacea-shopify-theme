@@ -134,7 +134,9 @@
       },
       "winterpack": {
         "title": "Winterverpackung",
-        "hint": "Heatpack und Isolierfolie. Unter 10 °C empfohlen."
+        "hint": "Heatpack und Isolierfolie. Unter 10 °C empfohlen.",
+        "add": "Hinzufügen",
+        "added": "Hinzugefügt"
       },
       "specimen": {
         "date_format": "%-d.%-m.%Y",
