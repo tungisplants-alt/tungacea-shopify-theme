@@ -76,17 +76,34 @@ const faelle = [
       shopify_attributes: '',
       settings: { produkt: produkt(390, true), ueberschrift: '' },
     },
-    erwartet: ['Winterverpackung'],
+    erwartet: { de: ['Winterverpackung'], en: ['Winter packaging'] },
   },
   {
-    name: 'Ohne Hinweistext bleibt die zweite Zeile weg',
+    // Der eigentliche Fall: Ein eigener Hinweistext stuende sonst auch auf der
+    // englischen Seite auf Deutsch. Leer heisst uebersetzt, nicht stumm.
+    name: 'Ohne eigenen Hinweis greift der Sprachschluessel',
     block: {
       id: 'b1',
       shopify_attributes: '',
-      settings: { produkt: produkt(390, true), ueberschrift: 'Winterverpackung', hinweis: '' },
+      settings: { produkt: produkt(390, true), ueberschrift: '', hinweis: '' },
     },
-    erwartet: ['Winterverpackung'],
-    verboten: ['winter-pack__sub'],
+    erwartet: {
+      de: ['Winterverpackung', 'Heatpack und Isolierfolie. Unter 10 °C empfohlen.', 'winter-pack__sub'],
+      en: ['Winter packaging', 'Heat pack and thermal wrap. Recommended below 10 °C.', 'winter-pack__sub'],
+    },
+  },
+  {
+    // Gegenprobe: Ein eigener Text schlaegt die Uebersetzung bewusst — er
+    // steht dann in beiden Sprachen gleich da. Das ist die dokumentierte
+    // Wirkung, kein Versehen.
+    name: 'Eigener Text schlaegt die Uebersetzung in beiden Sprachen',
+    block: {
+      id: 'b1',
+      shopify_attributes: '',
+      settings: { produkt: produkt(390, true), ueberschrift: 'Winterschutz', hinweis: 'Eigener Satz.' },
+    },
+    erwartet: ['Winterschutz', 'Eigener Satz.'],
+    verboten: ['Winter packaging', 'thermal wrap'],
   },
   {
     name: 'RECHT: Das Kaestchen ist nicht vorausgewaehlt (§ 312a Abs. 3 BGB)',
@@ -126,16 +143,15 @@ const faelle = [
         continue;
       }
 
-      for (const soll of f.erwartet || []) {
+      // Erwartungen je Sprache, wenn sie sich unterscheiden; sonst eine Liste
+      // fuer beide. Die alte Sonderbehandlung fuer ein einzelnes Wort haette
+      // einen zweiten uebersetzten Text nie geprueft.
+      const soll_liste = Array.isArray(f.erwartet) ? f.erwartet : (f.erwartet || {})[loc] || [];
+      for (const soll of soll_liste) {
         checks++;
-        // Die Ueberschrift kommt im englischen Lauf aus der englischen Datei.
-        const text = loc === 'en' && soll === 'Winterverpackung' ? 'Winter packaging' : soll;
-        const vorhanden = loc === 'en' && soll === 'Winterverpackung' && f.block.settings.ueberschrift
-          ? html.includes(soll) // eigene Ueberschrift wird nicht uebersetzt
-          : html.includes(text);
-        if (!vorhanden) {
+        if (!html.includes(soll)) {
           fails++;
-          console.log('FEHLER [' + loc + '] ' + f.name + ': fehlt "' + text + '"');
+          console.log('FEHLER [' + loc + '] ' + f.name + ': fehlt "' + soll + '"');
         }
       }
 

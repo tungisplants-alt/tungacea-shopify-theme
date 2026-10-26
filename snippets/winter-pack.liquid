@@ -38,7 +38,15 @@
   if ueberschrift == blank
     assign ueberschrift = 'products.product.winterpack.title' | t
   endif
+  comment
+    Leer heisst uebersetzt, nicht stumm. Ein eigener Text waere sonst in
+    beiden Sprachen derselbe — genau der Fehler, den Reinheit und
+    Laendernamen am 3. Oktober schon einmal hatten.
+  endcomment
   assign hinweis = block.settings.hinweis | default: '' | strip
+  if hinweis == blank
+    assign hinweis = 'products.product.winterpack.hint' | t
+  endif
 -%}
 
 {%- if zeigen -%}

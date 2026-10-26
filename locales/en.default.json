@@ -142,7 +142,8 @@
         "sale": "Sale"
       },
       "winterpack": {
-        "title": "Winter packaging"
+        "title": "Winter packaging",
+        "hint": "Heat pack and thermal wrap. Recommended below 10 °C."
       },
       "specimen": {
         "date_format": "%b %-d, %Y",

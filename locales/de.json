@@ -133,7 +133,8 @@
         "sale": "Sale"
       },
       "winterpack": {
-        "title": "Winterverpackung"
+        "title": "Winterverpackung",
+        "hint": "Heatpack und Isolierfolie. Unter 10 °C empfohlen."
       },
       "specimen": {
         "date_format": "%-d.%-m.%Y",
