@@ -235,6 +235,21 @@
   min-width: 0;
 }
 
+/* Der Knopf traegt in der Bahn weder Flaeche noch Rahmen.
+
+   Grund: Die meisten Eintraege laufen noch ueber den alten Weg, dort ist der
+   Knopf selbst das Kind der Bahn und damit immer volle Breite. Sein
+   Hintergrund und sein Rahmen standen dann als schwarzer Kasten neben einem
+   schmalen Hochformat. Unsichtbar gemacht verschwindet der Rest in der
+   Seitenfarbe, und das Bild sitzt mittig darin. */
+.plant-profile__track .plant-profile__photo {
+  background: transparent;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 /* Miniaturen und Punkte entstehen erst durch plant-gallery.js; ohne das
    Skript darf das Raster nicht greifen, sonst bliebe eine leere Spalte. */
 .plant-profile__thumbs,
@@ -249,6 +264,9 @@
      fielen sonst durch und standen in voller Seitenbreite da. */
   .plant-profile__photos {
     max-width: 70rem;
+    /* Mittig statt links: Die Begrenzung allein liess den Block am linken
+       Rand kleben, waehrend rechts die halbe Seite leer blieb. */
+    margin-inline: auto;
   }
 
   .plant-profile__photos.hat-galerie {
@@ -270,8 +288,7 @@
   .plant-profile__photos .plant-profile__photo {
     aspect-ratio: auto;
     height: auto;
-    width: auto;
-    max-width: 100%;
+    width: 100%;
   }
 
   .plant-profile__photos .plant-profile__photo-image {
