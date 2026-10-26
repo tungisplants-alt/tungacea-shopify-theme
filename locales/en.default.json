@@ -208,7 +208,8 @@
       },
       "product_variants": "Product variants",
       "media": {
-        "gallery_viewer": "Gallery Viewer",
+        "go_to_media": "Show image {{ index }}",
+          "gallery_viewer": "Gallery Viewer",
         "load_image": "Load image {{ index }} in gallery view",
         "load_model": "Load 3D Model {{ index }} in gallery view",
         "load_video": "Play video {{ index }} in gallery view",

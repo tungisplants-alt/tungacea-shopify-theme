@@ -1,0 +1,125 @@
+/*
+ * Tungacea — Produktgalerie.
+ *
+ * Eigene Datei statt eines Anhangs an Dawns section-main-product.css: Ein
+ * fremdes Stylesheet anzuwachsen macht jede spaetere Theme-Aktualisierung zu
+ * einer Konfliktaufloesung, und beim Hochladen in ein Vorschau-Theme muesste
+ * man 40 kB fremden Code mitschicken, um zehn eigene Regeln zu aendern.
+ *
+ * Geladen wird sie aus snippets/product-media-gallery.liquid, also genau
+ * dort, wo die Auszeichnung entsteht.
+ */
+
+/* Miniaturen links neben dem grossen Bild statt darunter.
+   Dawn stellt sie quer unter die Galerie; <media-gallery> wird dafuer zum
+   zweispaltigen Raster. Der Statusbereich darin ist `visually-hidden` und
+   damit absolut positioniert — er wird kein Rasterelement und stoert nicht. */
+@media screen and (min-width: 990px) {
+  .product--thumbnail media-gallery,
+  .product--thumbnail_slider media-gallery {
+    display: grid;
+    grid-template-columns: 7.6rem minmax(0, 1fr);
+    column-gap: 1.2rem;
+    align-items: start;
+  }
+
+  .product--thumbnail media-gallery > slider-component:not(.thumbnail-slider),
+  .product--thumbnail_slider media-gallery > slider-component:not(.thumbnail-slider) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .product--thumbnail .thumbnail-slider,
+  .product--thumbnail_slider .thumbnail-slider {
+    grid-column: 1;
+    grid-row: 1;
+    flex-direction: column;
+  }
+
+  .product--thumbnail .thumbnail-slider .thumbnail-list,
+  .product--thumbnail_slider .thumbnail-slider .thumbnail-list {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    padding: 0;
+    grid-gap: 0.8rem;
+    /* Viele Bilder sollen die Spalte nicht laenger machen als das Bild
+       daneben; ab dann wird in der Spalte gescrollt. */
+    max-height: 62rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .product--thumbnail .thumbnail-slider .thumbnail-list::-webkit-scrollbar,
+  .product--thumbnail_slider .thumbnail-slider .thumbnail-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product--thumbnail .thumbnail-list__item.slider__slide,
+  .product--thumbnail_slider .thumbnail-list__item.slider__slide {
+    width: 100%;
+  }
+
+  /* Die Pfeile der Miniaturen zeigen nach links und rechts. In einer
+     senkrechten Spalte zeigten sie in die falsche Richtung; gescrollt wird
+     hier mit dem Rad. */
+  .product--thumbnail .thumbnail-slider > .slider-button,
+  .product--thumbnail_slider .thumbnail-slider > .slider-button {
+    display: none;
+  }
+}
+
+/* Punkte im Bild (nur Telefon).
+   Eckig, nicht rund: Auf dieser Seite ist alles rechtwinklig — Variantenfelder,
+   Knoepfe, Haarlinien. Der aktive Punkt wird zum Strich, statt nur die Farbe
+   zu wechseln; so ist die Stellung auch ohne Farbunterscheidung zu sehen. */
+@media screen and (max-width: 749px) {
+  media-gallery > slider-component:not(.thumbnail-slider) {
+    position: relative;
+  }
+
+  .galerie-punkte {
+    position: absolute;
+    left: 50%;
+    bottom: 1.4rem;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    /* Ein dunkler Streifen traegt die Punkte auch ueber einem hellen Foto.
+       Kein Weiss und keine Pille — das waere eine fremde Handschrift. */
+    background: rgba(10, 10, 10, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .galerie-punkte__punkt {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 0;
+    padding: 0;
+    width: 0.6rem;
+    height: 0.3rem;
+    background: rgba(242, 238, 232, 0.42);
+    cursor: pointer;
+    transition: width 0.22s ease, background-color 0.22s ease;
+  }
+
+  .galerie-punkte__punkt.ist-hier {
+    width: 1.8rem;
+    background: #cc6070;
+  }
+
+  .galerie-punkte__punkt:focus-visible {
+    outline: 2px solid #cc6070;
+    outline-offset: 2px;
+  }
+
+  /* Pfeile und "1 / 6" treten zurueck, sobald die Punkte da sind — zwei
+     Anzeigen fuer dieselbe Sache lesen sich wie ein Fehler. */
+  .galerie-punkte ~ .slider-buttons {
+    display: none;
+  }
+}
