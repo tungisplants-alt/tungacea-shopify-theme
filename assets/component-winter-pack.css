@@ -40,22 +40,21 @@
   position: relative;
 }
 
-.winter-pack__box:checked {
-  background: rgb(var(--tungacea-accent));
-  border-color: rgb(var(--tungacea-accent));
-}
+/* Der Haken ist ein SVG im Hintergrund, kein gedrehtes Pseudoelement. Nach
+   einer Drehung um 45 Grad deckt sich die Bounding Box nicht mehr mit der
+   Form, und jede Positionsangabe waere geraten — hier zentriert
+   background-position: center exakt.
 
-.winter-pack__box:checked::after {
-  content: '';
-  position: absolute;
-  left: 0.55rem;
-  top: 0.2rem;
-  width: 0.5rem;
-  height: 1rem;
-  /* Hell, nicht dunkel: Der Haken liegt auf dem oxblutroten Kasten. */
-  border: solid #f2eee8;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+   Haken, kein Kreuz: Ein x bedeutet in Oberflaechen "schliessen" oder
+   "abwaehlen", und auf derselben Produktseite steht es bereits als
+   Kreuzungszeichen zwischen Mutter und Vater. */
+.winter-pack__box:checked {
+  background-color: rgb(var(--tungacea-accent));
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath d='M1 5.2 L4.4 8.6 L11 1.6' fill='none' stroke='%23f2eee8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1.1rem auto;
+  border-color: rgb(var(--tungacea-accent));
 }
 
 .winter-pack__box:focus-visible {
