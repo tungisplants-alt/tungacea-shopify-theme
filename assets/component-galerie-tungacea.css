@@ -145,3 +145,29 @@
     display: none;
   }
 }
+
+/* Welche Miniatur gerade dran ist.
+ *
+ * Dawn markiert sie mit einer 1px-Linie in der Vordergrundfarbe. Auf dunklen
+ * Pflanzenfotos vor dunklem Grund ist das kaum zu sehen — und die Miniaturen
+ * sind am Desktop die EINZIGE Anzeige, wo man steht, seit Pfeile und Zaehler
+ * weg sind. Deshalb hier zwei Signale statt einem: Die nicht gewaehlten
+ * treten zurueck, die gewaehlte bekommt einen Rahmen im Akzentton.
+ *
+ * #CC6070 und nicht Oxblood: Oxblood ergibt auf Dunkel gemessene 1,62:1 und
+ * waere als Linie praktisch unsichtbar. Der Akzent liegt bei 4,75:1.
+ */
+.thumbnail-list__item .thumbnail {
+  opacity: 0.55;
+  transition: opacity 0.18s ease;
+}
+
+.thumbnail-list__item .thumbnail:hover,
+.thumbnail-list__item .thumbnail[aria-current] {
+  opacity: 1;
+}
+
+.thumbnail[aria-current] {
+  box-shadow: inset 0 0 0 0.2rem #cc6070;
+  border-color: #cc6070;
+}
