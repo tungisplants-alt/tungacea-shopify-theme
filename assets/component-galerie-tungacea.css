@@ -180,6 +180,17 @@
  * der Ladereihenfolge. Kein !important: Das gewinnt zwar auch, nimmt aber
  * jeder spaeteren Regel die Chance, ohne denselben Hammer auszukommen. */
 .thumbnail-list__item .thumbnail[aria-current][aria-current] {
-  box-shadow: inset 0 0 0 0.2rem #cc6070;
+  /* outline, nicht box-shadow.
+   *
+   * Ein INNERER Schatten wird unter dem Inhalt gezeichnet, und das Bild
+   * fuellt den Knopf vollstaendig — er war damit zugedeckt und unsichtbar.
+   * Dawns weisse Linie war ein AEUSSERER Ring und deshalb zu sehen.
+   *
+   * Ein aeusserer Ring wuerde hier aber am Rand der Miniaturenspalte
+   * abgeschnitten, weil die Liste senkrecht scrollt. outline wird ueber dem
+   * Inhalt gezeichnet, und ein negativer Versatz legt ihn nach innen — damit
+   * ist er weder zugedeckt noch beschnitten. */
+  outline: 0.2rem solid #cc6070;
+  outline-offset: -0.2rem;
   border-color: #cc6070;
 }
