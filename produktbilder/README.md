@@ -36,3 +36,22 @@ verblasste; 12 px landen bei 1,5 px und halten.
   Henkel. Die Wärme liegt jetzt als Schein hinter dem Kasten.
 
 Beides fiel nur am Bild auf, nicht an der Zeichnung im Kopf.
+
+## Zweiter Anlauf: Piktogramme
+
+Die ersten drei Entwürfe (Paket, Blatt, Blatt im Paket) waren illustriert statt
+bezeichnend. Tungs Vorgabe danach: **ein Piktogramm über Isolierfolie und
+Heatpack oder ein Frostsymbol.** `_pikto.js` erzeugt vier Fassungen —
+`pikto-a` Heatpack, `pikto-b` Frostsymbol, `pikto-c` Wärme gegen Frost,
+`pikto-d` Heatpack in Isolierfolie.
+
+### Was auch hier erst am Bild auffiel
+
+- **Der Wärmebogen unter der Schneeflocke las sich als Schale.** Ein erfundenes
+  Zeichen ist schwächer als zwei geläufige übereinander: Frost oben,
+  aufsteigende Wärmewellen darunter.
+- **Die Folie als Wellenlinien las sich als Wasser** — der Beutel schwamm.
+  Luftpolster-Punkte sind das Zeichen, das jeder als Schutzverpackung erkennt.
+
+Die alten Entwürfe (`winterverpackung-*.svg`) bleiben als Verlauf liegen; keiner
+davon ist eine aktuelle Fassung.
