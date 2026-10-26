@@ -67,6 +67,14 @@
     if (!korb || typeof korb.renderContents !== 'function') return false;
     if (!antwort || !antwort.sections) return false;
     try {
+      // Diese Zeile steht in Dawn NICHT in renderContents, sondern in
+      // product-form.js. Die Klasse `is-empty` sitzt auf dem AEUSSEREN
+      // <cart-drawer>, und renderContents ersetzt nur das Innere von
+      // #CartDrawer — sie bleibt also stehen. Dann greifen
+      // `cart-drawer.is-empty .drawer__header { display: none }` und das
+      // zentrierte Leer-Raster: keine Kopfzeile, kein Inhalt, aber eine
+      // Fusszeile mit richtiger Summe. Genau dieses Bild hatte Tung.
+      korb.classList.remove('is-empty');
       korb.renderContents(antwort);
     } catch (e) {
       return false;

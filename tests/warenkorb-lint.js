@@ -40,6 +40,15 @@ const PFLICHT = [
       + '#CartDrawer-Overlay verloren war.',
   },
   {
+    name: 'is-empty wird entfernt',
+    pruef: (c) => c.includes("classList.remove('is-empty')"),
+    warum: 'nimmt dem <cart-drawer> die Klasse is-empty nicht ab. Sie sitzt '
+      + 'auf dem AEUSSEREN Element, renderContents ersetzt nur das Innere — '
+      + 'die Schublade zeigt dann Kopfzeile und Inhalt nicht, nur die '
+      + 'Fusszeile mit richtiger Summe. Dawn erledigt das in product-form.js, '
+      + 'nicht in renderContents.',
+  },
+  {
     name: 'Warenkorb-Element gesucht',
     pruef: (c) => /querySelector\(\s*['"]cart-(notification|drawer)['"]/.test(c),
     warum: 'sucht kein Warenkorb-Element (cart-drawer / cart-notification).',
