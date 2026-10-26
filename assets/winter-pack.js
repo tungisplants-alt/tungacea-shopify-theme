@@ -18,11 +18,19 @@
  * Skript jetzt auch — mit den Methoden des Warenkorb-Elements selbst, damit
  * hier keine zweite Vorstellung davon entsteht, was ein Abschnitt ist.
  *
- * Absichtlich NICHT uebernommen: Dawns `renderContents` ruft am Ende
- * `open()`. Fuer eine Zusatzleistung von 3,90 € waere es zu viel, bei jedem
- * Klick die Schublade aufzureissen — zumal mehrfaches Hinzufuegen erlaubt ist
- * und sie dann mehrfach aufspringt. Der Zaehler und der Knopf melden; die
- * Schublade ist richtig, sobald sie jemand oeffnet.
+ * Erst habe ich Dawns `renderContents` NICHT benutzt, weil es am Ende
+ * `open()` ruft und ich die Schublade nicht bei jedem Klick aufreissen
+ * wollte. Die Abschnitte habe ich stattdessen selbst eingesetzt — und damit
+ * Dawns Schliessen-Logik mit herausgeworfen: `renderContents` haengt nach dem
+ * innerHTML-Tausch den Klick auf `#CartDrawer-Overlay` eigens wieder an, weil
+ * der Tausch ihn zerstoert. Tungs Schublade liess sich danach nicht mehr
+ * schliessen.
+ *
+ * Lehre: Wer fremdes Markup austauscht, uebernimmt dessen Ereignisse. Es gibt
+ * genau eine Stelle, die weiss, was danach wieder anzuhaengen ist — die
+ * Methode des Elements selbst. Die Schublade springt jetzt auf wie beim
+ * normalen Kauf; das ist der Preis dafuer, und er ist kleiner als eine
+ * Schublade, die sich nicht schliessen laesst.
  */
 (function () {
   'use strict';
@@ -54,25 +62,16 @@
   }
 
   function abschnitteEinsetzen(antwort) {
-    if (!korb || !antwort || !antwort.sections) return false;
-    var eingesetzt = false;
+    // Dawns eigene Methode. Sie setzt die Abschnitte ein, nimmt der Schublade
+    // die Leer-Klasse, haengt den Overlay-Klick wieder an und oeffnet.
+    if (!korb || typeof korb.renderContents !== 'function') return false;
+    if (!antwort || !antwort.sections) return false;
     try {
-      // Wie Dawn: War der Warenkorb leer, traegt die Schublade noch die
-      // Leer-Klasse und bliebe sonst leer aussehen.
-      var innen = korb.querySelector('.drawer__inner');
-      if (innen) innen.classList.remove('is-empty');
-
-      korb.getSectionsToRender().forEach(function (a) {
-        var ziel = a.selector ? document.querySelector(a.selector) : document.getElementById(a.id);
-        var html = antwort.sections[a.id];
-        if (!ziel || !html) return;
-        ziel.innerHTML = korb.getSectionInnerHTML(html, a.selector);
-        eingesetzt = true;
-      });
+      korb.renderContents(antwort);
     } catch (e) {
       return false;
     }
-    return eingesetzt;
+    return true;
   }
 
   function blaseNachholen() {
@@ -99,6 +98,8 @@
     if (knopf.disabled) return;
     knopf.disabled = true;
     if (uhr) { clearTimeout(uhr); uhr = null; }
+
+    if (korb && typeof korb.setActiveElement === 'function') korb.setActiveElement(knopf);
 
     var koerper = { items: [{ id: id, quantity: 1 }] };
     var abschnitte = abschnitteBestellen();

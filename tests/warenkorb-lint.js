@@ -31,10 +31,13 @@ const PFLICHT = [
       + 'jemand neu laedt.',
   },
   {
-    name: 'getSectionInnerHTML des Warenkorb-Elements',
-    pruef: (c) => /\.getSectionInnerHTML\s*\(/.test(c),
-    warum: 'setzt die Abschnitte nicht mit der Methode des Warenkorb-Elements '
-      + 'ein; ein eigener Parser trifft den falschen Selektor.',
+    name: 'renderContents des Warenkorb-Elements',
+    pruef: (c) => c.includes('.renderContents('),
+    warum: 'setzt die Abschnitte nicht mit renderContents() des '
+      + 'Warenkorb-Elements ein. Wer das Markup selbst austauscht, wirft '
+      + 'dessen Ereignisse mit heraus — am 26. Oktober liess sich die '
+      + 'Schublade danach nicht mehr schliessen, weil der Klick auf '
+      + '#CartDrawer-Overlay verloren war.',
   },
   {
     name: 'Warenkorb-Element gesucht',
