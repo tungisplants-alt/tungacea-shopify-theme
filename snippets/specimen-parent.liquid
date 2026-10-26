@@ -35,17 +35,26 @@
     Saemling aus dieser Kreuzung stammt; dieselbe Aussage an beiden Eltern zu
     wiederholen behauptet zweimal eine Abstammung aus je einer Pflanze.
   endcomment
+  comment
+    Bei zwei Eltern bleibt die Zeile ganz weg. Der Leitsatz sagt schon, dass
+    der Saemling aus dieser Kreuzung stammt; dieselbe Aussage an beiden Eltern
+    zu wiederholen behauptet zweimal eine Abstammung aus je einer Pflanze. Und
+    zwei Bloecke nebeneinander in einer 409px schmalen Spalte vertragen keine
+    Zeile, die nichts Neues sagt — wer mehr will, hat den Knopf ins Archiv.
+  endcomment
   assign p_wo = ''
-  if rolle == 'einzeln' and thing_word != blank
-    if besitzer_name != blank
-      assign p_wo = 'products.product.specimen.mother_from_at' | t: thing: thing_word, who: besitzer_name
+  if rolle == 'einzeln'
+    if thing_word != blank
+      if besitzer_name != blank
+        assign p_wo = 'products.product.specimen.mother_from_at' | t: thing: thing_word, who: besitzer_name
+      else
+        assign p_wo = 'products.product.specimen.mother_from_own' | t: thing: thing_word
+      endif
+    elsif besitzer_name != blank
+      assign p_wo = 'products.product.specimen.mother_at' | t: who: besitzer_name
     else
-      assign p_wo = 'products.product.specimen.mother_from_own' | t: thing: thing_word
+      assign p_wo = 'products.product.specimen.mother_own' | t
     endif
-  elsif besitzer_name != blank
-    assign p_wo = 'products.product.specimen.mother_at' | t: who: besitzer_name
-  else
-    assign p_wo = 'products.product.specimen.mother_own' | t
   endif
 
   assign p_label = 'products.product.specimen.mother' | t
@@ -118,7 +127,13 @@
     {%- endcomment -%}
     <p class="specimen-passport__mother-name">
       {{- p_name | escape -}}
-      {%- if eintrag.mutter_id.value != blank %} <span class="specimen-passport__mother-id">{{ eintrag.mutter_id.value | escape }}</span>{% endif -%}
+      {%- comment -%}
+        In der Kreuzung bleibt die Nummer weg: Das angebotene Exemplar traegt
+        seine eigene ID weiter oben, und zwei weitere Nummern daneben lesen
+        sich wie eine Aktenzeichenzeile. Wer sie braucht, findet sie hinter
+        dem Knopf im Archiv.
+      {%- endcomment -%}
+      {%- if rolle == 'einzeln' and eintrag.mutter_id.value != blank %} <span class="specimen-passport__mother-id">{{ eintrag.mutter_id.value | escape }}</span>{% endif -%}
     </p>
       {%- if p_wo != blank -%}
         <p class="specimen-passport__mother-where">{{ p_wo }}</p>

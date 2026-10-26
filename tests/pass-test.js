@@ -79,6 +79,23 @@ const faelle = [
                'Mehr über die Mutterpflanze', 'Mehr über die Vaterpflanze'],
     verboten: ['Generation F2', 'Generation F1', 'Ree Gardens', 'Tropical Grower'] },
 
+  // In der Kreuzung bleiben Exemplar-ID und Herkunftszeile der Eltern weg.
+  // Zwei Bloecke nebeneinander in einer 409px schmalen Spalte vertragen keine
+  // Zeile, die nichts Neues sagt; das angebotene Exemplar traegt seine eigene
+  // ID weiter oben, und alles Weitere steht hinter dem Knopf im Archiv.
+  // Beide Eltern tragen hier absichtlich Nummer UND Besitzer — erschiene auch
+  // nur eines davon, waere die Pruefung rot.
+  { name: 'Zwei Eltern — keine Exemplar-ID und keine Herkunftszeile am Elternteil',
+    mf: mf({ lieferumfang: 'Sämling aus dieser Kreuzung', stadium: 'Sämling',
+             specimen_id: 'TA-1014',
+             mutterpflanze: mutter('Anthurium papillilaminum', null, null, FOTOS, undefined, '/pages/pflanzen/papillilaminum',
+                                   { mutter_id: 'TA-1042' }),
+             vaterpflanze: mutter('Anthurium dressleri', ree, null, FOTOS, undefined, '/pages/pflanzen/dressleri',
+                                  { mutter_id: 'TA-1043' }) }),
+    erwartet: ['Anthurium papillilaminum', 'Anthurium dressleri', 'TA-1014'],
+    verboten: ['specimen-passport__mother-id', 'TA-1042', 'TA-1043',
+               'aus meiner Sammlung', 'specimen-passport__mother-where'] },
+
   // Gegenstueck: ein Elternteil, der bisherige Weg. Hier MUSS geerbt werden.
   { name: 'Saemling mit einem Elternteil — Ableitung greift weiter',
     mf: mf({ lieferumfang: 'Sämling aus dieser Kreuzung', stadium: 'Sämling',
