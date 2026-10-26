@@ -193,4 +193,14 @@
   outline: 0.2rem solid #cc6070;
   outline-offset: -0.2rem;
   border-color: #cc6070;
+  /* Dawns weisser Ring liegt auf derselben Miniatur und wurde von dieser
+     Regel nicht angefasst, solange hier kein box-shadow stand — rot UND
+     weiss zugleich. Eine Korrektur hat zwei Haelften: das Neue setzen und
+     das Alte abraeumen.
+
+     Nebenbei widerlegt das meine Probe: Dort war ein aeusserer Ring in der
+     scrollenden Spalte beschnitten. Auf der echten Seite ist er sichtbar —
+     die Probe traf die Umgebung also nicht genau. Der outline bleibt
+     trotzdem, er ist in beiden Faellen zu sehen. */
+  box-shadow: none;
 }
