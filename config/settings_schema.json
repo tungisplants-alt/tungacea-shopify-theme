@@ -1487,7 +1487,7 @@
     ]
   },
   {
-    "name": "WhatsApp-Kontakt",
+    "name": "Kontakt-Knopf",
     "settings": [
       {
         "type": "header",
@@ -1503,8 +1503,15 @@
         "type": "text",
         "id": "whatsapp_nummer",
         "label": "WhatsApp-Nummer",
-        "info": "Mit Ländervorwahl, zum Beispiel +49 179 1234567. Leer lassen blendet den Knopf aus.",
+        "info": "Mit Ländervorwahl, zum Beispiel +49 179 1234567. Leer lassen blendet den WhatsApp-Weg aus.",
         "default": "+49 179 1627287"
+      },
+      {
+        "type": "checkbox",
+        "id": "kontakt_mail_aktiv",
+        "label": "E-Mail-Formular anbieten",
+        "info": "Die Nachricht geht an die E-Mail-Adresse deines Shops. Sie steht nirgends auf der Seite.",
+        "default": true
       }
     ]
   }

@@ -723,7 +723,17 @@
   },
   "whatsapp_contact": {
     "label": "Schreib mir",
-    "aria_label": "Schreib mir per WhatsApp",
+    "intro": "Du schreibst direkt an mich.",
+    "whatsapp_label": "Per WhatsApp",
+    "mail_label": "Per E-Mail",
+    "mail_name": "Dein Name (optional)",
+    "mail_email": "Deine E-Mail-Adresse",
+    "mail_message": "Deine Nachricht",
+    "mail_send": "Senden",
+    "mail_success": "Danke, deine Nachricht ist bei mir angekommen.",
+    "mail_error": "Das hat nicht geklappt. Prüfe bitte deine E-Mail-Adresse und versuch es noch einmal.",
+    "mail_privacy": "Mit dem Absenden schickst du mir deinen Namen, deine E-Mail-Adresse und deine Nachricht. Mehr dazu in der",
+    "mail_privacy_link": "Datenschutzerklärung",
     "message": "Hallo Tung, ich habe eine Frage zu Tungacea.",
     "message_product": "Hallo Tung, ich habe eine Frage zu {{ name }}."
   }

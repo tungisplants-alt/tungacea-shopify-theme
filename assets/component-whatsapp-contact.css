@@ -1,16 +1,21 @@
-/* Schreib-mir-Knopf unten rechts.
+/* Schreib-mir-Knopf unten rechts, mit aufklappbarer Karte.
  *
  * Eine dunkle Flaeche mit Haarlinie und dem Akzentrot nur im Symbol, wie die
  * Punkte unter der Galerie. Kein WhatsApp-Gruen: Der Knopf soll zur dunklen
  * Galerie passen und nicht wie ein fremdes Widget wirken.
  *
  * Am Telefon nur das Symbol (48 px, die Mindestgroesse fuer einen Finger), ab
- * Tablet mit Text. */
+ * Tablet mit Text. Aufgeklappt wird mit <details>; die Karte sitzt ueber dem
+ * Knopf und waechst nach oben. */
 .whatsapp-contact {
   position: fixed;
   right: 1.6rem;
   bottom: calc(1.6rem + env(safe-area-inset-bottom, 0px));
   z-index: 4;
+  font-size: 1.2rem;
+}
+
+.whatsapp-contact__toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -19,20 +24,36 @@
   height: 4.8rem;
   padding: 0 1.3rem;
   box-sizing: border-box;
+  list-style: none;
+  cursor: pointer;
   color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
   background: rgba(10, 10, 10, 0.82);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
-  text-decoration: none;
-  font-size: 1.2rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   transition: border-color 0.25s var(--tungacea-ease, ease), color 0.25s var(--tungacea-ease, ease);
 }
 
+.whatsapp-contact__toggle::-webkit-details-marker {
+  display: none;
+}
+
 .whatsapp-contact__icon {
   flex: none;
+  display: block;
+}
+
+.whatsapp-contact__icon--close {
+  display: none;
+}
+
+.whatsapp-contact[open] .whatsapp-contact__icon--chat {
+  display: none;
+}
+
+.whatsapp-contact[open] .whatsapp-contact__icon--close {
   display: block;
 }
 
@@ -42,15 +63,163 @@
   line-height: 1;
 }
 
-.whatsapp-contact:hover {
+.whatsapp-contact__toggle:hover {
   border-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.7);
 }
 
-.whatsapp-contact:hover .whatsapp-contact__text {
+.whatsapp-contact__toggle:hover .whatsapp-contact__text {
   color: rgba(var(--color-foreground, 242, 238, 232), 1);
 }
 
-.whatsapp-contact:focus-visible {
+/* Die Karte. Nach oben, damit der Knopf an seinem Platz bleibt. Auf kleinen
+   Bildschirmen hoechstens so hoch wie der Platz, mit eigenem Scrollen: Die
+   Tastatur nimmt am Telefon die untere Haelfte. */
+.whatsapp-contact__panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 1rem);
+  box-sizing: border-box;
+  width: min(34rem, calc(100vw - 3.2rem));
+  max-height: calc(100vh - 12rem);
+  max-height: calc(100dvh - 12rem);
+  overflow-y: auto;
+  padding: 1.8rem;
+  color: rgba(var(--color-foreground, 242, 238, 232), 0.92);
+  background: rgba(10, 10, 10, 0.97);
+  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  font-size: 1.4rem;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.whatsapp-contact__intro {
+  margin: 0 0 1.4rem;
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+}
+
+/* Die beiden Wege und der Senden-Knopf sehen gleich aus. */
+.whatsapp-contact__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 1.2rem 1.4rem;
+  list-style: none;
+  cursor: pointer;
+  color: rgba(var(--color-foreground, 242, 238, 232), 0.92);
+  background: transparent;
+  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  font: inherit;
+  font-size: 1.2rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: border-color 0.25s var(--tungacea-ease, ease);
+}
+
+.whatsapp-contact__option::-webkit-details-marker {
+  display: none;
+}
+
+.whatsapp-contact__option:hover {
+  border-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.7);
+}
+
+.whatsapp-contact__panel > .whatsapp-contact__option,
+.whatsapp-contact__mail {
+  margin-top: 0.8rem;
+}
+
+.whatsapp-contact__option--mail::after {
+  content: '+';
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  font-size: 1.6rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.whatsapp-contact__mail[open] > .whatsapp-contact__option--mail::after {
+  content: '\2013';
+}
+
+.whatsapp-contact__form {
+  margin: 1.2rem 0 0;
+}
+
+.whatsapp-contact__label {
+  display: block;
+  margin: 1.2rem 0 0.5rem;
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.whatsapp-contact__label:first-child {
+  margin-top: 0;
+}
+
+/* 16 px in den Feldern: Kleiner zoomt iOS beim Antippen die ganze Seite. */
+.whatsapp-contact__field {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 1rem 1.2rem;
+  color: rgba(var(--color-foreground, 242, 238, 232), 1);
+  background: rgba(242, 238, 232, 0.04);
+  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  border-radius: 0;
+  font: inherit;
+  font-size: 1.6rem;
+  letter-spacing: normal;
+  text-transform: none;
+  transition: border-color 0.25s var(--tungacea-ease, ease);
+}
+
+.whatsapp-contact__field:focus {
+  outline: none;
+  border-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+}
+
+.whatsapp-contact__field--text {
+  min-height: 11rem;
+  resize: vertical;
+}
+
+.whatsapp-contact__send {
+  margin-top: 1.4rem;
+  border-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.55);
+}
+
+.whatsapp-contact__status {
+  margin: 0 0 1.2rem;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+}
+
+.whatsapp-contact__status--fehler {
+  border-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.7);
+}
+
+.whatsapp-contact__privacy {
+  margin: 1.2rem 0 0;
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.whatsapp-contact__privacy a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.whatsapp-contact__toggle:focus-visible,
+.whatsapp-contact__option:focus-visible,
+.whatsapp-contact__privacy a:focus-visible {
   outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
   outline-offset: 3px;
   box-shadow: none;
@@ -60,6 +229,9 @@
   .whatsapp-contact {
     right: 2.4rem;
     bottom: 2.4rem;
+  }
+
+  .whatsapp-contact__toggle {
     padding: 0 1.8rem;
   }
 
@@ -71,11 +243,13 @@
 /* Mit dem Finger bleibt nach dem Zurueckkehren kein Rahmen und kein Schein
    stehen, wie bei den Fotos im Archiv. Am PC bleibt der Fokus sichtbar. */
 @media (hover: none) and (pointer: coarse) {
-  .whatsapp-contact {
+  .whatsapp-contact__toggle,
+  .whatsapp-contact__option {
     -webkit-tap-highlight-color: transparent;
   }
 
-  .whatsapp-contact:focus-visible {
+  .whatsapp-contact__toggle:focus-visible,
+  .whatsapp-contact__option:focus-visible {
     outline: none;
     box-shadow: none;
   }
