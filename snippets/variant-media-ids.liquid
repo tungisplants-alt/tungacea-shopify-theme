@@ -1,13 +1,15 @@
 {% comment %}
   Tungacea — Bilder einer Variante.
 
-  Shopify erlaubt pro Variante nur ein Bild. Wer mehrere braucht, waehlt sie im
-  Variantenfeld "Variantenbilder" (custom.variantenbilder, Liste von Dateien).
-  Dieses Snippet gibt die IDs der gewaehlten Bilder aus, in der Reihenfolge der
-  Auswahl, als ",id1,id2,". Das erste ist das Hauptbild der Variante.
+  Shopify erlaubt pro Variante nur ein Bild. Wer mehrere braucht, waehlt die
+  weiteren im Variantenfeld "Variantenbilder" (custom.variantenbilder, Liste von
+  Dateien). Dieses Snippet gibt die IDs aus, als ",id1,id2,". Zuerst kommt das
+  normale Variantenbild, falls die Variante eins hat, danach die Bilder aus dem
+  Feld in der Reihenfolge der Auswahl. Das erste ist das Hauptbild.
 
   Leer heisst: kein Feld oder kein Treffer. Dann gilt das alte Verhalten, die
-  Galerie zeigt die Bilder wie bisher.
+  Galerie zeigt die Bilder wie bisher. Ein Variantenbild allein reicht nicht,
+  sonst zeigte jede Variante mit eigenem Bild nur noch dieses eine.
 
   Gesucht wird in product.media, nicht in der Dateiliste. Ein Bild, das nicht
   zum Produkt gehoert, wird nie gezeigt. Zuerst zaehlt die ID, ersatzweise die
@@ -43,6 +45,12 @@
     endfor
   endfor
   if treffer != ','
+    assign eigenes_bild = aktuelle_variante.featured_media
+    if eigenes_bild.id != blank
+      assign eigene_marke = eigenes_bild.id | prepend: ',' | append: ','
+      assign rest = treffer | replace: eigene_marke, ','
+      assign treffer = ',' | append: eigenes_bild.id | append: rest
+    endif
     echo treffer
   endif
 -%}

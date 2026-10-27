@@ -160,6 +160,41 @@ function pruefe(name, ist, soll) {
     pruefe('doppelt gewaehlt: Zaehler 2', zahl(html, /slider-counter--total">(\d+)</), '2');
   }
 
+  // ---- Das normale Variantenbild steht vorn --------------------------------
+  {
+    const html = await lauf('product-media-gallery', variante([datei(BILDER.A), datei(BILDER.B)], BILDER.C), {});
+    pruefe('Variantenbild C + Feld A,B: C zuerst, dann A, B', ids(html, 'data-media-id'), [13, 11, 12]);
+    pruefe('Variantenbild + Feld: Zaehler zaehlt alle drei', zahl(html, /slider-counter--total">(\d+)</), '3');
+    pruefe('Variantenbild + Feld: drei Punkte', (html.match(/galerie-punkte__punkt/g) || []).length, 3);
+    pruefe('Variantenbild + Feld: Vorschaubilder gleich', ids(html, 'data-target'), [13, 11, 12]);
+    pruefe('Variantenbild + Feld: Marker gesetzt', /data-variant-media/.test(html), true);
+  }
+  {
+    const html = await lauf('product-media-gallery', variante([datei(BILDER.A), datei(BILDER.B)], BILDER.B), {});
+    pruefe('Variantenbild steht schon im Feld: nach vorn, nicht doppelt', ids(html, 'data-media-id'), [12, 11]);
+  }
+  {
+    const html = await lauf('product-media-gallery', variante([datei(BILDER.A)], BILDER.A), {});
+    pruefe('Variantenbild ist das einzige Feldbild: einmal', ids(html, 'data-media-id'), [11]);
+  }
+  {
+    // Ein Variantenbild allein macht noch keinen Variantenmodus: sonst zeigte jede
+    // Variante mit eigenem Bild nur noch dieses eine.
+    const html = await lauf('product-media-gallery', variante(null, BILDER.C), {});
+    pruefe('nur Variantenbild, kein Feld: altes Verhalten, vier Bilder', ids(html, 'data-media-id').slice().sort(), [11, 12, 13, 14]);
+    pruefe('nur Variantenbild, kein Feld: kein Marker', /data-variant-media/.test(html), false);
+  }
+  {
+    const fremd = { id: 55555, src: 'https://cdn.example/files/fremd.jpg?v=1' };
+    const html = await lauf('product-media-gallery', variante([fremd], BILDER.C), {});
+    pruefe('Variantenbild + nur fremdes Feldbild: altes Verhalten', ids(html, 'data-media-id').slice().sort(), [11, 12, 13, 14]);
+  }
+  {
+    const v = variante([datei(BILDER.A), datei(BILDER.B)], BILDER.C);
+    const m = ids(await lauf('product-media-modal', v, {}), 'data-modal-bild');
+    pruefe('Vollbild: Variantenbild zuerst, dann das Feld', m, [13, 11, 12]);
+  }
+
   // ---- Die alte Variantenregel darf die Auswahl nicht verstecken ----------
   {
     // hide_variants blendet Bilder aus, die an eine Variante geheftet sind.
