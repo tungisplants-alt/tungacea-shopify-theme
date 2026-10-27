@@ -204,3 +204,30 @@
      trotzdem, er ist in beiden Faellen zu sehen. */
   box-shadow: none;
 }
+
+/* Festes 4:5 am Telefon.
+ *
+ * Dawn rechnet die Hoehe aus dem NATUERLICHEN Seitenverhaeltnis jedes Bildes
+ * (--ratio-percent). Bei gemischten Formaten wechselt der Wagen damit von
+ * Bild zu Bild die Hoehe, und beim Wischen springt die halbe Seite.
+ *
+ * `contain` statt `cover`: Das entspricht Tungs Einstellung media_fit und
+ * schneidet nichts ab. Was neben einem schmalen Hochformat uebrig bleibt,
+ * verschwindet in der Seitenfarbe.
+ *
+ * Der durchsichtige Hintergrund ist hier nur eine Absicherung: Dawn setzt
+ * `media--transparent` bereits in der Auszeichnung (dreimal belegt in
+ * snippets/product-thumbnail.liquid). Faellt die Klasse irgendwann weg,
+ * legt die Grundregel `rgba(var(--color-foreground), .1)` einen hellen
+ * Kasten unter das Hochformat.
+ */
+@media screen and (max-width: 749px) {
+  .product__media-item .product-media-container .media {
+    padding-top: 125%;
+    background-color: transparent;
+  }
+
+  .product__media-item .product-media-container .media img {
+    object-fit: contain;
+  }
+}
