@@ -1,0 +1,30 @@
+{% comment %}
+  Tungacea — Diagnose fuer die Variantenbilder.
+
+  Zeigt unter der Galerie, was die Variante gelesen hat und welche
+  Produktbilder dazu gefunden wurden. Erscheint nur in einem Theme, das nicht
+  veroeffentlicht ist. Im Live-Theme (theme.role main) bleibt es leer.
+
+  Annahmen:
+  - product: {Object} Product liquid object (Pflicht)
+  - variant_media_ids: {String} Ausgabe von variant-media-ids
+{% endcomment %}
+{%- if theme.role != blank and theme.role != 'main' -%}
+  {%- assign aktuelle_variante = product.selected_or_first_available_variant -%}
+  {%- assign dateien = aktuelle_variante.metafields.custom.variantenbilder.value -%}
+  <pre style="white-space: pre-wrap; font-size: 11px; line-height: 1.4; padding: 8px; margin-top: 12px; background: #fff; color: #000; border: 1px solid #c00;">
+Diagnose Variantenbilder (nur im Test-Theme)
+Variante: {{ aktuelle_variante.title }} ({{ aktuelle_variante.id }})
+Feld gesetzt: {% if aktuelle_variante.metafields.custom.variantenbilder != blank %}ja{% else %}nein{% endif %}
+Dateien im Feld: {{ dateien.size | default: 0 }}
+{%- for datei in dateien %}
+  Datei {{ forloop.index }}: id={{ datei.id }} | typ={{ datei.media_type }} | src={{ datei.src | split: '?' | first }}
+{%- endfor %}
+Gefundene Produktbilder (IDs): {{ variant_media_ids | default: 'keine' }}
+Produktbilder gesamt: {{ product.media.size }}
+{%- for medium in product.media %}
+  {%- assign marke = medium.id | prepend: ',' | append: ',' %}
+  Produktbild {{ forloop.index }}: id={{ medium.id }} | src={{ medium.preview_image.src | split: '?' | first }} | {% if variant_media_ids contains marke %}GEFUNDEN{% else %}-{% endif %}
+{%- endfor %}
+</pre>
+{%- endif -%}

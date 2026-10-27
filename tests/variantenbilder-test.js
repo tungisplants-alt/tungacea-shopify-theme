@@ -75,7 +75,7 @@ async function lauf(snippet, v, einstellungen, extra) {
       einstellungen
     ),
   };
-  const globals = { product, section, settings: { page_width: 1200, animations_reveal_on_scroll: false } };
+  const globals = { product, section, theme: (extra && extra.theme) || { role: 'main' }, settings: { page_width: 1200, animations_reveal_on_scroll: false } };
   const variant_images = Object.assign([], (extra && extra.variant_images) || []);
   return engine.renderFile(snippet, { variant_images }, { globals });
 }
@@ -180,6 +180,18 @@ function pruefe(name, ist, soll) {
   {
     const html = await lauf('product-media-gallery', variante([datei(BILDER.A), datei(BILDER.B)]), { gallery_layout: 'stacked' });
     pruefe('gestapelt: zwei Bilder', ids(html, 'data-media-id').slice().sort(), [11, 12]);
+  }
+
+  // ---- Diagnose-Anzeige ---------------------------------------------------
+  {
+    const v = variante([datei(BILDER.B), { id: 55555, src: 'https://cdn.example/files/fremd.jpg?v=1' }]);
+    const live = await lauf('product-media-gallery', v, {});
+    pruefe('Diagnose: im Live-Theme unsichtbar', /Diagnose Variantenbilder/.test(live), false);
+    const test = await lauf('product-media-gallery', v, {}, { theme: { role: 'unpublished' } });
+    pruefe('Diagnose: im Test-Theme sichtbar', /Diagnose Variantenbilder/.test(test), true);
+    pruefe('Diagnose: nennt das gefundene Produktbild', /Produktbild 2: id=12 .* GEFUNDEN/.test(test), true);
+    pruefe('Diagnose: nennt das fremde Bild als Datei', /Datei 2: id=55555/.test(test), true);
+    pruefe('Diagnose: stoert die Galerie nicht', ids(test, 'data-media-id'), ids(live, 'data-media-id'));
   }
 
   // ---- Vollbild ----------------------------------------------------------
