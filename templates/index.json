@@ -205,7 +205,7 @@
             "filter_custom_tags": "",
             "min_star_rating": "inherit",
             "show_review_media": true,
-            "max_reviews": 5,
+            "max_reviews": 10,
             "review_length": "medium",
             "text_size": "medium",
             "max_width": 1100,
@@ -213,11 +213,11 @@
             "arrows_visibility": "always_shown",
             "transition_speed": 5,
             "corner_styling": "inherit",
-            "text_color": "#F2EEE8",
-            "card_color": "#1F1E22",
-            "stars_color": "#CC6070",
-            "arrows_color": "#F2EEE8",
-            "arrows_background_color": "#1F1E22"
+            "text_color": "#f2eee8",
+            "card_color": "#1f1e22",
+            "stars_color": "#cc6070",
+            "arrows_color": "#f2eee8",
+            "arrows_background_color": "#1f1e22"
           }
         }
       },

@@ -117,8 +117,8 @@
       "settings": {
         "heading": "Aus demselben Archiv",
         "heading_size": "h1",
-        "products_to_show": 2,
-        "columns_desktop": 4,
+        "products_to_show": 6,
+        "columns_desktop": 6,
         "columns_mobile": "2",
         "color_scheme": "scheme-1",
         "image_ratio": "portrait",
