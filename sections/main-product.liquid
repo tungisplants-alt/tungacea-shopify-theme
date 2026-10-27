@@ -2519,38 +2519,3 @@
   ]
 }
 {% endschema %}
-class VariantImagesFilter {
-  constructor() {
-    this.variantPicker = document.querySelector('variant-radios') || document.querySelector('variant-selects');
-    if (!this.variantPicker) return;
-    this.variantPicker.addEventListener('change', () => this.filterImages());
-    this.filterImages();
-  }
-
-  filterImages() {
-    const currentVariant = this.variantPicker.currentVariant;
-    if (!currentVariant || !currentVariant.options) return;
-    
-    // Holt den Namen der ausgewählten Option (z.B. die Farbe)
-    const selectedValue = currentVariant.options[0].toLowerCase(); 
-    const mediaItems = document.querySelectorAll('[data-shopify-featured-design="true"] .product__media-item, .product__media-list .product__media-item');
-
-    mediaItems.forEach(item => {
-      const img = item.querySelector('img');
-      if (!img) return;
-      
-      const altText = img.getAttribute('alt') ? img.getAttribute('alt').toLowerCase() : '';
-      
-      // Zeigt das Bild, wenn der Alt-Text der Variante entspricht oder leer ist (für allgemeine Bilder)
-      if (altText === selectedValue || altText === '') {
-        item.style.display = 'block';
-      } else {
-        item.style.display = 'none';
-      }
-    });
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  new VariantImagesFilter();
-});
