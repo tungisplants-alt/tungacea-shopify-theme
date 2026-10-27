@@ -49,6 +49,16 @@
   if section.index == 1
     assign fetch_priority = 'high'
   endif
+
+  assign banner_image_alt = section.settings.image.alt
+  if banner_image_alt == blank
+    for block in section.blocks
+      if block.type == 'heading' and block.settings.heading != blank
+        assign banner_image_alt = block.settings.heading | strip_html | strip
+        break
+      endif
+    endfor
+  endif
 -%}
 
 <div
@@ -76,6 +86,7 @@
         | image_tag:
           width: section.settings.image.width,
           height: image_height,
+          alt: banner_image_alt,
           class: image_class,
           sizes: sizes,
           widths: widths,
@@ -84,7 +95,15 @@
     </div>
   {%- elsif section.settings.image_2 == blank -%}
     <div class="banner__media media{% if section.settings.image == blank and section.settings.image_2 == blank %} placeholder{% endif %}{% if section.settings.image_2 != blank %} banner__media-half{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      <img
+        src="{{ 'tungacea-hero.jpg' | asset_url }}"
+        alt="{{ shop.name | escape }}"
+        width="1080"
+        height="810"
+        loading="eager"
+        fetchpriority="high"
+        class="banner__media-image tungacea-default-media"
+      >
     </div>
   {%- endif -%}
   {%- if section.settings.image_2 != blank -%}
@@ -108,6 +127,7 @@
         | image_tag:
           width: section.settings.image_2.width,
           height: image_height_2,
+          alt: banner_image_alt,
           class: image_class_2,
           sizes: sizes,
           widths: widths,
@@ -120,12 +140,21 @@
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'heading' -%}
-            <h2
-              class="banner__heading inline-richtext {{ block.settings.heading_size }}"
-              {{ block.shopify_attributes }}
-            >
-              {{ block.settings.heading }}
-            </h2>
+            {%- if request.page_type == 'index' -%}
+              <h1
+                class="banner__heading inline-richtext {{ block.settings.heading_size }}"
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.heading }}
+              </h1>
+            {%- else -%}
+              <h2
+                class="banner__heading inline-richtext {{ block.settings.heading_size }}"
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.heading }}
+              </h2>
+            {%- endif -%}
           {%- when 'text' -%}
             <div class="banner__text rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
               <p>{{ block.settings.text }}</p>

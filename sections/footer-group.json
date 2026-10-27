@@ -1,16 +1,43 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
     "footer": {
       "type": "footer",
-      "blocks": {},
-      "block_order": [],
+      "blocks": {
+        "footer_brand": {
+          "type": "text",
+          "settings": {
+            "heading": "TUNGACEA / 01",
+            "subtext": "<p><strong>Seltene Anthurien · lebende Kunst.</strong><br/>Von mir kultiviert und aus Deutschland versendet.</p>"
+          }
+        },
+        "footer_explore": {
+          "type": "link_list",
+          "settings": {
+            "heading": "ENTDECKEN",
+            "menu": "main-menu"
+          }
+        }
+      },
+      "block_order": [
+        "footer_brand",
+        "footer_explore"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
-        "newsletter_enable": true,
-        "newsletter_heading": "Subscribe to our emails",
-        "enable_follow_on_shop": true,
+        "newsletter_enable": false,
+        "newsletter_heading": "Abonniere unsere E-Mails",
+        "enable_follow_on_shop": false,
         "show_social": true,
         "enable_country_selector": true,
         "enable_language_selector": true,

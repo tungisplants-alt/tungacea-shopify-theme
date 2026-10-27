@@ -1,8 +1,17 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "password_page": {
       "login_form_heading": "Shop mit Passwort betreten:",
-      "login_password_button": "Mit Passwort betreten",
+      "login_password_button": "Mit Zugangscode betreten",
       "login_form_password_label": "Passwort",
       "login_form_password_placeholder": "Dein Passwort",
       "login_form_error": "Falsches Passwort!",
@@ -62,6 +71,10 @@
     "success": "Danke für deine Anmeldung",
     "button_label": "Abonnieren"
   },
+  "collector_access": {
+    "email_placeholder": "E-Mail-Adresse",
+    "button_label": "Zugang anfragen"
+  },
   "accessibility": {
     "skip_to_text": "Direkt zum Inhalt",
     "close": "Schließen",
@@ -109,6 +122,81 @@
       "add_to_cart": "In den Warenkorb legen",
       "description": "Beschreibung",
       "on_sale": "Sale",
+      "specimen_status": {
+        "available": "Verfügbar",
+        "sold": "Verkauft"
+      },
+      "specimen_flags": {
+        "new": "Neu",
+        "unicorn": "Unicorn",
+        "rare": "Selten",
+        "sale": "Sale"
+      },
+      "winterpack": {
+        "title": "Winterverpackung",
+        "hint": "Heatpack und Isolierfolie. Unter 10 °C empfohlen.",
+        "add": "Hinzufügen",
+        "added": "Hinzugefügt"
+      },
+      "specimen": {
+        "date_format": "%-d.%-m.%Y",
+        "photographed_on": "Fotografiert am {{ date }}.",
+        "delivery_exact": "Du erhältst genau dieses Exemplar.",
+        "delivery_cutting_mother": "Du erhältst ein Cutting der unten gezeigten Mutterpflanze.",
+        "delivery_cutting_plain": "Du erhältst ein Cutting.",
+        "delivery_seedling_cross": "Du erhältst einen Sämling aus der unten gezeigten Kreuzung.",
+        "delivery_seedling_plain": "Du erhältst einen Sämling aus dieser Kreuzung.",
+        "thing_exact": "Exemplar",
+        "thing_cutting": "Cutting",
+        "thing_seedling": "Sämling",
+        "mother_from_at": "Dein {{ thing }} stammt von dieser Pflanze bei {{ who }}.",
+        "mother_from_own": "Dein {{ thing }} stammt von dieser Pflanze aus meiner Sammlung.",
+        "rooting_none": "Unbewurzelt",
+        "rooting_fresh": "Frisch bewurzelt",
+        "rooting_established": "Gut bewurzelt",
+        "stage_cutting": "Steckling",
+        "stage_seedling": "Sämling",
+        "stage_young": "Jungpflanze",
+        "stage_established": "Etabliert",
+        "stage_mother": "Mutterpflanze",
+        "purity_species": "Reine Art",
+        "purity_hybrid": "Hybrid",
+        "purity_complex": "Komplexhybrid",
+        "generation_unknown": "unbekannt",
+        "generation_prefixed": "Generation {{ value }}",
+        "leaf_length": "Blattlänge ca. {{ cm }} cm",
+        "leaf_length_short": "{{ cm }} cm",
+        "hint_unrooted_title": "Für erfahrene Hände.",
+        "hint_unrooted_body": "Dieses Exemplar ist noch nicht bewurzelt — es zu etablieren gelingt bei stabiler hoher Luftfeuchte und mit Geduld.",
+        "hint_fresh_title": "Braucht noch Aufmerksamkeit.",
+        "hint_fresh_body": "Es sind Wurzelansätze vorhanden, aber jung — bis zur vollständigen Etablierung sollte sie noch in hoher Luftfeuchte stehen.",
+        "mother": "Mutterpflanze",
+        "parent_mother": "Mutterpflanze",
+        "parent_father": "Vaterpflanze",
+        "mother_at": "Bei {{ who }}.",
+        "mother_own": "Aus meiner Sammlung.",
+        "photo_credit": "Foto: {{ who }}",
+        "photo_open": "Foto von {{ name }} größer ansehen",
+        "photo_close": "Schließen",
+        "sourced": "Bezogen von",
+        "eyebrow": "Tungacea Sammlerarchiv",
+        "heading": "Botanische Dokumentation",
+        "exact_notice": "Du erhältst exakt das abgebildete Exemplar.",
+        "id_label": "Exemplar-ID",
+        "parentage": "Abstammung",
+        "genetics": "Genetik",
+        "primary_trait": "Hauptmerkmal",
+        "growth_stage": "Wachstumsstadium",
+        "propagation": "Vermehrung",
+        "breeder": "Züchter",
+        "origin": "Herkunft",
+        "rarity": "Seltenheit",
+        "care": "Pflege",
+        "photo_conditions": "Aufnahmebedingungen",
+        "sale_type": "Verkaufsart",
+        "notes": "Hinweise zum Exemplar",
+        "shipping": "Versandhinweis"
+      },
       "quantity": {
         "label": "Anzahl",
         "input_label": "Anzahl von {{ product }}",
@@ -149,7 +237,8 @@
         "open_media": "Medien {{ index }} in Modal öffnen",
         "play_model": "3D-Viewer abspielen",
         "play_video": "Video abspielen",
-        "gallery_viewer": "Galerie-Viewer",
+        "go_to_media": "Bild {{ index }} anzeigen",
+          "gallery_viewer": "Galerie-Viewer",
         "load_image": "Bild {{ index }} in Galerieansicht laden",
         "load_model": "3D-Modell {{ index }} in Galerieansicht laden",
         "load_video": "Video {{ index }} in Galerieansicht abspielen",
@@ -250,13 +339,15 @@
       "cart": "Warenkorb"
     },
     "contact": {
+      "intro": "Du hast eine Frage zu einem Exemplar, zum Versand oder zur Eingewöhnung deiner Pflanze? Schreib mir direkt – ich antworte persönlich.",
+      "direct_email": "Oder direkt per E-Mail:",
       "form": {
         "name": "Name",
         "email": "E-Mail",
         "phone": "Telefonnummer",
         "comment": "Kommentar",
         "send": "Senden",
-        "post_success": "Danke, dass du uns kontaktiert hast. Wir werden uns so schnell wie möglich bei dir melden.",
+        "post_success": "Danke für deine Nachricht. Ich melde mich so schnell wie möglich bei dir.",
         "error_heading": "Bitte passe Folgendes an:",
         "title": "Kontaktformular"
       }
@@ -270,6 +361,8 @@
     "header": {
       "announcement": "Ankündigung",
       "menu": "Menü",
+      "navigation_eyebrow": "TUNGACEA NAVIGATION / 01",
+      "drawer_note": "Seltene Anthurien · lebende Kunst",
       "cart_count": {
         "one": "{{ count }} Artikel",
         "other": "{{ count }} Artikel"
@@ -280,7 +373,7 @@
       "caption": "Artikel im Warenkorb",
       "remove_title": "{{ title }} entfernen",
       "note": "Spezielle Bestellanweisungen",
-      "checkout": "Auschecken",
+      "checkout": "Zur Kasse",
       "empty": "Dein Warenkorb ist leer",
       "product_disclosure": "Produktoffenlegung",
       "product_disclosures": "Produktoffenlegungen",
@@ -310,7 +403,10 @@
       "taxes_at_checkout_shipping_at_checkout_without_policy": "Steuern, Rabatte und Versand werden beim Checkout berechnet."
     },
     "footer": {
-      "payment": "Zahlungsmethoden"
+      "payment": "Zahlungsmethoden",
+      "service_legal_heading": "SERVICE & RECHT",
+      "withdrawal_link": "Widerruf erklären",
+      "brand_copy_html": "<strong>Seltene Anthurien · lebende Kunst.</strong><br>Von mir kultiviert und aus Deutschland versendet."
     },
     "featured_blog": {
       "view_all": "Alle anzeigen",
@@ -325,9 +421,19 @@
       "view_all": "Alle anzeigen"
     },
     "collection_template": {
-      "title": "Kategorie",
+      "title": "Kollektion",
+      "all_title": "Sammlerstücke",
+      "all_description": "Entdecke alle aktuell gezeigten Anthurien und Sammlerstücke.",
       "empty": "Keine Produkte gefunden",
-      "use_fewer_filters_html": "Verwende weniger Filter oder <a class=\"{{ class }}\" href=\"{{ link }}\">entferne alle</a>"
+      "use_fewer_filters_html": "Verwende weniger Filter oder <a class=\"{{ class }}\" href=\"{{ link }}\">entferne alle</a>",
+      "eyebrow": "TUNGACEA KOLLEKTION / 01",
+      "specimen_count": {
+        "one": "{{ count }} Exemplar",
+        "other": "{{ count }} Exemplare"
+      },
+      "empty_catalogue": "Diese Kollektion enthält derzeit keine Exemplare.",
+      "no_results": "Keine Exemplare entsprechen dieser Auswahl.",
+      "reset_filters": "Filter zurücksetzen"
     },
     "video": {
       "load_video": "Video laden: {{ description }}"
@@ -384,7 +490,11 @@
     "update_country": "Land/Region aktualisieren",
     "search": "Suchen",
     "popular_countries_regions": "Beliebte Länder/Regionen",
-    "country_results_count": "{{ count }} Länder/Regionen gefunden"
+    "country_results_count": "{{ count }} Länder/Regionen gefunden",
+    "preferred": "Bevorzugt",
+    "select_language": "Sprache auswählen",
+    "current_language": "Aktuelle Sprache",
+    "close_language_menu": "Sprachmenü schließen"
   },
   "customer": {
     "account": {
@@ -435,7 +545,7 @@
       "guest_continue": "Fortfahren",
       "guest_title": "Als Gast fortsetzen",
       "password": "Passwort",
-      "title": "Login",
+      "title": "Anmelden",
       "sign_in": "Anmelden",
       "submit": "Senden",
       "alternate_provider_separator": "oder"
@@ -528,5 +638,87 @@
       "expanded": "Formular für den Empfänger des Gutscheins erweitert",
       "collapsed": "Formular für den Empfänger des Gutscheins minimiert"
     }
+  },
+  "private_archive": {
+    "specimen_range": "Exemplare {{ von }} bis {{ bis }}",
+    "facet_line": "Linie",
+    "line_other": "Sonstige",
+    "facet_purity": "Reinheit",
+    "country_germany": "Deutschland",
+    "country_switzerland": "Schweiz",
+    "country_netherlands": "Niederlande",
+    "country_usa": "USA",
+    "filters_heading": "Filter",
+    "facet_offer": "Verfügbarkeit",
+    "facet_offer_yes": "Angebot vorhanden",
+    "facet_origin": "Herkunft",
+    "has_offer": "Angebot vorhanden",
+    "search_label": "Suche",
+    "search_placeholder": "Name, Kreuzung, Züchter …",
+    "search_clear": "Zurücksetzen",
+    "facet_stage": "Stadium",
+    "facet_generation": "Generation",
+    "facet_breeder": "Züchter",
+    "count_all": "%anzahl% Pflanzen im Archiv",
+    "count_some": "%treffer% von %gesamt% Pflanzen",
+    "count_none": "Keine Pflanze passt dazu.",
+    "unnamed": "Ohne Bezeichnung",
+    "eyebrow_single": "AUS MEINEM ARCHIV",
+    "owned_by": "Diese Pflanze steht bei {{ who }}.",
+    "offers_heading": "Angebote von dieser Pflanze",
+    "more_about_mother": "Mehr über die Mutterpflanze",
+    "more_about_father": "Mehr über die Vaterpflanze",
+    "eyebrow": "MEIN ARCHIV",
+    "heading": "Ein Blick auf das, was gerade heranwächst.",
+    "intro": "Hier dokumentiere ich Mutterpflanzen, eigene Kreuzungen und weitere Anthurien aus meiner Sammlung. Aus ihnen können später Stecklinge und Nachzuchten entstehen, die als neue Exemplare in die Kollektion kommen.",
+    "teaser_eyebrow": "MEIN ARCHIV / 01",
+    "teaser_heading": "Ein Blick auf das, was gerade heranwächst.",
+    "teaser_body": "In meinem Archiv dokumentiere ich Mutterpflanzen, eigene Kreuzungen und weitere Anthurien aus meiner Sammlung. Aus ihnen können später Stecklinge und Nachzuchten entstehen, die als neue Exemplare in die Kollektion kommen.",
+    "view_specimen": "Exemplar ansehen",
+    "enter_the_archive": "Archiv betreten",
+    "documentation_heading": "Botanische Dokumentation",
+    "filters": {
+      "title": "Exemplare filtern",
+      "all": "Alle"
+    },
+    "status": {
+      "private_collection": "Private Sammlung",
+      "archived": "Archiviert",
+      "past_release": "Frühere Veröffentlichung",
+      "sold": "Verkauft",
+      "breeding_stock": "Zuchtbestand"
+    },
+    "labels": {
+      "plant_id": "Exemplar-ID",
+      "genetics": "Genetik",
+      "parentage": "Abstammung",
+      "breeder": "Züchter / Quelle",
+      "year": "Jahr",
+      "primary_trait": "Hauptmerkmal",
+      "growth_stage": "Wachstumsstadium",
+      "propagation": "Vermehrung",
+      "origin": "Herkunft",
+      "rarity": "Seltenheit",
+      "care": "Pflege",
+      "photo_conditions": "Aufnahmebedingungen",
+      "sale_type": "Verkaufsart",
+      "shipping": "Versandhinweis"
+    }
+  },
+  "brand": {
+    "strapline": "Seltene Anthurien · lebende Kunst"
+  },
+  "seo": {
+    "home_description": "Seltene Anthurien, Klone eigener Mutterpflanzen und eigene Kreuzungen – von mir kultiviert, fotografiert und sorgfältig versendet.",
+    "archive_description": "Ein Blick in meine Sammlung: Mutterpflanzen, eigene Anthurium-Kreuzungen und Exemplare, aus denen später Stecklinge und Nachzuchten entstehen können.",
+    "contact_description": "Fragen zu einem Exemplar, zum Versand oder zur Eingewöhnung? Schreib mir direkt – ich antworte persönlich.",
+    "password_title": "Privater Zugang",
+    "password_description": "Tungacea öffnet bald. Trag dich ein und erfahre, wann neue Anthurien und Exemplare verfügbar sind."
+  },
+  "tungacea_password": {
+    "eyebrow": "Privater Zugang",
+    "heading": "Die Tungacea Kollektion öffnet bald.",
+    "body": "Hier teile ich Klone meiner Mutterpflanzen und Anthurien aus eigener Züchtung. Trag dich ein, wenn du erfahren möchtest, wann neue Exemplare verfügbar sind.",
+    "collectors_note": "Sammlerliste · Frühzugang"
   }
 }

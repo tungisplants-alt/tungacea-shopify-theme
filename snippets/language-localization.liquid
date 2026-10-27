@@ -1,48 +1,111 @@
 {%- comment -%}
-  Renders the language picker for the localization form
+  Tungacea — reusable native Shopify language selector.
+
+  Built entirely on Shopify's native localization system:
+    - reads localization.available_languages (only published languages appear)
+    - submits the native {% form 'localization' %} (preserves the current page,
+      stays compatible with Shopify Markets / localized routes)
+    - no fake links, no hard-coded locale URLs, no flags
+
+  Deutsch and English are always placed first (in that order), followed by a
+  subtle divider, then every other published language sorted alphabetically by
+  its native endonym. Behaviour (keyboard, focus, Escape, click-outside) is
+  provided by Dawn's <localization-form> custom element in localization-form.js.
 
   Accepts:
-    - localPosition: pass in the position in which the form is coming up to create specific IDs
+    - localPosition {string}  unique id prefix (required)
+    - compact {boolean}       trigger shows only the ISO abbreviation (EN / DE)
+    - show_label {boolean}    prepend a "Language" label (mobile drawer row)
 {%- endcomment -%}
 
-<div class="disclosure">
+{%- liquid
+  assign current_iso = localization.language.iso_code
+  assign current_abbr = current_iso | split: '-' | first | upcase
+  assign others_count = 0
+  for language in localization.available_languages
+    unless language.iso_code == 'de' or language.iso_code == 'en'
+      assign others_count = others_count | plus: 1
+    endunless
+  endfor
+  assign sorted_languages = localization.available_languages | sort_natural: 'endonym_name'
+  assign preferred_codes = 'de,en' | split: ','
+-%}
+
+<div class="disclosure tungacea-lang{% if compact %} tungacea-lang--compact{% endif %}">
   <button
     type="button"
-    class="disclosure__button localization-form__select localization-selector link link--text caption-large"
+    class="disclosure__button localization-form__select localization-selector link link--text caption-large tungacea-lang__button"
     aria-expanded="false"
     aria-controls="{{ localPosition }}List"
     aria-describedby="{{ localPosition }}Label"
   >
-    <span>{{ localization.language.endonym_name | capitalize }}</span>
-    {{ 'icon-caret.svg' | inline_asset_content }}
+    {%- if show_label -%}
+      <span class="tungacea-lang__label">{{ 'localization.language_label' | t }}</span>
+    {%- endif -%}
+    <span class="tungacea-lang__current" aria-hidden="true">
+      {%- if compact -%}
+        {{- current_abbr -}}
+      {%- else -%}
+        {{- localization.language.endonym_name | capitalize -}}
+      {%- endif -%}
+    </span>
+    <span class="visually-hidden">
+      {{- 'localization.select_language' | t }} — {{ 'localization.current_language' | t }}: {{ localization.language.endonym_name -}}
+    </span>
+    <span class="tungacea-lang__caret svg-wrapper" aria-hidden="true">
+      {{- 'icon-caret.svg' | inline_asset_content -}}
+    </span>
   </button>
-  <div class="disclosure__list-wrapper language-selector" hidden>
-    <ul id="{{ localPosition }}List" role="list" class="disclosure__list list-unstyled">
-      {%- for language in localization.available_languages -%}
-        <li class="disclosure__item" tabindex="-1">
-          <a
-            class="link link--text disclosure__link caption-large focus-inset"
-            href="#"
-            hreflang="{{ language.iso_code }}"
-            lang="{{ language.iso_code }}"
-            {% if language.iso_code == localization.language.iso_code %}
-              aria-current="true"
-            {% endif %}
-            data-value="{{ language.iso_code }}"
-          >
-            <span
-              {% if language.iso_code != localization.language.iso_code %}
-                class="visibility-hidden"
-              {% endif %}
-            >
-              {{- 'icon-checkmark.svg' | inline_asset_content -}}
-            </span>
-            <span>
-              {{ language.endonym_name | capitalize }}
-            </span>
-          </a>
-        </li>
+
+  <div class="disclosure__list-wrapper language-selector tungacea-lang__panel" hidden>
+    <ul id="{{ localPosition }}List" role="list" class="disclosure__list list-unstyled tungacea-lang__list">
+      {%- comment -%} Priority: Deutsch, then English — in that exact order {%- endcomment -%}
+      {%- for code in preferred_codes -%}
+        {%- for language in localization.available_languages -%}
+          {%- if language.iso_code == code -%}
+            <li class="disclosure__item tungacea-lang__item tungacea-lang__item--preferred" tabindex="-1">
+              <a
+                class="link link--text disclosure__link tungacea-lang__link focus-inset"
+                href="#"
+                hreflang="{{ language.iso_code }}"
+                lang="{{ language.iso_code }}"
+                {% if language.iso_code == current_iso %}aria-current="true"{% endif %}
+                data-value="{{ language.iso_code }}"
+              >
+                <span class="tungacea-lang__check{% if language.iso_code != current_iso %} visibility-hidden{% endif %}">
+                  {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                </span>
+                <span class="tungacea-lang__name">{{ language.endonym_name | capitalize }}</span>
+                <span class="tungacea-lang__pref">{{ 'localization.preferred' | t }}</span>
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
       {%- endfor -%}
+
+      {%- if others_count > 0 -%}
+        <li class="tungacea-lang__divider" role="presentation" aria-hidden="true"></li>
+
+        {%- for language in sorted_languages -%}
+          {%- unless language.iso_code == 'de' or language.iso_code == 'en' -%}
+            <li class="disclosure__item tungacea-lang__item" tabindex="-1">
+              <a
+                class="link link--text disclosure__link tungacea-lang__link focus-inset"
+                href="#"
+                hreflang="{{ language.iso_code }}"
+                lang="{{ language.iso_code }}"
+                {% if language.iso_code == current_iso %}aria-current="true"{% endif %}
+                data-value="{{ language.iso_code }}"
+              >
+                <span class="tungacea-lang__check{% if language.iso_code != current_iso %} visibility-hidden{% endif %}">
+                  {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                </span>
+                <span class="tungacea-lang__name">{{ language.endonym_name | capitalize }}</span>
+              </a>
+            </li>
+          {%- endunless -%}
+        {%- endfor -%}
+      {%- endif -%}
     </ul>
   </div>
 </div>

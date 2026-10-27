@@ -1,0 +1,655 @@
+/*
+  Tungacea — Specimen Passport (product page)
+  Scoped to `.specimen-passport` so no other section is affected.
+  Reuses existing Tungacea tokens: --tungacea-muted, --tungacea-hairline,
+  --tungacea-hairline-soft, --tungacea-accent-bright, --tungacea-ease,
+  --color-foreground, --font-heading-family, --font-body-family.
+
+  Design: dark editorial botanical archive record. Thin hairlines,
+  restrained oxblood accent, generous but controlled spacing, no boxed card.
+*/
+
+.specimen-passport {
+  margin-top: 3.6rem;
+  padding-top: 0.2rem;
+}
+
+/* ---------- Archive header row ---------- */
+.specimen-passport__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2.4rem 3.2rem;
+  padding-bottom: 1.6rem;
+}
+.specimen-passport--framed .specimen-passport__header {
+  border-bottom: 1px solid rgba(var(--tungacea-accent-bright), 0.42);
+}
+
+.specimen-passport__heading-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.specimen-passport__eyebrow {
+  margin: 0;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 1.02rem;
+  line-height: 1;
+  color: var(--tungacea-muted);
+}
+
+.specimen-passport__title {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-size: 2.1rem;
+  line-height: 1.08;
+  letter-spacing: 0.005em;
+  color: rgb(var(--color-foreground));
+}
+
+/* Specimen ID + status, aligned to the opposite side */
+.specimen-passport__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.7rem;
+  text-align: right;
+  flex: 0 0 auto;
+}
+
+.specimen-passport__id {
+  margin: 0;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 1.12rem;
+  line-height: 1;
+  color: rgb(var(--color-foreground));
+  word-break: break-word;
+}
+
+.specimen-passport__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 1.02rem;
+  line-height: 1;
+  color: var(--tungacea-muted);
+  white-space: nowrap;
+}
+.specimen-passport__status::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background: rgba(185, 178, 169, 0.5);
+}
+.specimen-passport__status--available::before,
+.specimen-passport__status--coming::before {
+  background: rgb(var(--tungacea-accent-bright));
+}
+.specimen-passport__status--reserved {
+  color: rgb(var(--tungacea-accent-text));
+}
+.specimen-passport__status--reserved::before {
+  background: rgb(var(--tungacea-accent-bright));
+}
+.specimen-passport__status--sold {
+  color: rgba(185, 178, 169, 0.68);
+}
+.specimen-passport__status--sold::before {
+  background: rgba(185, 178, 169, 0.32);
+}
+
+/* ---------- Lead, specs and the derived experience hint ----------
+   The lead is the one sentence answering "what do I actually get". The specs
+   line carries rooting, leaf count and leaf length — the three numbers that
+   decide whether a buyer is disappointed on arrival. The hint is derived from
+   the rooting state and never typed, so it cannot be missing where it matters. */
+.specimen-passport__lead {
+  margin: 2rem 0 0;
+  font-family: var(--font-body-family);
+  font-size: 1.5rem;
+  line-height: 1.5;
+  color: rgb(var(--color-foreground));
+}
+
+.specimen-passport__specs {
+  margin: 0.8rem 0 0;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: rgba(185, 178, 169, 0.72);
+}
+
+.specimen-passport__hint {
+  margin: 2rem 0 0;
+  padding: 1.2rem 0 1.2rem 1.6rem;
+  border-left: 2px solid rgb(var(--tungacea-accent-bright));
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: var(--tungacea-muted);
+}
+.specimen-passport__hint strong {
+  font-weight: 500;
+  color: rgb(var(--color-foreground));
+}
+
+/* After a whole block — mother plant or the provenance rows — the hint is a new
+   thought, not the next line of the same one. It needs the distance to read
+   that way. */
+.specimen-passport__mother + .specimen-passport__hint,
+.specimen-passport__grid + .specimen-passport__hint {
+  margin-top: 3rem;
+}
+
+/* ---------- Mother plant — context, clearly not the goods ---------- */
+.specimen-passport__mother {
+  margin: 2.8rem 0 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--tungacea-hairline);
+}
+
+/* Kreuzung: beide Eltern nebeneinander mit dem Zeichen dazwischen — die
+   Schreibweise des Fachs, FSRL × Grim Reaper. Untereinander gesetzt lasen sie
+   sich wie zwei getrennte Herkuenfte statt wie eine Kreuzung. */
+/* Die Kreuzung richtet sich nach der SPALTE, nicht nach dem Fenster. Auf der
+   Produktseite ist die Infospalte bei media_size "large" nur 35% breit —
+   rund 380px bei einem 1440px-Fenster, also schmaler als ein Telefon. Eine
+   Medienabfrage sieht davon nichts und haette dort die grossen Werte
+   angewandt. */
+.specimen-passport {
+  container-type: inline-size;
+  container-name: pass;
+}
+
+.specimen-passport__cross {
+  /* Die Bildhoehe folgt der Spaltenbreite, damit das Hochformat erhalten
+     bleibt: eine Spalte ist etwa 45% des Containers, mal 1,25 ergibt 56cqi.
+     Bei fester Hoehe wurde das Bild in mittleren Breiten querformatig —
+     gemessen 255 breit zu 160 hoch, und eine hochformatige Pflanze wird dabei
+     oben und unten abgeschnitten. Nach oben gedeckelt, sonst wachsen die
+     Bilder in einer breiten Spalte ins Riesige. */
+  --kreuz-bild: min(56cqi, 30rem);
+  margin: 2.8rem 0 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--tungacea-hairline);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  /* Drei Zeilen: Kopf, Bild, Fuss. Beide Eltern teilen sie sich, deshalb
+     stehen Namen, Bilder und Knoepfe auf einer Linie — auch wenn ein Name
+     umbricht und der andere nicht. Mit einer blossen Mindesthoehe kippte das:
+     gemessen 117 gegen 94 Pixel, und das Zeichen wanderte um 23 Pixel. */
+  grid-template-rows: auto auto auto auto;
+  column-gap: 2.4rem;
+  row-gap: 1.2rem;
+  align-items: stretch;
+}
+/* Die Bloecke loesen sich im Raster auf: Kopf, Bild und Fuss beider Eltern
+   werden direkte Zeilen desselben Grids und stehen dadurch zwangslaeufig auf
+   einer Linie. Die Spalte steuert die Rolle, die ohnehin am Element steht.
+
+   subgrid waere der naheliegende Weg und wird auch unterstuetzt, half hier
+   aber nicht: ein Item, das alle Zeilen ueberspannt, traegt nichts zu ihrer
+   Hoehe bei — gemessen blieben die Bilder bei langem Namen 20 Pixel
+   auseinander. */
+.specimen-passport__cross > .specimen-passport__mother {
+  display: contents;
+}
+.specimen-passport__cross > [data-rolle='mutter'] > * {
+  grid-column: 1;
+}
+.specimen-passport__cross > [data-rolle='vater'] > * {
+  grid-column: 3;
+}
+.specimen-passport__cross .specimen-passport__mother-head {
+  grid-row: 1;
+}
+.specimen-passport__cross .specimen-passport__mother-media {
+  grid-row: 2;
+}
+.specimen-passport__cross .specimen-passport__mother-credit-row {
+  grid-row: 3;
+}
+.specimen-passport__cross .specimen-passport__mother-foot {
+  grid-row: 4;
+}
+.specimen-passport__cross .specimen-passport__mother-media {
+  display: flex;
+  flex-direction: column;
+}
+.specimen-passport__cross .specimen-passport__mother-foot {
+  align-self: end;
+}
+/* Der Trenner sitzt jetzt an der Zeile, nicht mehr an den Bloecken — sonst
+   staenden drei Linien uebereinander. */
+/* Kein eigener Abstand und kein Trenner mehr am Block — beides sitzt an der
+   Zeile. Die frueher hier stehende Flex-Spalte ist entfallen: sie hat das
+   spaeter gesetzte display:contents ueberschrieben, und damit lagen die
+   Abschnitte wieder nicht im gemeinsamen Raster. */
+.specimen-passport__cross > .specimen-passport__mother {
+  margin: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+/* Das Zeichen sitzt auf der Achse der beiden Bilder, nicht in der Mitte der
+   Spalte. Zentriert zur ganzen Zeile stand es rechnerisch richtig, aber
+   optisch zwischen Bildunterkante und Knopf — gemessen 9px ueber der
+   Bildmitte, und genau das wirkte unruhig.
+
+   Damit das haelt, sind beide Masse festgelegt: der Kopf hat eine
+   Mindesthoehe, das Bild eine feste Hoehe. Aus beidem ergibt sich der
+   Versatz. Ohne feste Masse wandert das Zeichen, sobald ein Pflanzenname
+   umbricht. */
+/* Das Zeichen haengt an der Bildzeile und ist dort zentriert. Gerechnet statt
+   gehaengt war es falsch, sobald es gar kein Bild gab: haben beide Eltern
+   keine Fotos, ist die Zeile leer — gemessen stand das Zeichen dann bei 210px
+   in einem 294px hohen Block, also weit unter den Namen im Nichts. Der
+   Fotonachweis hat die Zeile dafuer verlassen, sonst zoege er sie in die
+   Laenge und das Zeichen mit sich. */
+.specimen-passport__cross-sign {
+  grid-row: 2;
+  align-self: center;
+  font-family: var(--font-heading-family);
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--tungacea-muted);
+}
+/* Ein Bild je Elternteil, in fester Hoehe. Zwei Reihen nebeneinander waren
+   mehr Bild als Aussage; die uebrigen Fotos stehen auf der Seite der Pflanze
+   selbst. Gleiche Hoehe heisst auch: die Bilder stehen auf einer Linie, egal
+   welches Seitenverhaeltnis das Foto hat. */
+.specimen-passport__cross .specimen-passport__mother-photos {
+  grid-template-columns: minmax(0, 26rem);
+  max-width: none;
+  margin-top: 0;
+}
+.specimen-passport__cross .specimen-passport__mother-photo,
+.specimen-passport__cross .specimen-passport__mother-figure {
+  height: var(--kreuz-bild);
+}
+.specimen-passport__cross .specimen-passport__mother-photo img {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 560px ist der Punkt, an dem zwei Bilder zu je 26rem plus Abstand und
+   Zeichen nicht mehr nebeneinander passen. Darunter wird alles kleiner, statt
+   umzubrechen: untereinander liest es sich wieder wie zwei getrennte
+   Herkuenfte statt wie eine Kreuzung. */
+@container pass (max-width: 560px) {
+  .specimen-passport__cross {
+    gap: 1rem;
+  }
+  .specimen-passport__cross-sign {
+    font-size: 2.4rem;
+  }
+  .specimen-passport__cross .specimen-passport__mother-name {
+    font-size: 1.5rem;
+  }
+  .specimen-passport__cross .specimen-passport__mother-where,
+  .specimen-passport__cross .specimen-passport__mother-credit {
+    font-size: 1.1rem;
+  }
+  .specimen-passport__cross .specimen-passport__mother-link {
+    font-size: 1.1rem;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+}
+.specimen-passport__mother-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 0 0.9rem;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--tungacea-muted);
+}
+.specimen-passport__mother-label::before {
+  content: '';
+  width: 1.6rem;
+  height: 1px;
+  flex: 0 0 auto;
+  background: var(--tungacea-hairline);
+}
+.specimen-passport__mother-name {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-heading-family);
+  font-style: italic;
+  font-size: 1.9rem;
+  line-height: 1.2;
+  color: rgb(var(--color-foreground));
+}
+.specimen-passport__mother-where {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--tungacea-muted);
+}
+/* Portrait, like the product gallery, so a whole plant is visible at a glance
+   instead of a cropped middle. The shape therefore no longer separates these
+   from the goods — the label above them and the muted treatment do that. */
+.specimen-passport__mother-photos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  max-width: 58rem;
+}
+/* The tile is a button, because it opens a dialog. Everything that makes a
+   button look like a button is stripped; the focus ring is not. */
+.specimen-passport__mother-photo {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  font: inherit;
+  color: inherit;
+}
+.specimen-passport__mother-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border: 1px solid var(--tungacea-hairline);
+  opacity: 0.78;
+  transition: opacity 0.3s var(--tungacea-ease);
+}
+.specimen-passport__mother-photo:hover img,
+.specimen-passport__mother-photo:focus-visible img {
+  opacity: 1;
+}
+.specimen-passport__mother-photo:focus-visible {
+  outline: 0.2rem solid rgb(var(--color-foreground));
+  outline-offset: 0.3rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .specimen-passport__mother-photo img {
+    transition: none;
+  }
+}
+
+/* ---------- Lightbox ---------- */
+.specimen-lightbox {
+  max-width: min(92vw, 110rem);
+  max-height: 92vh;
+  padding: 0;
+  border: 1px solid var(--tungacea-hairline);
+  background: var(--tungacea-black, #0a0a0a);
+  color: rgb(var(--color-foreground));
+  overflow: visible;
+}
+.specimen-lightbox::backdrop {
+  background: rgba(5, 5, 6, 0.88);
+}
+.specimen-lightbox__image {
+  display: block;
+  max-width: min(92vw, 110rem);
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+.specimen-lightbox__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  border: 0;
+  background: rgba(10, 10, 10, 0.86);
+  color: rgb(var(--color-foreground));
+  font-size: 2.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.specimen-lightbox__close:focus-visible {
+  outline: 0.2rem solid rgb(var(--color-foreground));
+  outline-offset: -0.4rem;
+}
+
+.specimen-passport__credit {
+  margin: 1rem 0 0;
+  font-family: var(--font-body-family);
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: rgba(185, 178, 169, 0.72);
+}
+
+/* Nachweis am einzelnen Mutterfoto. Die Kacheln sind hier klein und stehen zu
+   dritt, deshalb eine Stufe kleiner als die alte Sammelzeile — sie soll das
+   Bild begleiten und nicht mit ihm um Aufmerksamkeit ringen. */
+.specimen-passport__mother-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  min-width: 0;
+}
+
+.specimen-passport__mother-credit {
+  font-family: var(--font-body-family);
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: rgba(185, 178, 169, 0.72);
+}
+
+@media screen and (max-width: 749px) {
+  .specimen-passport__lead {
+    font-size: 1.4rem;
+  }
+  .specimen-passport__mother-name {
+    font-size: 1.7rem;
+  }
+}
+
+/* ---------- Exact specimen notice — prominent but quiet ---------- */
+.specimen-passport__exact {
+  margin: 2rem 0 0;
+  padding: 1.2rem 0 1.2rem 1.6rem;
+  border-left: 2px solid rgb(var(--tungacea-accent-bright));
+  font-family: var(--font-body-family);
+  font-size: 1.28rem;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: rgb(var(--color-foreground));
+}
+
+/* ---------- Key / value details grid ---------- */
+.specimen-passport__grid {
+  margin: 2.4rem 0 0;
+}
+.specimen-passport__row {
+  display: grid;
+  grid-template-columns: minmax(12rem, 32%) 1fr;
+  gap: 1.4rem 2.4rem;
+  padding: 1.35rem 0;
+}
+.specimen-passport--framed .specimen-passport__row + .specimen-passport__row {
+  border-top: 1px solid var(--tungacea-hairline-soft);
+}
+
+.specimen-passport__label {
+  margin: 0;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 1.08rem;
+  line-height: 1.5;
+  color: var(--tungacea-muted);
+}
+.specimen-passport__value {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.5rem;
+  line-height: 1.5;
+  color: rgb(var(--color-foreground));
+}
+.specimen-passport__value.rte > *:first-child {
+  margin-top: 0;
+}
+.specimen-passport__value.rte > *:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Notes + shipping ---------- */
+.specimen-passport__note {
+  margin-top: 2.6rem;
+}
+.specimen-passport--framed .specimen-passport__note {
+  padding-top: 2.2rem;
+  border-top: 1px solid var(--tungacea-hairline);
+}
+.specimen-passport__note-label {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-body-family);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 1.08rem;
+  line-height: 1;
+  color: var(--tungacea-muted);
+}
+.specimen-passport__note-body {
+  font-family: var(--font-body-family);
+  font-size: 1.45rem;
+  line-height: 1.6;
+  color: rgb(var(--color-foreground));
+}
+.specimen-passport__note-body > *:first-child {
+  margin-top: 0;
+}
+.specimen-passport__note-body > *:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Mobile: single column, no overflow ---------- */
+@media screen and (max-width: 749px) {
+  .specimen-passport {
+    margin-top: 3rem;
+  }
+  .specimen-passport__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.4rem;
+    padding-bottom: 1.4rem;
+  }
+  .specimen-passport__meta {
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.8rem 1.6rem;
+  }
+  .specimen-passport__title {
+    font-size: 1.9rem;
+  }
+  .specimen-passport__row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 1.3rem 0;
+  }
+  .specimen-passport__value {
+    font-size: 1.45rem;
+  }
+  .specimen-passport__exact {
+    font-size: 1.22rem;
+  }
+}
+
+/* ---------- Reduced motion (no transitions introduced, kept explicit) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .specimen-passport,
+  .specimen-passport * {
+    transition: none;
+  }
+}
+
+/*
+ * Der Knopf auf der Produktseite, der zur Pflanzenseite führt. Er steht im
+ * Mutterblock der Dokumentation und muss dort leiser sein als "In den
+ * Warenkorb" — es ist ein Weg zu mehr Information, kein Kaufweg.
+ */
+.specimen-passport__mother-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+  padding: 0.8rem 1.4rem;
+  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  color: inherit;
+  text-decoration: none;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  transition: border-color 0.25s var(--tungacea-ease, cubic-bezier(0.22, 0.61, 0.36, 1)), color 0.25s var(--tungacea-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+}
+
+.specimen-passport__mother-link:hover {
+  border-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.7);
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.specimen-passport__mother-link:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
+}
+
+.specimen-passport__mother-link::after {
+  content: '→';
+  transition: transform 0.25s var(--tungacea-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+}
+
+.specimen-passport__mother-link:hover::after {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .specimen-passport__mother-link::after,
+  .specimen-passport__mother-link:hover::after {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Das Land steht neben dem Namen, aber leiser. Es ordnet ein, es ist nicht
+   die Aussage. */
+.specimen-passport__country {
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+}
+
+/* Die Nummer der Mutterpflanze steht neben ihrem Namen, leiser. Sie sagt dem
+   Käufer, woher sein Exemplar stammt. */
+.specimen-passport__mother-id {
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  opacity: 0.8;
+  letter-spacing: 0.08em;
+}

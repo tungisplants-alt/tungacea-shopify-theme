@@ -42,6 +42,8 @@
   endif
 -%}
 
+{{ 'component-galerie-tungacea.css' | asset_url | stylesheet_tag }}
+
 <media-gallery
   id="MediaGallery-{{ section.id }}"
   role="region"
@@ -125,6 +127,25 @@
         {%- endunless -%}
       {%- endfor -%}
     </ul>
+    {%- comment -%}
+      Punkte statt Pfeilen auf dem Telefon. Sie sagen, wie viele Bilder es
+      gibt und wo man steht — die Zahl "1 / 6" sagt dasselbe, aber man muss
+      sie lesen. Nur ab zwei Bildern: ein einzelner Punkt waere eine Anzeige
+      ohne Aussage.
+    {%- endcomment -%}
+    {%- if media_count > 1 -%}
+      <div class="galerie-punkte medium-hide large-up-hide" data-galerie-punkte>
+        {%- for i in (1..media_count) -%}
+          <button
+            type="button"
+            class="galerie-punkte__punkt{% if forloop.first %} ist-hier{% endif %}"
+            data-folie="{{ forloop.index }}"
+            aria-label="{{ 'products.product.media.go_to_media' | t: index: forloop.index }}"
+          ></button>
+        {%- endfor -%}
+      </div>
+      <script src="{{ 'gallery-dots.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
     <div class="slider-buttons quick-add-hidden{% if hide_mobile_slider %} small-hide{% endif %}">
       <button
         type="button"

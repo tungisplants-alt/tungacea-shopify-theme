@@ -10,3 +10,17 @@ Thumbs.db
 .shopify
 node_modules
 *.zip
+.env
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
+
+# dev-only exports, preview harnesses, test media (never ship to theme)
+exports/
+
+# Prüfstand-Laufergebnisse (die Prüfstände selbst gehören ins Repository)
+tests/*.html
+tests/cases.json

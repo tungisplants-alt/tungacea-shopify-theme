@@ -1,21 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "image_banner": {
+    "hero": {
       "type": "image-banner",
       "blocks": {
+        "caption": {
+          "type": "text",
+          "settings": {
+            "text": "Seltene Anthurien. Lebende Kunst.",
+            "text_style": "caption-with-letter-spacing"
+          }
+        },
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Browse our latest products",
+            "heading": "Sammlerstücke",
             "heading_size": "h0"
           }
         },
         "button": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop all",
+            "button_label_1": "Kollektion entdecken",
             "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
+            "button_style_secondary_1": false,
             "button_label_2": "",
             "button_link_2": "",
             "button_style_secondary_2": false
@@ -23,53 +39,219 @@
         }
       },
       "block_order": [
+        "caption",
         "heading",
         "button"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
+        "image": "shopify://shop_images/IMG_5703.jpg",
+        "image_overlay_opacity": 20,
         "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
         "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
+        "desktop_content_position": "middle-left",
+        "desktop_content_alignment": "left",
+        "show_text_box": false,
+        "color_scheme": "scheme-1",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "left",
         "show_text_below": false
       }
     },
-    "featured_collection": {
+    "current_drop": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
+        "collection": "current-drop",
+        "products_to_show": 6,
+        "title": "Aktuelle Auswahl",
+        "heading_size": "h1",
+        "description": "<p>Eine limitierte Auswahl neu verfügbarer Exemplare.</p>",
+        "show_description": true,
+        "description_style": "uppercase",
         "columns_desktop": 4,
-        "color_scheme": "scheme-1",
+        "enable_desktop_slider": true,
         "full_width": false,
         "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
+        "view_all_style": "link",
+        "color_scheme": "scheme-1",
+        "image_ratio": "portrait",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "swipe_on_mobile": true,
+        "padding_top": 64,
+        "padding_bottom": 52
+      }
+    },
+    "brand_statement": {
+      "type": "rich-text",
+      "blocks": {
+        "caption": {
+          "type": "caption",
+          "settings": {
+            "caption": "Tungacea",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "\"Was ich selbst gern sammle und wachsen sehe, teile ich bei Tungacea mit dir.\"",
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "caption",
+        "heading"
+      ],
+      "settings": {
+        "desktop_content_position": "left",
+        "content_alignment": "left",
+        "color_scheme": "scheme-4",
+        "full_width": true,
+        "archive_page": "",
+        "archive_button_label": "",
+        "padding_top": 88,
+        "padding_bottom": 88
+      }
+    },
+    "private_archive_teaser": {
+      "type": "private-archive-teaser",
+      "settings": {
+        "show_image_frame": true,
+        "eyebrow": "",
+        "heading": "",
+        "heading_size": "h1",
+        "body": "",
+        "button_label": "",
+        "button_link": "",
+        "button_style_secondary": true,
+        "desktop_layout_direction": "image-first",
+        "image_position": "center",
+        "color_scheme": "scheme-1",
+        "padding_top": 88,
+        "padding_bottom": 88
+      }
+    },
+    "about": {
+      "type": "image-with-text",
+      "blocks": {
+        "caption": {
+          "type": "caption",
+          "settings": {
+            "caption": "Über Tungacea",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Zwischen Pflanze und Porträt.",
+            "heading_size": "h1"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Bei Tungacea treffen Anthurien aus meiner eigenen Sammlung und mein Blick durch die Kamera aufeinander. Neben Klonen meiner Mutterpflanzen entstehen hier eigene Kreuzungen, deren Entwicklung ich von Blatt zu Blatt begleite und fotografisch festhalte.<br/></p>",
+            "text_style": "body"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "button_label": "TUNGACEA KENNENLERNEN",
+            "button_link": "shopify://pages/about-me",
+            "button_style_secondary": true
+          }
+        }
+      },
+      "block_order": [
+        "caption",
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {
+        "height": "large",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-1",
+        "color_scheme": "scheme-2",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "17909307571e713dc2": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_snippet_widget_tWVEB6": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_snippet_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "reviews_selection": "all",
+            "products": [],
+            "filter_pinned": false,
+            "filter_featured": false,
+            "filter_custom_tags": "",
+            "min_star_rating": "inherit",
+            "show_review_media": true,
+            "max_reviews": 10,
+            "review_length": "medium",
+            "text_size": "medium",
+            "max_width": 1100,
+            "max_image_size": "small",
+            "arrows_visibility": "always_shown",
+            "transition_speed": 5,
+            "corner_styling": "inherit",
+            "text_color": "#f2eee8",
+            "card_color": "#1f1e22",
+            "stars_color": "#cc6070",
+            "arrows_color": "#f2eee8",
+            "arrows_background_color": "#1f1e22"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_snippet_widget_tWVEB6"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "collector_access": {
+      "type": "collector-access",
+      "settings": {
+        "eyebrow": "SAMMLERZUGANG / 01",
+        "heading": "Erfahre zuerst, was als Nächstes wächst.",
+        "heading_size": "h1",
+        "body": "<p>Ich informiere dich frühzeitig über neue Verkaufsstarts, ausgewählte Sämlinge und Ergänzungen im Archiv.</p>",
+        "email_placeholder": "E-Mail-Adresse",
+        "button_label": "ZUGANG ERHALTEN",
+        "supporting_line": "Keine regelmäßige Werbung. Ich schreibe dir nur, wenn es wirklich etwas Neues gibt.",
+        "show_rakkan": true,
+        "color_scheme": "scheme-1",
+        "padding_top": 88,
+        "padding_bottom": 88
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero",
+    "current_drop",
+    "brand_statement",
+    "private_archive_teaser",
+    "about",
+    "17909307571e713dc2",
+    "collector_access"
   ]
 }

@@ -1,0 +1,94 @@
+{% comment %}
+  Tungacea — Winterverpackung (Produktseite).
+
+  Eine kostenpflichtige Zusatzleistung, die Shopify ohne App nicht kennt.
+  Dahinter liegt ein eigenes Produkt, das beim Klick in den Warenkorb wandert.
+  Der Kunde sieht es als zweite Position und kann es dort entfernen.
+
+  **Ein Knopf, kein Kontrollkaestchen.** Das Kaestchen war ein Spiegel des
+  Warenkorbs, und der Warenkorb aendert sich auch anderswo — auf der
+  Warenkorbseite, in der Schublade, in einem zweiten Tab. Davon erfuhr diese
+  Seite nichts. Stand der Haken und war das Produkt entfernt, entfernte der
+  naechste Klick es ein zweites Mal statt es zu legen: Der Kunde sah einen
+  gesetzten Haken und einen leeren Warenkorb. Ein Knopf hat keinen Zustand,
+  der veralten kann.
+
+  Mehrfaches Hinzufuegen ist damit moeglich. Das ist gewollt: Im Normalfall
+  reicht eine, aber wer mehrere Pflanzen kauft, soll nicht an einer Sperre
+  haengenbleiben, und doppelt Gelegtes steht sichtbar im Warenkorb.
+
+  Rechtlich ist der Knopf die staerkere Form: Nichts ist vorausgewaehlt, der
+  Kunde fuegt ausdruecklich hinzu (vgl. § 312a Abs. 3 BGB).
+
+  Der Preis kommt aus dem Produkt, nicht aus einer Einstellung. Sonst stuende
+  derselbe Betrag an zwei Stellen im System.
+
+  Accepts:
+  - block: {Object} main-product `winterpack` block (required)
+{% endcomment %}
+
+{%- liquid
+  assign wp = block.settings.produkt
+  assign variante = wp.selected_or_first_available_variant
+
+  comment
+    Ohne Produkt, ohne Variante oder ohne Verfuegbarkeit erscheint gar nichts.
+    Ein Knopf, der nichts in den Warenkorb legen kann, waere schlimmer als
+    keiner.
+  endcomment
+  assign zeigen = false
+  if wp != blank and variante != blank and variante.available
+    assign zeigen = true
+  endif
+
+  assign ueberschrift = block.settings.ueberschrift | default: '' | strip
+  if ueberschrift == blank
+    assign ueberschrift = 'products.product.winterpack.title' | t
+  endif
+
+  comment
+    Leer heisst uebersetzt, nicht stumm. Ein eigener Text waere sonst in
+    beiden Sprachen derselbe.
+  endcomment
+  assign hinweis = block.settings.hinweis | default: '' | strip
+  if hinweis == blank
+    assign hinweis = 'products.product.winterpack.hint' | t
+  endif
+-%}
+
+{%- if zeigen -%}
+  {{ 'component-winter-pack.css' | asset_url | stylesheet_tag }}
+
+  <div class="winter-pack" {{ block.shopify_attributes }}>
+    <div class="winter-pack__zeile">
+      <span class="winter-pack__text">
+        <span class="winter-pack__titel">
+          {{- ueberschrift | escape -}}
+          <span class="winter-pack__preis">+ {{ variante.price | money }}</span>
+        </span>
+        {%- if hinweis != blank -%}
+          <span class="winter-pack__sub">{{ hinweis | escape }}</span>
+        {%- endif -%}
+      </span>
+
+      {%- comment -%}
+        Die Rueckmeldung steht im Knopf selbst und wird per aria-live
+        angesagt. Sie ist rein oertlich — sie behauptet nichts ueber den
+        Warenkorb, sondern nur, dass dieser Klick durchging.
+      {%- endcomment -%}
+      <button
+        type="button"
+        class="winter-pack__knopf"
+        data-winter-pack
+        data-variante="{{ variante.id }}"
+        data-label-fertig="{{ 'products.product.winterpack.added' | t | escape }}"
+        aria-live="polite"
+      >
+        <span class="winter-pack__plus" aria-hidden="true">+</span>
+        <span class="winter-pack__knopf-text">{{ 'products.product.winterpack.add' | t | escape }}</span>
+      </button>
+    </div>
+  </div>
+
+  <script src="{{ 'winter-pack.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

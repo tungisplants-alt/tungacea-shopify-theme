@@ -1,11 +1,20 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "password_page": {
-      "login_form_heading": "Enter store using password:",
-      "login_password_button": "Enter using password",
-      "login_form_password_label": "Password",
-      "login_form_password_placeholder": "Your password",
-      "login_form_error": "Wrong password!",
+      "login_form_heading": "Enter with your access code",
+      "login_password_button": "Enter with access code",
+      "login_form_password_label": "Access code",
+      "login_form_password_placeholder": "Your access code",
+      "login_form_error": "Incorrect access code.",
       "login_form_submit": "Enter",
       "admin_link_html": "Are you the store owner? <a href=\"/admin\" class=\"link underlined-link\">Log in here</a>",
       "powered_by_shopify_html": "This shop will be powered by {{ shopify }}"
@@ -61,6 +70,10 @@
     "label": "Email",
     "success": "Thanks for subscribing",
     "button_label": "Subscribe"
+  },
+  "collector_access": {
+    "email_placeholder": "Email address",
+    "button_label": "Request access"
   },
   "accessibility": {
     "skip_to_text": "Skip to content",
@@ -118,9 +131,85 @@
       "inventory_out_of_stock_continue_selling": "In stock",
       "sku": "SKU",
       "on_sale": "Sale",
+      "specimen_status": {
+        "available": "Available",
+        "sold": "Sold"
+      },
+      "specimen_flags": {
+        "new": "New",
+        "unicorn": "Unicorn",
+        "rare": "Rare",
+        "sale": "Sale"
+      },
+      "winterpack": {
+        "title": "Winter packaging",
+        "hint": "Heat pack and thermal wrap. Recommended below 10 °C.",
+        "add": "Add",
+        "added": "Added"
+      },
+      "specimen": {
+        "date_format": "%b %-d, %Y",
+        "photographed_on": "Photographed on {{ date }}.",
+        "delivery_exact": "You receive this exact specimen.",
+        "delivery_cutting_mother": "You receive a cutting taken from the mother plant shown below.",
+        "delivery_cutting_plain": "You receive a cutting.",
+        "delivery_seedling_cross": "You receive a seedling from the cross shown below.",
+        "delivery_seedling_plain": "You receive a seedling from this cross.",
+        "thing_exact": "specimen",
+        "thing_cutting": "cutting",
+        "thing_seedling": "seedling",
+        "mother_from_at": "Your {{ thing }} comes from this plant at {{ who }}.",
+        "mother_from_own": "Your {{ thing }} comes from this plant in my own collection.",
+        "rooting_none": "Unrooted",
+        "rooting_fresh": "Freshly rooted",
+        "rooting_established": "Well rooted",
+        "stage_cutting": "Cutting",
+        "stage_seedling": "Seedling",
+        "stage_young": "Young plant",
+        "stage_established": "Established",
+        "stage_mother": "Mother plant",
+        "purity_species": "Pure species",
+        "purity_hybrid": "Hybrid",
+        "purity_complex": "Complex hybrid",
+        "generation_unknown": "unknown",
+        "generation_prefixed": "Generation {{ value }}",
+        "leaf_length": "Leaf length approx. {{ cm }} cm",
+        "leaf_length_short": "{{ cm }} cm",
+        "hint_unrooted_title": "For experienced hands.",
+        "hint_unrooted_body": "This specimen is not yet rooted — establishing it takes stable high humidity and patience.",
+        "hint_fresh_title": "Still needs attention.",
+        "hint_fresh_body": "The first roots have formed but are still young — until it is fully established it should be kept in high humidity.",
+        "mother": "Mother plant",
+        "parent_mother": "Seed parent",
+        "parent_father": "Pollen parent",
+        "mother_at": "At {{ who }}.",
+        "mother_own": "From my own collection.",
+        "photo_credit": "Photo: {{ who }}",
+        "photo_open": "View photo of {{ name }} larger",
+        "photo_close": "Close",
+        "sourced": "Sourced from",
+        "eyebrow": "Tungacea Archive Record",
+        "heading": "Botanical Documentation",
+        "exact_notice": "You will receive the exact specimen shown in the product images.",
+        "id_label": "Specimen ID",
+        "parentage": "Parentage",
+        "genetics": "Genetics",
+        "primary_trait": "Primary trait",
+        "growth_stage": "Growth stage",
+        "propagation": "Propagation",
+        "breeder": "Breeder",
+        "origin": "Origin",
+        "rarity": "Rarity",
+        "care": "Care",
+        "photo_conditions": "Photo conditions",
+        "sale_type": "Sale type",
+        "notes": "Specimen notes",
+        "shipping": "Shipping note"
+      },
       "product_variants": "Product variants",
       "media": {
-        "gallery_viewer": "Gallery Viewer",
+        "go_to_media": "Show image {{ index }}",
+          "gallery_viewer": "Gallery Viewer",
         "load_image": "Load image {{ index }} in gallery view",
         "load_model": "Load 3D Model {{ index }} in gallery view",
         "load_video": "Play video {{ index }} in gallery view",
@@ -250,6 +339,8 @@
       "cart": "Cart"
     },
     "contact": {
+      "intro": "Have a question about a specimen, shipping, or helping your plant settle in? Send me a message—I’ll reply personally.",
+      "direct_email": "Or email me directly:",
       "form": {
         "title": "Contact form",
         "name": "Name",
@@ -257,7 +348,7 @@
         "phone": "Phone number",
         "comment": "Comment",
         "send": "Send",
-        "post_success": "Thanks for contacting us. We'll get back to you as soon as possible.",
+        "post_success": "Thanks for your message. I’ll get back to you as soon as possible.",
         "error_heading": "Please adjust the following:"
       }
     },
@@ -274,10 +365,11 @@
       "announcement": "Announcement",
       "announcement_bar": "Announcement bar"
     },
-
     "header": {
       "announcement": "Announcement",
       "menu": "Menu",
+      "navigation_eyebrow": "TUNGACEA NAVIGATION / 01",
+      "drawer_note": "Rare Anthuriums · living art",
       "cart_count": {
         "one": "{{ count }} item",
         "other": "{{ count }} items"
@@ -318,7 +410,10 @@
       }
     },
     "footer": {
-      "payment": "Payment methods"
+      "payment": "Payment methods",
+      "service_legal_heading": "SERVICE & LEGAL",
+      "withdrawal_link": "Withdraw from purchase",
+      "brand_copy_html": "<strong>Rare Anthuriums · living art.</strong><br>Grown by me and shipped from Germany."
     },
     "featured_blog": {
       "view_all": "View all",
@@ -335,7 +430,17 @@
     "collection_template": {
       "empty": "No products found",
       "title": "Collection",
-      "use_fewer_filters_html": "Use fewer filters or <a class=\"{{ class }}\" href=\"{{ link }}\">remove all</a>"
+      "all_title": "Specimens",
+      "all_description": "Discover all Anthuriums and collector specimens currently on display.",
+      "use_fewer_filters_html": "Use fewer filters or <a class=\"{{ class }}\" href=\"{{ link }}\">remove all</a>",
+      "eyebrow": "TUNGACEA COLLECTION / 01",
+      "specimen_count": {
+        "one": "{{ count }} specimen",
+        "other": "{{ count }} specimens"
+      },
+      "empty_catalogue": "This collection currently holds no specimens.",
+      "no_results": "No specimens match this selection.",
+      "reset_filters": "Reset filters"
     },
     "video": {
       "load_video": "Load video: {{ description }}"
@@ -385,7 +490,11 @@
     "update_country": "Update country/region",
     "search": "Search",
     "popular_countries_regions": "Popular countries/regions",
-    "country_results_count": "{{ count }} countries/regions found"
+    "country_results_count": "{{ count }} countries/regions found",
+    "preferred": "Preferred",
+    "select_language": "Select language",
+    "current_language": "Current language",
+    "close_language_menu": "Close language menu"
   },
   "customer": {
     "account": {
@@ -529,5 +638,87 @@
       "send_on": "YYYY-MM-DD",
       "send_on_label": "Send on (optional)"
     }
+  },
+  "private_archive": {
+    "specimen_range": "Specimens {{ von }} to {{ bis }}",
+    "facet_line": "Lineage",
+    "line_other": "Other",
+    "facet_purity": "Purity",
+    "country_germany": "Germany",
+    "country_switzerland": "Switzerland",
+    "country_netherlands": "Netherlands",
+    "country_usa": "USA",
+    "filters_heading": "Filters",
+    "facet_offer": "Availability",
+    "facet_offer_yes": "Offer available",
+    "facet_origin": "Origin",
+    "has_offer": "Offer available",
+    "search_label": "Search",
+    "search_placeholder": "Name, cross, breeder …",
+    "search_clear": "Reset",
+    "facet_stage": "Stage",
+    "facet_generation": "Generation",
+    "facet_breeder": "Breeder",
+    "count_all": "%anzahl% plants in the archive",
+    "count_some": "%treffer% of %gesamt% plants",
+    "count_none": "No plant matches that.",
+    "unnamed": "Unnamed",
+    "eyebrow_single": "FROM MY ARCHIVE",
+    "owned_by": "This plant is held by {{ who }}.",
+    "offers_heading": "Offers from this plant",
+    "more_about_mother": "More about the mother plant",
+    "more_about_father": "More about the pollen parent",
+    "eyebrow": "MY ARCHIVE",
+    "heading": "A glimpse of what’s growing.",
+    "intro": "Here I document mother plants, my own crosses, and other Anthuriums from my collection. Over time, they may become the source of cuttings and offspring that join the collection as new specimens.",
+    "teaser_eyebrow": "MY ARCHIVE / 01",
+    "teaser_heading": "A glimpse of what’s growing.",
+    "teaser_body": "In my archive, I document mother plants, my own crosses, and other Anthuriums from my collection. Over time, they may become the source of cuttings and offspring that join the collection as new specimens.",
+    "view_specimen": "View specimen",
+    "enter_the_archive": "Enter the archive",
+    "documentation_heading": "Botanical Documentation",
+    "filters": {
+      "title": "Filter specimens",
+      "all": "All"
+    },
+    "status": {
+      "private_collection": "Private Collection",
+      "archived": "Archived",
+      "past_release": "Past Release",
+      "sold": "Sold",
+      "breeding_stock": "Breeding Stock"
+    },
+    "labels": {
+      "plant_id": "Specimen ID",
+      "genetics": "Genetics",
+      "parentage": "Parentage",
+      "breeder": "Breeder / source",
+      "year": "Year",
+      "primary_trait": "Primary trait",
+      "growth_stage": "Growth stage",
+      "propagation": "Propagation",
+      "origin": "Origin",
+      "rarity": "Rarity",
+      "care": "Care",
+      "photo_conditions": "Photo conditions",
+      "sale_type": "Sale type",
+      "shipping": "Shipping note"
+    }
+  },
+  "brand": {
+    "strapline": "Rare Anthuriums · living art"
+  },
+  "seo": {
+    "home_description": "Rare Anthuriums, clones of my own mother plants, and my own crosses—grown, photographed, and carefully shipped by me.",
+    "archive_description": "A look into my collection: mother plants, my own Anthurium crosses, and specimens that may later produce cuttings and offspring.",
+    "contact_description": "Questions about a specimen, shipping, or helping your plant settle in? Send me a message—I’ll reply personally.",
+    "password_title": "Private access",
+    "password_description": "Tungacea is opening soon. Join the list to hear when new Anthuriums and specimens become available."
+  },
+  "tungacea_password": {
+    "eyebrow": "Private access",
+    "heading": "The Tungacea collection is opening soon.",
+    "body": "Here I share clones of my mother plants and Anthuriums from my own breeding. Join the list to hear when new specimens become available.",
+    "collectors_note": "Collectors list · early access"
   }
 }

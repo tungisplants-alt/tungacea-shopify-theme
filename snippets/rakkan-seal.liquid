@@ -1,0 +1,29 @@
+{%- comment -%}
+  Optional Tungacea "Rakkan" seal.
+  Renders the merchant-uploaded seal image from theme settings.
+  Falls back to the bundled brand seal asset when nothing is uploaded.
+  Accepts: class (extra css class), width_override (px)
+{%- endcomment -%}
+{%- assign seal_width = width_override | default: settings.rakkan_width | default: 60 -%}
+<div class="rakkan-seal {{ class }}{% if settings.rakkan_image == blank %} rakkan-seal--default{% endif %}" style="--rakkan-width: {{ seal_width }}px;">
+  {%- if settings.rakkan_image != blank -%}
+    {{
+      settings.rakkan_image
+      | image_url: width: 240
+      | image_tag:
+        loading: 'lazy',
+        class: 'rakkan-seal__image',
+        widths: '60, 90, 120, 180, 240',
+        width: seal_width,
+        alt: settings.rakkan_image.alt | default: shop.name | escape
+    }}
+  {%- else -%}
+    <img
+      src="{{ 'tungacea-rakkan.png' | asset_url }}"
+      class="rakkan-seal__image rakkan-seal__image--default"
+      loading="lazy"
+      width="{{ seal_width }}"
+      alt="{{ shop.name | escape }}"
+    >
+  {%- endif -%}
+</div>

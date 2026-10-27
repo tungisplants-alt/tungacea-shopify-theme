@@ -1,3 +1,4 @@
+
 <product-info
   id="MainProduct-{{ section.id }}"
   class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}"
@@ -15,6 +16,7 @@
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
   {{ 'component-rating.css' | asset_url | stylesheet_tag }}
   {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+  {{ 'component-specimen-passport.css' | asset_url | stylesheet_tag }}
 
   {% unless product.has_only_default_variant %}
     {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
@@ -198,6 +200,10 @@
                       {{ product.description }}
                     </div>
                   {%- endif -%}
+                {%- when 'winterpack' -%}
+                  {% render 'winter-pack', block: block %}
+                {%- when 'specimen' -%}
+                  {% render 'specimen-passport', product: product, block: block %}
                 {%- when 'sku' -%}
                   <p
                     class="product__sku{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.sku.size == 0 %} visibility-hidden{% endif %}"
@@ -947,6 +953,195 @@
       "type": "description",
       "name": "t:sections.main-product.blocks.description.name",
       "limit": 1
+    },
+    {
+      "type": "winterpack",
+      "name": "Winterverpackung",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Ein Kontrollkästchen allein berechnet nichts — dahinter muss ein eigenes Produkt liegen, das beim Kauf mitgelegt wird. Der Preis kommt aus diesem Produkt, nicht aus einer Einstellung hier. Zum saisonalen Abschalten den Block über das Augensymbol ausblenden; die Einstellungen bleiben erhalten."
+        },
+        {
+          "type": "product",
+          "id": "produkt",
+          "label": "Produkt für die Winterverpackung"
+        },
+        {
+          "type": "text",
+          "id": "ueberschrift",
+          "label": "Überschrift",
+          "info": "Leer lassen: Dann wird übersetzt. Ein eigener Text erscheint in beiden Sprachen gleich."
+        },
+        {
+          "type": "text",
+          "id": "hinweis",
+          "label": "Hinweis darunter",
+          "info": "Leer lassen: Dann wird übersetzt. — Das Kästchen ist bewusst nicht vorausgewählt: Vorausgewählte kostenpflichtige Zusatzleistungen sind nach § 312a Abs. 3 BGB unwirksam."
+        }
+      ]
+    },
+    {
+      "type": "specimen",
+      "name": "Specimen passport",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Tungacea Specimen Passport. Values read from product metafields (custom.specimen_id, custom.parentage, custom.genetics, custom.primary_trait, custom.growth_stage, custom.propagation, custom.breeder_source, custom.origin, custom.rarity, custom.care, custom.photo_conditions, custom.sale_type, custom.exact_specimen, custom.specimen_notes, custom.shipping_note, custom.specimen_status) with safe fallbacks to older metafields and the values below. Empty fields are hidden automatically."
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "TUNGACEA ARCHIVE RECORD"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Passport heading",
+          "default": "Specimen passport"
+        },
+        {
+          "type": "textarea",
+          "id": "exact_notice",
+          "label": "Exact-specimen notice text",
+          "default": "EXACT SPECIMEN — You will receive the plant shown in the product images."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_status",
+          "label": "Show status",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_exact_notice",
+          "label": "Show exact-specimen notice",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_archive_frame",
+          "label": "Show archive frame / hairlines",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Fallback values for empty metafields"
+        },
+        {
+          "type": "header",
+          "content": "Plant ID"
+        },
+        {
+          "type": "text",
+          "id": "label_plant_id",
+          "label": "Label",
+          "default": "Plant ID"
+        },
+        {
+          "type": "text",
+          "id": "plant_id",
+          "label": "Value"
+        },
+        {
+          "type": "header",
+          "content": "Genetics"
+        },
+        {
+          "type": "text",
+          "id": "label_genetics",
+          "label": "Label",
+          "default": "Genetics"
+        },
+        {
+          "type": "text",
+          "id": "genetics",
+          "label": "Value"
+        },
+        {
+          "type": "header",
+          "content": "Parentage"
+        },
+        {
+          "type": "text",
+          "id": "label_parentage",
+          "label": "Label",
+          "default": "Parentage"
+        },
+        {
+          "type": "text",
+          "id": "parentage",
+          "label": "Value"
+        },
+        {
+          "type": "header",
+          "content": "Breeder or source"
+        },
+        {
+          "type": "text",
+          "id": "label_breeder",
+          "label": "Label",
+          "default": "Breeder / source"
+        },
+        {
+          "type": "text",
+          "id": "breeder",
+          "label": "Value"
+        },
+        {
+          "type": "header",
+          "content": "Rarity (metafield custom.rarity)"
+        },
+        {
+          "type": "text",
+          "id": "label_rarity",
+          "label": "Label",
+          "default": "Rarity"
+        },
+        {
+          "type": "header",
+          "content": "Care (metafield custom.care)"
+        },
+        {
+          "type": "text",
+          "id": "label_care",
+          "label": "Label",
+          "default": "Care"
+        },
+        {
+          "type": "header",
+          "content": "Photo conditions"
+        },
+        {
+          "type": "text",
+          "id": "label_photo_conditions",
+          "label": "Label",
+          "default": "Photo conditions"
+        },
+        {
+          "type": "text",
+          "id": "photo_conditions",
+          "label": "Value"
+        },
+        {
+          "type": "header",
+          "content": "Shipping information"
+        },
+        {
+          "type": "text",
+          "id": "label_shipping",
+          "label": "Label",
+          "default": "Shipping"
+        },
+        {
+          "type": "richtext",
+          "id": "shipping_info",
+          "label": "Value"
+        }
+      ]
     },
     {
       "type": "share",

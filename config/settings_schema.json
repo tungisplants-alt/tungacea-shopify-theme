@@ -30,6 +30,29 @@
         "id": "favicon",
         "label": "t:settings_schema.logo.settings.favicon.label",
         "info": "t:settings_schema.logo.settings.favicon.info"
+      },
+      {
+        "type": "header",
+        "content": "Rakkan seal"
+      },
+      {
+        "type": "paragraph",
+        "content": "The Rakkan is the Tungacea maker's seal. Leave empty to use the bundled brand seal."
+      },
+      {
+        "type": "image_picker",
+        "id": "rakkan_image",
+        "label": "Rakkan seal image"
+      },
+      {
+        "type": "range",
+        "id": "rakkan_width",
+        "min": 24,
+        "max": 120,
+        "step": 2,
+        "default": 44,
+        "unit": "px",
+        "label": "Rakkan width"
       }
     ]
   },
@@ -1263,6 +1286,17 @@
         "id": "sold_out_badge_color_scheme",
         "label": "t:settings_schema.badges.settings.sold_out_badge_color_scheme.label",
         "default": "scheme-3"
+      },
+      {
+        "type": "range",
+        "id": "specimen_new_days",
+        "min": 0,
+        "max": 90,
+        "step": 5,
+        "unit": "t:settings_schema.badges.settings.specimen_new_days.unit",
+        "label": "t:settings_schema.badges.settings.specimen_new_days.label",
+        "info": "t:settings_schema.badges.settings.specimen_new_days.info",
+        "default": 30
       }
     ]
   },

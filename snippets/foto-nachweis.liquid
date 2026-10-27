@@ -1,0 +1,27 @@
+{% comment %}
+  Tungacea — Nennung eines Fotografen.
+
+  Gibt die Zeile "Foto: X" aus, und zwar nur dann, wenn das Foto von jemand
+  anderem stammt. Ein leeres fotograf-Feld bedeutet: das Bild ist Tungs eigenes,
+  und dann gibt es nichts zu nennen.
+
+  Warum als eigener Baustein: dieselbe Entscheidung stand an drei Stellen
+  (Kachel, Pflanzenseite, Produktpass) und war dreimal gleich geschrieben.
+  Als die Nennung von "pro Eintrag" auf "pro Bild" umgestellt wurde, waere sie
+  sonst dreimal umzustellen gewesen.
+
+  Instagram geht vor dem Klarnamen, weil ein Handle die Person im Hobbykreis
+  auffindbar macht. Fehlt es, bleibt der Name.
+
+  Annahmen:
+  - fotograf: {Object} Metaobjekt vom Typ person, oder leer
+{% endcomment %}
+{%- liquid
+  assign nachweis_wer = ''
+  if fotograf != blank
+    assign nachweis_wer = fotograf.instagram.value | default: fotograf.name.value | strip
+  endif
+  if nachweis_wer != blank
+    echo 'products.product.specimen.photo_credit' | t: who: nachweis_wer
+  endif
+-%}

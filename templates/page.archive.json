@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-plant-archive",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 72,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": ["main"]
+}

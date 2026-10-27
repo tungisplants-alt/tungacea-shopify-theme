@@ -2,6 +2,19 @@
   max-width: 100%;
 }
 
+.contact__intro {
+  max-width: 62rem;
+  margin: 0 0 4rem;
+}
+
+.contact__intro p {
+  margin: 0 0 1rem;
+}
+
+.contact__direct-email {
+  color: rgba(var(--color-foreground), 0.72);
+}
+
 .contact .form__message {
   align-items: flex-start;
 }

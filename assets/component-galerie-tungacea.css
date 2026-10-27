@@ -1,0 +1,233 @@
+/*
+ * Tungacea — Produktgalerie.
+ *
+ * Eigene Datei statt eines Anhangs an Dawns section-main-product.css: Ein
+ * fremdes Stylesheet anzuwachsen macht jede spaetere Theme-Aktualisierung zu
+ * einer Konfliktaufloesung, und beim Hochladen in ein Vorschau-Theme muesste
+ * man 40 kB fremden Code mitschicken, um zehn eigene Regeln zu aendern.
+ *
+ * Geladen wird sie aus snippets/product-media-gallery.liquid, also genau
+ * dort, wo die Auszeichnung entsteht.
+ */
+
+/* Miniaturen links neben dem grossen Bild statt darunter.
+   Dawn stellt sie quer unter die Galerie; <media-gallery> wird dafuer zum
+   zweispaltigen Raster. Der Statusbereich darin ist `visually-hidden` und
+   damit absolut positioniert — er wird kein Rasterelement und stoert nicht. */
+@media screen and (min-width: 990px) {
+  .product--thumbnail media-gallery,
+  .product--thumbnail_slider media-gallery {
+    display: grid;
+    grid-template-columns: 7.6rem minmax(0, 1fr);
+    column-gap: 1.2rem;
+    align-items: start;
+  }
+
+  .product--thumbnail media-gallery > slider-component:not(.thumbnail-slider),
+  .product--thumbnail_slider media-gallery > slider-component:not(.thumbnail-slider) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .product--thumbnail .thumbnail-slider,
+  .product--thumbnail_slider .thumbnail-slider {
+    grid-column: 1;
+    grid-row: 1;
+    flex-direction: column;
+  }
+
+  .product--thumbnail .thumbnail-slider .thumbnail-list,
+  .product--thumbnail_slider .thumbnail-slider .thumbnail-list {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    padding: 0;
+    grid-gap: 0.8rem;
+    /* Viele Bilder sollen die Spalte nicht laenger machen als das Bild
+       daneben; ab dann wird in der Spalte gescrollt. */
+    max-height: 62rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .product--thumbnail .thumbnail-slider .thumbnail-list::-webkit-scrollbar,
+  .product--thumbnail_slider .thumbnail-slider .thumbnail-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product--thumbnail .thumbnail-list__item.slider__slide,
+  .product--thumbnail_slider .thumbnail-list__item.slider__slide {
+    width: 100%;
+  }
+
+  /* Die Pfeile der Miniaturen zeigen nach links und rechts. In einer
+     senkrechten Spalte zeigten sie in die falsche Richtung; gescrollt wird
+     hier mit dem Rad. */
+  .product--thumbnail .thumbnail-slider > .slider-button,
+  .product--thumbnail_slider .thumbnail-slider > .slider-button {
+    display: none;
+  }
+}
+
+/* Punkte im Bild (nur Telefon).
+   Eckig, nicht rund: Auf dieser Seite ist alles rechtwinklig — Variantenfelder,
+   Knoepfe, Haarlinien. Der aktive Punkt wird zum Strich, statt nur die Farbe
+   zu wechseln; so ist die Stellung auch ohne Farbunterscheidung zu sehen. */
+@media screen and (max-width: 749px) {
+  media-gallery > slider-component:not(.thumbnail-slider) {
+    position: relative;
+  }
+
+  .galerie-punkte {
+    position: absolute;
+    left: 50%;
+    bottom: 1.4rem;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    /* Ein dunkler Streifen traegt die Punkte auch ueber einem hellen Foto.
+       Kein Weiss und keine Pille — das waere eine fremde Handschrift. */
+    background: rgba(10, 10, 10, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .galerie-punkte__punkt {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 0;
+    padding: 0;
+    width: 0.6rem;
+    height: 0.3rem;
+    background: rgba(242, 238, 232, 0.42);
+    cursor: pointer;
+    transition: width 0.22s ease, background-color 0.22s ease;
+  }
+
+  .galerie-punkte__punkt.ist-hier {
+    width: 1.8rem;
+    background: #cc6070;
+  }
+
+  .galerie-punkte__punkt:focus-visible {
+    outline: 2px solid #cc6070;
+    outline-offset: 2px;
+  }
+
+  /* Pfeile und "1 / 6" treten zurueck, sobald die Punkte da sind — zwei
+     Anzeigen fuer dieselbe Sache lesen sich wie ein Fehler. */
+  .galerie-punkte ~ .slider-buttons {
+    display: none;
+  }
+}
+
+/* Pfeile und "1 / 2" am Desktop ausblenden.
+ *
+ * Dawn will das selbst — die Regel dafuer steht in section-main-product.css
+ * und haengt an `.product__media-container`. Diese Klasse kommt in der
+ * Auszeichnung nirgends vor; die Regel greift also nie. Stehen blieb ein
+ * Zaehler, der nichts tut: Die Bilderliste traegt am Desktop nur
+ * `slider--mobile`, ist dort also kein Schieber, und ein Klick auf den Pfeil
+ * ging ins Leere.
+ *
+ * Gewechselt wird am Desktop ueber die Miniaturen links. Zwei Bedienwege fuer
+ * dieselbe Sache, von denen einer nicht funktioniert, sind schlechter als
+ * einer.
+ *
+ * Die Pfeile der Miniaturenspalte sind davon nicht betroffen — sie liegen als
+ * `.slider-button` direkt in `.thumbnail-slider`, nicht in `.slider-buttons`.
+ */
+@media screen and (min-width: 750px) {
+  media-gallery .slider-buttons {
+    display: none;
+  }
+}
+
+/* Welche Miniatur gerade dran ist.
+ *
+ * Dawn markiert sie mit einer 1px-Linie in der Vordergrundfarbe. Auf dunklen
+ * Pflanzenfotos vor dunklem Grund ist das kaum zu sehen — und die Miniaturen
+ * sind am Desktop die EINZIGE Anzeige, wo man steht, seit Pfeile und Zaehler
+ * weg sind. Deshalb hier zwei Signale statt einem: Die nicht gewaehlten
+ * treten zurueck, die gewaehlte bekommt einen Rahmen im Akzentton.
+ *
+ * #CC6070 und nicht Oxblood: Oxblood ergibt auf Dunkel gemessene 1,62:1 und
+ * waere als Linie praktisch unsichtbar. Der Akzent liegt bei 4,75:1.
+ */
+.thumbnail-list__item .thumbnail {
+  opacity: 0.55;
+  transition: opacity 0.18s ease;
+}
+
+.thumbnail-list__item .thumbnail:hover,
+.thumbnail-list__item .thumbnail[aria-current] {
+  opacity: 1;
+}
+
+/* Doppeltes Attribut statt Verlass auf die Reihenfolge.
+ *
+ * Dawns Regel `.thumbnail[aria-current]` setzt eine weisse 1px-Linie und
+ * steht in section-main-product.css — die wird NACH dieser Datei geladen,
+ * weil das Stylesheet des Abschnitts spaeter in der Auszeichnung steht als
+ * das Snippet. Bei gleicher Spezifitaet gewinnt dann Dawn. Sichtbar war das
+ * als roter Rahmen, der nach dem Laden sofort wieder weiss wurde — Tungs
+ * "fuer eine Millisekunde".
+ *
+ * `[aria-current][aria-current]` zaehlt zweimal und gewinnt unabhaengig von
+ * der Ladereihenfolge. Kein !important: Das gewinnt zwar auch, nimmt aber
+ * jeder spaeteren Regel die Chance, ohne denselben Hammer auszukommen. */
+.thumbnail-list__item .thumbnail[aria-current][aria-current] {
+  /* outline, nicht box-shadow.
+   *
+   * Ein INNERER Schatten wird unter dem Inhalt gezeichnet, und das Bild
+   * fuellt den Knopf vollstaendig — er war damit zugedeckt und unsichtbar.
+   * Dawns weisse Linie war ein AEUSSERER Ring und deshalb zu sehen.
+   *
+   * Ein aeusserer Ring wuerde hier aber am Rand der Miniaturenspalte
+   * abgeschnitten, weil die Liste senkrecht scrollt. outline wird ueber dem
+   * Inhalt gezeichnet, und ein negativer Versatz legt ihn nach innen — damit
+   * ist er weder zugedeckt noch beschnitten. */
+  outline: 0.2rem solid #cc6070;
+  outline-offset: -0.2rem;
+  border-color: #cc6070;
+  /* Dawns weisser Ring liegt auf derselben Miniatur und wurde von dieser
+     Regel nicht angefasst, solange hier kein box-shadow stand — rot UND
+     weiss zugleich. Eine Korrektur hat zwei Haelften: das Neue setzen und
+     das Alte abraeumen.
+
+     Nebenbei widerlegt das meine Probe: Dort war ein aeusserer Ring in der
+     scrollenden Spalte beschnitten. Auf der echten Seite ist er sichtbar —
+     die Probe traf die Umgebung also nicht genau. Der outline bleibt
+     trotzdem, er ist in beiden Faellen zu sehen. */
+  box-shadow: none;
+}
+
+/* Festes 4:5 am Telefon.
+ *
+ * Dawn rechnet die Hoehe aus dem NATUERLICHEN Seitenverhaeltnis jedes Bildes
+ * (--ratio-percent). Bei gemischten Formaten wechselt der Wagen damit von
+ * Bild zu Bild die Hoehe, und beim Wischen springt die halbe Seite.
+ *
+ * `contain` statt `cover`: Das entspricht Tungs Einstellung media_fit und
+ * schneidet nichts ab. Was neben einem schmalen Hochformat uebrig bleibt,
+ * verschwindet in der Seitenfarbe.
+ *
+ * Der durchsichtige Hintergrund ist hier nur eine Absicherung: Dawn setzt
+ * `media--transparent` bereits in der Auszeichnung (dreimal belegt in
+ * snippets/product-thumbnail.liquid). Faellt die Klasse irgendwann weg,
+ * legt die Grundregel `rgba(var(--color-foreground), .1)` einen hellen
+ * Kasten unter das Hochformat.
+ */
+@media screen and (max-width: 749px) {
+  .product__media-item .product-media-container .media {
+    padding-top: 125%;
+    background-color: transparent;
+  }
+
+  .product__media-item .product-media-container .media img {
+    object-fit: contain;
+  }
+}

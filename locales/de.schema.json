@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "settings_schema": {
     "colors": {
@@ -188,6 +197,11 @@
     "badges": {
       "name": "Badges",
       "settings": {
+        "specimen_new_days": {
+          "label": "„Neu“-Kennzeichen: Tage nach Veröffentlichung",
+          "info": "Wie lange ein neu veröffentlichtes Exemplar das Kennzeichen „Neu“ auf seiner Karte trägt. 0 schaltet die Automatik ab; das Produkt-Tag „neu“ zeigt es immer.",
+          "unit": "Tage"
+        },
         "position": {
           "options__1": {
             "label": "Unten links"
@@ -897,6 +911,13 @@
         "show_policy": {
           "label": "Links zu Richtlinien",
           "info": "[Richtlinien verwalten](/admin/settings/legal)"
+        },
+        "show_withdrawal": {
+          "label": "Widerruf-Link zeigen",
+          "info": "Verlinkt auf /a/withdrawal. Braucht die installierte Widerrufs-App; ohne sie führt der Link ins Leere."
+        },
+        "show_withdrawal_bottom": {
+          "label": "Widerruf zusätzlich in der Fusszeile zeigen"
         },
         "header__9": {
           "content": "Versorgungsunternehmen"
@@ -2335,6 +2356,18 @@
             "label": "Rechts"
           },
           "label": "Inhaltsausrichtung"
+        },
+        "archive_header": {
+          "content": "Link zum privaten Archiv",
+          "info": "Optional. Verknüpft den Button dieses Abschnitts mit einer eigenen Archivseite anstelle einer Verkaufskollektion."
+        },
+        "archive_page": {
+          "label": "Archivseite",
+          "info": "Wähle die Seite, die die Vorlage „page.archive“ verwendet. Wenn keine ausgewählt ist, wird kein Button angezeigt."
+        },
+        "archive_button_label": {
+          "label": "Beschriftung des Archiv-Buttons",
+          "info": "Leer lassen, um die übersetzte Vorgabe zu verwenden („Archiv betreten“)."
         }
       },
       "blocks": {
@@ -3409,6 +3442,131 @@
         "open_by_default": {
           "label": "Standardmäßig geöffnet"
         }
+      }
+    },
+    "private-archive": {
+      "name": "Privates Archiv",
+      "settings": {
+        "eyebrow": {
+          "label": "Kopfzeile",
+          "info": "Leer lassen, um die übersetzte Vorgabe zu verwenden."
+        },
+        "heading": {
+          "label": "Überschrift",
+          "info": "Leer lassen, um die übersetzte Vorgabe zu verwenden."
+        },
+        "intro": {
+          "label": "Einleitung",
+          "info": "Leer lassen, um die übersetzte Vorgabe zu verwenden."
+        },
+        "enable_filters": {
+          "label": "Statusfilter anzeigen",
+          "info": "Leichte Filter, die nur erscheinen, wenn Exemplare mehr als einen Status verwenden. Funktioniert ohne Neuladen der Seite."
+        },
+        "collection_header": {
+          "content": "Veröffentlichte Produkte (optional)",
+          "info": "Optional. Zeigt veröffentlichte Shopify-Produkte neben den manuellen Exemplar-Einträgen. Standardmäßig leer — manuelle Exemplare funktionieren eigenständig."
+        },
+        "collection": {
+          "label": "Archiv-Kollektion",
+          "info": "Optional. Verwendet niemals automatisch den aktuellen Drop oder die Hauptverkaufskollektion."
+        },
+        "collection_heading": {
+          "label": "Überschrift für veröffentlichte Produkte"
+        },
+        "products_to_show": {
+          "label": "Maximale Anzahl anzuzeigender Produkte"
+        }
+      },
+      "blocks": {
+        "specimen": {
+          "name": "Exemplar",
+          "settings": {
+            "image": {
+              "label": "Exemplar-Bild"
+            },
+            "image_secondary": {
+              "label": "Zweites Bild (optional)"
+            },
+            "name": {
+              "label": "Exemplarname"
+            },
+            "plant_id": {
+              "label": "Exemplar-ID"
+            },
+            "genetics": {
+              "label": "Genetik"
+            },
+            "parentage": {
+              "label": "Abstammung"
+            },
+            "breeder": {
+              "label": "Züchter / Quelle"
+            },
+            "year": {
+              "label": "Jahr"
+            },
+            "primary_trait": {
+              "label": "Hauptmerkmal"
+            },
+            "growth_stage": {
+              "label": "Wachstumsstadium"
+            },
+            "propagation": {
+              "label": "Vermehrung"
+            },
+            "origin": {
+              "label": "Herkunft"
+            },
+            "rarity": {
+              "label": "Seltenheit"
+            },
+            "care": {
+              "label": "Pflege und Kulturbedingungen"
+            },
+            "photo_conditions": {
+              "label": "Aufnahmebedingungen"
+            },
+            "sale_type": {
+              "label": "Verkaufsart"
+            },
+            "shipping": {
+              "label": "Versandhinweis"
+            },
+            "status": {
+              "label": "Archivstatus",
+              "options__1": {
+                "label": "Private Sammlung"
+              },
+              "options__2": {
+                "label": "Archiviert"
+              },
+              "options__3": {
+                "label": "Frühere Veröffentlichung"
+              },
+              "options__4": {
+                "label": "Verkauft"
+              },
+              "options__5": {
+                "label": "Zuchtbestand"
+              }
+            },
+            "notes": {
+              "label": "Kurze Notizen"
+            },
+            "link": {
+              "label": "Link (optional)",
+              "info": "Optional. Ein Archiveintrag funktioniert auch ohne Shopify-Produktseite."
+            },
+            "link_label": {
+              "label": "Linkbeschriftung",
+              "info": "Leer lassen, um die übersetzte Vorgabe zu verwenden („Exemplar ansehen“)."
+            }
+          }
+        }
+      },
+      "presets": {
+        "name": "Privates Archiv"
       }
     }
   }

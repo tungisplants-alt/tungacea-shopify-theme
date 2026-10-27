@@ -1,7 +1,55 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "about_timeline_wAy7nK": {
+      "type": "about-timeline",
+      "blocks": {
+        "chapter_H9gbWC": {
+          "type": "chapter",
+          "settings": {
+            "text": ""
+          }
+        },
+        "chapter_iXUjRj": {
+          "type": "chapter",
+          "settings": {
+            "text": ""
+          }
+        },
+        "chapter_X4AfEV": {
+          "type": "chapter",
+          "settings": {
+            "text": ""
+          }
+        },
+        "chapter_JeG7mE": {
+          "type": "chapter",
+          "settings": {
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "chapter_H9gbWC",
+        "chapter_iXUjRj",
+        "chapter_X4AfEV",
+        "chapter_JeG7mE"
+      ],
+      "name": "Über Tungacea",
+      "settings": {}
+    },
     "main": {
       "type": "main-page",
+      "disabled": true,
+      "name": "junk",
       "settings": {
         "padding_top": 28,
         "padding_bottom": 28
@@ -9,6 +57,7 @@
     }
   },
   "order": [
+    "about_timeline_wAy7nK",
     "main"
   ]
 }

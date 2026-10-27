@@ -1,0 +1,95 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 48,
+        "padding_bottom": 20
+      }
+    },
+    "hobby_timeline": {
+      "type": "multirow",
+      "blocks": {
+        "timeline_start": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/1000091366.jpg",
+            "caption": "DIE ERSTEN SCHRITTE",
+            "heading": "Wie alles begann",
+            "text": "<p><strong>Hi, ich bin Tung.</strong></p><p>2024 fing alles mit einer Monstera auf der Fensterbank an. Bald wollte ich wissen, warum die eine Pflanze wächst und die nächste nicht. Aus einer wurden schnell viele – bis die Fensterbank nicht mehr reichte und ich tatsächlich ein ganzes Pflanzenzimmer einrichtete. Dafür muss man wohl ein bisschen pflanzenverrückt sein. Dass daraus einmal Tungacea werden würde, hätte ich damals selbst nicht gedacht.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "timeline_growth": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/CCE187F9-FF02-483E-AE52-FD03D955E44F.jpg",
+            "caption": "DIE SAMMLUNG WÄCHST",
+            "heading": "Vom Interesse zur Leidenschaft",
+            "text": "<p>Mit einem klassischen <em>Anthurium papillilaminum</em> fing der nächste Abschnitt an. Dieses matte, dunkle Blatt beim Austrieb hatte etwas, das mich nicht mehr losließ. Aus der kleinen Pflanzenvitrine wurde eine Milsbo, später eine ganze Ecke mit Regalen und schließlich zwei Growzelte. Spätestens als ich in einem Zelt voller Pflanzen stand, war klar: Das war längst mehr als nur Interesse. Die besonderen Anthurien kamen erst danach – mit jedem Schritt tiefer ins Hobby.<br/><br/></p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "timeline_today": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/485DA170-447B-43A4-922C-6DFBCF65C9A9.jpg",
+            "caption": "HEUTE",
+            "heading": "Lebende Kunst",
+            "text": "<p>Viele meiner Pflanzen landen irgendwann vor der Kamera. Nicht, um sie schöner wirken zu lassen, sondern um genau das festzuhalten, weshalb ich bei ihnen hängen geblieben bin: ein dunkler Austrieb, eine besondere Struktur oder die Form eines Blattes. Genauso wähle ich auch die Pflanzen für Tungacea aus – ich nehme nur auf, was ich selbst gerne in meiner Sammlung hätte. Für mich sind das keine gewöhnlichen Zimmerpflanzen, sondern lebende Kunst.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "timeline_shop": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/IMG_8398.jpg",
+            "caption": "VON MEINER SAMMLUNG ZU DIR",
+            "heading": "Aus eigener Hand",
+            "text": "<p>Bei Tungacea findest du Klone meiner eigenen Mutterpflanzen und Anthurien aus eigener Züchtung. Ich biete nur Pflanzen an, die ich selbst mag und auch in meine eigene Sammlung stellen würde. Jede Bestellung packe ich persönlich – sorgfältig und nach bestem Wissen und Gewissen. Wenn danach Fragen zu deiner Pflanze auftauchen, kannst du dich jederzeit direkt bei mir melden.</p>",
+            "button_label": "Kollektion entdecken",
+            "button_link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "timeline_start",
+        "timeline_growth",
+        "timeline_today",
+        "timeline_shop"
+      ],
+      "settings": {
+        "image_height": "adapt",
+        "desktop_image_width": "medium",
+        "image_layout": "alternate-left",
+        "heading_size": "h1",
+        "text_style": "body",
+        "button_style": "secondary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-1",
+        "row_color_scheme": "scheme-1",
+        "padding_top": 20,
+        "padding_bottom": 64
+      }
+    }
+  },
+  "order": [
+    "main",
+    "hobby_timeline"
+  ]
+}

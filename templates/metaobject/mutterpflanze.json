@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-plant-profile",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,371 @@
+{% comment %}
+  Tungacea — Botanische Dokumentation (Produktseite).
+
+  Rendered from sections/main-product.liquid via:
+    {% render 'specimen-passport', product: product, block: block %}
+
+  Everything here is composed from click values. The merchant selects from fixed
+  lists and types nothing; this snippet turns those values into sentences, and
+  because the values are fixed the sentences exist in every locale.
+
+  A field left empty produces no line at all — no "unknown", no gap.
+
+  Reads (all namespace `custom`):
+  - lieferumfang    Auswahl  — what the buyer receives
+  - mutterpflanze   Referenz — metaobject `mutterpflanze`
+  - vaterpflanze    Referenz — metaobject `mutterpflanze`; nur bei Saemlingen.
+                    Gesetzt heisst: zwei Eltern, und es wird nichts abgeleitet.
+  - stadium         Auswahl
+  - generation      Auswahl
+  - blattlaenge_cm  Zahl
+  - bewurzelung     Auswahl  — also derives the experience hint
+  - zuechter        Referenz — metaobject `person`
+  - bezogen_von     Referenz — metaobject `person`
+  - specimen_id     Text
+  - aufnahmedatum   Datum
+
+  Accepts:
+  - product: {Object} Product Liquid object (required)
+  - block:   {Object} main-product `specimen` block (required)
+{% endcomment %}
+
+{%- liquid
+  assign mf = product.metafields.custom
+
+  assign sp_lieferumfang = mf.lieferumfang.value | default: '' | strip
+  assign sp_stadium = mf.stadium.value | default: '' | strip
+  assign sp_bewurzelung = mf.bewurzelung.value | default: '' | strip
+  assign sp_blattlaenge = mf.blattlaenge_cm.value
+  comment
+    Generation und Zuechter erbt ein Cutting von seiner Mutter. Das ist
+    Biologie, keine Eingabe: ein abgeschnittenes Stueck hat zwangslaeufig
+    dieselbe Generation und denselben Zuechter wie die Pflanze, von der es
+    stammt. Steht am Produkt ein eigener Wert, gilt der — fuer die Faelle,
+    in denen die Ableitung nicht stimmt.
+
+    Bei einem Saemling traegt diese Begruendung nicht mehr. Zwei F2-Eltern
+    ergeben keine F2, und zwei Zuechter lassen sich nicht zu einem verrechnen.
+    Sobald ein zweiter Elternteil eingetragen ist, wird deshalb nichts mehr
+    abgeleitet: lieber keine Angabe als die halbe Wahrheit. Ein am Produkt
+    eingetragener Wert gilt weiterhin.
+  endcomment
+  assign mutter = mf.mutterpflanze.value
+  assign vater = mf.vaterpflanze.value
+  assign hat_zwei = false
+  if mutter != blank and vater != blank
+    assign hat_zwei = true
+  endif
+
+  assign mutter_quelle = mutter
+  if hat_zwei
+    assign mutter_quelle = blank
+  endif
+
+  assign gen_raw = mf.generation.value | default: '' | strip
+  if gen_raw == blank and mutter_quelle != blank
+    assign gen_raw = mutter_quelle.generation.value | default: '' | strip
+  endif
+  assign sp_generation = ''
+  if gen_raw == 'Species'
+    assign sp_generation = gen_raw
+  elsif gen_raw == 'Unbekannt'
+    assign gen_word = 'products.product.specimen.generation_unknown' | t
+    assign sp_generation = 'products.product.specimen.generation_prefixed' | t: value: gen_word
+  elsif gen_raw != blank
+    assign sp_generation = 'products.product.specimen.generation_prefixed' | t: value: gen_raw
+  endif
+  assign sp_id = mf.specimen_id.value | default: '' | strip
+  assign sp_datum = mf.aufnahmedatum.value
+
+  assign zuechter = mf.zuechter.value
+  if zuechter == blank and mutter_quelle != blank
+    assign zuechter = mutter_quelle.zuechter.value
+  endif
+  assign bezogen = mf.bezogen_von.value
+
+  comment
+    Lieferumfang decides the lead sentence, but the wording depends on whether a
+    mother plant is actually shown further down. Pointing at a plant that is not
+    there would be worse than saying nothing, so the kind is noted here and the
+    sentence is built once the mother is resolved.
+
+    An explicit case, not a translation key assembled at runtime: every key
+    stays verifiable, and the stored values carry umlauts that would not
+    survive being turned into a handle.
+  endcomment
+  assign delivery_kind = ''
+  assign thing_word = ''
+  case sp_lieferumfang
+    when 'Dieses Exemplar'
+      assign delivery_kind = 'exact'
+      assign thing_word = 'products.product.specimen.thing_exact' | t
+    when 'Cutting der Mutterpflanze'
+      assign delivery_kind = 'cutting'
+      assign thing_word = 'products.product.specimen.thing_cutting' | t
+    when 'Sämling aus dieser Kreuzung'
+      assign delivery_kind = 'seedling'
+      assign thing_word = 'products.product.specimen.thing_seedling' | t
+  endcase
+
+  comment
+    The experience hint is derived, never entered. It therefore cannot be
+    forgotten on a product where it matters. Two parts so the opening can be
+    set in bold without markup inside a translation string.
+  endcomment
+  assign rooting_label = ''
+  assign hint_title = ''
+  assign hint_body = ''
+  case sp_bewurzelung
+    when 'Unbewurzelt'
+      assign rooting_label = 'products.product.specimen.rooting_none' | t
+      assign hint_title = 'products.product.specimen.hint_unrooted_title' | t
+      assign hint_body = 'products.product.specimen.hint_unrooted_body' | t
+    when 'Frisch bewurzelt'
+      assign rooting_label = 'products.product.specimen.rooting_fresh' | t
+      assign hint_title = 'products.product.specimen.hint_fresh_title' | t
+      assign hint_body = 'products.product.specimen.hint_fresh_body' | t
+    when 'Gut bewurzelt'
+      assign rooting_label = 'products.product.specimen.rooting_established' | t
+  endcase
+
+  assign stage_label = ''
+  case sp_stadium
+    when 'Steckling'
+      assign stage_label = 'products.product.specimen.stage_cutting' | t
+    when 'Sämling'
+      assign stage_label = 'products.product.specimen.stage_seedling' | t
+    when 'Jungpflanze'
+      assign stage_label = 'products.product.specimen.stage_young' | t
+    when 'Etabliert'
+      assign stage_label = 'products.product.specimen.stage_established' | t
+    when 'Mutterpflanze'
+      assign stage_label = 'products.product.specimen.stage_mother' | t
+  endcase
+
+  comment
+    Specs line: stage, generation, rooting, leaf length. Only the parts that
+    exist. Stage and rooting used to exclude each other, which hid the stage on
+    every product that had a rooting state — they answer different questions and
+    now stand side by side. Leaf count was dropped; it is countable in the
+    pictures and was taking a slot from something harder to see.
+  endcomment
+  assign spec_parts = ''
+  if stage_label != blank
+    assign spec_parts = spec_parts | append: stage_label | append: '||'
+  endif
+  if sp_generation != blank
+    assign spec_parts = spec_parts | append: sp_generation | append: '||'
+  endif
+  if rooting_label != blank
+    assign spec_parts = spec_parts | append: rooting_label | append: '||'
+  endif
+  comment
+    Mehrere Exemplare in einem Produkt haben nicht dieselbe Blattlaenge. Ist der
+    obere Wert gesetzt und wirklich groesser, steht eine Spanne statt einer Zahl.
+    Die Spanne wird in denselben Satz gereicht wie die einzelne Zahl — so gibt es
+    keinen zweiten Uebersetzungsschluessel, der auseinanderlaufen koennte.
+  endcomment
+  if sp_blattlaenge != nil
+    assign cm_text = sp_blattlaenge
+    assign blatt_bis = mf.blattlaenge_bis_cm.value
+    if blatt_bis != nil and blatt_bis > sp_blattlaenge
+      assign cm_text = sp_blattlaenge | append: '–' | append: blatt_bis
+    endif
+    assign leaflen = 'products.product.specimen.leaf_length' | t: cm: cm_text
+    assign spec_parts = spec_parts | append: leaflen | append: '||'
+  endif
+  assign spec_list = spec_parts | split: '||'
+
+  comment
+    Nur die Namen werden hier aufgeloest. Die Darstellung traegt das Snippet
+    specimen-parent, einmal je Elternteil; der Leitsatz unten braucht
+    lediglich zu wissen, ob ueberhaupt ein Elternteil gezeigt wird.
+  endcomment
+  assign mutter_name = ''
+  if mutter != blank
+    assign mutter_name = mutter.bezeichnung.value | default: '' | strip
+  endif
+  assign vater_name = ''
+  if vater != blank
+    assign vater_name = vater.bezeichnung.value | default: '' | strip
+  endif
+  assign eltern_da = false
+  if mutter_name != blank or vater_name != blank
+    assign eltern_da = true
+  endif
+
+  comment
+    The lead sentence, now that it is known whether a mother plant is shown.
+    The old wording said a cutting came from the specimen pictured, which was a
+    circle: the gallery shows what is being sold, so a cutting could not come
+    from it. It now points at the mother plant, and only when there is one to
+    point at.
+  endcomment
+  assign lead = ''
+  case delivery_kind
+    when 'exact'
+      assign lead = 'products.product.specimen.delivery_exact' | t
+    when 'cutting'
+      if mutter_name != blank
+        assign lead = 'products.product.specimen.delivery_cutting_mother' | t
+      else
+        assign lead = 'products.product.specimen.delivery_cutting_plain' | t
+      endif
+    when 'seedling'
+      if eltern_da
+        assign lead = 'products.product.specimen.delivery_seedling_cross' | t
+      else
+        assign lead = 'products.product.specimen.delivery_seedling_plain' | t
+      endif
+  endcase
+
+  assign zuechter_name = ''
+  if zuechter != blank
+    assign zuechter_name = zuechter.name.value | default: '' | strip
+  endif
+  comment
+    Das Land steht an der Person, nicht an der Pflanze. In Tungs altem Archiv
+    trug jeder Zuechter ueber alle Karten hinweg denselben Wert — Tofusprinkles
+    zweimal USA. Einmal eingetragen, gilt es fuer jede Pflanze dieser Herkunft.
+  endcomment
+  assign zuechter_land = ''
+  if zuechter != blank
+    assign zuechter_land = zuechter.land.value | default: '' | strip
+  endif
+
+  assign bezogen_name = ''
+  assign bezogen_land = ''
+  if bezogen != blank
+    assign bezogen_name = bezogen.instagram.value | default: bezogen.name.value | strip
+    assign bezogen_land = bezogen.land.value | default: '' | strip
+  endif
+
+  assign has_lower = false
+  if zuechter_name != blank or bezogen_name != blank or sp_id != blank
+    assign has_lower = true
+  endif
+
+  comment
+    The date format lives in the locale file. A German and an English reader do
+    not write the same date the same way, so the pattern is translated too.
+  endcomment
+  assign datum_fmt = ''
+  if sp_datum != nil
+    assign date_pattern = 'products.product.specimen.date_format' | t
+    assign datum_fmt = sp_datum | date: date_pattern
+  endif
+
+  assign has_anything = false
+  if lead != blank or spec_list.size > 0 or eltern_da or has_lower
+    assign has_anything = true
+  endif
+-%}
+
+{%- if has_anything -%}
+  {{ 'component-specimen-passport.css' | asset_url | stylesheet_tag }}
+
+  <section
+    class="specimen-passport quick-add-hidden"
+    aria-labelledby="SpecimenPassport-title-{{ block.id }}"
+    {{ block.shopify_attributes }}
+  >
+    <header class="specimen-passport__header">
+      <div class="specimen-passport__heading-group">
+        <p class="specimen-passport__eyebrow">{{ 'products.product.specimen.eyebrow' | t }}</p>
+        <h2 class="specimen-passport__title" id="SpecimenPassport-title-{{ block.id }}">
+          {{- 'products.product.specimen.heading' | t -}}
+        </h2>
+      </div>
+    </header>
+
+    {%- if lead != blank -%}
+      <p class="specimen-passport__lead" data-testid="specimen-lead">
+        <strong>{{ lead }}</strong>
+        {%- if datum_fmt != blank %}
+          {{ 'products.product.specimen.photographed_on' | t: date: datum_fmt }}
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+
+    {%- if spec_list.size > 0 -%}
+      <p class="specimen-passport__specs" data-testid="specimen-specs">
+        {%- for part in spec_list -%}
+          {{- part -}}{%- unless forloop.last %} · {% endunless -%}
+        {%- endfor -%}
+      </p>
+    {%- endif -%}
+
+    {%- comment -%}
+      The mother plant follows the lead sentence directly, because that sentence
+      points at her: the shorter the way to "shown below", the better it holds.
+      The experience hint comes after her — it is a caveat, and a caveat placed
+      second makes the whole record read like a warning.
+    {%- endcomment -%}
+    {%- comment -%}
+      Ein Cutting hat eine Mutterpflanze, ein Saemling zwei Eltern. Es ist
+      derselbe Block, ein- oder zweimal gerendert — keine zweite Darstellung
+      daneben, die auseinanderlaufen koennte. Die Rolle steuert nur das
+      Etikett und die Herkunftszeile.
+    {%- endcomment -%}
+    {%- if hat_zwei -%}
+      {%- comment -%}
+        Die Kreuzungsschreibweise des Fachs: Mutter × Vater nebeneinander, das
+        Zeichen dazwischen. Untereinander gesetzt sah es aus wie zwei getrennte
+        Herkuenfte statt wie eine Kreuzung. Das Zeichen ist dekorativ — die
+        Etiketten tragen die Bedeutung, auch ohne Bildschirm.
+      {%- endcomment -%}
+      <div class="specimen-passport__cross" data-testid="specimen-cross">
+        {%- render 'specimen-parent', eintrag: mutter, rolle: 'mutter', thing_word: thing_word, max_fotos: 1 -%}
+        <span class="specimen-passport__cross-sign" aria-hidden="true">&times;</span>
+        {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word, max_fotos: 1 -%}
+      </div>
+    {%- else -%}
+      {%- if mutter != blank -%}
+        {%- render 'specimen-parent', eintrag: mutter, rolle: 'einzeln', thing_word: thing_word -%}
+      {%- endif -%}
+      {%- if vater != blank -%}
+        {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if has_lower -%}
+      <dl class="specimen-passport__grid">
+        {%- if zuechter_name != blank -%}
+          <div class="specimen-passport__row">
+            <dt class="specimen-passport__label">{{ 'products.product.specimen.breeder' | t }}</dt>
+            <dd class="specimen-passport__value" data-testid="specimen-breeder">
+              {{- zuechter_name | escape -}}
+              {%- if zuechter_land != blank %} <span class="specimen-passport__country">{%- capture tg_land -%}{%- render 'land-name', wert: zuechter_land -%}{%- endcapture -%}({{ tg_land | strip }})</span>{% endif -%}
+            </dd>
+          </div>
+        {%- endif -%}
+        {%- if bezogen_name != blank -%}
+          <div class="specimen-passport__row">
+            <dt class="specimen-passport__label">{{ 'products.product.specimen.sourced' | t }}</dt>
+            <dd class="specimen-passport__value" data-testid="specimen-sourced">
+              {{- bezogen_name | escape -}}
+              {%- if bezogen_land != blank %} <span class="specimen-passport__country">{%- capture tg_bez -%}{%- render 'land-name', wert: bezogen_land -%}{%- endcapture -%}({{ tg_bez | strip }})</span>{% endif -%}
+            </dd>
+          </div>
+        {%- endif -%}
+        {%- if sp_id != blank -%}
+          <div class="specimen-passport__row">
+            <dt class="specimen-passport__label">{{ 'products.product.specimen.id_label' | t }}</dt>
+            <dd class="specimen-passport__value" data-testid="specimen-id">{{ sp_id | escape }}</dd>
+          </div>
+        {%- endif -%}
+      </dl>
+    {%- endif -%}
+
+    {%- comment -%}
+      The experience hint closes the record. Everything above it is what the
+      specimen is and where it comes from; this is the one caveat, and a caveat
+      belongs after the case it qualifies, not in front of it.
+    {%- endcomment -%}
+    {%- if hint_title != blank -%}
+      <p class="specimen-passport__hint" role="note" data-testid="specimen-hint">
+        <strong>{{ hint_title }}</strong> {{ hint_body }}
+      </p>
+    {%- endif -%}
+  </section>
+{%- endif -%}

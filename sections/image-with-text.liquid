@@ -55,7 +55,14 @@
                 | image_tag: sizes: sizes, widths: widths, fetchpriority: fetch_priority
               }}
             {%- else -%}
-              {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              <img
+                src="{{ 'tungacea-about.jpg' | asset_url }}"
+                alt="{{ shop.name | escape }}"
+                width="900"
+                height="1200"
+                loading="lazy"
+                class="tungacea-default-media"
+              >
             {%- endif -%}
           </div>
         </div>

@@ -89,6 +89,29 @@
               </div>
           {%- endcase -%}
         {%- endfor -%}
+        {%- if section.settings.archive_page != blank -%}
+          {%- liquid
+            assign archive_label = section.settings.archive_button_label
+            if archive_label == blank
+              assign archive_label = 'private_archive.enter_the_archive' | t
+            endif
+          -%}
+          <div
+            class="rich-text__buttons{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {% if settings.animations_reveal_on_scroll %}
+              data-cascade
+              style="--animation-order: {{ section.blocks.size | plus: 1 }};"
+            {% endif %}
+          >
+            <a
+              href="{{ section.settings.archive_page.url }}"
+              class="button button--secondary"
+              data-testid="rich-text-archive-cta"
+            >
+              {{- archive_label | escape -}}
+            </a>
+          </div>
+        {%- endif -%}
       </div>
     </div>
   </div>
@@ -154,6 +177,23 @@
       "id": "full_width",
       "default": true,
       "label": "t:sections.rich-text.settings.full_width.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rich-text.settings.archive_header.content",
+      "info": "t:sections.rich-text.settings.archive_header.info"
+    },
+    {
+      "type": "page",
+      "id": "archive_page",
+      "label": "t:sections.rich-text.settings.archive_page.label",
+      "info": "t:sections.rich-text.settings.archive_page.info"
+    },
+    {
+      "type": "text",
+      "id": "archive_button_label",
+      "label": "t:sections.rich-text.settings.archive_button_label.label",
+      "info": "t:sections.rich-text.settings.archive_button_label.info"
     },
     {
       "type": "header",

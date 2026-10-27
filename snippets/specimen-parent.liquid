@@ -1,0 +1,270 @@
+{% comment %}
+  Tungacea — ein Elternteil im botanischen Pass (Produktseite).
+
+  Herausgeloest aus `specimen-passport`, damit ein Saemling zwei Eltern zeigen
+  kann, ohne dass eine zweite Darstellung daneben entsteht. Es ist derselbe
+  Block, nur ein- oder zweimal gerendert; so koennen die beiden Wege nicht
+  auseinanderlaufen.
+
+  Die Bildfreigabe liegt hier, nicht beim Aufrufer: Sie gehoert zum Eintrag,
+  und bei zwei Eintraegen hat jeder seine eigene.
+
+  Accepts:
+  - eintrag:    {Object} Metaobjekt vom Typ `mutterpflanze` (Pflicht)
+  - rolle:      {String} 'einzeln' | 'mutter' | 'vater' (Pflicht)
+                'einzeln' ist der bisherige Fall mit genau einer Mutterpflanze.
+  - thing_word: {String} uebersetztes Wort fuer das Angebotene (optional)
+  - max_fotos:  {Number} wie viele Bilder hoechstens (optional, Vorgabe 6).
+                In der Kreuzung steht eins je Elternteil: zwei Reihen
+                nebeneinander waren mehr Bild als Aussage.
+{% endcomment %}
+
+{%- liquid
+  assign bild_grenze = max_fotos | default: 6
+  assign p_name = eintrag.bezeichnung.value | default: '' | strip
+
+  assign p_besitzer = eintrag.besitzer.value
+  assign besitzer_name = ''
+  if p_besitzer != blank
+    assign besitzer_name = p_besitzer.instagram.value | default: p_besitzer.name.value | strip
+  endif
+
+  comment
+    Die Zeile unter den Fotos nennt die Beziehung, nicht nur die Adresse — aber
+    nur im Einzelfall. Bei zwei Eltern sagt der Leitsatz bereits, dass der
+    Saemling aus dieser Kreuzung stammt; dieselbe Aussage an beiden Eltern zu
+    wiederholen behauptet zweimal eine Abstammung aus je einer Pflanze.
+  endcomment
+  comment
+    Bei zwei Eltern bleibt die Zeile ganz weg. Der Leitsatz sagt schon, dass
+    der Saemling aus dieser Kreuzung stammt; dieselbe Aussage an beiden Eltern
+    zu wiederholen behauptet zweimal eine Abstammung aus je einer Pflanze. Und
+    zwei Bloecke nebeneinander in einer 409px schmalen Spalte vertragen keine
+    Zeile, die nichts Neues sagt — wer mehr will, hat den Knopf ins Archiv.
+  endcomment
+  assign p_wo = ''
+  if rolle == 'einzeln'
+    if thing_word != blank
+      if besitzer_name != blank
+        assign p_wo = 'products.product.specimen.mother_from_at' | t: thing: thing_word, who: besitzer_name
+      else
+        assign p_wo = 'products.product.specimen.mother_from_own' | t: thing: thing_word
+      endif
+    elsif besitzer_name != blank
+      assign p_wo = 'products.product.specimen.mother_at' | t: who: besitzer_name
+    else
+      assign p_wo = 'products.product.specimen.mother_own' | t
+    endif
+  endif
+
+  assign p_label = 'products.product.specimen.mother' | t
+  assign p_link_text = 'private_archive.more_about_mother' | t
+  if rolle == 'mutter'
+    assign p_label = 'products.product.specimen.parent_mother' | t
+  elsif rolle == 'vater'
+    assign p_label = 'products.product.specimen.parent_father' | t
+    comment
+      Der Weg zum Vater darf nicht "Mehr ueber die Mutterpflanze" heissen.
+      Derselbe Knopf an zwei Rollen braucht zwei Beschriftungen.
+    endcomment
+    assign p_link_text = 'private_archive.more_about_father' | t
+  endif
+
+  assign fotograf = eintrag.fotograf.value
+  assign p_credit = ''
+  if fotograf != blank
+    assign fotograf_name = fotograf.instagram.value | default: fotograf.name.value | strip
+    assign p_credit = 'products.product.specimen.photo_credit' | t: who: fotograf_name
+  endif
+
+  comment
+    Die Freigabesperre. Ein fremdes Foto erscheint nur, wenn der Schalter am
+    Eintrag gesetzt ist. Ein leeres Feld `fotograf` heisst: eigenes Bild.
+    Mit Bildnachweisen wird dieselbe Sperre je Bild gestellt; fehlt das Feld,
+    bleibt der alte Weg unveraendert.
+  endcomment
+  assign p_bilder = eintrag.bilder.value
+  assign hat_bilder = false
+  if p_bilder.size > 0
+    assign hat_bilder = true
+  endif
+
+  assign p_fotos = eintrag.fotos.value
+  assign zeige_fotos = false
+  if hat_bilder
+    assign bilder_sichtbar = 0
+    for bn in p_bilder
+      assign bn_fotograf = bn.fotograf.value
+      assign bn_freigabe = bn.bildfreigabe.value
+      if bn_fotograf == blank
+        assign bilder_sichtbar = bilder_sichtbar | plus: 1
+      elsif bn_freigabe == true or bn_freigabe == 'true'
+        assign bilder_sichtbar = bilder_sichtbar | plus: 1
+      endif
+    endfor
+    if bilder_sichtbar > 0
+      assign zeige_fotos = true
+    endif
+    assign p_credit = ''
+  elsif p_fotos.size > 0
+    assign freigabe = eintrag.bildfreigabe.value
+    if fotograf == blank
+      assign zeige_fotos = true
+    elsif freigabe == true or freigabe == 'true'
+      assign zeige_fotos = true
+    endif
+  endif
+-%}
+
+{%- if p_name != blank -%}
+  <div class="specimen-passport__mother" data-testid="specimen-mother" data-rolle="{{ rolle }}">
+    <div class="specimen-passport__mother-head">
+      <p class="specimen-passport__mother-label">{{ p_label }}</p>
+    {%- comment -%}
+      Die Nummer des Eintrags, nicht die des Produkts. Sie sagt, woher das
+      Exemplar stammt — und sie muss nicht eingetragen werden, weil das Produkt
+      ohnehin auf den Eintrag zeigt. So kann sie nie falsch sein.
+    {%- endcomment -%}
+    <p class="specimen-passport__mother-name">
+      {{- p_name | escape -}}
+      {%- comment -%}
+        In der Kreuzung bleibt die Nummer weg: Das angebotene Exemplar traegt
+        seine eigene ID weiter oben, und zwei weitere Nummern daneben lesen
+        sich wie eine Aktenzeichenzeile. Wer sie braucht, findet sie hinter
+        dem Knopf im Archiv.
+      {%- endcomment -%}
+      {%- if rolle == 'einzeln' and eintrag.mutter_id.value != blank %} <span class="specimen-passport__mother-id">{{ eintrag.mutter_id.value | escape }}</span>{% endif -%}
+    </p>
+      {%- if p_wo != blank -%}
+        <p class="specimen-passport__mother-where">{{ p_wo }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%}
+      Hochformat wie die Produktgalerie, damit eine ganze Pflanze zu sehen ist
+      statt einer beschnittenen Mitte. Breite und Hoehe passen zum Verhaeltnis,
+      sonst springt die Seite waehrend des Ladens.
+
+      Der Bildbereich steht immer da, auch leer: in der Kreuzung richten sich
+      die beiden Eltern zeilenweise aneinander aus, und das geht nur, wenn
+      beide dieselben drei Abschnitte haben.
+    {%- endcomment -%}
+    <div class="specimen-passport__mother-media">
+    {%- if zeige_fotos -%}
+      <script src="{{ 'specimen-lightbox.js' | asset_url }}" defer="defer"></script>
+      <specimen-lightbox>
+        <ul class="specimen-passport__mother-photos list-unstyled" role="list" data-testid="specimen-mother-photos">
+          {%- if hat_bilder -%}
+            {%- for bn in p_bilder limit: bild_grenze -%}
+              {%- liquid
+                assign bn_foto = bn.bild.value
+                assign bn_fotograf = bn.fotograf.value
+                assign bn_freigabe = bn.bildfreigabe.value
+                assign bn_zeigen = false
+                if bn_foto
+                  if bn_fotograf == blank
+                    assign bn_zeigen = true
+                  elsif bn_freigabe == true or bn_freigabe == 'true'
+                    assign bn_zeigen = true
+                  endif
+                endif
+              -%}
+              {%- if bn_zeigen -%}
+                {%- capture bn_nachweis -%}
+                  {%- render 'foto-nachweis', fotograf: bn_fotograf -%}
+                {%- endcapture -%}
+                {%- assign bn_nachweis = bn_nachweis | strip -%}
+                <li>
+                  <figure class="specimen-passport__mother-figure">
+                    <button
+                      type="button"
+                      class="specimen-passport__mother-photo"
+                      data-lightbox-full="{{ bn_foto | image_url: width: 1800 }}"
+                      data-lightbox-alt="{{ p_name | escape }}"
+                      aria-label="{{ 'products.product.specimen.photo_open' | t: name: p_name }}"
+                    >
+                      <img
+                        src="{{ bn_foto | image_url: width: 480 }}"
+                        srcset="{{ bn_foto | image_url: width: 320 }} 320w, {{ bn_foto | image_url: width: 480 }} 480w, {{ bn_foto | image_url: width: 720 }} 720w"
+                        sizes="(min-width: 750px) 18rem, 30vw"
+                        alt=""
+                        width="480"
+                        height="600"
+                        loading="lazy"
+                      >
+                    </button>
+                    {%- if bn_nachweis != blank -%}
+                      <figcaption class="specimen-passport__mother-credit" data-testid="specimen-mother-photo-credit">
+                        {{- bn_nachweis -}}
+                      </figcaption>
+                    {%- endif -%}
+                  </figure>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- for foto in p_fotos limit: bild_grenze -%}
+              <li>
+                <button
+                  type="button"
+                  class="specimen-passport__mother-photo"
+                  data-lightbox-full="{{ foto | image_url: width: 1800 }}"
+                  data-lightbox-alt="{{ p_name | escape }}"
+                  aria-label="{{ 'products.product.specimen.photo_open' | t: name: p_name }}"
+                >
+                  <img
+                    src="{{ foto | image_url: width: 480 }}"
+                    srcset="{{ foto | image_url: width: 320 }} 320w, {{ foto | image_url: width: 480 }} 480w, {{ foto | image_url: width: 720 }} 720w"
+                    sizes="(min-width: 750px) 18rem, 30vw"
+                    alt=""
+                    width="480"
+                    height="600"
+                    loading="lazy"
+                  >
+                </button>
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+
+        <dialog class="specimen-lightbox" aria-label="{{ p_name | escape }}">
+          <button
+            type="button"
+            class="specimen-lightbox__close"
+            data-lightbox-close
+            aria-label="{{ 'products.product.specimen.photo_close' | t }}"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <img class="specimen-lightbox__image" data-lightbox-image src="" alt="">
+        </dialog>
+      </specimen-lightbox>
+    {%- endif -%}
+
+    </div>
+
+    <div class="specimen-passport__mother-credit-row">
+      {%- if p_credit != blank -%}
+        <p class="specimen-passport__credit">{{ p_credit }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="specimen-passport__mother-foot">
+
+    {%- comment -%}
+      Der Weg zur eigenen Seite im Archiv. Er erscheint nur, wenn es die Seite
+      wirklich gibt: ein Eintrag im Entwurf hat keine Adresse, und ein Link ins
+      Leere ist schlimmer als kein Link.
+    {%- endcomment -%}
+    {%- if eintrag.system.url != blank -%}
+      <a
+        href="{{ eintrag.system.url }}"
+        class="specimen-passport__mother-link"
+        data-testid="specimen-mother-link"
+      >
+        {{- p_link_text -}}
+      </a>
+    {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

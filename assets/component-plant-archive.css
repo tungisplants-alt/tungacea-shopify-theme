@@ -1,0 +1,1024 @@
+/*
+ * Tungacea — Archiv-Galerie und Pflanzenseite.
+ *
+ * Die alte Archivkarte trug Bild, Tatsachen und einen Aufklapper in einem Stück.
+ * Sechs davon ergaben eine Seite, die man scrollt statt durchsucht. Hier ist die
+ * Kachel klein und still, und die Tiefe liegt hinter einem Klick.
+ *
+ * Die Bildkacheln stehen im Hochformat 4/5 — dieselbe Entscheidung wie bei den
+ * Mutterpflanzenfotos auf der Produktseite: auf den ersten Blick mehr Pflanze.
+ */
+
+.plant-archive {
+  --pl-line: var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  --pl-line-soft: var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.08));
+  --pl-muted: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  --pl-ease: var(--tungacea-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+}
+
+.plant-archive__intro {
+  max-width: 62rem;
+  margin-bottom: 4.8rem;
+}
+
+.plant-archive__eyebrow {
+  margin: 0 0 1.2rem;
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-archive__heading {
+  margin: 0 0 1.6rem;
+  font-size: clamp(2.8rem, 4vw, 4.2rem);
+  line-height: 1.15;
+}
+
+.plant-archive__lead {
+  color: var(--pl-muted);
+  max-width: 54rem;
+}
+
+/* Galerie
+   ----------------------------------------------------------------------- */
+
+.plant-archive__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.4rem 1.6rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media screen and (min-width: 750px) {
+  .plant-archive__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3.2rem 2.4rem;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .plant-archive__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.plant-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.plant-card__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--pl-line-soft);
+}
+
+.plant-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s var(--pl-ease);
+}
+
+.plant-card__image--placeholder {
+  opacity: 0.22;
+  object-fit: contain;
+  padding: 18%;
+}
+
+@media (hover: hover) {
+  .plant-card:hover .plant-card__image {
+    transform: scale(1.035);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plant-card__image {
+    transition: none;
+  }
+
+  .plant-card:hover .plant-card__image {
+    transform: none;
+  }
+}
+
+.plant-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.plant-card__name {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.35;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/*
+ * Der Link deckt die ganze Kachel ab, bleibt aber ein einziges Ziel in der
+ * Tabulatorreihenfolge. Der Fokusrahmen gehört daher auf die Kachel, nicht auf
+ * den Text — sonst umschliesst er zwei Zeilen und zeigt nicht, was passiert.
+ */
+.plant-card__link {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.25s var(--pl-ease);
+}
+
+.plant-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.plant-card__link:hover {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-card__link:focus-visible {
+  outline: none;
+}
+
+.plant-card:has(.plant-card__link:focus-visible) {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 4px;
+}
+
+.plant-card__meta {
+  margin: 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--pl-muted);
+}
+
+/* Einzelseite
+   ----------------------------------------------------------------------- */
+
+.plant-profile {
+  --pl-line: var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  --pl-line-soft: var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.08));
+  --pl-muted: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  --pl-ease: var(--tungacea-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+  padding-block: 5.6rem 8rem;
+}
+
+.plant-profile__head {
+  max-width: 68rem;
+  margin-bottom: 3.2rem;
+}
+
+.plant-profile__eyebrow {
+  margin: 0 0 1.2rem;
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-profile__name {
+  margin: 0 0 1.2rem;
+  font-size: clamp(2.4rem, 3.6vw, 3.8rem);
+  line-height: 1.15;
+}
+
+.plant-profile__owner {
+  margin: 0 0 0.8rem;
+  color: var(--pl-muted);
+}
+
+.plant-profile__specs {
+  margin: 0;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--pl-muted);
+}
+
+/* Galerie wie auf der Produktseite: ein grosses Bild, Miniaturen links,
+   auf dem Telefon wischen mit Punkten im Bild. Vorher lagen alle Fotos als
+   zwei- bis dreispaltiges Raster nebeneinander — bei einer Pflanze mit sechs
+   Aufnahmen war das eine Kachelwand statt eines Portraets. */
+.plant-profile__photos {
+  /* <specimen-lightbox> ist ein eigenes Element und damit standardmaessig
+     INLINE. Fuer ein inline-Element ist der Bezugsrahmen absolut
+     positionierter Kinder nicht der Kasten, sondern die Zeilenbox — die
+     Punkte landeten dadurch am linken Rand statt mittig. Am Desktop fiel es
+     nicht auf, weil dort display:grid gesetzt wird. */
+  display: block;
+  position: relative;
+  margin-bottom: 1.2rem;
+}
+
+/* Die Bahn. Ohne JavaScript bleibt genau sie uebrig, und sie laesst sich
+   wischen — das ist die Rueckfallebene, nicht ein Rest. */
+.plant-profile__track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.plant-profile__track::-webkit-scrollbar {
+  display: none;
+}
+
+.plant-profile__track > * {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+/* Der Knopf traegt in der Bahn weder Flaeche noch Rahmen.
+
+   Grund: Die meisten Eintraege laufen noch ueber den alten Weg, dort ist der
+   Knopf selbst das Kind der Bahn und damit immer volle Breite. Sein
+   Hintergrund und sein Rahmen standen dann als schwarzer Kasten neben einem
+   schmalen Hochformat. Unsichtbar gemacht verschwindet der Rest in der
+   Seitenfarbe, und das Bild sitzt mittig darin. */
+.plant-profile__track .plant-profile__photo {
+  background: transparent;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Miniaturen und Punkte entstehen erst durch plant-gallery.js; ohne das
+   Skript darf das Raster nicht greifen, sonst bliebe eine leere Spalte. */
+.plant-profile__thumbs,
+.plant-profile__dots {
+  display: none;
+}
+
+/* --- ab Tablet: Miniaturen als Spalte links ---------------------------- */
+@media screen and (min-width: 750px) {
+  /* Die Groessenregeln haengen bewusst NICHT an .hat-galerie. Diese Klasse
+     setzt das Skript erst ab zwei Bildern — Eintraege mit genau einem Foto
+     fielen sonst durch und standen in voller Seitenbreite da. */
+  .plant-profile__photos {
+    max-width: 70rem;
+  }
+
+  .plant-profile__photos.hat-galerie {
+    display: grid;
+    grid-template-columns: 7.6rem minmax(0, 1fr);
+    column-gap: 1.2rem;
+    align-items: start;
+  }
+
+  /* Kein festes Seitenverhaeltnis mehr. 4:5 mit object-fit: cover hat jedes
+     Foto auf dieses Mass geschnitten — bei einem breiteren Bild fehlten
+     links und rechts die Blattspitzen. Jetzt gibt das Bild sein eigenes
+     Verhaeltnis vor, begrenzt wird nur die Hoehe. Der Knopf legt sich um das
+     Bild, statt ihm eine Form vorzugeben. */
+  .plant-profile__photos .plant-profile__figure {
+    align-items: flex-start;
+  }
+
+  .plant-profile__photos .plant-profile__photo {
+    aspect-ratio: auto;
+    height: auto;
+    width: 100%;
+  }
+
+  .plant-profile__photos .plant-profile__photo-image {
+    width: auto;
+    height: auto;
+    max-height: min(68vh, 62rem);
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .plant-profile__photos.hat-galerie .plant-profile__thumbs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-height: 62rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .plant-profile__photos.hat-galerie .plant-profile__thumbs::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.plant-profile__thumb {
+  appearance: none;
+  padding: 0;
+  border: 1px solid var(--pl-line-soft);
+  background: rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  opacity: 0.55;
+  transition: opacity 0.18s ease;
+}
+
+.plant-profile__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.plant-profile__thumb:hover,
+.plant-profile__thumb.ist-hier {
+  opacity: 1;
+}
+
+/* outline, nicht box-shadow: Ein innerer Schatten laege unter dem Bild und
+   waere zugedeckt, ein aeusserer wuerde am Rand der scrollenden Spalte
+   abgeschnitten. Der negative Versatz legt die Linie nach innen. */
+.plant-profile__thumb.ist-hier {
+  outline: 0.2rem solid #cc6070;
+  outline-offset: -0.2rem;
+  border-color: #cc6070;
+}
+
+.plant-profile__thumb:focus-visible {
+  outline: 2px solid #cc6070;
+  outline-offset: 3px;
+}
+
+/* --- ab Laptop: zwei Spalten wie auf der Produktseite -------------------
+   Bilder links, Dokumentation rechts. Vorher stand die Galerie allein oben
+   und schob alle Daten weit nach unten; rechts daneben blieb die halbe
+   Seite leer. */
+@media screen and (min-width: 990px) {
+  .plant-profile > .page-width {
+    display: grid;
+    grid-template-columns: minmax(0, 46%) minmax(0, 1fr);
+    column-gap: 4.8rem;
+    align-items: start;
+  }
+
+  /* Alles gehoert nach rechts, ausser der Medienspalte. */
+  .plant-profile > .page-width > * {
+    grid-column: 2;
+  }
+
+  /* Die Medienspalte ueberspannt alle Zeilen: Stuende sie nur in Zeile 1,
+     waere diese Zeile so hoch wie das Bild, und die Ueberschrift daneben
+     schwebte in der Mitte eines 600px hohen Kastens. */
+  /* Der Selektor muss mindestens so spezifisch sein wie die Sammelregel
+     darueber — .plant-profile > .page-width > * zaehlt (0,2,0), ein blosses
+     .plant-profile__media nur (0,1,0). Die Medienspalte landete damit
+     ebenfalls rechts, und links blieb die halbe Seite leer. */
+  .plant-profile > .page-width > .plant-profile__media {
+    grid-column: 1;
+    grid-row: 1 / span 99;
+  }
+
+  /* Die Angebote stehen unter beiden Spalten — sie gehoeren zur Pflanze,
+     nicht zur Dokumentation. */
+  .plant-profile > .page-width > .plant-profile__offers {
+    grid-column: 1 / -1;
+  }
+}
+
+/* --- bis Telefon: Punkte im Bild --------------------------------------- */
+@media screen and (max-width: 749px) {
+  .plant-profile__photos.hat-galerie .plant-profile__dots {
+    position: absolute;
+    left: 50%;
+    bottom: 1.4rem;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    background: rgba(10, 10, 10, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .plant-profile__dot {
+    appearance: none;
+    border: 0;
+    padding: 0;
+    width: 0.6rem;
+    height: 0.3rem;
+    background: rgba(242, 238, 232, 0.42);
+    cursor: pointer;
+    transition: width 0.22s ease, background-color 0.22s ease;
+  }
+
+  .plant-profile__dot.ist-hier {
+    width: 1.8rem;
+    background: #cc6070;
+  }
+}
+
+.plant-profile__photo {
+  appearance: none;
+  padding: 0;
+  border: 1px solid var(--pl-line-soft);
+  background: rgba(0, 0, 0, 0.28);
+  cursor: zoom-in;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+
+.plant-profile__photo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.plant-profile__photo:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
+}
+
+.plant-profile__credit {
+  margin: 0 0 3.2rem;
+  font-size: 1.1rem;
+  color: var(--pl-muted);
+}
+
+/* Ein Bild und sein Nachweis sind ein Paar. Das figure-Element ist das
+   Rasterfeld, damit die Beschriftung die Breite ihres Bildes hat und nicht die
+   des Rasters — bei zwei Bildern aus zwei Quellen entscheidet die Breite
+   darueber, welchem Bild der Leser die Nennung zuordnet. */
+.plant-profile__figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  min-width: 0;
+}
+
+.plant-profile__figure-credit {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  color: var(--pl-muted);
+}
+
+.plant-profile__trait {
+  max-width: 62rem;
+  margin: 0 0 3.2rem;
+  font-size: 1.7rem;
+  line-height: 1.55;
+}
+
+.plant-profile__facts {
+  display: grid;
+  gap: 0;
+  max-width: 62rem;
+  margin: 0 0 3.2rem;
+  border-top: 1px solid var(--pl-line-soft);
+}
+
+.plant-profile__fact {
+  display: grid;
+  grid-template-columns: minmax(10rem, 28%) 1fr;
+  gap: 1.6rem;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--pl-line-soft);
+}
+
+.plant-profile__fact dt {
+  margin: 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--pl-muted);
+}
+
+.plant-profile__fact dd {
+  margin: 0;
+}
+
+.plant-profile__country {
+  color: var(--pl-muted);
+}
+
+/*
+ * Tungs eigener Text. Er ist der Grund, warum es das Archiv gibt, und darf
+ * deshalb nicht wie eine Fussnote aussehen.
+ */
+.plant-profile__note {
+  max-width: 62rem;
+  margin: 0 0 4rem;
+  padding-left: 2rem;
+  border-left: 2px solid rgba(var(--tungacea-accent, 150, 45, 58), 0.55);
+  color: var(--pl-muted);
+}
+
+.plant-profile__note > *:first-child {
+  margin-top: 0;
+}
+
+.plant-profile__note > *:last-child {
+  margin-bottom: 0;
+}
+
+.plant-profile__offers {
+  max-width: 62rem;
+  padding-top: 2.4rem;
+  border-top: 1px solid var(--pl-line);
+}
+
+.plant-profile__offers-heading {
+  margin: 0 0 1.6rem;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--pl-muted);
+}
+
+.plant-profile__offers-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plant-profile__offer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.6rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--pl-line-soft);
+}
+
+.plant-profile__offer-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s var(--pl-ease);
+}
+
+.plant-profile__offer-link:hover {
+  border-bottom-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.8);
+}
+
+.plant-profile__offer-sold {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--pl-muted);
+}
+
+/* Der leise Hinweis auf der Kachel
+   -------------------------------------------------------------------------
+   Ein Wort, kein Knopf. Wer im Archiv stöbert, soll sehen können, von welcher
+   Pflanze es gerade etwas gibt — ohne dass die Sammlung zum Laden wird. */
+
+.plant-card__offer {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-card__offer::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgba(var(--tungacea-accent-bright, 177, 61, 76), 1);
+  flex: none;
+}
+
+/* Suche und Filter
+   -------------------------------------------------------------------------
+   Die erste Fassung war eine Linie und wurde übersehen. Jetzt ein Kasten mit
+   Lupe und dem Wort Suche — beides Teil des label, also auf ganzer Fläche
+   klickbar.
+
+   Das Oxblood trägt hier Bedeutung, keine Dekoration: der Kasten glimmt beim
+   Tippen auf, das Wort sitzt auf einer Weinfläche, ein gesetzter Filter wird
+   gefüllt und der Ausklapper bekommt eine Zahl. Ungesetzt bleibt alles grau. */
+
+.plant-search {
+  display: block;
+  margin-bottom: 4rem;
+}
+
+.plant-search[hidden] {
+  display: none;
+}
+
+.plant-search__field {
+  display: flex;
+  align-items: stretch;
+  max-width: 52rem;
+  border: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
+  background: rgba(0, 0, 0, 0.22);
+  cursor: text;
+  transition: border-color 0.3s var(--pl-ease, ease), box-shadow 0.3s var(--pl-ease, ease);
+}
+
+.plant-search__field:hover {
+  border-color: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.75);
+}
+
+.plant-search__field:focus-within {
+  border-color: rgba(var(--tungacea-accent-bright, 177, 61, 76), 0.9);
+  box-shadow: 0 0 0 1px rgba(var(--tungacea-oxblood, 110, 28, 40), 0.45);
+}
+
+.plant-search__icon {
+  display: flex;
+  align-items: center;
+  padding-left: 1.4rem;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  opacity: 0.75;
+  transition: color 0.3s var(--pl-ease, ease), opacity 0.3s var(--pl-ease, ease);
+}
+
+.plant-search__field:focus-within .plant-search__icon {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  opacity: 1;
+}
+
+.plant-search__icon svg {
+  width: 1.8rem;
+  height: 1.8rem;
+  display: block;
+}
+
+.plant-search__input {
+  flex: 1 1 auto;
+  appearance: none;
+  background: none;
+  border: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  padding: 1.2rem;
+  min-width: 0;
+}
+
+.plant-search__input::placeholder {
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  opacity: 0.6;
+}
+
+.plant-search__input:focus {
+  outline: none;
+}
+
+/* Das native Kreuz sieht in jedem Browser anders aus und passt in keinem zur
+   Seite. Zurückgesetzt wird über den eigenen Knopf unter der Leiste. */
+.plant-search__input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.plant-search__word {
+  display: flex;
+  align-items: center;
+  padding: 0 1.8rem;
+  background: rgba(var(--tungacea-wine, 78, 20, 30), 0.55);
+  border-left: 1px solid rgba(var(--tungacea-oxblood, 110, 28, 40), 0.55);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  white-space: nowrap;
+  transition: background-color 0.3s var(--pl-ease, ease);
+}
+
+.plant-search__field:hover .plant-search__word,
+.plant-search__field:focus-within .plant-search__word {
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.72);
+}
+
+/* Zeile unter dem Feld: Zählzeile, Zurücksetzen, Ausklapper */
+
+.plant-search__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1.2rem 2.4rem;
+  margin-top: 1.6rem;
+}
+
+.plant-search__count {
+  order: 1;
+  margin: 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+}
+
+.plant-search__clear {
+  order: 2;
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  font-family: inherit;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(var(--tungacea-oxblood, 110, 28, 40), 0.7);
+  transition: color 0.25s var(--pl-ease, ease), border-color 0.25s var(--pl-ease, ease);
+}
+
+.plant-search__clear[hidden] {
+  display: none;
+}
+
+.plant-search__clear:hover {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  border-bottom-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+}
+
+.plant-search__clear:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
+}
+
+.plant-search__filters {
+  order: 3;
+  flex: 1 1 100%;
+}
+
+.plant-search__summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: max-content;
+  padding: 0.4rem 0;
+  list-style: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  transition: color 0.25s var(--pl-ease, ease);
+}
+
+.plant-search__summary::-webkit-details-marker {
+  display: none;
+}
+
+.plant-search__summary:hover {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-search__summary:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
+}
+
+.plant-search__filters.is-aktiv .plant-search__summary-text {
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-search__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.8rem;
+  height: 1.8rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.9);
+  color: #f2eee8;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.plant-search__badge[hidden] {
+  display: none;
+}
+
+.plant-search__chevron {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(45deg) translate(-0.15rem, -0.15rem);
+  transition: transform 0.25s var(--pl-ease, ease);
+}
+
+/* Nur der Pfeil des eigenen Ausklappers, nicht jeder Pfeil darin. Ohne den
+   direkten Nachfahren traf diese Regel auch die Pfeile der Kategorien, und
+   die zeigten dauerhaft nach oben. */
+.plant-search__filters[open] > .plant-search__summary .plant-search__chevron {
+  transform: rotate(-135deg) translate(-0.2rem, -0.2rem);
+}
+
+/* Der Filterkasten
+   -------------------------------------------------------------------------
+   Kein Rahmen, keine harte Kante: eine etwas hellere Fläche, die sich vom
+   Hintergrund abhebt, ohne ihn zu zerschneiden. Tung: „nur leichter Kontrast,
+   nicht starke Linien."
+
+   Jede Kategorie ist selbst ein Ausklapper. Eingeklappt sind es sieben ruhige
+   Zeilen — das trägt auch, wenn die Liste in einem Jahr doppelt so lang ist.
+   Eine Kategorie mit gesetztem Filter klappt von selbst auf, sonst wäre nicht
+   zu sehen, wo die Einschränkung sitzt. */
+
+.plant-search__facets {
+  margin-top: 1.2rem;
+  padding: 0.8rem 1.6rem;
+  background: rgba(242, 238, 232, 0.035);
+}
+
+.plant-search__group {
+  border-top: 1px solid rgba(242, 238, 232, 0.05);
+}
+
+.plant-search__group:first-child {
+  border-top: 0;
+}
+
+.plant-search__group-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.1rem 0;
+  list-style: none;
+  cursor: pointer;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  opacity: 0.72;
+  transition: opacity 0.25s var(--pl-ease, ease), color 0.25s var(--pl-ease, ease);
+}
+
+.plant-search__group-summary::-webkit-details-marker {
+  display: none;
+}
+
+.plant-search__group-summary:hover,
+.plant-search__group[open] .plant-search__group-summary {
+  opacity: 1;
+}
+
+.plant-search__group-summary:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 2px;
+}
+
+.plant-search__group-name {
+  flex: 1 1 auto;
+}
+
+/* Der Chevron der Kategorie sitzt rechts und ist kleiner als der des
+   Hauptausklappers — eine Ebene tiefer, also leiser. */
+.plant-search__group[open] > .plant-search__group-summary .plant-search__chevron {
+  transform: rotate(-135deg) translate(-0.15rem, -0.15rem);
+}
+
+.plant-search__group-summary .plant-search__chevron {
+  width: 0.55rem;
+  height: 0.55rem;
+  opacity: 0.6;
+}
+
+.plant-search__group-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.9);
+  color: #f2eee8;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+}
+
+.plant-search__group-badge[hidden] {
+  display: none;
+}
+
+/* Die Optionen als Kacheln, aneinandergereiht und umbrechend. So wächst eine
+   lange Liste in die Breite statt in die Länge. */
+
+.plant-search__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0 0 1.4rem;
+}
+
+.plant-search__chip {
+  appearance: none;
+  border: 0;
+  padding: 0.55rem 1.1rem;
+  background: rgba(242, 238, 232, 0.06);
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  font-family: inherit;
+  font-size: 1.3rem;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: background-color 0.22s var(--pl-ease, ease), color 0.22s var(--pl-ease, ease);
+}
+
+.plant-search__chip:hover {
+  background: rgba(242, 238, 232, 0.11);
+  color: #f2eee8;
+}
+
+.plant-search__chip[aria-pressed='true'] {
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.85);
+  color: #f2eee8;
+}
+
+.plant-search__chip[aria-pressed='true']:hover {
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 1);
+}
+
+.plant-search__chip:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 2px;
+}
+
+/* Der Angebotsfilter ist der einzige, der auf den Laden zeigt. Er trägt
+   denselben Punkt wie die Kachel, damit beide erkennbar zusammengehören. */
+.plant-search__chip--offer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.plant-search__chip--offer::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgba(var(--tungacea-accent-bright, 177, 61, 76), 1);
+  flex: none;
+}
+
+.plant-search__chip--offer[aria-pressed='true']::before {
+  background: #f2eee8;
+}
+
+@media screen and (max-width: 749px) {
+  .plant-search__field {
+    max-width: none;
+  }
+
+  .plant-search__word {
+    padding: 0 1.2rem;
+    letter-spacing: 0.14em;
+  }
+
+  .plant-search__facets {
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plant-search__field,
+  .plant-search__word,
+  .plant-search__chip,
+  .plant-search__chevron,
+  .plant-search__icon,
+  .plant-search__group-summary {
+    transition: none;
+  }
+}
+
+/* Die Exemplar-ID
+   -------------------------------------------------------------------------
+   Sie steht an der Pflanze, nicht in einer zweiten Liste. Damit ist das Archiv
+   selbst das Register — es kann nicht veralten, weil es die Daten liest.
+   Leise gesetzt: sie ordnet ein, sie ist nicht die Überschrift. */
+
+.plant-card__id {
+  margin: 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  opacity: 0.75;
+}
+
+/* Die Spanne der vergebenen Nummern, direkt unter der Einleitung. Die nächste
+   freie ist die obere plus eins — gerechnet, nie getippt. */
+.plant-archive__range {
+  margin: -2.4rem 0 3.2rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  opacity: 0.7;
+}

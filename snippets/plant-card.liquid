@@ -1,0 +1,244 @@
+{% comment %}
+  Tungacea — Archivkachel einer Pflanze.
+
+  Eine Kachel der Archiv-Galerie. Bild, Name und eine leise Zeile; die Tiefe
+  liegt auf der eigenen Seite des Eintrags. Die alte Archivkarte trug alles
+  inline und wurde dadurch zu einer Seite mit sechs Aufklappern.
+
+  Die Kachel ist als Ganzes anklickbar: der Link liegt auf dem Namen und deckt
+  über ein Pseudoelement die ganze Karte ab. So bleibt genau ein Ziel in der
+  Tabulatorreihenfolge und Vorlesegeräte hören den Namen, nicht "Link".
+
+  Ohne eigene Seite (Eintrag ist Entwurf, oder die Fähigkeit Online Store ist
+  nicht eingeschaltet) wird die Kachel still zur reinen Anzeige. Ein Link ins
+  Leere ist schlimmer als kein Link.
+
+  Annahmen:
+  - eintrag: {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
+{% endcomment %}
+{%- liquid
+  assign name = eintrag.bezeichnung.value | default: '' | strip
+  if name == blank
+    assign name = 'private_archive.unnamed' | t
+  endif
+
+  assign ziel = eintrag.system.url
+
+  comment
+    Erstes Foto als Kachelbild, aber nur, wenn es gezeigt werden darf. Dieselbe
+    Sperre wie auf der Produktseite: ein fremder Fotograf ohne Freigabe bedeutet
+    kein Bild. Leerer Fotograf heisst eigenes Bild.
+  endcomment
+  comment
+    Das erste Foto wird erlaufen, nicht indiziert. Shopify liefert bei
+    fotos[0] auf einer Dateiliste nichts zurueck, und image_url bricht dann
+    mit invalid url input ab. Die Schleife ist das Muster, das im Pass
+    nachweislich funktioniert.
+  endcomment
+  comment
+    Liegen Bildnachweise vor, wird das erste Bild genommen, das gezeigt werden
+    DARF, nicht einfach das erste. Sonst entscheidet ein fremdes Bild ohne
+    Freigabe an Position eins darueber, dass die Kachel leer bleibt, obwohl
+    eigene Bilder dahinter stehen. Die Kachel selbst nennt keinen Fotografen —
+    dafuer ist sie zu klein; die Nennung steht auf der Seite am Bild.
+  endcomment
+  comment
+    Vorhandensein wird am Wahrheitswert geprueft, nicht mit != blank. Shopify
+    zaehlt nil zu blank, liquidjs im Pruefstand nicht — eine Pflanze ganz ohne
+    Fotos lieferte dort ein img mit leerer Adresse statt des Platzhalters.
+    Der Wahrheitswert verhaelt sich auf beiden Motoren gleich, und ein eigener
+    Schalter sagt ohnehin genauer, was gemeint ist.
+  endcomment
+  assign bilder = eintrag.bilder.value
+  assign erstes_foto = nil
+  assign zeige_foto = false
+
+  if bilder.size > 0
+    for bn in bilder
+      if zeige_foto == false
+        assign bn_foto = bn.bild.value
+        assign bn_fotograf = bn.fotograf.value
+        assign bn_freigabe = bn.bildfreigabe.value
+        if bn_foto
+          if bn_fotograf == blank
+            assign erstes_foto = bn_foto
+            assign zeige_foto = true
+          elsif bn_freigabe == true or bn_freigabe == 'true'
+            assign erstes_foto = bn_foto
+            assign zeige_foto = true
+          endif
+        endif
+      endif
+    endfor
+  else
+    assign fotos = eintrag.fotos.value
+    assign hat_foto = false
+    for f in fotos limit: 1
+      assign erstes_foto = f
+      assign hat_foto = true
+    endfor
+
+    if hat_foto
+      assign fotograf = eintrag.fotograf.value
+      assign freigabe = eintrag.bildfreigabe.value
+      if fotograf == blank
+        assign zeige_foto = true
+      elsif freigabe == true or freigabe == 'true'
+        assign zeige_foto = true
+      endif
+    endif
+  endif
+
+  comment
+    Die leise Zeile unter dem Namen. Stadium und Generation sind dieselben
+    Auswahlwerte wie am Produkt, damit Archiv und Laden dasselbe Wort benutzen.
+  endcomment
+  assign stage_label = ''
+  case eintrag.stadium.value
+    when 'Steckling'
+      assign stage_label = 'products.product.specimen.stage_cutting' | t
+    when 'Sämling'
+      assign stage_label = 'products.product.specimen.stage_seedling' | t
+    when 'Jungpflanze'
+      assign stage_label = 'products.product.specimen.stage_young' | t
+    when 'Etabliert'
+      assign stage_label = 'products.product.specimen.stage_established' | t
+    when 'Mutterpflanze'
+      assign stage_label = 'products.product.specimen.stage_mother' | t
+  endcase
+
+  assign gen_raw = eintrag.generation.value | default: '' | strip
+  assign generation = ''
+  if gen_raw == 'Species'
+    assign generation = gen_raw
+  elsif gen_raw == 'Unbekannt'
+    assign gen_word = 'products.product.specimen.generation_unknown' | t
+    assign generation = 'products.product.specimen.generation_prefixed' | t: value: gen_word
+  elsif gen_raw != blank
+    assign generation = 'products.product.specimen.generation_prefixed' | t: value: gen_raw
+  endif
+
+  assign teile = ''
+  if stage_label != blank
+    assign teile = teile | append: stage_label | append: ' · '
+  endif
+  if generation != blank
+    assign teile = teile | append: generation | append: ' · '
+  endif
+  assign leise = teile | split: ' · ' | join: ' · ' | strip
+
+  comment
+    Der Suchtext der Kachel. Er enthaelt alles, wonach jemand suchen wuerde:
+    Name, Kreuzung, Zuechter und die Exemplar-ID. Kleingeschrieben, damit die
+    Suche ohne Ruecksicht auf Gross- und Kleinschreibung vergleichen kann.
+  endcomment
+  assign zuechter_eintrag = eintrag.zuechter.value
+  assign zuechter_name = ''
+  if zuechter_eintrag != blank
+    assign zuechter_name = zuechter_eintrag.name.value | default: '' | strip
+  endif
+
+  assign zuechter_land = ''
+  if zuechter_eintrag != blank
+    assign zuechter_land = zuechter_eintrag.land.value | default: '' | strip
+  endif
+
+  comment
+    Gibt es von dieser Pflanze gerade etwas zu kaufen? Dieselbe Regel wie auf
+    ihrer eigenen Seite: ein Produkt, dessen Feld Mutterpflanze hierher zeigt.
+    Verkauftes zaehlt nicht — die Frage lautet, ob sich ein Klick jetzt lohnt.
+  endcomment
+  assign hat_angebot = false
+  for produkt in produkte limit: 100
+    if produkt.available
+      assign pm = produkt.metafields.custom.mutterpflanze.value
+      assign pv = produkt.metafields.custom.vaterpflanze.value
+      if pm != blank and pm.system.handle == eintrag.system.handle
+        assign hat_angebot = true
+        break
+      elsif pv != blank and pv.system.handle == eintrag.system.handle
+        assign hat_angebot = true
+        break
+      endif
+    endif
+  endfor
+
+  comment
+    Die Linie ist eine Mehrfachauswahl: eine Kreuzung traegt beide Elternteile.
+    Sie wird mit einem Trennzeichen in ein Merkmal geschrieben, damit die Suche
+    im Browser gegen jeden einzelnen Wert vergleichen kann.
+  endcomment
+  assign linien = eintrag.linie.value | join: '|'
+
+  assign suchtext = name
+  assign suchtext = suchtext | append: ' ' | append: eintrag.kreuzung.value
+  assign suchtext = suchtext | append: ' ' | append: zuechter_name
+  assign suchtext = suchtext | append: ' ' | append: linien | replace: '|', ' '
+  assign suchtext = suchtext | append: ' ' | append: eintrag.reinheit.value
+  assign suchtext = suchtext | append: ' ' | append: eintrag.mutter_id.value
+  assign suchtext = suchtext | append: ' ' | append: eintrag.merkmal.value
+  assign suchtext = suchtext | downcase | strip
+-%}
+<article
+  class="plant-card"
+  data-testid="plant-card"
+  data-suche="{{ suchtext | escape }}"
+  data-stadium="{{ eintrag.stadium.value | escape }}"
+  data-generation="{{ eintrag.generation.value | escape }}"
+  data-zuechter="{{ zuechter_name | escape }}"
+  data-herkunft="{{ zuechter_land | escape }}"
+  data-linie="{{ linien | escape }}"
+  data-reinheit="{{ eintrag.reinheit.value | escape }}"
+  data-angebot="{% if hat_angebot %}ja{% else %}nein{% endif %}"
+>
+  <div class="plant-card__media">
+    {%- if zeige_foto -%}
+      {{
+        erstes_foto
+        | image_url: width: 800
+        | image_tag:
+          loading: 'lazy',
+          alt: name,
+          sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw',
+          widths: '300, 400, 600, 800',
+          class: 'plant-card__image'
+      }}
+    {%- else -%}
+      {{ 'image' | placeholder_svg_tag: 'plant-card__image plant-card__image--placeholder' }}
+    {%- endif -%}
+  </div>
+
+  <div class="plant-card__body">
+    <h3 class="plant-card__name">
+      {%- if ziel != blank -%}
+        <a href="{{ ziel }}" class="plant-card__link" data-testid="plant-card-link">{{ name | escape }}</a>
+      {%- else -%}
+        {{ name | escape }}
+      {%- endif -%}
+    </h3>
+    {%- comment -%}
+      Die Exemplar-ID steht an der Pflanze, nicht in einer zweiten Liste. Damit
+      ist das Archiv selbst das Register: es kann nicht veralten, weil es die
+      Daten liest. Für Besucher ist es die Herkunftsangabe, für Tung die
+      Übersicht, welche Nummern vergeben sind.
+    {%- endcomment -%}
+    {%- if eintrag.mutter_id.value != blank -%}
+      <p class="plant-card__id" data-testid="plant-card-id">{{ eintrag.mutter_id.value | escape }}</p>
+    {%- endif -%}
+
+    {%- if leise != blank -%}
+      <p class="plant-card__meta" data-testid="plant-card-meta">{{ leise }}</p>
+    {%- endif -%}
+
+    {%- comment -%}
+      Ein Wort, kein Knopf. Wer im Archiv stoebert, soll sehen koennen, von
+      welcher Pflanze es gerade etwas gibt — ohne dass die Sammlung zum Laden
+      wird. Es ist eine wahre Angabe, keine Werbung.
+    {%- endcomment -%}
+    {%- if hat_angebot -%}
+      <p class="plant-card__offer" data-testid="plant-card-offer">
+        {{- 'private_archive.has_offer' | t -}}
+      </p>
+    {%- endif -%}
+  </div>
+</article>

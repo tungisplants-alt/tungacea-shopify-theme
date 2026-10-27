@@ -44,6 +44,9 @@
 
 <div class="multirow section-{{ section.id }}-padding gradient color-{{ section.settings.section_color_scheme }}">
   <div class="multirow__inner page-width">
+    {%- if request.page_type == 'page' and template.suffix == 'about' -%}
+      <h1 class="visually-hidden">{{ page.title | escape }}</h1>
+    {%- endif -%}
     {%- for block in section.blocks -%}
       <div
         class="image-with-text isolate{{ borders_class }}{{ corners_class }}{{ padding_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
@@ -58,6 +61,12 @@
               {% endif %}
             >
               {%- if block.settings.image != blank -%}
+                {%- liquid
+                  assign multirow_image_alt = block.settings.image.alt
+                  if multirow_image_alt == blank
+                    assign multirow_image_alt = block.settings.heading | strip_html | strip
+                  endif
+                -%}
                 {%- capture sizes -%}
                   (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
                   (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
@@ -65,7 +74,7 @@
                 {{
                   block.settings.image
                   | image_url: width: 1500
-                  | image_tag: sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
+                  | image_tag: alt: multirow_image_alt, sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
                 }}
               {%- else -%}
                 {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}

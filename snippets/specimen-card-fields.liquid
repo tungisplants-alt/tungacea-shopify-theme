@@ -1,0 +1,133 @@
+{% comment %}
+  Tungacea — Specimen Card fields resolver.
+
+  Reads the product metafields and echoes one delimited payload the shared
+  product card splits apart:
+
+    specimen_id || kreuzung || specs || status_state || status_label
+
+  The card markup is unchanged; only what fills its slots is. Slot 2 used to
+  hold a typed parentage string and now carries the cross, inherited from the
+  referenced mother plant. Slot 3 used to hold trait and stage and now carries
+  the three numbers a buyer actually needs before clicking: stage, leaf count
+  and leaf length. A wrong expectation about size is the most common reason a
+  rare plant arrives to disappointment.
+
+  Availability is derived from Shopify itself. The former free-text status field
+  matched only English substrings, so a status typed in German fell through to a
+  neutral state — that whole class of mistake is gone with the field.
+
+  Kept as a dedicated snippet so the shared card stays within Theme Check's
+  Liquid complexity budget.
+
+  Accepts:
+  - product: {Object} Product Liquid object (required)
+{% endcomment %}
+{%- liquid
+  assign mf = product.metafields.custom
+
+  assign specimen_id = mf.specimen_id.value | default: '' | strip
+
+  comment
+    The cross comes from the mother plant entry, so it is entered once and every
+    clone of that mother inherits it.
+  endcomment
+  assign kreuzung = ''
+  assign mutter = mf.mutterpflanze.value
+  if mutter != blank
+    assign kreuzung = mutter.bezeichnung.value | default: '' | strip
+
+    comment
+      A mother plant is usually named after the cross, and so is the product,
+      plus a running number. The card would then print nearly the same line
+      twice. Both are reduced to bare letters and digits before comparing, so
+      that a times sign, an apostrophe or a trailing number does not hide the
+      duplication. If the title already carries the cross, the extra line goes.
+    endcomment
+    assign titel_norm = product.title | downcase | replace: '×', 'x' | remove: 'anthurium' | remove: ' ' | remove: '#' | remove: "'" | remove: '"' | remove: '-' | remove: '.'
+    assign kreuzung_norm = kreuzung | downcase | replace: '×', 'x' | remove: 'anthurium' | remove: ' ' | remove: '#' | remove: "'" | remove: '"' | remove: '-' | remove: '.'
+    if kreuzung_norm != blank and titel_norm contains kreuzung_norm
+      assign kreuzung = ''
+    endif
+  endif
+
+  comment
+    F2 on its own is a code only insiders read, so the word Generation goes in
+    front of it. Species is not a generation and would read as nonsense with
+    that prefix — it stands alone, and it is a word anybody can look up.
+    F- and S-numbers are the same in both languages; only the admission that
+    nobody knows needs translating.
+  endcomment
+  comment
+    Fehlt die Generation am Produkt, kommt sie von der Mutter. Dieselbe
+    Ableitung wie in der Dokumentation, damit Karte und Produktseite nicht
+    auseinanderlaufen.
+  endcomment
+  assign gen_raw = mf.generation.value | default: '' | strip
+  if gen_raw == blank and mutter != blank
+    assign gen_raw = mutter.generation.value | default: '' | strip
+  endif
+  assign generation = ''
+  if gen_raw == 'Species'
+    assign generation = gen_raw
+  elsif gen_raw == 'Unbekannt'
+    assign gen_word = 'products.product.specimen.generation_unknown' | t
+    assign generation = 'products.product.specimen.generation_prefixed' | t: value: gen_word
+  elsif gen_raw != blank
+    assign generation = 'products.product.specimen.generation_prefixed' | t: value: gen_raw
+  endif
+
+  assign stage_label = ''
+  case mf.stadium.value
+    when 'Steckling'
+      assign stage_label = 'products.product.specimen.stage_cutting' | t
+    when 'Sämling'
+      assign stage_label = 'products.product.specimen.stage_seedling' | t
+    when 'Jungpflanze'
+      assign stage_label = 'products.product.specimen.stage_young' | t
+    when 'Etabliert'
+      assign stage_label = 'products.product.specimen.stage_established' | t
+    when 'Mutterpflanze'
+      assign stage_label = 'products.product.specimen.stage_mother' | t
+  endcase
+
+  comment
+    The three facts a photograph cannot carry: how far along the plant is, which
+    generation it belongs to, and its size. Leaf count was dropped — it is
+    countable in the pictures and was taking a slot from something harder to see.
+    A length of zero would be nonsense, but the test for nil is kept so a real
+    zero could never vanish silently.
+  endcomment
+  assign spec_parts = ''
+  if stage_label != blank
+    assign spec_parts = spec_parts | append: stage_label | append: ' · '
+  endif
+  if generation != blank
+    assign spec_parts = spec_parts | append: generation | append: ' · '
+  endif
+  comment
+    Mehrere Exemplare in einem Produkt haben nicht dieselbe Blattlaenge. Ist der
+    obere Wert gesetzt und wirklich groesser, steht eine Spanne statt einer Zahl.
+    Die Spanne wird in denselben Satz gereicht wie die einzelne Zahl — so gibt es
+    keinen zweiten Uebersetzungsschluessel, der auseinanderlaufen koennte.
+  endcomment
+  if mf.blattlaenge_cm.value != nil
+    assign cm_text = mf.blattlaenge_cm.value
+    assign blatt_bis = mf.blattlaenge_bis_cm.value
+    if blatt_bis != nil and blatt_bis > mf.blattlaenge_cm.value
+      assign cm_text = mf.blattlaenge_cm.value | append: '–' | append: blatt_bis
+    endif
+    assign leaflen = 'products.product.specimen.leaf_length_short' | t: cm: cm_text
+    assign spec_parts = spec_parts | append: leaflen | append: ' · '
+  endif
+  assign specs = spec_parts | split: ' · ' | join: ' · ' | strip
+
+  if product.available
+    assign status_state = 'available'
+    assign status_label = 'products.product.specimen_status.available' | t
+  else
+    assign status_state = 'sold'
+    assign status_label = 'products.product.specimen_status.sold' | t
+  endif
+-%}
+{{- specimen_id }}||{{ kreuzung }}||{{ specs }}||{{ status_state }}||{{ status_label -}}
