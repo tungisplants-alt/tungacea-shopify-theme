@@ -440,14 +440,31 @@
   outline-offset: 3px;
 }
 
-/* Auf dem Telefon bleibt nach dem Schliessen des grossen Bildes ein roter
-   Rahmen um das Foto stehen: specimen-lightbox.js gibt den Fokus an das Foto
-   zurueck, und der Browser zeigt ihn dort an. Mit der Tastatur braucht man den
-   Rahmen, mit dem Finger stoert er. Deshalb nur dort ausblenden, wo es keinen
-   Zeiger zum Ueberfahren gibt. Am PC bleibt er. */
+/* Auf dem Telefon bleibt nach dem Schliessen des grossen Bildes ein Rahmen um
+   das Foto stehen: specimen-lightbox.js gibt den Fokus an das Foto zurueck,
+   und der Browser zeigt ihn dort an. Das sind zwei Dinge: der rote Rahmen aus
+   dieser Datei und der helle Schein, den base.css fuer jedes :focus-visible
+   als box-shadow setzt. Beides muss weg, sonst leuchtet das Foto weiter.
+   Dazu kommt die graue Markierung, die das Handy beim Antippen zeichnet.
+
+   Mit der Tastatur braucht man den Rahmen, mit dem Finger stoert er. Deshalb
+   nur dort ausblenden, wo es keinen Zeiger zum Ueberfahren gibt. Am PC bleibt
+   er. Fotos, Miniaturen und die Kacheln der Uebersicht; Suche und Filter
+   behalten ihren Fokus, dort tippt man. */
 @media (hover: none) and (pointer: coarse) {
-  .plant-profile__photo:focus-visible {
+  .plant-profile__photo,
+  .plant-profile__thumb,
+  .plant-card__link {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .plant-profile__photo:focus-visible,
+  .plant-profile__photo.focused,
+  .plant-profile__thumb:focus-visible,
+  .plant-card__link:focus-visible,
+  .plant-card:has(.plant-card__link:focus-visible) {
     outline: none;
+    box-shadow: none;
   }
 }
 
