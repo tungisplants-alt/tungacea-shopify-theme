@@ -1,0 +1,48 @@
+{% comment %}
+  Tungacea — Bilder einer Variante.
+
+  Shopify erlaubt pro Variante nur ein Bild. Wer mehrere braucht, waehlt sie im
+  Variantenfeld "Variantenbilder" (custom.variantenbilder, Liste von Dateien).
+  Dieses Snippet gibt die IDs der gewaehlten Bilder aus, in der Reihenfolge der
+  Auswahl, als ",id1,id2,". Das erste ist das Hauptbild der Variante.
+
+  Leer heisst: kein Feld oder kein Treffer. Dann gilt das alte Verhalten, die
+  Galerie zeigt die Bilder wie bisher.
+
+  Gesucht wird in product.media, nicht in der Dateiliste. Ein Bild, das nicht
+  zum Produkt gehoert, wird nie gezeigt. Zuerst zaehlt die ID, ersatzweise die
+  Bild-URL ohne Abfrageteil.
+
+  Die Dateiliste wird durchlaufen und nicht indiziert. Auf eine Liste aus
+  .value darf man in Shopify nicht mit [0] zugreifen.
+
+  Annahmen:
+  - product: {Object} Product liquid object (Pflicht)
+  - variant: {Object} Variante, optional, sonst die gewaehlte oder erste
+
+  Aufruf:
+  {%- capture variant_media_ids -%}{% render 'variant-media-ids', product: product %}{%- endcapture -%}
+{% endcomment %}
+{%- liquid
+  assign aktuelle_variante = variant | default: product.selected_or_first_available_variant
+  assign treffer = ','
+  for datei in aktuelle_variante.metafields.custom.variantenbilder.value
+    assign datei_url = datei.src | split: '?' | first
+    for medium in product.media
+      assign medium_url = medium.preview_image.src | split: '?' | first
+      assign gleiche_url = false
+      if medium_url != blank and medium_url == datei_url
+        assign gleiche_url = true
+      endif
+      if medium.id == datei.id or gleiche_url
+        assign marke = medium.id | prepend: ',' | append: ','
+        unless treffer contains marke
+          assign treffer = treffer | append: medium.id | append: ','
+        endunless
+      endif
+    endfor
+  endfor
+  if treffer != ','
+    echo treffer
+  endif
+-%}
