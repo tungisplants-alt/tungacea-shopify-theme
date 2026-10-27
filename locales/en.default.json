@@ -720,5 +720,11 @@
     "heading": "The Tungacea collection is opening soon.",
     "body": "Here I share clones of my mother plants and Anthuriums from my own breeding. Join the list to hear when new specimens become available.",
     "collectors_note": "Collectors list · early access"
+  },
+  "whatsapp_contact": {
+    "label": "Message me",
+    "aria_label": "Message me on WhatsApp",
+    "message": "Hi Tung, I have a question about Tungacea.",
+    "message_product": "Hi Tung, I have a question about {{ name }}."
   }
 }

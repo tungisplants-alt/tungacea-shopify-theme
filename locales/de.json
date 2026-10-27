@@ -720,5 +720,11 @@
     "heading": "Die Tungacea Kollektion öffnet bald.",
     "body": "Hier teile ich Klone meiner Mutterpflanzen und Anthurien aus eigener Züchtung. Trag dich ein, wenn du erfahren möchtest, wann neue Exemplare verfügbar sind.",
     "collectors_note": "Sammlerliste · Frühzugang"
+  },
+  "whatsapp_contact": {
+    "label": "Schreib mir",
+    "aria_label": "Schreib mir per WhatsApp",
+    "message": "Hallo Tung, ich habe eine Frage zu Tungacea.",
+    "message_product": "Hallo Tung, ich habe eine Frage zu {{ name }}."
   }
 }

@@ -1485,5 +1485,27 @@
         "default": "scheme-1"
       }
     ]
+  },
+  {
+    "name": "WhatsApp-Kontakt",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Schreib-mir-Knopf unten rechts"
+      },
+      {
+        "type": "checkbox",
+        "id": "whatsapp_aktiv",
+        "label": "Knopf anzeigen",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_nummer",
+        "label": "WhatsApp-Nummer",
+        "info": "Mit Ländervorwahl, zum Beispiel +49 179 1234567. Leer lassen blendet den Knopf aus.",
+        "default": "+49 179 1627287"
+      }
+    ]
   }
 ]
