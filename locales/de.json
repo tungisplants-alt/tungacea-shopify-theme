@@ -134,7 +134,7 @@
       },
       "winterpack": {
         "title": "Winterverpackung",
-        "hint": "Heatpack und Isolierfolie. Unter 10 °C empfohlen.",
+        "hint": "Heatpack und Isolierfolie. Unter 10 °C empfohlen, um Kälteschäden zu vermeiden.",
         "add": "Hinzufügen",
         "added": "Hinzugefügt"
       },
