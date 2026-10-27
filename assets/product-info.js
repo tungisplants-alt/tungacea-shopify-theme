@@ -256,6 +256,19 @@ if (!customElements.get('product-info')) {
       }
 
       updateMedia(html, variantFeaturedMediaId) {
+        // Variantenbilder (custom.variantenbilder): Die Galerie der neuen Variante
+        // hat andere Bilder, andere Vorschaubilder und eine andere Zahl. Dawns
+        // Abgleich unten kennt nur die grossen Bilder, deshalb wird hier die ganze
+        // Galerie ersetzt. Gilt auch beim Wechsel zurueck auf eine Variante ohne
+        // Variantenbilder, sonst bliebe die alte Auswahl stehen.
+        const currentGallery = this.querySelector('media-gallery');
+        const nextGallery = html.querySelector('media-gallery');
+        if (currentGallery?.hasAttribute('data-variant-media') || nextGallery?.hasAttribute('data-variant-media')) {
+          this.replaceGallery(currentGallery, nextGallery);
+          this.updateMediaModal(html);
+          return;
+        }
+
         if (!variantFeaturedMediaId) return;
 
         const mediaGallerySource = this.querySelector('media-gallery ul');
@@ -320,7 +333,32 @@ if (!customElements.get('product-info')) {
           true
         );
 
-        // update media modal
+        this.updateMediaModal(html);
+      }
+
+      replaceGallery(currentGallery, nextGallery) {
+        if (!currentGallery || !nextGallery) return;
+
+        // Ueber innerHTML neu aufbauen, wie Dawn es bei den uebrigen Bloecken tut:
+        // So entstehen die Elemente im echten Dokument und media-gallery und
+        // slider-component richten sich beim Einsetzen selbst ein.
+        const holder = document.createElement('div');
+        holder.innerHTML = nextGallery.outerHTML;
+        const freshGallery = holder.firstElementChild;
+
+        // Skripte aus innerHTML laufen nicht. Die Punkte auf dem Telefon brauchen
+        // ihr Skript aber neu, sonst stehen sie da und tun nichts.
+        freshGallery.querySelectorAll('script[src]').forEach((oldScript) => {
+          const script = document.createElement('script');
+          script.src = oldScript.src;
+          oldScript.replaceWith(script);
+        });
+
+        currentGallery.replaceWith(freshGallery);
+        if (this.hasAttribute('data-zoom-on-hover')) enableZoomOnHover(2);
+      }
+
+      updateMediaModal(html) {
         const modalContent = this.productModal?.querySelector(`.product-media-modal__content`);
         const newModalContent = html.querySelector(`product-modal .product-media-modal__content`);
         if (modalContent && newModalContent) modalContent.innerHTML = newModalContent.innerHTML;

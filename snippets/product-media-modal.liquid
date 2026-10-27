@@ -32,22 +32,52 @@
       aria-label="{{ 'products.modal.label' | t }}"
       tabindex="0"
     >
+      {%- capture variant_media_ids -%}{% render 'variant-media-ids', product: product %}{%- endcapture -%}
       {%- liquid
-        if product.selected_or_first_available_variant.featured_media != null
-          assign media = product.selected_or_first_available_variant.featured_media
-          render 'product-media', media: media, loop: section.settings.enable_video_looping, variant_image: section.settings.hide_variants
+        assign lead_media = product.selected_or_first_available_variant.featured_media
+        assign use_variant_media = false
+        if variant_media_ids != blank
+          assign use_variant_media = true
+          assign lead_id = variant_media_ids | remove_first: ',' | split: ',' | first
+          for medium in product.media
+            assign medium_id_text = medium.id | append: ''
+            if medium_id_text == lead_id
+              assign lead_media = medium
+              break
+            endif
+          endfor
+        endif
+
+        if lead_media != null
+          assign media = lead_media
+          assign lead_is_variant_image = section.settings.hide_variants
+          if use_variant_media
+            assign lead_is_variant_image = false
+          endif
+          render 'product-media', media: media, loop: section.settings.enable_video_looping, variant_image: lead_is_variant_image
         endif
       -%}
 
       {%- for media in product.media -%}
         {%- liquid
+          if use_variant_media
+            assign media_marker = media.id | prepend: ',' | append: ','
+            unless variant_media_ids contains media_marker
+              continue
+            endunless
+          endif
+
           if section.settings.hide_variants and variant_images contains media.src or variant_images contains media.id
             assign variant_image = true
           else
             assign variant_image = false
           endif
 
-          unless media.id == product.selected_or_first_available_variant.featured_media.id
+          if use_variant_media
+            assign variant_image = false
+          endif
+
+          unless media.id == lead_media.id
             render 'product-media', media: media, loop: section.settings.enable_video_looping, variant_image: variant_image
           endunless
         -%}
