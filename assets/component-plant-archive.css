@@ -440,6 +440,17 @@
   outline-offset: 3px;
 }
 
+/* Auf dem Telefon bleibt nach dem Schliessen des grossen Bildes ein roter
+   Rahmen um das Foto stehen: specimen-lightbox.js gibt den Fokus an das Foto
+   zurueck, und der Browser zeigt ihn dort an. Mit der Tastatur braucht man den
+   Rahmen, mit dem Finger stoert er. Deshalb nur dort ausblenden, wo es keinen
+   Zeiger zum Ueberfahren gibt. Am PC bleibt er. */
+@media (hover: none) and (pointer: coarse) {
+  .plant-profile__photo:focus-visible {
+    outline: none;
+  }
+}
+
 .plant-profile__credit {
   margin: 0 0 3.2rem;
   font-size: 1.1rem;
