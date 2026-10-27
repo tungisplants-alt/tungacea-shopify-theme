@@ -90,8 +90,8 @@ const faelle = [
       settings: { produkt: produkt(390, true), ueberschrift: '', hinweis: '' },
     },
     erwartet: {
-      de: ['Winterverpackung', 'Heatpack und Isolierfolie. Unter 10 °C empfohlen.', 'winter-pack__sub'],
-      en: ['Winter packaging', 'Heat pack and thermal wrap. Recommended below 10 °C.', 'winter-pack__sub'],
+      de: ['Winterverpackung', 'Heatpack und Isolierfolie. Unter 10 °C empfohlen, um Kälteschäden zu vermeiden.', 'winter-pack__sub'],
+      en: ['Winter packaging', 'Heat pack and thermal wrap. Recommended below 10 °C to prevent cold damage.', 'winter-pack__sub'],
     },
   },
   {
