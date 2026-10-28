@@ -148,6 +148,12 @@
   min-width: 0;
 }
 
+/* Das Skript blendet Pflanzen mit dem Attribut hidden aus; display: flex darf
+   es nicht aushebeln, sonst erscheinen Treffer, die ausgeblendet sein sollen. */
+.plant-archive__grid > li[hidden] {
+  display: none;
+}
+
 .plant-archive__grid > li > .plant-card {
   flex: 1 1 0;
   min-width: 0;
