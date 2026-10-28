@@ -118,6 +118,9 @@ const zaehle = (html, muster) => (html.match(muster) || []).length;
   const en = await rendere(eintraege, produkte);
   pruefe('Englisch rendert ohne fehlenden Schluessel', zaehle(en, /<article\s+class="plant-card"/g), 5);
 
+  const archivCss = require('fs').readFileSync(require('path').join(__dirname, '..', 'assets/component-plant-archive.css'), 'utf8');
+  pruefe('ausgeblendete Pflanzen (hidden) bleiben trotz display: flex unsichtbar', /\.plant-archive__grid > li\[hidden\]\s*\{\s*display:\s*none/.test(archivCss), true);
+
   console.log(fehler + ' Fehler in ' + geprueft + ' Pruefungen');
   process.exit(fehler ? 1 : 0);
 })().catch((e) => { console.log('ABBRUCH: ' + e.message); process.exit(1); });
