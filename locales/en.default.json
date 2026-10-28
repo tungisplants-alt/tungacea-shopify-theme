@@ -734,7 +734,7 @@
     "mail_error": "That didn't work. Please check your email address and try again.",
     "mail_privacy": "By sending, you share your name, email address and message with me. More in the",
     "mail_privacy_link": "privacy policy",
-    "message": "Hi Tung, I have a question about Tungacea.",
+    "message": "Hi Tung, I have a question about…",
     "message_product": "Hi Tung, I have a question about {{ name }}."
   }
 }
