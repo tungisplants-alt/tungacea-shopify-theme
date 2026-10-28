@@ -49,20 +49,9 @@
             "show_gift_card_recipient": true
           }
         },
-        "versandinfo": {
-          "type": "versandinfo",
-          "settings": {
-            "zeile_1": "",
-            "zeile_2": "",
-            "zeile_3": ""
-          }
-        },
-        "fragen": {
-          "type": "fragen",
-          "settings": {
-            "titel": "",
-            "text": ""
-          }
+        "description": {
+          "type": "description",
+          "settings": {}
         },
         "specimen": {
           "type": "specimen",
@@ -89,9 +78,20 @@
             "shipping_info": ""
           }
         },
-        "description": {
-          "type": "description",
-          "settings": {}
+        "versandinfo": {
+          "type": "versandinfo",
+          "settings": {
+            "zeile_1": "",
+            "zeile_2": "",
+            "zeile_3": ""
+          }
+        },
+        "fragen": {
+          "type": "fragen",
+          "settings": {
+            "titel": "",
+            "text": ""
+          }
         },
         "share": {
           "type": "share",
@@ -129,6 +129,26 @@
         "padding_bottom": 12
       }
     },
+    "1790930519e12b1f1c": {
+      "type": "apps",
+      "blocks": {
+        "judgeme_review_widget": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1000,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judgeme_review_widget"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
@@ -146,31 +166,11 @@
         "padding_top": 56,
         "padding_bottom": 40
       }
-    },
-    "1790930519e12b1f1c": {
-      "type": "apps",
-      "blocks": {
-        "judgeme_review_widget": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "sample_data",
-            "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "empty_widget"
-          }
-        }
-      },
-      "block_order": [
-        "judgeme_review_widget"
-      ],
-      "settings": {
-        "include_margins": true
-      }
     }
   },
   "order": [
     "main",
-    "related-products",
-    "1790930519e12b1f1c"
+    "1790930519e12b1f1c",
+    "related-products"
   ]
 }
