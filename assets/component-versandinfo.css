@@ -1,0 +1,47 @@
+/*
+ * Versandinfo unter dem Kaufknopf.
+ *
+ * Gedaempfte Schrift in kleiner Groesse, ohne Kasten und ohne Symbole: Der
+ * Kaufknopf darueber ist das Wichtige, und die Zeilen sollen beruhigen und
+ * nicht um Aufmerksamkeit konkurrieren. Der Abstand nach oben trennt sie vom
+ * Knopf, die Haarlinie nach unten vom Exemplar-Archiv darunter.
+ *
+ * Farben aus den festen Werten in tungacea.css, nicht aus --color-foreground:
+ * Dawn setzt das nur innerhalb der Farbschema-Klassen (siehe
+ * component-winter-pack.css).
+ */
+.versandinfo {
+  margin: 1.8rem 0 2rem;
+  padding: 0 0 1.8rem;
+  border-bottom: 1px solid var(--tungacea-hairline);
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--tungacea-muted);
+}
+
+.versandinfo__liste {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.versandinfo__liste li {
+  margin: 0 0 0.5rem;
+}
+
+.versandinfo__liste li:last-child {
+  margin-bottom: 0;
+}
+
+.versandinfo__link {
+  display: inline-block;
+  margin-top: 0.9rem;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+  text-decoration-thickness: 1px;
+}
+
+.versandinfo__link:hover {
+  color: rgba(242, 238, 232, 1);
+}

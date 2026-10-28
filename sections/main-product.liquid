@@ -202,6 +202,8 @@
                   {%- endif -%}
                 {%- when 'winterpack' -%}
                   {% render 'winter-pack', block: block %}
+                {%- when 'versandinfo' -%}
+                  {% render 'versandinfo', block: block %}
                 {%- when 'specimen' -%}
                   {% render 'specimen-passport', product: product, block: block %}
                 {%- when 'sku' -%}
@@ -979,6 +981,35 @@
           "id": "hinweis",
           "label": "Hinweis darunter",
           "info": "Leer lassen: Dann wird übersetzt. — Das Kästchen ist bewusst nicht vorausgewählt: Vorausgewählte kostenpflichtige Zusatzleistungen sind nach § 312a Abs. 3 BGB unwirksam."
+        }
+      ]
+    },
+    {
+      "type": "versandinfo",
+      "name": "Versandinfo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Drei kurze Zeilen zum Versand unter dem Kaufknopf, dazu der Link zu den Versandbedingungen aus Shopify. Die Aussagen müssen zu den Versandbedingungen passen: Ändern sich dort Versandtage, Laufzeit oder Liefergebiet, hier mit ändern."
+        },
+        {
+          "type": "text",
+          "id": "zeile_1",
+          "label": "Zeile 1: Liefergebiet und Dienstleister",
+          "info": "Leer lassen: Dann wird übersetzt. Ein eigener Text erscheint in beiden Sprachen gleich."
+        },
+        {
+          "type": "text",
+          "id": "zeile_2",
+          "label": "Zeile 2: Versandtage und Laufzeit",
+          "info": "Leer lassen: Dann wird übersetzt."
+        },
+        {
+          "type": "text",
+          "id": "zeile_3",
+          "label": "Zeile 3: Verschiebung bei Frost und Hitze",
+          "info": "Leer lassen: Dann wird übersetzt."
         }
       ]
     },
