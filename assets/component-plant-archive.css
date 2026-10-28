@@ -77,8 +77,8 @@
 .plant-archive__hero .plant-archive__heading {
   margin: 0;
   font-weight: 400;
-  font-size: clamp(5rem, 13.5vw, 7.2rem);
-  line-height: 1.05;
+  font-size: clamp(4rem, 10vw, 5.6rem);
+  line-height: 1.08;
 }
 
 @media screen and (min-width: 750px) {
