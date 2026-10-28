@@ -143,11 +143,24 @@
   }
 }
 
+.plant-archive__grid > li {
+  display: flex;
+  min-width: 0;
+}
+
+.plant-archive__grid > li > .plant-card {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
 .plant-card {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 0;
+  padding: 1.2rem 1.2rem 0;
+  background: #0e0e10;
+  border: 1px solid var(--pl-line-soft);
 }
 
 .plant-card__media {
@@ -191,7 +204,8 @@
 .plant-card__body {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.6rem;
+  padding: 1.4rem 0 1.6rem;
 }
 
 .plant-card__name {
@@ -830,7 +844,9 @@
    Pflanze es gerade etwas gibt — ohne dass die Sammlung zum Laden wird. */
 
 .plant-card__offer {
-  margin: 0;
+  margin: 0.4rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--pl-line-soft);
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -1527,11 +1543,22 @@ html.plant-search-lock {
    Leise gesetzt: sie ordnet ein, sie ist nicht die Überschrift. */
 
 .plant-card__id {
-  margin: 0;
+  order: -1;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 0 0.2rem;
   font-size: 1.1rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.2em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
-  opacity: 0.75;
+}
+
+.plant-card__id::before {
+  content: '';
+  flex: none;
+  width: 1.6rem;
+  height: 1px;
+  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
 }
 
 /* Die Spanne der vergebenen Nummern, direkt unter der Einleitung. Die nächste
