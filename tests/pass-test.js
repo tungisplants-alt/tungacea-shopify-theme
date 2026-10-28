@@ -63,6 +63,14 @@ const grower = person('Tropical Grower', '@tropicalgrower');
 const ree = person('Ree Gardens', null);
 
 const faelle = [
+  // --- Samen als Stadium ------------------------------------------------
+  // "Samen" wurde der Auswahl am Produkt hinzugefuegt. Ohne eigenen Zweig im
+  // Passport erschiene der Wert nicht, obwohl er gewaehlt ist.
+  { name: 'Stadium Samen wird als Wort gezeigt',
+    mf: mf({ lieferumfang: 'Samen aus dieser Kreuzung', stadium: 'Samen', specimen_id: 'TA-1020' }),
+    erwartet: ['Samen'],
+    verboten: [] },
+
   // --- Saemlinge haben zwei Eltern -------------------------------------
   // Beide Eltern tragen Generation und Zuechter, das Produkt selbst nicht.
   // Nichts davon darf erscheinen: aus F2 x F1 folgt keine Generation, und
