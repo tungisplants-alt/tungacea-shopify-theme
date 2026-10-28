@@ -133,6 +133,25 @@
   margin-top: 0.8rem;
 }
 
+/* Der Zusatz hinter "Per WhatsApp": leiser als das Wort, in normaler Schrift und
+   nicht in gesperrten Grossbuchstaben, sonst liest er sich wie ein zweiter Knopf.
+   Der Punkt trennt, und Screenreader lesen ihn nicht mit. Auf sehr schmalen
+   Bildschirmen rutscht der ganze Zusatz in die naechste Zeile, statt mitten
+   im Wortpaar umzubrechen. */
+.whatsapp-contact__hint {
+  display: inline-block;
+  margin-left: 0.8rem;
+  white-space: nowrap;
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.whatsapp-contact__dot {
+  margin-right: 0.7rem;
+}
+
 .whatsapp-contact__option--mail::after {
   content: '+';
   color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);

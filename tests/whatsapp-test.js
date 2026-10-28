@@ -188,7 +188,10 @@ function pruefe(name, ist, soll) {
     pruefe('Knopf hat einen Namen fuer Screenreader, auch wenn der Text am Telefon fehlt',
       /<summary[^>]*aria-label="Schreib mir"/.test(html), true);
     pruefe('Einleitung steht in der Karte', /Du schreibst direkt an mich\./.test(html), true);
-    pruefe('Link zu WhatsApp heisst "Per WhatsApp"', />Per WhatsApp</.test(html), true);
+    pruefe('Link zu WhatsApp heisst "Per WhatsApp"', /data-whatsapp-link[^>]*>\s*<span>Per WhatsApp<span class="whatsapp-contact__hint">/.test(html.replace(/\s+/g, ' ').replace(/> </g, '><')), true);
+    pruefe('Hinter WhatsApp steht "schnellere Antwort"', /<span class="whatsapp-contact__hint"><span[^>]*>&bull;<\/span>schnellere Antwort<\/span>/.test(html), true);
+    pruefe('Der Trennpunkt ist fuer Screenreader versteckt', /<span class="whatsapp-contact__dot" aria-hidden="true">&bull;<\/span>/.test(html), true);
+    pruefe('Der E-Mail-Weg hat keinen solchen Zusatz', /whatsapp-contact__option--mail">Per E-Mail<\/summary>/.test(html), true);
     pruefe('WhatsApp-Link: neues Fenster, noopener noreferrer, Hinweis fuer Screenreader',
       /target="_blank"/.test(html) && /rel="noopener noreferrer"/.test(html) && /aria-describedby="a11y-new-window-message"/.test(html), true);
     pruefe('Der Weg "Per E-Mail" steht in der Karte', /<summary class="whatsapp-contact__option whatsapp-contact__option--mail">Per E-Mail</.test(html), true);
@@ -257,7 +260,8 @@ function pruefe(name, ist, soll) {
     pruefe('Englisch: Text im Knopf', />Message me</.test(en), true);
     pruefe('Englisch: Name fuer Screenreader enthaelt den sichtbaren Text', /<summary[^>]*aria-label="Message me"/.test(en), true);
     pruefe('Englisch: Satz', text(en), 'Hi Tung, I have a question about Anthurium X.');
-    pruefe('Englisch: Wege heissen On WhatsApp und By email', />On WhatsApp</.test(en) && />By email</.test(en), true);
+    pruefe('Englisch: Wege heissen On WhatsApp und By email', /<span>On WhatsApp<span class="whatsapp-contact__hint">/.test(en.replace(/\s+/g, ' ').replace(/> </g, '><')) && />By email</.test(en), true);
+    pruefe('Englisch: Zusatz heisst quicker reply', /&bull;<\/span>quicker reply</.test(en), true);
     pruefe('Englisch: Formularbeschriftung', /Your name \(optional\)/.test(en) && /Your email address/.test(en) && /Your message/.test(en) && />Send</.test(en), true);
     pruefe('Englisch: Datenschutz', /privacy policy<\/a>/.test(en), true);
     pruefe('Englisch: Erfolg', /Thank you, your message has reached me\./.test(await render(gut, { sprache: 'en', form: { ok: true } })), true);

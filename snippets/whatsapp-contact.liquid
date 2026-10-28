@@ -188,7 +188,10 @@
           aria-describedby="a11y-new-window-message"
           data-whatsapp-link
         >
-          {{- 'whatsapp_contact.whatsapp_label' | t -}}
+          <span>
+            {{- 'whatsapp_contact.whatsapp_label' | t -}}
+            <span class="whatsapp-contact__hint"><span class="whatsapp-contact__dot" aria-hidden="true">&bull;</span>{{ 'whatsapp_contact.whatsapp_hint' | t }}</span>
+          </span>
         </a>
       {%- endif -%}
 
