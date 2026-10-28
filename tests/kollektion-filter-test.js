@@ -102,6 +102,15 @@ const zaehle = (h, m) => (h.match(m) || []).length;
   pruefe('Englisch: Knopf und Zaehlzeile', />Show results</.test(en) && /6 of 14 plants/.test(en), true);
   pruefe('Englisch: kein deutsches Stadium als Aufschrift', />Samen <span|>Jungpflanze <span|>Sämling <span/.test(en), false);
 
+  // Aktive Chips tragen die uebersetzte Aufschrift, nicht den deutschen Rohwert.
+  locale = 'en';
+  const enChips = await rendere(kollektion({ stadium: 'Steckling' }));
+  pruefe('Englisch: aktiver Chip uebersetzt', /catalogue-filter__active-chip"[^>]*>\s*<span>Cutting\/Clone<\/span>/.test(enChips) && !/<span>Steckling<\/span>/.test(enChips), true);
+  pruefe('Englisch: Entfernen-Text nennt die uebersetzte Aufschrift', /Remove Cutting\/Clone/.test(enChips), true);
+  locale = 'de';
+  const deChips = await rendere(kollektion({ stadium: 'Steckling' }));
+  pruefe('Deutsch: aktiver Chip Steckling/Klon', /<span>Steckling\/Klon<\/span>/.test(deChips), true);
+
   // Ohne Stadium- und Vorrats-Filter keine Schnellwahl
   locale = 'de';
   const k = kollektion();

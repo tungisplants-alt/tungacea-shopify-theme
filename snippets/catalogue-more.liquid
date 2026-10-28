@@ -1,0 +1,47 @@
+{% comment %}
+  Tungacea — Fusszeile der Kollektion: Strich, Zahl und "Mehr anzeigen".
+
+  Dieselbe Bedienung wie im Archiv. Statt Seitenzahlen zeigt die Kollektion
+  einen dünnen Strich, der zeigt, wie weit man ist, die Zahl darunter und einen
+  Knopf fuer den Rest. Das Skript holt die naechste Seite still nach und haengt
+  die Karten an.
+
+  Ohne JavaScript bleibt Dawns Seitenleiste darunter stehen und funktioniert
+  wie bisher. Sobald das Skript laeuft, blendet das Stylesheet sie aus.
+
+  Das Element steht im Produktbereich (#ProductGridContainer). Filtert Dawn am
+  PC neu, tauscht es den Bereich samt dieser Zeile aus, und der neue Stand
+  stimmt wieder.
+
+  Annahmen:
+  - paginate:   {Object} das paginate-Objekt der Vorlage (Pflicht)
+  - shown:      {Number} Karten, die diese Seite bereits zeigt (Pflicht)
+  - section_id: {String} Abschnitts-ID fuer den Nachladeaufruf (Pflicht)
+{% endcomment %}
+{{ 'component-catalogue-more.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'catalogue-more.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign gezeigt = paginate.current_offset | plus: shown
+  assign naechste = ''
+  if paginate.next.is_link
+    assign naechste = paginate.next.url
+  endif
+-%}
+<catalogue-more
+  class="catalogue-more"
+  data-section-id="{{ section_id }}"
+  data-next="{{ naechste }}"
+  data-shown="{{ gezeigt }}"
+  data-total="{{ paginate.items }}"
+  data-text-gezeigt="{{ 'catalogue_filter.shown_of' | t }}"
+  data-testid="catalogue-more"
+>
+  <div class="catalogue-more__line" aria-hidden="true"><span style="width: {{ gezeigt | times: 100 | divided_by: paginate.items }}%"></span></div>
+  <p class="catalogue-more__text" role="status" aria-live="polite">
+    {{- 'catalogue_filter.shown_of' | t | replace: '%gezeigt%', gezeigt | replace: '%gesamt%', paginate.items -}}
+  </p>
+  {%- if naechste != blank -%}
+    <a class="catalogue-more__button" href="{{ naechste }}">{{ 'catalogue_filter.show_more' | t }}</a>
+  {%- endif -%}
+</catalogue-more>

@@ -44,10 +44,21 @@
         {{- collection_display_title | escape -}}
       </h1>
 
-      {%- if section.settings.show_collection_description and collection.description != blank -%}
-        <div class="collection-hero__description rte" data-testid="collection-description">
-          {{- collection.description -}}
-        </div>
+      {%- comment -%}
+        Eine eigene Beschreibung der Kollektion hat Vorrang. Fehlt sie bei der
+        Gesamtkollektion, steht dort der Satz aus den Sprachdateien, damit die
+        Kopfzeile nicht nur aus einer Ueberschrift besteht.
+      {%- endcomment -%}
+      {%- if section.settings.show_collection_description -%}
+        {%- if collection.description != blank -%}
+          <div class="collection-hero__description rte" data-testid="collection-description">
+            {{- collection.description -}}
+          </div>
+        {%- elsif collection.handle == 'all' -%}
+          <div class="collection-hero__description rte" data-testid="collection-description">
+            <p>{{ 'sections.collection_template.all_description' | t }}</p>
+          </div>
+        {%- endif -%}
       {%- endif -%}
 
       <div class="collection-hero__meta">

@@ -1,0 +1,70 @@
+/*
+ * Tungacea — Fusszeile der Kollektion: Strich, Zahl, "Mehr anzeigen".
+ * Gleiches Aussehen wie im Archiv (plant-archive__more).
+ */
+.catalogue-more {
+  display: block;
+  margin: 4.8rem auto 0;
+  text-align: center;
+}
+
+.catalogue-more__line {
+  position: relative;
+  max-width: 22rem;
+  height: 1px;
+  margin: 0 auto 2rem;
+  background: var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.08));
+}
+
+.catalogue-more__line span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1px;
+  background: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  transition: width 0.3s var(--tungacea-ease, ease);
+}
+
+.catalogue-more__text {
+  margin: 0 0 1.6rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+}
+
+.catalogue-more__button {
+  display: inline-block;
+  padding: 1.3rem 2.6rem;
+  border: 1px solid rgba(242, 238, 232, 0.55);
+  color: inherit;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.catalogue-more__button[hidden] {
+  display: none;
+}
+
+.catalogue-more__button:hover {
+  border-color: #f2eee8;
+}
+
+.catalogue-more__button:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
+}
+
+/* Dawns Seitenleiste ist nur noch die Rueckfallebene ohne Skript. */
+.product-grid-container:has(catalogue-more[data-aktiv]) .pagination-wrapper {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalogue-more__line span {
+    transition: none;
+  }
+}

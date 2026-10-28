@@ -25,6 +25,14 @@
   .tungacea-catalogue .mobile-facets__wrapper {
     display: none;
   }
+
+  /* Dawns eigene aktive Filter und Trefferzeile stehen sonst doppelt neben den
+     Gegenstuecken in diesem Block, mit anderen Woertern und auf Englisch noch
+     mit deutschen Filterwerten. Im Dokument bleiben sie, facets.js braucht sie. */
+  .tungacea-catalogue .active-facets,
+  .tungacea-catalogue .product-count {
+    display: none;
+  }
 }
 
 .catalogue-filter__tabs {

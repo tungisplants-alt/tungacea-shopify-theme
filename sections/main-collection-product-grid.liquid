@@ -229,6 +229,11 @@
               </ul>
 
               {%- if paginate.pages > 1 -%}
+                {%- render 'catalogue-more',
+                  paginate: paginate,
+                  shown: collection.products.size,
+                  section_id: section.id
+                -%}
                 {% render 'pagination', paginate: paginate, anchor: '' %}
               {%- endif -%}
             </div>

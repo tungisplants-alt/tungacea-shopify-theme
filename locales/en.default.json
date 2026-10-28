@@ -334,6 +334,8 @@
     "apply_generic": "Show results",
     "apply_one": "Show 1 plant",
     "apply_many": "Show %anzahl% plants",
+    "shown_of": "%gezeigt% of %gesamt% shown",
+    "show_more": "Show more",
     "apply_none": "No plant matches"
   },
   "templates": {

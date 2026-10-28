@@ -187,3 +187,65 @@
     margin-top: 2.2rem;
   }
 }
+
+/*
+  Tungacea — Kopfzeile der Kollektion, kraeftiger gesetzt.
+
+  Vorher standen eine kleine Zeile, eine mittelgrosse Ueberschrift und eine
+  Zaehlzeile mit viel Leere darum, das wirkte duenn. Jetzt traegt die
+  Ueberschrift mehr Gewicht, der Satz darunter faengt die Leere, und ein
+  weicher roter Schein links unten gibt der Flaeche Tiefe, ohne ein Bild zu
+  brauchen. Nur Schrift, Abstaende und ein Verlauf; die Struktur bleibt.
+*/
+.collection-hero--catalogue {
+  position: relative;
+  overflow: hidden;
+}
+
+.collection-hero--catalogue::before {
+  content: '';
+  position: absolute;
+  left: -12rem;
+  bottom: -14rem;
+  width: 60rem;
+  height: 34rem;
+  background: radial-gradient(closest-side, rgba(var(--tungacea-accent, 150, 45, 58), 0.2), transparent);
+  pointer-events: none;
+}
+
+.collection-hero--catalogue .collection-hero__inner {
+  position: relative;
+}
+
+.collection-hero--catalogue .collection-hero__title {
+  font-size: clamp(5rem, 13.5vw, 7.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+}
+
+.collection-hero--catalogue .collection-hero__description {
+  margin-top: 2rem;
+}
+
+.collection-hero--catalogue .collection-hero__description > p {
+  margin: 0;
+}
+
+.collection-hero--catalogue .collection-hero__meta {
+  margin-top: 3rem;
+}
+
+.collection-hero--catalogue .collection-hero__count {
+  color: #f2eee8;
+}
+
+@media screen and (max-width: 749px) {
+  .collection-hero--catalogue {
+    padding-bottom: 0.4rem;
+  }
+
+  .collection-hero--catalogue .collection-hero__description {
+    font-size: 1.6rem;
+    max-width: 32ch;
+  }
+}

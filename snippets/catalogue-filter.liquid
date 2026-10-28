@@ -160,11 +160,30 @@
             {%- endif -%}
           {%- else -%}
             {%- for value in filter.active_values -%}
+              {%- liquid
+                assign chip_label = value.label
+                if filter.param_name contains 'stadium'
+                  case value.value
+                    when 'Steckling'
+                      assign chip_label = 'products.product.specimen.stage_cutting' | t
+                    when 'Samen'
+                      assign chip_label = 'products.product.specimen.stage_seeds' | t
+                    when 'Sämling'
+                      assign chip_label = 'products.product.specimen.stage_seedling' | t
+                    when 'Jungpflanze'
+                      assign chip_label = 'products.product.specimen.stage_young' | t
+                    when 'Etabliert'
+                      assign chip_label = 'products.product.specimen.stage_established' | t
+                    when 'Mutterpflanze'
+                      assign chip_label = 'products.product.specimen.stage_mother' | t
+                  endcase
+                endif
+              -%}
               <li>
                 <a class="catalogue-filter__active-chip" href="{{ value.url_to_remove }}">
-                  <span>{{ value.label | escape }}</span>
+                  <span>{{ chip_label | escape }}</span>
                   <span aria-hidden="true">&#x2715;</span>
-                  <span class="visually-hidden">{{ 'catalogue_filter.remove' | t: name: value.label }}</span>
+                  <span class="visually-hidden">{{ 'catalogue_filter.remove' | t: name: chip_label }}</span>
                 </a>
               </li>
             {%- endfor -%}
