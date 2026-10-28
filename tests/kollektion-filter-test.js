@@ -71,7 +71,7 @@ const zaehle = (h, m) => (h.match(m) || []).length;
   const h = await rendere(kollektion());
   pruefe('Schnellwahl: Alle + 5 Stadien mit Treffern + Verfuegbar (Mutterpflanze mit 0 fehlt)', zaehle(h, /class="catalogue-filter__tab"/g), 7);
   pruefe('Alle ist gewaehlt, wenn nichts aktiv ist', /href="\/collections\/x"\s+aria-current="true"/.test(h), true);
-  pruefe('Stadien tragen die uebersetzte Aufschrift, Samen eingeschlossen', ['Steckling', 'Samen', 'Sämling', 'Jungpflanze', 'Etabliert'].every((w) => h.includes('>' + w + ' <span class="catalogue-filter__tab-count">')), true);
+  pruefe('Stadien tragen die uebersetzte Aufschrift, Samen eingeschlossen', ['Steckling/Klon', 'Samen', 'Sämling', 'Jungpflanze', 'Etabliert'].every((w) => h.includes('>' + w + ' <span class="catalogue-filter__tab-count">')), true);
   pruefe('Verfuegbar-Tab nimmt nur den Wert 1', /Verfügbar <span class="catalogue-filter__tab-count">13<\/span>/.test(h) && !/Nicht auf Lager <span class="catalogue-filter__tab-count">/.test(h), true);
   pruefe('kein Badge ohne Filter', /catalogue-filter__badge/.test(h), false);
   pruefe('Zaehlzeile ohne Filter: 14 Pflanzen', />\s*14 Pflanzen\s*</.test(h), true);
@@ -98,7 +98,7 @@ const zaehle = (h, m) => (h.match(m) || []).length;
   // Englisch
   locale = 'en';
   const en = await rendere(kollektion({ stadium: 'Samen' }));
-  pruefe('Englisch: Aufschriften uebersetzt, Rohwert deutsch', />Seeds <span/.test(en) && /Young plant <span/.test(en) && /value="Samen"/.test(en), true);
+  pruefe('Englisch: Aufschriften uebersetzt, Rohwert deutsch', />Seeds <span/.test(en) && />Cutting\/Clone <span/.test(en) && /value="Steckling"/.test(en) && /Young plant <span/.test(en) && /value="Samen"/.test(en), true);
   pruefe('Englisch: Knopf und Zaehlzeile', />Show results</.test(en) && /6 of 14 plants/.test(en), true);
   pruefe('Englisch: kein deutsches Stadium als Aufschrift', />Samen <span|>Jungpflanze <span|>Sämling <span/.test(en), false);
 
