@@ -105,6 +105,9 @@
     when 'Sämling aus dieser Kreuzung'
       assign delivery_kind = 'seedling'
       assign thing_word = 'products.product.specimen.thing_seedling' | t
+    when 'Gekeimter Samen aus dieser Kreuzung'
+      assign delivery_kind = 'seed'
+      assign thing_word = 'products.product.specimen.thing_seed' | t
   endcase
 
   comment

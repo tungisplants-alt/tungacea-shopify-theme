@@ -80,6 +80,14 @@ const faelle = [
                'Dein gekeimter Samen stammt von dieser Pflanze aus meiner Sammlung.'],
     verboten: ['Sämling', 'Sämling aus'] },
 
+  // Eigene Auswahl am Produkt: Lieferumfang "Gekeimter Samen aus dieser Kreuzung".
+  { name: 'Eigene Auswahl Gekeimter Samen — gekeimter Samen, nicht Saemling',
+    mf: mf({ lieferumfang: 'Gekeimter Samen aus dieser Kreuzung', stadium: 'Samen', specimen_id: 'TA-1024',
+             mutterpflanze: mutter('Anthurium regale', null, null, FOTOS) }),
+    erwartet: ['Du erhältst einen gekeimten Samen aus der unten gezeigten Kreuzung.',
+               'Dein gekeimter Samen stammt von dieser Pflanze aus meiner Sammlung.'],
+    verboten: ['Sämling'] },
+
   // Bei Stufe Samen gilt der eigene Hinweis, egal was bei der Bewurzelung steht.
   { name: 'Samen, unbewurzelt — eigener Samen-Hinweis statt erfahrene Haende',
     mf: mf({ lieferumfang: 'Sämling aus dieser Kreuzung', stadium: 'Samen', bewurzelung: 'Unbewurzelt', specimen_id: 'TA-1022' }),
