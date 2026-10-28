@@ -3,9 +3,13 @@
 
   Was ein Kunde bei einer lebenden Pflanze zuerst wissen will, steht sonst nur
   im langen Text der Versandbedingungen: wohin, wann, wie lange, und was bei
-  Frost passiert. Drei kurze Zeilen unter dem Kaufknopf, dazu der Link zu den
-  ganzen Versandbedingungen aus Shopify (shop.shipping_policy), nicht ein
-  getippter.
+  Frost passiert. Eine zugeklappte Zeile "Versand & Lieferung" unter dem
+  Kaufknopf; aufgeklappt drei kurze Zeilen und der Link zu den ganzen
+  Versandbedingungen aus Shopify (shop.shipping_policy), nicht ein getippter.
+
+  Zugeklappt, damit die Produktseite nicht voll wird: Kaufknopf, Winterpaket und
+  Exemplar-Archiv stehen schon dort. Aufgeklappt wird mit <details>, das geht
+  auch ohne Skript.
 
   Die Aussagen stammen aus den Versandbedingungen (Liefergebiet, DHL oder UPS,
   Versandtage Montag und Dienstag, 1-3 Werktage, Verschiebung bei Frost oder
@@ -40,15 +44,21 @@
 
 {{ 'component-versandinfo.css' | asset_url | stylesheet_tag }}
 
-<div class="versandinfo" {{ block.shopify_attributes }}>
-  <ul class="versandinfo__liste list-unstyled" role="list">
-    <li>{{ zeile_1 | escape }}</li>
-    <li>{{ zeile_2 | escape }}</li>
-    <li>{{ zeile_3 | escape }}</li>
-  </ul>
-  {%- if richtlinie != blank -%}
-    <a class="versandinfo__link link" href="{{ richtlinie | escape }}">
-      {{- 'products.product.versandinfo.link' | t -}}
-    </a>
-  {%- endif -%}
-</div>
+<details class="versandinfo" {{ block.shopify_attributes }}>
+  <summary class="versandinfo__toggle">
+    <span class="versandinfo__titel">{{ 'products.product.versandinfo.titel' | t }}</span>
+    <span class="versandinfo__indikator" aria-hidden="true"></span>
+  </summary>
+  <div class="versandinfo__inhalt">
+    <ul class="versandinfo__liste list-unstyled" role="list">
+      <li>{{ zeile_1 | escape }}</li>
+      <li>{{ zeile_2 | escape }}</li>
+      <li>{{ zeile_3 | escape }}</li>
+    </ul>
+    {%- if richtlinie != blank -%}
+      <a class="versandinfo__link link" href="{{ richtlinie | escape }}">
+        {{- 'products.product.versandinfo.link' | t -}}
+      </a>
+    {%- endif -%}
+  </div>
+</details>

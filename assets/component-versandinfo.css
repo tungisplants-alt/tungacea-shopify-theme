@@ -1,19 +1,55 @@
 /*
- * Versandinfo unter dem Kaufknopf.
+ * Versandinfo unter dem Kaufknopf, zugeklappt.
  *
- * Gedaempfte Schrift in kleiner Groesse, ohne Kasten und ohne Symbole: Der
- * Kaufknopf darueber ist das Wichtige, und die Zeilen sollen beruhigen und
- * nicht um Aufmerksamkeit konkurrieren. Der Abstand nach oben trennt sie vom
- * Knopf, die Haarlinie nach unten vom Exemplar-Archiv darunter.
+ * Eine Zeile mit Haarlinien oben und unten, wie die Winterverpackung darueber:
+ * Haarlinien statt Kasten, weil Variantenfelder und Kaufknopf schon Rechtecke
+ * sind. Zugeklappt, damit die Produktseite nicht voll wird; aufgeklappt stehen
+ * darin drei gedaempfte Zeilen und der Link zu den ganzen Versandbedingungen.
  *
- * Farben aus den festen Werten in tungacea.css, nicht aus --color-foreground:
- * Dawn setzt das nur innerhalb der Farbschema-Klassen (siehe
- * component-winter-pack.css).
+ * Farben als feste Werte, nicht aus --color-foreground: Dawn setzt das nur
+ * innerhalb der Farbschema-Klassen (siehe component-winter-pack.css).
  */
 .versandinfo {
   margin: 1.8rem 0 2rem;
-  padding: 0 0 1.8rem;
+  border-top: 1px solid var(--tungacea-hairline);
   border-bottom: 1px solid var(--tungacea-hairline);
+}
+
+.versandinfo__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  padding: 1.4rem 0;
+  list-style: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  color: rgba(242, 238, 232, 0.92);
+}
+
+.versandinfo__toggle::-webkit-details-marker {
+  display: none;
+}
+
+.versandinfo__toggle:hover .versandinfo__titel {
+  color: rgba(242, 238, 232, 1);
+}
+
+/* Plus zu, Minus auf: dasselbe Zeichen wie beim E-Mail-Weg in der Karte. */
+.versandinfo__indikator::after {
+  content: '+';
+  color: rgba(204, 96, 112, 1);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.versandinfo[open] .versandinfo__indikator::after {
+  content: '\2013';
+}
+
+.versandinfo__inhalt {
+  padding: 0 0 1.6rem;
   font-size: 1.25rem;
   line-height: 1.6;
   color: var(--tungacea-muted);
@@ -44,4 +80,23 @@
 
 .versandinfo__link:hover {
   color: rgba(242, 238, 232, 1);
+}
+
+.versandinfo__toggle:focus-visible {
+  outline: 2px solid rgba(204, 96, 112, 0.9);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* Mit dem Finger bleibt kein Rahmen und kein Schein stehen, wie bei den Fotos
+   im Archiv und beim Schreib-mir-Knopf. Am PC bleibt der Fokus sichtbar. */
+@media (hover: none) and (pointer: coarse) {
+  .versandinfo__toggle {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .versandinfo__toggle:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
 }

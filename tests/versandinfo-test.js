@@ -68,6 +68,29 @@ function pruefe(name, ist, soll) {
     pruefe('keine Version, Nummer oder Adresse getippt: nur Shopify-Link', /https?:\/\/|@/.test(html), false);
   }
 
+  // ---- Aufklappbar ----------------------------------------------------------
+  {
+    const html = await render();
+    const kompakt = html.replace(/\s+/g, ' ').replace(/> </g, '><');
+    pruefe('Block ist ein details mit summary', /<details class="versandinfo"[^>]*><summary class="versandinfo__toggle">/.test(kompakt), true);
+    pruefe('zugeklappt zu Beginn, die Produktseite wird nicht voller', /<details class="versandinfo"[^>]* open/.test(kompakt), false);
+    pruefe('zugeklappt steht nur der Titel sichtbar in der summary', (kompakt.match(/<summary[\s\S]*?<\/summary>/) || [''])[0].replace(/<[^>]+>/g, ''), 'Versand & Lieferung');
+    pruefe('Plus-Zeichen kommt aus dem CSS und ist fuer Screenreader versteckt', /<span class="versandinfo__indikator" aria-hidden="true"><\/span>/.test(kompakt), true);
+    const inhalt = (kompakt.match(/<div class="versandinfo__inhalt">([\s\S]*?)<\/div><\/details>/) || [])[1] || '';
+    pruefe('die drei Zeilen stehen im aufklappbaren Teil', (inhalt.match(/<li>/g) || []).length, 3);
+    pruefe('der Link "Alle Versandinfos" steht im aufklappbaren Teil', /<a class="versandinfo__link link" href="\/policies\/shipping-policy">Alle Versandinfos<\/a>/.test(inhalt), true);
+    pruefe('der Link steht NACH den drei Zeilen', inhalt.indexOf('versandinfo__link') > inhalt.lastIndexOf('</li>'), true);
+    pruefe('ausserhalb des aufklappbaren Teils steht weder Zeile noch Link', /<li>|<a /.test(kompakt.replace(/<div class="versandinfo__inhalt">[\s\S]*?<\/div><\/details>/, '')), false);
+    pruefe('Block hat genau eine summary (sonst ist die Bedienung unklar)', (kompakt.match(/<summary/g) || []).length, 1);
+    pruefe('Block ist nicht standardmaessig offen, auch mit eigenen Texten', /<details[^>]* open/.test(await render({ zeile_1: 'x' })), false);
+    const css = fs.readFileSync(path.join(THEME, 'assets/component-versandinfo.css'), 'utf8');
+    pruefe('CSS entfernt das Dreieck des Browsers (list-style und webkit-marker)', /list-style:\s*none/.test(css) && /::-webkit-details-marker/.test(css), true);
+    pruefe('CSS schaltet Plus und Minus um', /\.versandinfo\[open\] \.versandinfo__indikator::after/.test(css), true);
+    pruefe('CSS nimmt den Fokus-Rahmen auf Touch-Geraeten weg (wie bei Archiv-Fotos und Karte)', /hover: none\) and \(pointer: coarse\)[\s\S]*versandinfo__toggle:focus-visible/.test(css), true);
+    const en = await render({}, { sprache: 'en' });
+    pruefe('Englisch: Titel', /<span class="versandinfo__titel">Shipping &amp; delivery<\/span>|<span class="versandinfo__titel">Shipping & delivery<\/span>/.test(en), true);
+  }
+
   // ---- Die Aussagen festhalten --------------------------------------------
   {
     const de = LOC.de.products.product.versandinfo;
