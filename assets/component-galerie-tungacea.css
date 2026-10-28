@@ -270,6 +270,7 @@
   max-height: 100%;
   margin: 0;
   object-fit: contain;
+  cursor: pointer;
 }
 
 @media screen and (min-width: 750px) {
