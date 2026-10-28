@@ -374,13 +374,23 @@
      ebenfalls rechts, und links blieb die halbe Seite leer. */
   .plant-profile > .page-width > .plant-profile__media {
     grid-column: 1;
-    grid-row: 1 / span 99;
+    grid-row: 2 / span 99;
   }
 
   /* Die Angebote stehen unter beiden Spalten — sie gehoeren zur Pflanze,
      nicht zur Dokumentation. */
   .plant-profile > .page-width > .plant-profile__offers {
     grid-column: 1 / -1;
+  }
+
+  .plant-profile > .page-width > .plant-profile__nav {
+    grid-column: 1 / -1;
+  }
+
+  .plant-profile > .page-width > .plant-profile__back {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: start;
   }
 }
 
@@ -573,30 +583,115 @@
 
 .plant-profile__offer {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem 1.6rem;
-  align-items: baseline;
+  gap: 1.6rem;
+  align-items: center;
   justify-content: space-between;
   padding: 1.2rem 0;
   border-bottom: 1px solid var(--pl-line-soft);
 }
 
+/* Foto, Name und Stand bilden einen Link; der Preis steht rechts daneben. */
 .plant-profile__offer-link {
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+  min-width: 0;
   color: inherit;
   text-decoration: none;
+}
+
+.plant-profile__offer-thumb {
+  flex: 0 0 6.4rem;
+  width: 6.4rem;
+  height: 6.4rem;
+  overflow: hidden;
+}
+
+.plant-profile__offer-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.plant-profile__offer-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.plant-profile__offer-name {
   border-bottom: 1px solid transparent;
   transition: border-color 0.25s var(--pl-ease);
 }
 
-.plant-profile__offer-link:hover {
+.plant-profile__offer-link:hover .plant-profile__offer-name {
   border-bottom-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 0.8);
 }
 
-.plant-profile__offer-sold {
+.plant-profile__offer-state {
   font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   color: var(--pl-muted);
+}
+
+.plant-profile__offer-price {
+  white-space: nowrap;
+}
+
+/* Der Weg zurueck in die Galerie, ganz oben und leise. */
+.plant-profile__back {
+  display: inline-block;
+  margin: 0 0 2.4rem;
+  color: var(--pl-muted);
+  text-decoration: none;
+}
+
+.plant-profile__back:hover {
+  color: rgb(var(--color-foreground, 242, 238, 232));
+}
+
+/* Vorherige und Naechste: nur die Nummer, leise am Ende der Seite. */
+.plant-profile__nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.6rem;
+  margin-top: 4.8rem;
+}
+
+.plant-profile__nav-link {
+  color: var(--pl-muted);
+  text-decoration: none;
+}
+
+.plant-profile__nav-link:hover {
+  color: rgb(var(--color-foreground, 242, 238, 232));
+}
+
+.plant-profile > .page-width > .plant-profile__nav {
+  max-width: none;
+}
+
+/* Merkmale: eine Auswahl aus einer festen Liste, klein und mit duennem Rahmen,
+   damit fuenf davon in zwei Zeilen passen. */
+.plant-profile__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 2.4rem 0 3.2rem;
+}
+
+.plant-profile__tag {
+  padding: 0.25rem 0.8rem;
+  border: 1px solid var(--pl-line);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 /* Der leise Hinweis auf der Kachel

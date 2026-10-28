@@ -16,6 +16,7 @@
 
   Annahmen:
   - eintrag: {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
+  - alle:    {Array} alle Eintraege vom Typ mutterpflanze, fuer Vorherige und Naechste (optional)
 {% endcomment %}
 {{ 'component-plant-archive.css' | asset_url | stylesheet_tag }}
 {{ 'component-specimen-passport.css' | asset_url | stylesheet_tag }}
@@ -187,10 +188,68 @@
       endif
     endfor
   endif
+
+  comment
+    Merkmale sind eine Auswahl aus einer festen Liste, ein Metaobjekt vom Typ
+    merkmal, gewaehlt im Feld merkmale am Eintrag. Der alte Freitext merkmal
+    gilt nur noch, solange kein Merkmal gewaehlt ist, damit eine nicht
+    umgestellte Pflanze nichts verliert.
+  endcomment
+  assign merkmal_anzahl = 0
+  for m in eintrag.merkmale.value
+    assign m_name = m.name.value | default: '' | strip
+    if m_name != blank
+      assign merkmal_anzahl = merkmal_anzahl | plus: 1
+    endif
+  endfor
+
+  assign archiv_url = routes.root_url | default: '/' | append: 'pages/archive'
+
+  comment
+    Vorherige und Naechste nach Exemplar-ID, wie die Galerie sie zaehlt. Nur
+    eigene Pflanzen blaettern, fremde stehen nicht in der Galerie. Sortiert
+    wird als Zeichenkette, solange die Nummern gleich viele Stellen haben.
+  endcomment
+  assign vorher_id = ''
+  assign nachher_id = ''
+  assign vorher_url = ''
+  assign nachher_url = ''
+  if alle != blank and besitzer == blank and eintrag.mutter_id.value != blank
+    assign aktuelle_id = eintrag.mutter_id.value
+    assign id_roh = ''
+    for kandidat in alle
+      if kandidat.besitzer.value == blank and kandidat.mutter_id.value != blank
+        assign id_roh = id_roh | append: kandidat.mutter_id.value | append: '|'
+      endif
+    endfor
+    assign id_liste = id_roh | split: '|' | sort
+    assign gefunden = false
+    for nummer in id_liste
+      if nummer == aktuelle_id
+        assign gefunden = true
+      elsif gefunden == false
+        assign vorher_id = nummer
+      elsif nachher_id == blank
+        assign nachher_id = nummer
+      endif
+    endfor
+    for kandidat in alle
+      if vorher_id != blank and kandidat.mutter_id.value == vorher_id
+        assign vorher_url = kandidat.system.url
+      endif
+      if nachher_id != blank and kandidat.mutter_id.value == nachher_id
+        assign nachher_url = kandidat.system.url
+      endif
+    endfor
+  endif
 -%}
 
 <div class="plant-profile" data-testid="plant-profile">
   <div class="page-width">
+    <a class="plant-profile__back caption-with-letter-spacing" href="{{ archiv_url }}" data-testid="plant-profile-back">
+      <span aria-hidden="true">&larr;</span> {{ 'private_archive.back_to_archive' | t }}
+    </a>
+
     <header class="plant-profile__head">
       <p class="plant-profile__eyebrow caption-with-letter-spacing">
         {{- 'private_archive.eyebrow_single' | t -}}
@@ -343,7 +402,16 @@
       </div>
     {%- endif -%}
 
-    {%- if eintrag.merkmal.value != blank -%}
+    {%- if merkmal_anzahl > 0 -%}
+      <ul class="plant-profile__tags" role="list" data-testid="plant-profile-tags">
+        {%- for m in eintrag.merkmale.value -%}
+          {%- assign m_name = m.name.value | default: '' | strip -%}
+          {%- if m_name != blank -%}
+            <li class="plant-profile__tag">{{ m_name | escape }}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- elsif eintrag.merkmal.value != blank -%}
       <p class="plant-profile__trait" data-testid="plant-profile-trait">
         {{- eintrag.merkmal.value | escape -}}
       </p>
@@ -441,6 +509,19 @@
           {%- endcomment -%}
         </ul>
       </section>
+    {%- endif -%}
+
+    {%- if vorher_url != blank or nachher_url != blank -%}
+      <nav class="plant-profile__nav caption-with-letter-spacing" aria-label="{{ 'private_archive.nav_label' | t }}" data-testid="plant-profile-nav">
+        {%- if vorher_url != blank -%}
+          <a class="plant-profile__nav-link" href="{{ vorher_url }}" rel="prev"><span aria-hidden="true">&larr;</span> {{ vorher_id | escape }}</a>
+        {%- else -%}
+          <span></span>
+        {%- endif -%}
+        {%- if nachher_url != blank -%}
+          <a class="plant-profile__nav-link" href="{{ nachher_url }}" rel="next">{{ nachher_id | escape }} <span aria-hidden="true">&rarr;</span></a>
+        {%- endif -%}
+      </nav>
     {%- endif -%}
   </div>
 </div>
