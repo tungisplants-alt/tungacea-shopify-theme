@@ -25,18 +25,47 @@
 
 <div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
   {%- comment -%}
-    Der Produktbestand wird ausdruecklich hineingereicht, nicht in den Snippets
-    als globales Objekt vorausgesetzt. Ein render isoliert den Namensraum, und
-    eine Annahme darueber, was darin sichtbar bleibt, laesst sich ausserhalb von
-    Shopify nicht pruefen.
+    Zwei Listen, zwei paginate-Bloecke, einer nach dem anderen. Ohne paginate
+    liefert Shopify beim Durchlaufen nur die ersten 50 Eintraege, ab dem 51.
+    Produkt oder der 51. Pflanze fehlten stillschweigend Angebote und Karten.
+    Mit paginate by 250 sind es bis zu 250 je Liste.
+
+    Erst werden die Produkte EINMAL durchlaufen und daraus die Pflanzen
+    gesammelt, zu denen es etwas zu kaufen gibt. Vorher suchte jede Karte
+    selbst durch alle Produkte, das waren Pflanzen mal Produkte Durchlaeufe.
+    Die Snippets bekommen nur noch die fertige Liste, als Zeichenkette mit
+    senkrechten Strichen: |handle|handle|.
+
+    Rueckweg ueber beide Rollen: Mutter eines Cuttings und einer von zwei
+    Eltern eines Saemlings. Verkauftes zaehlt nicht, die Frage lautet, ob sich
+    ein Klick jetzt lohnt.
   {%- endcomment -%}
-  {%- render 'plant-archive-gallery',
-    eintraege: shop.metaobjects.mutterpflanze.values,
-    produkte: collections.all.products,
-    eyebrow: section.settings.eyebrow,
-    heading: section.settings.heading,
-    intro: section.settings.intro
-  -%}
+  {%- assign pflanzen_mit_angebot = '|' -%}
+  {%- paginate collections.all.products by 250 -%}
+    {%- for produkt in collections.all.products -%}
+      {%- if produkt.available -%}
+        {%- assign pm = produkt.metafields.custom.mutterpflanze.value -%}
+        {%- assign pv = produkt.metafields.custom.vaterpflanze.value -%}
+        {%- if pm != blank -%}
+          {%- assign pflanzen_mit_angebot = pflanzen_mit_angebot | append: pm.system.handle | append: '|' -%}
+        {%- endif -%}
+        {%- if pv != blank -%}
+          {%- assign pflanzen_mit_angebot = pflanzen_mit_angebot | append: pv.system.handle | append: '|' -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endpaginate -%}
+
+  {%- paginate shop.metaobjects.mutterpflanze.values by 250 -%}
+    {%- render 'plant-archive-gallery',
+      eintraege: shop.metaobjects.mutterpflanze.values,
+      angebote: pflanzen_mit_angebot,
+      seitenzaehler: paginate,
+      eyebrow: section.settings.eyebrow,
+      heading: section.settings.heading,
+      intro: section.settings.intro
+    -%}
+  {%- endpaginate -%}
 </div>
 
 {% schema %}

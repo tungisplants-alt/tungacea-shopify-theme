@@ -1457,3 +1457,33 @@ html.plant-search-lock {
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
   opacity: 0.7;
 }
+
+/* Seitenlinks ab 250 Pflanzen und die Warnung im Editor */
+.plant-archive__pages {
+  margin-top: 4rem;
+  text-align: center;
+  font-size: 1.3rem;
+  letter-spacing: 0.1em;
+}
+
+.plant-archive__pages a,
+.plant-archive__pages .page,
+.plant-archive__pages .next,
+.plant-archive__pages .prev {
+  display: inline-block;
+  margin: 0 0.8rem;
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  text-decoration: none;
+}
+
+.plant-archive__pages .current {
+  color: #f2eee8;
+}
+
+.plant-archive__warning {
+  margin: 3.2rem 0 0;
+  padding: 1.2rem 1.6rem;
+  border: 1px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.8);
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  font-size: 1.3rem;
+}
