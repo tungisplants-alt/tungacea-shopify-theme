@@ -680,6 +680,9 @@
         "name": "Contact form"
       },
       "settings": {
+        "show_whatsapp": {
+          "label": "Show WhatsApp button"
+        },
         "title": {
           "default": "Contact form",
           "label": "Heading"

@@ -341,6 +341,7 @@
     "contact": {
       "intro": "Have a question about a specimen, shipping, or helping your plant settle in? Send me a message—I’ll reply personally.",
       "direct_email": "Or email me directly:",
+      "form_lead": "Or use the form:",
       "form": {
         "title": "Contact form",
         "name": "Name",

@@ -1,0 +1,18 @@
+{% comment %}
+  Tungacea — der vorausgefuellte Satz fuer WhatsApp und E-Mail.
+
+  Auf Produktseiten steht der Produktname im Satz, sonst ein offener Satz. Der
+  Text kommt aus den Sprachdateien (whatsapp_contact.message*). Gibt den Satz
+  als Klartext aus, ohne Maskierung; wer ihn in HTML oder eine Adresse setzt,
+  maskiert oder kodiert ihn selbst.
+
+  Aufruf:
+  {%- capture nachricht -%}{% render 'whatsapp-message' %}{%- endcapture -%}
+{% endcomment %}
+{%- liquid
+  if template.name == 'product' and product.title != blank
+    echo 'whatsapp_contact.message_product' | t: name: product.title
+  else
+    echo 'whatsapp_contact.message' | t
+  endif
+-%}
