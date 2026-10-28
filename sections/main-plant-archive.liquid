@@ -39,6 +39,73 @@
   -%}
 </div>
 
+{%- comment -%} MESSUNG, nur fuer die Fehlersuche, wird wieder entfernt. Sichtbar nur mit ?diag=1. {%- endcomment -%}
+<div id="tungacea-diag" hidden style="position:relative;z-index:50;background:#fff;color:#000;padding:16px;font:14px/1.5 monospace;white-space:pre-wrap">
+{%- assign e_size = shop.metaobjects.mutterpflanze.values.size -%}
+{%- assign e1 = 0 -%}
+{%- for x in shop.metaobjects.mutterpflanze.values -%}{%- assign e1 = e1 | plus: 1 -%}{%- endfor -%}
+{%- assign e2 = 0 -%}
+{%- assign e3 = '' -%}
+{%- assign e4 = 0 -%}
+{%- assign e5 = '' -%}
+{%- paginate shop.metaobjects.mutterpflanze.values by 250 -%}
+  {%- for x in shop.metaobjects.mutterpflanze.values -%}{%- assign e2 = e2 | plus: 1 -%}{%- endfor -%}
+  {%- capture e3 -%}{%- render 'diag-zaehler', liste: shop.metaobjects.mutterpflanze.values -%}{%- endcapture -%}
+  {%- assign liste_e = shop.metaobjects.mutterpflanze.values -%}
+  {%- for x in liste_e -%}{%- assign e4 = e4 | plus: 1 -%}{%- endfor -%}
+  {%- capture e5 -%}{%- render 'diag-zaehler', liste: liste_e -%}{%- endcapture -%}
+  {%- assign pg_e = 'items=' | append: paginate.items | append: ' pages=' | append: paginate.pages | append: ' page_size=' | append: paginate.page_size | append: ' current=' | append: paginate.current_page -%}
+{%- endpaginate -%}
+
+{%- assign p_size = collections.all.products.size -%}
+{%- assign p1 = 0 -%}
+{%- assign p1v = 0 -%}
+{%- assign p1m = 0 -%}
+{%- for x in collections.all.products -%}
+  {%- assign p1 = p1 | plus: 1 -%}
+  {%- if x.available -%}{%- assign p1v = p1v | plus: 1 -%}{%- endif -%}
+  {%- if x.metafields.custom.mutterpflanze.value != blank -%}{%- assign p1m = p1m | plus: 1 -%}{%- endif -%}
+{%- endfor -%}
+{%- assign p2 = 0 -%}
+{%- assign p2v = 0 -%}
+{%- assign p2m = 0 -%}
+{%- assign p3 = '' -%}
+{%- assign p4 = 0 -%}
+{%- assign p5 = '' -%}
+{%- paginate collections.all.products by 250 -%}
+  {%- for x in collections.all.products -%}
+    {%- assign p2 = p2 | plus: 1 -%}
+    {%- if x.available -%}{%- assign p2v = p2v | plus: 1 -%}{%- endif -%}
+    {%- if x.metafields.custom.mutterpflanze.value != blank -%}{%- assign p2m = p2m | plus: 1 -%}{%- endif -%}
+  {%- endfor -%}
+  {%- capture p3 -%}{%- render 'diag-zaehler', liste: collections.all.products -%}{%- endcapture -%}
+  {%- assign liste_p = collections.all.products -%}
+  {%- for x in liste_p -%}{%- assign p4 = p4 | plus: 1 -%}{%- endfor -%}
+  {%- capture p5 -%}{%- render 'diag-zaehler', liste: liste_p -%}{%- endcapture -%}
+  {%- assign pg_p = 'items=' | append: paginate.items | append: ' pages=' | append: paginate.pages | append: ' page_size=' | append: paginate.page_size -%}
+{%- endpaginate -%}
+TUNGACEA MESSUNG
+Pflanzen (Eintraege):
+  E0 .size                         = {{ e_size }}
+  E1 Schleife ohne paginate        = {{ e1 }}
+  E2 paginate + Schleife im Abschnitt = {{ e2 }}
+  E3 paginate + Baustein bekommt Feld = {{ e3 }}
+  E4 paginate + Zwischenvariable   = {{ e4 }}
+  E5 paginate + Baustein bekommt Zwischenvariable = {{ e5 }}
+  paginate: {{ pg_e }}
+Produkte:
+  P0 .size                         = {{ p_size }}
+  P1 Schleife ohne paginate        = {{ p1 }} (verfuegbar {{ p1v }}, mit Mutterpflanze {{ p1m }})
+  P2 paginate + Schleife im Abschnitt = {{ p2 }} (verfuegbar {{ p2v }}, mit Mutterpflanze {{ p2m }})
+  P3 paginate + Baustein bekommt Feld = {{ p3 }}
+  P4 paginate + Zwischenvariable   = {{ p4 }}
+  P5 paginate + Baustein bekommt Zwischenvariable = {{ p5 }}
+  paginate: {{ pg_p }}
+</div>
+<script>
+  if (/[?&]diag=1/.test(location.search)) { var d = document.getElementById('tungacea-diag'); if (d) d.hidden = false; }
+</script>
+
 {% schema %}
 {
   "name": "Archiv-Galerie",
