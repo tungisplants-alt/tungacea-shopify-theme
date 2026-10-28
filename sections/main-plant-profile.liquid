@@ -45,7 +45,7 @@
     {%- endfor -%}
   {%- endpaginate -%}
 
-  {%- render 'plant-profile', eintrag: metaobject, angebote_html: angebote_html, verzeichnis: verzeichnis -%}
+  {%- render 'plant-profile', eintrag: metaobject, angebote_html: angebote_html, produkte: collections.all.products, verzeichnis: verzeichnis -%}
 </div>
 
 {% schema %}

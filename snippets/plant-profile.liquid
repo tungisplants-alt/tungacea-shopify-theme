@@ -18,6 +18,7 @@
   - eintrag: {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
   - verzeichnis: {String} ID=Adresse eigener Pflanzen, mit Semikolon, fuer Vorherige und Naechste (optional)
   - angebote_html: {String} fertige Angebotszeilen der Vorlage (optional)
+  - produkte: {Array} Produkte des Ladens, nur als Rueckfall (optional)
 {% endcomment %}
 {{ 'component-plant-archive.css' | asset_url | stylesheet_tag }}
 {{ 'component-specimen-passport.css' | asset_url | stylesheet_tag }}
@@ -172,6 +173,22 @@
     Zeilen.
   endcomment
   assign gefundene_zeilen = angebote_html | default: '' | strip
+
+  comment
+    Rueckfall, falls die Vorlage nichts geliefert hat: derselbe Durchlauf wie
+    vor der Umstellung, begrenzt auf die ersten 50 Produkte. Er liefert nur
+    dann etwas, wenn es wirklich Angebote gibt, und kostet sonst einen kurzen
+    Durchlauf. So verschwindet die Angebotszeile nie, nur weil der Weg ueber
+    die Vorlage versagt.
+  endcomment
+  if eigene_wahl == false and gefundene_zeilen == blank and produkte != blank
+    capture rueckfall_zeilen
+      for produkt in produkte limit: 50
+        render 'plant-offer-match', eintrag: eintrag, produkt: produkt
+      endfor
+    endcapture
+    assign gefundene_zeilen = rueckfall_zeilen | strip
+  endif
   assign treffer = 0
   if eigene_wahl
     assign treffer = angebote.size
