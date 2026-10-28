@@ -20,21 +20,7 @@
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
-  {%- comment -%}
-    Zwei Listen, zwei paginate-Bloecke, einer nach dem anderen. Ohne paginate
-    liefert Shopify beim Durchlaufen nur die ersten 50 Eintraege, also stuenden
-    ab dem 51. Produkt oder der 51. Pflanze Angebote und Nachbarn nicht mehr da.
-    Der erste Block baut die Angebotszeilen dieser Pflanze, der zweite gibt dem
-    Snippet die Liste aller Pflanzen fuer Vorherige und Naechste.
-  {%- endcomment -%}
-  {%- capture angebote_html -%}
-    {%- paginate collections.all.products by 250 -%}
-      {%- render 'plant-offer-list', eintrag: metaobject, produkte: collections.all.products -%}
-    {%- endpaginate -%}
-  {%- endcapture -%}
-  {%- paginate shop.metaobjects.mutterpflanze.values by 250 -%}
-    {%- render 'plant-profile', eintrag: metaobject, angebote_html: angebote_html, alle: shop.metaobjects.mutterpflanze.values -%}
-  {%- endpaginate -%}
+  {%- render 'plant-profile', eintrag: metaobject, produkte: collections.all.products, alle: shop.metaobjects.mutterpflanze.values -%}
 </div>
 
 {% schema %}
