@@ -60,25 +60,7 @@
 
   <div class="page-width">
 
-    {%- liquid
-      comment
-        Die Spanne der vergebenen Nummern. Sie wird aus den Eintraegen gerechnet,
-        steht also nie auf einem alten Stand, und die naechste freie Nummer ist
-        die obere plus eins. Sortiert wird als Zeichenkette. Das traegt, solange
-        die Nummern gleich viele Stellen haben; ab TA-10000 muesste es neu
-        bedacht werden.
-      endcomment
-      assign id_liste = id_roh | default: '' | split: '|' | sort
-      assign id_von = id_liste | first
-      assign id_bis = id_liste | last
-      assign anzahl = eigene | default: 0
-    -%}
-
-    {%- if id_liste.size > 0 -%}
-      <p class="plant-archive__range" data-testid="plant-archive-range">
-        {{- 'private_archive.specimen_range' | t: von: id_von, bis: id_bis -}}
-      </p>
-    {%- endif -%}
+    {%- assign anzahl = eigene | default: 0 -%}
 
     {%- if anzahl > 0 -%}
       <script src="{{ 'plant-archive-search.js' | asset_url }}" defer="defer"></script>
