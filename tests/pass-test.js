@@ -128,7 +128,7 @@ const faelle = [
              generation: 'F2', blattlaenge_cm: 12, specimen_id: 'TNG-0147',
              mutterpflanze: mutter('Anthurium papillilaminum × forgetii', grower, grower),
              zuechter: ree, bezogen_von: grower }),
-    erwartet: ['Cutting der unten gezeigten Mutterpflanze', 'Frisch bewurzelt', 'Generation F2', '12 cm',
+    erwartet: ['Steckling/Klon der unten gezeigten Mutterpflanze', 'Frisch bewurzelt', 'Generation F2', '12 cm',
                'Braucht noch Aufmerksamkeit', 'stammt von dieser Pflanze bei @tropicalgrower', 'Foto: @tropicalgrower',
                'Ree Gardens', 'TNG-0147'],
     verboten: ['Für erfahrene Hände', 'aus meiner Sammlung'] },
@@ -144,18 +144,18 @@ const faelle = [
 
   { name: 'Cutting OHNE Mutterpflanze — darf nicht nach unten zeigen',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Unbewurzelt', blaetter: 1 }),
-    erwartet: ['Du erhältst ein Cutting.', 'Für erfahrene Hände', 'Dieses Exemplar ist noch nicht bewurzelt'],
+    erwartet: ['Du erhältst einen Steckling/Klon.', 'Für erfahrene Hände', 'Dieses Exemplar ist noch nicht bewurzelt'],
     verboten: ['unten gezeigten', 'Braucht noch Aufmerksamkeit', 'Dieses Cutting ist noch nicht'] },
 
   { name: 'Cutting MIT Mutterpflanze — zeigt nach unten und nennt die Beziehung',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Frisch bewurzelt', 
              mutterpflanze: mutter('Anthurium regale', grower, null, FOTOS) }),
-    erwartet: ['Du erhältst ein Cutting der unten gezeigten Mutterpflanze.',
-               'Dein Cutting stammt von dieser Pflanze bei @tropicalgrower.'],
+    erwartet: ['Du erhältst einen Steckling/Klon der unten gezeigten Mutterpflanze.',
+               'Dein Steckling/Klon stammt von dieser Pflanze bei @tropicalgrower.'],
     // Dass die Mutterpflanze nicht im Angebot ist, sagt der Satz nicht mehr:
     // es ist selbsterklaerend, und gibt es doch ein Cutting von ihr, steht es
     // auf ihrer Archivseite. Hier festgehalten, damit es nicht zurueckkehrt.
-    verboten: ['Du erhältst ein Cutting.', 'nicht im Angebot'] },
+    verboten: ['Du erhältst einen Steckling/Klon.', 'nicht im Angebot'] },
 
   { name: 'Sämling MIT Mutterpflanze, eigene Sammlung',
     mf: mf({ lieferumfang: 'Sämling aus dieser Kreuzung', 
