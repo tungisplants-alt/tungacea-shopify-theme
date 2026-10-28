@@ -413,6 +413,20 @@
     align-self: flex-start;
   }
 
+  /* Am Telefon soll der Name ohne Scrollen ins Bild kommen. Weniger Luft
+     oben, ein quadratisches Foto, kleinerer Abstand zum Zurueck-Link. */
+  .plant-profile {
+    padding-block-start: 2rem;
+  }
+
+  .plant-profile > .page-width > .plant-profile__back {
+    margin-bottom: 1.6rem;
+  }
+
+  .plant-profile__photo {
+    aspect-ratio: 1 / 1;
+  }
+
   .plant-profile > .page-width > .plant-profile__media {
     order: 1;
   }
