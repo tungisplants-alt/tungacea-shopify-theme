@@ -1,0 +1,51 @@
+{% comment %}
+  Tungacea — "Hast du Fragen?" (Produktseite).
+
+  Eine zugeklappte Zeile unten in der Produktspalte, aufgeklappt ein kurzer Satz
+  und der Weg per WhatsApp. Der Knopf ist derselbe wie in der Karte unten rechts
+  und auf der Kontaktseite (Baustein whatsapp-option): dieselbe Nummer, und auf
+  Produktseiten steht der Produktname im vorausgefuellten Satz.
+
+  Der Knopf traegt hier nicht noch einmal den Zusatz "schnellere Antwort": Der
+  Satz darueber sagt es schon, zweimal waere zu viel.
+
+  Ist die Nummer keine, gibt es nichts anzubieten, und die ganze Zeile entfaellt.
+  Eine Zeile "Hast du Fragen?", hinter der kein Weg steht, waere schlimmer als
+  keine.
+
+  Leer heisst uebersetzt, nicht stumm. Ein eigener Text im Theme-Editor
+  erscheint in beiden Sprachen gleich.
+
+  Das Aussehen steht in component-produkt-klappe.css, geladen einmal im Kopf von
+  main-product.liquid (siehe dort, warum nicht hier).
+
+  Accepts:
+  - block: {Object} main-product `fragen` block (required)
+{% endcomment %}
+{%- capture wa_knopf -%}
+  {%- render 'whatsapp-option', klasse: 'produkt-klappe__whatsapp', ohne_zusatz: true, css_laden: false -%}
+{%- endcapture -%}
+
+{%- if wa_knopf != blank -%}
+  {%- liquid
+    assign titel = block.settings.titel | default: '' | strip
+    if titel == blank
+      assign titel = 'products.product.fragen.titel' | t
+    endif
+
+    assign text = block.settings.text | default: '' | strip
+    if text == blank
+      assign text = 'products.product.fragen.text' | t
+    endif
+  -%}
+  <details class="produkt-klappe produkt-klappe--fragen" {{ block.shopify_attributes }}>
+    <summary class="produkt-klappe__toggle">
+      <span class="produkt-klappe__titel">{{ titel | escape }}</span>
+      <span class="produkt-klappe__indikator" aria-hidden="true"></span>
+    </summary>
+    <div class="produkt-klappe__inhalt">
+      <p class="produkt-klappe__text">{{ text | escape }}</p>
+      {{ wa_knopf }}
+    </div>
+  </details>
+{%- endif -%}

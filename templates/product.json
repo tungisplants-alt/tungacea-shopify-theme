@@ -49,6 +49,21 @@
             "show_gift_card_recipient": true
           }
         },
+        "versandinfo": {
+          "type": "versandinfo",
+          "settings": {
+            "zeile_1": "",
+            "zeile_2": "",
+            "zeile_3": ""
+          }
+        },
+        "fragen": {
+          "type": "fragen",
+          "settings": {
+            "titel": "",
+            "text": ""
+          }
+        },
         "specimen": {
           "type": "specimen",
           "settings": {
@@ -92,8 +107,10 @@
         "variant_picker",
         "winterpack",
         "buy_buttons",
-        "specimen",
         "description",
+        "specimen",
+        "versandinfo",
+        "fragen",
         "share"
       ],
       "settings": {

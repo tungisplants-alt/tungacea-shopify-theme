@@ -1,0 +1,65 @@
+{% comment %}
+  Tungacea — Versandinfo auf der Produktseite.
+
+  Was ein Kunde bei einer lebenden Pflanze zuerst wissen will, steht sonst nur
+  im langen Text der Versandbedingungen: wohin, wann, wie lange, und was bei
+  Frost passiert. Eine zugeklappte Zeile "Versand & Lieferung" unten in der
+  Produktspalte, nach der Beschreibung und vor "Teilen"; aufgeklappt drei kurze
+  Zeilen und der Link zu den ganzen Versandbedingungen aus Shopify
+  (shop.shipping_policy), nicht ein getippter.
+
+  Unten und zugeklappt, damit oben Platz fuer Kauf und Pflanze bleibt. Das
+  Aussehen steht in component-produkt-klappe.css und wird einmal im Kopf von
+  main-product.liquid geladen, nicht hier: Ein <link> zwischen zwei Zeilen
+  verhindert, dass sie sich eine Linie teilen. Aufgeklappt wird mit <details>,
+  das geht auch ohne Skript.
+
+  Die Aussagen stammen aus den Versandbedingungen (Liefergebiet, DHL oder UPS,
+  Versandtage Montag und Dienstag, 1-3 Werktage, Verschiebung bei Frost oder
+  grosser Hitze). Aendern sich dort die Bedingungen, muessen diese Zeilen
+  mitgehen: im Theme-Editor am Block, oder in den Sprachdateien
+  (products.product.versandinfo).
+
+  Leer heisst uebersetzt, nicht stumm. Ein eigener Text im Theme-Editor
+  erscheint in beiden Sprachen gleich.
+
+  Accepts:
+  - block: {Object} main-product `versandinfo` block (required)
+{% endcomment %}
+{%- liquid
+  assign zeile_1 = block.settings.zeile_1 | default: '' | strip
+  if zeile_1 == blank
+    assign zeile_1 = 'products.product.versandinfo.gebiet' | t
+  endif
+
+  assign zeile_2 = block.settings.zeile_2 | default: '' | strip
+  if zeile_2 == blank
+    assign zeile_2 = 'products.product.versandinfo.zeiten' | t
+  endif
+
+  assign zeile_3 = block.settings.zeile_3 | default: '' | strip
+  if zeile_3 == blank
+    assign zeile_3 = 'products.product.versandinfo.wetter' | t
+  endif
+
+  assign richtlinie = shop.shipping_policy.url
+-%}
+
+<details class="produkt-klappe" {{ block.shopify_attributes }}>
+  <summary class="produkt-klappe__toggle">
+    <span class="produkt-klappe__titel">{{ 'products.product.versandinfo.titel' | t }}</span>
+    <span class="produkt-klappe__indikator" aria-hidden="true"></span>
+  </summary>
+  <div class="produkt-klappe__inhalt">
+    <ul class="produkt-klappe__liste list-unstyled" role="list">
+      <li>{{ zeile_1 | escape }}</li>
+      <li>{{ zeile_2 | escape }}</li>
+      <li>{{ zeile_3 | escape }}</li>
+    </ul>
+    {%- if richtlinie != blank -%}
+      <a class="produkt-klappe__link link" href="{{ richtlinie | escape }}">
+        {{- 'products.product.versandinfo.link' | t -}}
+      </a>
+    {%- endif -%}
+  </div>
+</details>

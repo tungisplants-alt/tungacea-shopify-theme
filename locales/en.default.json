@@ -141,6 +141,17 @@
         "rare": "Rare",
         "sale": "Sale"
       },
+      "fragen": {
+        "titel": "Any questions?",
+        "text": "Feel free to message me personally on WhatsApp – I usually reply faster there."
+      },
+      "versandinfo": {
+        "titel": "Shipping & delivery",
+        "gebiet": "Shipping within Germany with DHL or UPS.",
+        "zeiten": "I ship on Mondays and Tuesdays; parcels usually take 1–3 working days.",
+        "wetter": "In frost or extreme heat I hold the shipment so your plant arrives safely.",
+        "link": "All shipping details"
+      },
       "winterpack": {
         "title": "Winter packaging",
         "hint": "Heat pack and thermal wrap. Recommended below 10 °C to prevent cold damage.",

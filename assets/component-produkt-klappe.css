@@ -1,0 +1,130 @@
+/*
+ * Aufklappbare Zeilen unten in der Produktspalte, vor "Teilen": Versand und
+ * "Hast du Fragen?". Gemeinsames Aussehen fuer beide, damit weitere Zeilen
+ * (zum Beispiel Pflege) dazukommen koennen, ohne dass etwas neu gebaut wird.
+ *
+ * Eine Zeile mit Haarlinien oben und unten, wie die Winterverpackung:
+ * Haarlinien statt Kasten, weil Variantenfelder und Kaufknopf schon Rechtecke
+ * sind. Zugeklappt, damit die Produktseite nicht voll wird; aufgeklappt stehen
+ * darin drei gedaempfte Zeilen und der Link zu den ganzen Versandbedingungen.
+ *
+ * Farben als feste Werte, nicht aus --color-foreground: Dawn setzt das nur
+ * innerhalb der Farbschema-Klassen (siehe component-winter-pack.css).
+ */
+.produkt-klappe {
+  margin: 2.4rem 0 0;
+  border-top: 1px solid var(--tungacea-hairline);
+  border-bottom: 1px solid var(--tungacea-hairline);
+}
+
+/* Mehrere Zeilen untereinander teilen sich eine Linie statt zwei, und der Abstand
+   nach unten kommt erst nach der letzten. Das setzt voraus, dass zwischen den
+   Zeilen kein weiteres Element steht, auch kein <link>: Das Stylesheet wird
+   deshalb einmal im Kopf von main-product.liquid geladen und nicht pro Zeile. */
+.produkt-klappe + .produkt-klappe {
+  margin-top: 0;
+  border-top: 0;
+}
+
+.produkt-klappe:not(:has(+ .produkt-klappe)) {
+  margin-bottom: 2rem;
+}
+
+.produkt-klappe__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  padding: 1.4rem 0;
+  list-style: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  color: rgba(242, 238, 232, 0.92);
+}
+
+.produkt-klappe__toggle::-webkit-details-marker {
+  display: none;
+}
+
+.produkt-klappe__toggle:hover .produkt-klappe__titel {
+  color: rgba(242, 238, 232, 1);
+}
+
+/* Plus zu, Minus auf: dasselbe Zeichen wie beim E-Mail-Weg in der Karte. */
+.produkt-klappe__indikator::after {
+  content: '+';
+  color: rgba(204, 96, 112, 1);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.produkt-klappe[open] .produkt-klappe__indikator::after {
+  content: '\2013';
+}
+
+.produkt-klappe__inhalt {
+  padding: 0 0 1.6rem;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--tungacea-muted);
+}
+
+.produkt-klappe__liste {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.produkt-klappe__liste li {
+  margin: 0 0 0.5rem;
+}
+
+.produkt-klappe__liste li:last-child {
+  margin-bottom: 0;
+}
+
+.produkt-klappe__link {
+  display: inline-block;
+  margin-top: 0.9rem;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+  text-decoration-thickness: 1px;
+}
+
+.produkt-klappe__link:hover {
+  color: rgba(242, 238, 232, 1);
+}
+
+.produkt-klappe__toggle:focus-visible {
+  outline: 2px solid rgba(204, 96, 112, 0.9);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* Mit dem Finger bleibt kein Rahmen und kein Schein stehen, wie bei den Fotos
+   im Archiv und beim Schreib-mir-Knopf. Am PC bleibt der Fokus sichtbar. */
+@media (hover: none) and (pointer: coarse) {
+  .produkt-klappe__toggle {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .produkt-klappe__toggle:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+/* "Hast du Fragen?": ein kurzer Satz und darunter der WhatsApp-Weg. Der Knopf ist
+   derselbe wie in der Karte unten rechts und auf der Kontaktseite. */
+.produkt-klappe__text {
+  margin: 0;
+}
+
+.produkt-klappe .produkt-klappe__whatsapp {
+  max-width: 34rem;
+  margin: 1.2rem 0 0;
+  text-decoration: none;
+}
+
