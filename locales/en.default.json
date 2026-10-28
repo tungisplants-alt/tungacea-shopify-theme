@@ -194,6 +194,8 @@
         "hint_unrooted_body": "This specimen is not yet rooted — establishing it takes stable high humidity and patience.",
         "hint_fresh_title": "Still needs attention.",
         "hint_fresh_body": "The first roots have formed but are still young — until it is fully established it should be kept in high humidity.",
+        "hint_seed_title": "Right at the start.",
+        "hint_seed_body": "This seed has only just sprouted. At this stage the plant is tiny and delicate – it needs steady high humidity and some patience.",
         "mother": "Mother plant",
         "parent_mother": "Seed parent",
         "parent_father": "Pollen parent",

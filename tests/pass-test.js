@@ -80,6 +80,17 @@ const faelle = [
                'Dein gekeimter Samen stammt von dieser Pflanze aus meiner Sammlung.'],
     verboten: ['Sämling', 'Sämling aus'] },
 
+  // Bei Stufe Samen gilt der eigene Hinweis, egal was bei der Bewurzelung steht.
+  { name: 'Samen, unbewurzelt — eigener Samen-Hinweis statt erfahrene Haende',
+    mf: mf({ lieferumfang: 'Sämling aus dieser Kreuzung', stadium: 'Samen', bewurzelung: 'Unbewurzelt', specimen_id: 'TA-1022' }),
+    erwartet: ['Noch ganz am Anfang.', 'Dieser Samen ist gerade erst gekeimt'],
+    verboten: ['Für erfahrene Hände', 'noch nicht bewurzelt', 'Braucht noch Aufmerksamkeit'] },
+
+  { name: 'Samen, frisch bewurzelt — Feld bleibt sichtbar, Hinweis ist der Samen-Hinweis',
+    mf: mf({ lieferumfang: 'Sämling aus dieser Kreuzung', stadium: 'Samen', bewurzelung: 'Frisch bewurzelt', specimen_id: 'TA-1023' }),
+    erwartet: ['Frisch bewurzelt', 'Noch ganz am Anfang.'],
+    verboten: ['Braucht noch Aufmerksamkeit', 'Wurzelansätze vorhanden'] },
+
   // --- Saemlinge haben zwei Eltern -------------------------------------
   // Beide Eltern tragen Generation und Zuechter, das Produkt selbst nicht.
   // Nichts davon darf erscheinen: aus F2 x F1 folgt keine Generation, und

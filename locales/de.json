@@ -185,6 +185,8 @@
         "hint_unrooted_body": "Dieses Exemplar ist noch nicht bewurzelt — es zu etablieren gelingt bei stabiler hoher Luftfeuchte und mit Geduld.",
         "hint_fresh_title": "Braucht noch Aufmerksamkeit.",
         "hint_fresh_body": "Es sind Wurzelansätze vorhanden, aber jung — bis zur vollständigen Etablierung sollte sie noch in hoher Luftfeuchte stehen.",
+        "hint_seed_title": "Noch ganz am Anfang.",
+        "hint_seed_body": "Dieser Samen ist gerade erst gekeimt. In diesem Stadium ist die Pflanze winzig und empfindlich – sie braucht gleichbleibend hohe Luftfeuchte und etwas Geduld.",
         "mother": "Mutterpflanze",
         "parent_mother": "Mutterpflanze",
         "parent_father": "Vaterpflanze",

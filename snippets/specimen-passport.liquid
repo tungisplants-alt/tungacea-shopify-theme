@@ -137,6 +137,15 @@
       assign rooting_label = 'products.product.specimen.rooting_established' | t
   endcase
 
+  comment
+    Ein gekeimter Samen hat einen eigenen Hinweis, unabhaengig vom Feld
+    Bewurzelung. Das Feld bleibt Tungs Sache und steht weiter in der Datenzeile.
+  endcomment
+  if sp_stadium == 'Samen'
+    assign hint_title = 'products.product.specimen.hint_seed_title' | t
+    assign hint_body = 'products.product.specimen.hint_seed_body' | t
+  endif
+
   assign stage_label = ''
   case sp_stadium
     when 'Steckling'
