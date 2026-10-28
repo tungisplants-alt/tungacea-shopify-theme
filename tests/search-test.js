@@ -24,7 +24,17 @@ const LOC = {
 };
 let locale = 'de';
 
-const engine = new Liquid({ root: path.join(THEME, 'snippets'), extname: '.liquid' });
+const engine = new Liquid({ root: [path.join(THEME, 'snippets'), path.join(THEME, 'sections')], extname: '.liquid' });
+require('./shopify-tags')(engine);
+engine.registerFilter('image_url', (v) => String(v));
+engine.registerFilter('image_tag', (v) => '<img src="' + v + '">');
+engine.registerFilter('placeholder_svg_tag', () => '<svg></svg>');
+const vorlage = (eintraege, produkte = []) => engine.renderFile('main-plant-archive', {
+  shop: { metaobjects: { mutterpflanze: { values: eintraege } } },
+  collections: { all: { products: produkte } },
+  section: { id: 's1', settings: { eyebrow: '', heading: '', intro: '' } },
+  request: { design_mode: false },
+});
 engine.registerFilter('asset_url', v => '/assets/' + v);
 engine.registerFilter('stylesheet_tag', v => '<link rel="stylesheet" href="' + v + '">');
 engine.registerFilter('t', function (key, ...rest) {
@@ -111,7 +121,7 @@ const faelle = [
   for (const loc of ['de', 'en']) {
     locale = loc;
     try {
-      html[loc] = await engine.renderFile('plant-archive-search', { eintraege: EINTRAEGE, produkte: [] });
+      html[loc] = await vorlage(EINTRAEGE);
     } catch (e) {
       console.log('FEHLER [' + loc + '] Rendern: ' + e.message);
       console.log('\n0/1 Pruefungen bestanden, 1 Fehler.');
@@ -190,10 +200,7 @@ const faelle = [
   }
   // Ohne Stadium-Unterschied und ohne Angebot gibt es keine Schnellwahl.
   locale = 'de';
-  const einheitlich = await engine.renderFile('plant-archive-search', {
-    eintraege: [pflanze({ stadium: feld('Jungpflanze'), reinheit: feld('Hybrid') }), pflanze({ stadium: feld('Jungpflanze'), reinheit: feld('Reine Art') })],
-    produkte: [],
-  });
+  const einheitlich = await vorlage([pflanze({ stadium: feld('Jungpflanze'), reinheit: feld('Hybrid') }), pflanze({ stadium: feld('Jungpflanze'), reinheit: feld('Reine Art') })]);
   checks++;
   if (/plant-search__tabs/.test(einheitlich)) { fails++; console.log('FEHLER: Schnellwahl ohne trennende Werte'); }
 

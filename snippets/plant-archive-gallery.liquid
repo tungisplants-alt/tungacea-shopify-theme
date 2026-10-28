@@ -10,9 +10,15 @@
   verlinkt, also erreichbar, ohne vereinnahmt zu werden. Wer gefiltert wird,
   entscheidet das Feld besitzer.
 
+  Die Vorlage durchlaeuft die Eintraege (nur dort greift paginate) und reicht
+  das Ergebnis fertig herein: die Kacheln als Text, die Werte fuer die Filter
+  als Zeichenketten.
+
   Annahmen:
-  - eintraege: {Array} Metaobjekt-Einträge vom Typ mutterpflanze (Pflicht)
-  - produkte:  {Array} Produkte des Ladens, für Angebot und Rückweg
+  - karten_html: {String} fertige Listenpunkte der Kacheln (Pflicht)
+  - id_roh, eigene, mit_angebot, stadien, generationen, zuechter_namen,
+    herkuenfte, linien, reinheiten, merkmale: gesammelte Werte (siehe Vorlage)
+  - seiten_html: {String} Seitenlinks, leer unter 250 Pflanzen
   - eyebrow, heading, intro: {String} optional, sonst aus den Sprachdateien
 {% endcomment %}
 {{ 'component-plant-archive.css' | asset_url | stylesheet_tag }}
@@ -47,29 +53,15 @@
     {%- liquid
       comment
         Die Spanne der vergebenen Nummern. Sie wird aus den Eintraegen gerechnet,
-        steht also nie auf einem alten Stand — und die naechste freie Nummer ist
-        die obere plus eins. Eine getippte Notiz "zuletzt vergeben" waere ab der
-        naechsten Pflanze falsch und wuerde trotzdem geglaubt.
-
-        Sortiert wird als Zeichenkette. Das traegt, solange die Nummern gleich
-        viele Stellen haben; ab TA-10000 muesste es neu bedacht werden.
+        steht also nie auf einem alten Stand, und die naechste freie Nummer ist
+        die obere plus eins. Sortiert wird als Zeichenkette. Das traegt, solange
+        die Nummern gleich viele Stellen haben; ab TA-10000 muesste es neu
+        bedacht werden.
       endcomment
-      assign id_roh = ''
-      for eintrag in eintraege
-        if eintrag.besitzer.value == blank and eintrag.mutter_id.value != blank
-          assign id_roh = id_roh | append: eintrag.mutter_id.value | append: '|'
-        endif
-      endfor
-      assign id_liste = id_roh | split: '|' | sort
+      assign id_liste = id_roh | default: '' | split: '|' | sort
       assign id_von = id_liste | first
       assign id_bis = id_liste | last
-
-      assign anzahl = 0
-      for eintrag in eintraege
-        if eintrag.besitzer.value == blank
-          assign anzahl = anzahl | plus: 1
-        endif
-      endfor
+      assign anzahl = eigene | default: 0
     -%}
 
     {%- if id_liste.size > 0 -%}
@@ -86,17 +78,32 @@
         an wie das Raster. Sonst boete sie Zuechter an, deren Pflanzen gar
         nicht in der Galerie stehen.
       {%- endcomment -%}
-      {%- render 'plant-archive-search', eintraege: eintraege, produkte: produkte -%}
+      {%- render 'plant-archive-search',
+        stadien: stadien,
+        generationen: generationen,
+        zuechter_namen: zuechter_namen,
+        herkuenfte: herkuenfte,
+        linien: linien,
+        reinheiten: reinheiten,
+        merkmale: merkmale,
+        eigene: eigene,
+        mit_angebot: mit_angebot
+      -%}
 
       <ul class="plant-archive__grid" role="list" data-testid="plant-archive-grid">
-        {%- for eintrag in eintraege -%}
-          {%- if eintrag.besitzer.value == blank -%}
-            <li>
-              {%- render 'plant-card', eintrag: eintrag, produkte: produkte -%}
-            </li>
-          {%- endif -%}
-        {%- endfor -%}
+        {{- karten_html -}}
       </ul>
+
+      {%- comment -%}
+        Ab 250 Pflanzen teilt Shopify die Liste in Seiten. Dann stehen hier die
+        Links zu den weiteren Seiten; Suche und Filter wirken nur auf die
+        gezeigte Seite.
+      {%- endcomment -%}
+      {%- if seiten_html != blank -%}
+        <nav class="plant-archive__pages" aria-label="{{ 'private_archive.pages_label' | t }}">
+          {{- seiten_html -}}
+        </nav>
+      {%- endif -%}
 
       {%- comment -%}
         Fusszeile der Liste: wie weit man ist, und ein Knopf fuer den Rest. Das

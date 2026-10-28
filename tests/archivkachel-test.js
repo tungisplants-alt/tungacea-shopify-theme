@@ -174,6 +174,35 @@ const faelle = [
     erwartet: ['data-merkmale=""'],
     verboten: [],
   },
+  // --- Angebot: aus der von der Vorlage gebauten Liste ---
+  {
+    name: 'Pflanze in der Angebotsliste: Hinweis und data-angebot=ja',
+    eintrag: pflanze('k-dreizehn'),
+    angebote: '|k-dreizehn|k-andere|',
+    erwartet: ['data-angebot="ja"', 'plant-card__offer'],
+    verboten: ['data-angebot="nein"'],
+  },
+  {
+    name: 'Pflanze nicht in der Liste: kein Hinweis',
+    eintrag: pflanze('k-vierzehn'),
+    angebote: '|k-dreizehn|k-andere|',
+    erwartet: ['data-angebot="nein"'],
+    verboten: ['plant-card__offer', 'data-angebot="ja"'],
+  },
+  {
+    // Ein Handle, der nur Teil eines anderen ist, darf nicht treffen.
+    name: 'Handle ist nur Teil eines anderen: kein Treffer',
+    eintrag: pflanze('k-drei'),
+    angebote: '|k-dreizehn|',
+    erwartet: ['data-angebot="nein"'],
+    verboten: ['data-angebot="ja"'],
+  },
+  {
+    name: 'Ohne Liste kein Angebot, kein Fehler',
+    eintrag: pflanze('k-fuenfzehn'),
+    erwartet: ['data-angebot="nein"'],
+    verboten: ['data-angebot="ja"'],
+  },
 ];
 
 (async () => {
@@ -183,7 +212,7 @@ const faelle = [
       locale = loc;
       let html;
       try {
-        html = await engine.renderFile('plant-card', { eintrag: f.eintrag, produkte: [] });
+        html = await engine.renderFile('plant-card', { eintrag: f.eintrag, angebote: f.angebote || '' });
       } catch (e) {
         fails++; checks++;
         console.log('FEHLER [' + loc + '] ' + f.name + ': ' + e.message);

@@ -15,6 +15,7 @@
 
   Annahmen:
   - eintrag: {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
+  - angebote: {String} Pflanzen mit Angebot, Handles mit senkrechten Strichen (optional)
 {% endcomment %}
 {%- liquid
   assign name = eintrag.bezeichnung.value | default: '' | strip
@@ -144,24 +145,17 @@
   endif
 
   comment
-    Gibt es von dieser Pflanze gerade etwas zu kaufen? Dieselbe Regel wie auf
-    ihrer eigenen Seite: ein Produkt, dessen Feld Mutterpflanze hierher zeigt.
-    Verkauftes zaehlt nicht — die Frage lautet, ob sich ein Klick jetzt lohnt.
+    Gibt es von dieser Pflanze gerade etwas zu kaufen? Die Vorlage hat die
+    Produkte einmal durchlaufen und die Pflanzen mit Angebot als Liste aus
+    Handles mit senkrechten Strichen hineingereicht. Hier genuegt der Blick,
+    ob der Handle darin steht, statt dass jede Kachel selbst durch alle
+    Produkte sucht. Mutter oder Vater eines Angebots, Verkauftes zaehlt nicht.
   endcomment
+  assign handle_marke = eintrag.system.handle | prepend: '|' | append: '|'
   assign hat_angebot = false
-  for produkt in produkte limit: 100
-    if produkt.available
-      assign pm = produkt.metafields.custom.mutterpflanze.value
-      assign pv = produkt.metafields.custom.vaterpflanze.value
-      if pm != blank and pm.system.handle == eintrag.system.handle
-        assign hat_angebot = true
-        break
-      elsif pv != blank and pv.system.handle == eintrag.system.handle
-        assign hat_angebot = true
-        break
-      endif
-    endif
-  endfor
+  if angebote contains handle_marke
+    assign hat_angebot = true
+  endif
 
   comment
     Die Linie ist eine Mehrfachauswahl: eine Kreuzung traegt beide Elternteile.

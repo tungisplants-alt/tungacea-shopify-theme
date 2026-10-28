@@ -16,7 +16,9 @@
 
   Annahmen:
   - eintrag: {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
-  - alle:    {Array} alle Eintraege vom Typ mutterpflanze, fuer Vorherige und Naechste (optional)
+  - verzeichnis: {String} ID=Adresse eigener Pflanzen, mit Semikolon, fuer Vorherige und Naechste (optional)
+  - angebote_html: {String} fertige Angebotszeilen der Vorlage (optional)
+  - produkte: {Array} Produkte des Ladens, nur als Rueckfall (optional)
 {% endcomment %}
 {{ 'component-plant-archive.css' | asset_url | stylesheet_tag }}
 {{ 'component-specimen-passport.css' | asset_url | stylesheet_tag }}
@@ -164,29 +166,34 @@
     assign eigene_wahl = true
   endif
 
+  comment
+    Die selbst gefundenen Zeilen baut die Vorlage beim Durchlaufen der Produkte
+    und reicht sie fertig herein, denn nur dort wirkt paginate. Hier zaehlt
+    nur, ob etwas da ist: entweder die von Hand gewaehlten oder die fertigen
+    Zeilen.
+  endcomment
+  assign gefundene_zeilen = angebote_html | default: '' | strip
+
+  comment
+    Rueckfall, falls die Vorlage nichts geliefert hat: derselbe Durchlauf wie
+    vor der Umstellung, begrenzt auf die ersten 50 Produkte. Er liefert nur
+    dann etwas, wenn es wirklich Angebote gibt, und kostet sonst einen kurzen
+    Durchlauf. So verschwindet die Angebotszeile nie, nur weil der Weg ueber
+    die Vorlage versagt.
+  endcomment
+  if eigene_wahl == false and gefundene_zeilen == blank and produkte != blank
+    capture rueckfall_zeilen
+      for produkt in produkte limit: 50
+        render 'plant-offer-match', eintrag: eintrag, produkt: produkt
+      endfor
+    endcapture
+    assign gefundene_zeilen = rueckfall_zeilen | strip
+  endif
   assign treffer = 0
   if eigene_wahl
     assign treffer = angebote.size
-  else
-    comment
-      Eine Pflanze kann an einem Angebot in zwei Rollen beteiligt sein: als
-      Mutter eines Cuttings oder als einer von zwei Eltern eines Saemlings.
-      Beide Rollen speisen dieselbe Liste — sonst stuenden Cuttings und
-      Saemlinge derselben Pflanze an zwei verschiedenen Stellen.
-    endcomment
-    for produkt in produkte limit: 100
-      assign pm = produkt.metafields.custom.mutterpflanze.value
-      assign pv = produkt.metafields.custom.vaterpflanze.value
-      assign ist_kind = false
-      if pm != blank and pm.system.handle == eintrag.system.handle
-        assign ist_kind = true
-      elsif pv != blank and pv.system.handle == eintrag.system.handle
-        assign ist_kind = true
-      endif
-      if ist_kind
-        assign treffer = treffer | plus: 1
-      endif
-    endfor
+  elsif gefundene_zeilen != blank
+    assign treffer = 1
   endif
 
   comment
@@ -214,31 +221,26 @@
   assign nachher_id = ''
   assign vorher_url = ''
   assign nachher_url = ''
-  if alle != blank and besitzer == blank and eintrag.mutter_id.value != blank
+  if verzeichnis != blank and besitzer == blank and eintrag.mutter_id.value != blank
+    comment
+      Das Verzeichnis (ID gleich Adresse, mit Semikolon getrennt) baut die
+      Vorlage beim Durchlaufen der Eintraege. Sortiert nach der ID davor.
+    endcomment
     assign aktuelle_id = eintrag.mutter_id.value
-    assign id_roh = ''
-    for kandidat in alle
-      if kandidat.besitzer.value == blank and kandidat.mutter_id.value != blank
-        assign id_roh = id_roh | append: kandidat.mutter_id.value | append: '|'
-      endif
-    endfor
-    assign id_liste = id_roh | split: '|' | sort
+    assign eintraege_sortiert = verzeichnis | split: ';' | sort
     assign gefunden = false
-    for nummer in id_liste
-      if nummer == aktuelle_id
+    for zeile in eintraege_sortiert
+      assign teile_zeile = zeile | split: '='
+      assign zeile_id = teile_zeile[0]
+      assign zeile_url = teile_zeile[1]
+      if zeile_id == aktuelle_id
         assign gefunden = true
       elsif gefunden == false
-        assign vorher_id = nummer
+        assign vorher_id = zeile_id
+        assign vorher_url = zeile_url
       elsif nachher_id == blank
-        assign nachher_id = nummer
-      endif
-    endfor
-    for kandidat in alle
-      if vorher_id != blank and kandidat.mutter_id.value == vorher_id
-        assign vorher_url = kandidat.system.url
-      endif
-      if nachher_id != blank and kandidat.mutter_id.value == nachher_id
-        assign nachher_url = kandidat.system.url
+        assign nachher_id = zeile_id
+        assign nachher_url = zeile_url
       endif
     endfor
   endif
@@ -487,21 +489,7 @@
               {%- render 'plant-offer-row', produkt: produkt -%}
             {%- endfor -%}
           {%- else -%}
-            {%- for produkt in produkte limit: 100 -%}
-              {%- liquid
-                assign pm = produkt.metafields.custom.mutterpflanze.value
-                assign pv = produkt.metafields.custom.vaterpflanze.value
-                assign ist_kind = false
-                if pm != blank and pm.system.handle == eintrag.system.handle
-                  assign ist_kind = true
-                elsif pv != blank and pv.system.handle == eintrag.system.handle
-                  assign ist_kind = true
-                endif
-              -%}
-              {%- if ist_kind -%}
-                {%- render 'plant-offer-row', produkt: produkt -%}
-              {%- endif -%}
-            {%- endfor -%}
+            {{ gefundene_zeilen }}
           {%- endif -%}
           {%- comment -%}
             Die Zeile selbst steht in plant-offer-row, damit beide Wege dieselbe

@@ -17,7 +17,8 @@ const LOC = {
 };
 let locale = 'de';
 
-const engine = new Liquid({ root: path.join(THEME, 'snippets'), extname: '.liquid' });
+const engine = new Liquid({ root: [path.join(THEME, 'snippets'), path.join(THEME, 'sections')], extname: '.liquid' });
+require('./shopify-tags')(engine);
 engine.registerFilter('asset_url', v => '/assets/' + v);
 engine.registerFilter('stylesheet_tag', v => '<link rel="stylesheet" href="' + v + '">');
 engine.registerFilter('money', v => (Number(v) / 100).toFixed(2).replace('.', ',') + ' €');
@@ -326,10 +327,13 @@ const faelle = [
       locale = loc;
       let html;
       try {
-        html = await engine.renderFile('plant-profile', {
-          eintrag: f.eintrag,
-          produkte: LADEN,
-          alle: f.alle,
+        // Wie im Shop: die Vorlage durchlaeuft Produkte und Pflanzen und
+        // reicht dem Snippet fertige Texte. Darum wird die Vorlage gerendert.
+        html = await engine.renderFile('main-plant-profile', {
+          metaobject: f.eintrag,
+          collections: { all: { products: LADEN } },
+          shop: { metaobjects: { mutterpflanze: { values: f.alle || [] } } },
+          section: { id: 's1', settings: { color_scheme: 'scheme-1', padding_top: 0, padding_bottom: 0 } },
         });
       } catch (e) {
         fails++; checks++;
