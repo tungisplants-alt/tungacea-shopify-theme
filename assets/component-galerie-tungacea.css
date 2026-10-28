@@ -205,7 +205,7 @@
   box-shadow: none;
 }
 
-/* Festes Quadrat am Telefon, wie im Archiv.
+/* Festes 4:5 am Telefon, das Bild fuellt den Rahmen.
  *
  * Dawn rechnet die Hoehe aus dem NATUERLICHEN Seitenverhaeltnis jedes Bildes
  * (--ratio-percent). Bei gemischten Formaten wechselt der Wagen damit von
@@ -214,17 +214,17 @@
  *
  * `cover` statt `contain`: Vorher stand hier 4:5 mit `contain`. Neben einem
  * schmalen Hochformat blieben dadurch links und rechts schwarze Balken stehen,
- * die Galerie wirkte lueckig. Jetzt fuellt das Bild den Rahmen, so wie die
- * Fotos auf der Archivseite. Dafuer wird bei sehr hohen Bildern oben und unten
- * etwas abgeschnitten; im Vollbild (Tippen auf das Bild) bleibt das ganze Foto
- * zu sehen.
+ * die Galerie wirkte lueckig. Jetzt fuellt das Bild den Rahmen. Dafuer wird bei
+ * sehr hohen Bildern oben und unten etwas abgeschnitten, bei 4:5 deutlich
+ * weniger als bei einem Quadrat; im Vollbild (Tippen auf das Bild) bleibt das
+ * ganze Foto zu sehen.
  *
  * Der durchsichtige Hintergrund ist nur eine Absicherung: Dawn setzt
  * `media--transparent` bereits in der Auszeichnung.
  */
 @media screen and (max-width: 749px) {
   .product__media-item .product-media-container .media {
-    padding-top: 100%;
+    padding-top: 125%;
     background-color: transparent;
   }
 
