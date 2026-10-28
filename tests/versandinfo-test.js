@@ -151,7 +151,8 @@ function pruefe(name, ist, soll) {
     pruefe('Block wird im Abschnitt ausgegeben (when)', /\{%-?\s*when 'versandinfo'\s*-?%\}\s*\{%\s*render 'versandinfo', block: block\s*%\}/.test(abschnitt), true);
     pruefe('Block steht in der Produktvorlage', haupt.blocks.versandinfo && haupt.blocks.versandinfo.type === 'versandinfo', true);
     const o = haupt.block_order;
-    pruefe('Reihenfolge: direkt nach der Beschreibung', o.indexOf('description') + 1 === o.indexOf('versandinfo'), true);
+    pruefe('Reihenfolge: direkt nach der Dokumentation (Exemplar-Archiv)', o.indexOf('specimen') + 1 === o.indexOf('versandinfo'), true);
+    pruefe('Reihenfolge: Dokumentation steht direkt unter der Beschreibung', o.indexOf('description') + 1 === o.indexOf('specimen'), true);
     pruefe('Reihenfolge: danach "Hast du Fragen?", direkt vor "Teilen"', o.indexOf('versandinfo') + 1 === o.indexOf('fragen') && o.indexOf('fragen') + 1 === o.indexOf('share'), true);
     pruefe('Stylesheet laedt einmal im Kopf des Abschnitts', /'component-produkt-klappe\.css' \| asset_url \| stylesheet_tag/.test(abschnitt), true);
     pruefe('Reihenfolge: "Teilen" bleibt der letzte Block der Spalte', o[o.length - 1], 'share');
