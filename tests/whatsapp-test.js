@@ -145,16 +145,16 @@ function pruefe(name, ist, soll) {
   pruefe('E-Mail ausdruecklich an: Formular', hatFormular(await render({ ...nurMail, kontakt_mail_aktiv: true })), true);
 
   // ---- Der Satz -----------------------------------------------------------
-  pruefe('Startseite: allgemeiner Satz', text(await render(gut)), 'Hallo Tung, ich habe eine Frage zu Tungacea.');
+  pruefe('Startseite: allgemeiner Satz', text(await render(gut)), 'Hallo Tung, ich habe eine Frage zu…');
   pruefe('Produktseite: Produktname im Satz',
     text(await render(gut, { template: 'product', produkt: { title: 'Anthurium Papillilaminum Marie' } })),
     'Hallo Tung, ich habe eine Frage zu Anthurium Papillilaminum Marie.');
   pruefe('Produktseite ohne Titel: allgemeiner Satz',
     text(await render(gut, { template: 'product', produkt: { title: '' } })),
-    'Hallo Tung, ich habe eine Frage zu Tungacea.');
+    'Hallo Tung, ich habe eine Frage zu…');
   pruefe('anderes Template mit Produkt im Hintergrund: allgemeiner Satz',
     text(await render(gut, { template: 'collection', produkt: { title: 'Soll nicht erscheinen' } })),
-    'Hallo Tung, ich habe eine Frage zu Tungacea.');
+    'Hallo Tung, ich habe eine Frage zu…');
 
   const schwer = [
     ['Anfuehrungszeichen', 'Anthurium Pap RA18 x "Dadbod"'],

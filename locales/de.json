@@ -734,7 +734,7 @@
     "mail_error": "Das hat nicht geklappt. Prüfe bitte deine E-Mail-Adresse und versuch es noch einmal.",
     "mail_privacy": "Mit dem Absenden schickst du mir deinen Namen, deine E-Mail-Adresse und deine Nachricht. Mehr dazu in der",
     "mail_privacy_link": "Datenschutzerklärung",
-    "message": "Hallo Tung, ich habe eine Frage zu Tungacea.",
+    "message": "Hallo Tung, ich habe eine Frage zu…",
     "message_product": "Hallo Tung, ich habe eine Frage zu {{ name }}."
   }
 }
