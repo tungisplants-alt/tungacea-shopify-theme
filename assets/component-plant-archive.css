@@ -56,7 +56,17 @@
 }
 
 .plant-archive__hero .plant-archive__eyebrow {
-  color: rgb(236, 160, 170);
+  color: rgb(244, 118, 134);
+  text-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.85), 0 0.1rem 0.4rem rgba(0, 0, 0, 0.6);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+}
+
+@media screen and (min-width: 750px) {
+  .plant-archive__hero .plant-archive__eyebrow {
+    font-size: 1.7rem;
+  }
 }
 
 .plant-archive__hero .plant-archive__lead {
