@@ -49,7 +49,7 @@ const feld = v => ({ value: v === undefined ? null : v });
 const pflanze = (handle, extra) => Object.assign({
   bezeichnung: feld('Anthurium Testpflanze'),
   kreuzung: feld(null), generation: feld(null), stadium: feld(null),
-  merkmal: feld(null), notiz: feld(null), mutter_id: feld(null),
+  merkmal: feld(null), merkmale: { value: [] }, notiz: feld(null), mutter_id: feld(null),
   zuechter: feld(null), besitzer: feld(null),
   fotos: { value: [] }, fotograf: feld(null), bildfreigabe: feld(null),
   bilder: { value: [] },
@@ -73,6 +73,7 @@ const fremdePerson = (name, ig) => ({ name: { value: name }, instagram: { value:
 // Angebote auch dann finden, wenn sie dort nicht die Mutter ist.
 const produkt = (titel, handle, verfuegbar, preis, vater) => ({
   title: titel,
+  featured_image: 'cdn://' + titel.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.jpg',
   url: '/products/' + titel.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
   available: verfuegbar,
   price: preis,
@@ -99,6 +100,43 @@ const faelle = [
     verboten: ['Fremdes Cutting', 'Produkt ohne Mutter'],
     // 'Saemling aus Kreuzung' steht hier bewusst in keiner der beiden Listen —
     // der eigene Fall unten prueft ihn, und zwar auf Anwesenheit.
+  },
+  {
+    name: 'Merkmale als Auswahlliste, leere Namen fallen heraus, kein Freitext daneben',
+    eintrag: pflanze('mutter-tags', {
+      merkmal: feld('Alter Freitext'),
+      merkmale: { value: [
+        { name: { value: 'Sehr dunkel' } }, { name: { value: 'Samtig' } },
+        { name: { value: '  ' } }, { name: { value: 'Rote Aderung' } },
+      ] },
+    }),
+    erwartet: ['plant-profile-tags', 'Sehr dunkel', 'Samtig', 'Rote Aderung'],
+    verboten: ['Alter Freitext', 'plant-profile-trait'],
+    genau: [['class="plant-profile__tag"', 3]],
+  },
+  {
+    name: 'Ohne gewaehlte Merkmale gilt der alte Freitext weiter',
+    eintrag: pflanze('mutter-alt', { merkmal: feld('Fast schwarze Blattflaeche') }),
+    erwartet: ['plant-profile-trait', 'Fast schwarze Blattflaeche'],
+    verboten: ['plant-profile-tags'],
+  },
+  {
+    name: 'Ohne beides kein leerer Block',
+    eintrag: pflanze('mutter-leer'),
+    erwartet: [],
+    verboten: ['plant-profile-tags', 'plant-profile-trait', 'plant-profile__tags'],
+  },
+  {
+    name: 'Rueckweg ins Archiv steht oben',
+    eintrag: pflanze('mutter-back'),
+    erwartet: ['plant-profile-back', 'href="/pages/archive"'],
+    verboten: [],
+  },
+  {
+    name: 'Angebot mit Foto und Stand',
+    eintrag: pflanze('mutter-eins'),
+    erwartet: ['plant-profile__offer-thumb', 'cdn://cutting-a.jpg', 'Verfügbar'],
+    verboten: [],
   },
   {
     name: 'Eine Pflanze ohne Produkte zeigt keinen leeren Block',

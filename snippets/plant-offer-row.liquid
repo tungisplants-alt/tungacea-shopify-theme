@@ -12,13 +12,27 @@
 {% endcomment %}
 <li class="plant-profile__offer">
   <a href="{{ produkt.url }}" class="plant-profile__offer-link">
-    {{- produkt.title | escape -}}
+    {%- if produkt.featured_image != blank -%}
+      <span class="plant-profile__offer-thumb">
+        {{-
+          produkt.featured_image
+          | image_url: width: 160
+          | image_tag: loading: 'lazy', alt: '', widths: '80, 160', sizes: '64px'
+        -}}
+      </span>
+    {%- endif -%}
+    <span class="plant-profile__offer-text">
+      <span class="plant-profile__offer-name">{{ produkt.title | escape }}</span>
+      <span class="plant-profile__offer-state">
+        {%- if produkt.available -%}
+          {{- 'private_archive.offer_available' | t -}}
+        {%- else -%}
+          {{- 'products.product.specimen_status.sold' | t -}}
+        {%- endif -%}
+      </span>
+    </span>
   </a>
   {%- if produkt.available -%}
     <span class="plant-profile__offer-price">{{ produkt.price | money }}</span>
-  {%- else -%}
-    <span class="plant-profile__offer-sold">
-      {{- 'products.product.specimen_status.sold' | t -}}
-    </span>
   {%- endif -%}
 </li>

@@ -187,10 +187,30 @@
       endif
     endfor
   endif
+
+  comment
+    Merkmale sind eine Auswahl aus einer festen Liste, ein Metaobjekt vom Typ
+    merkmal, gewaehlt im Feld merkmale am Eintrag. Der alte Freitext merkmal
+    gilt nur noch, solange kein Merkmal gewaehlt ist, damit eine nicht
+    umgestellte Pflanze nichts verliert.
+  endcomment
+  assign merkmal_anzahl = 0
+  for m in eintrag.merkmale.value
+    assign m_name = m.name.value | default: '' | strip
+    if m_name != blank
+      assign merkmal_anzahl = merkmal_anzahl | plus: 1
+    endif
+  endfor
+
+  assign archiv_url = routes.root_url | default: '/' | append: 'pages/archive'
 -%}
 
 <div class="plant-profile" data-testid="plant-profile">
   <div class="page-width">
+    <a class="plant-profile__back caption-with-letter-spacing" href="{{ archiv_url }}" data-testid="plant-profile-back">
+      <span aria-hidden="true">&larr;</span> {{ 'private_archive.back_to_archive' | t }}
+    </a>
+
     <header class="plant-profile__head">
       <p class="plant-profile__eyebrow caption-with-letter-spacing">
         {{- 'private_archive.eyebrow_single' | t -}}
@@ -343,7 +363,16 @@
       </div>
     {%- endif -%}
 
-    {%- if eintrag.merkmal.value != blank -%}
+    {%- if merkmal_anzahl > 0 -%}
+      <ul class="plant-profile__tags" role="list" data-testid="plant-profile-tags">
+        {%- for m in eintrag.merkmale.value -%}
+          {%- assign m_name = m.name.value | default: '' | strip -%}
+          {%- if m_name != blank -%}
+            <li class="plant-profile__tag">{{ m_name | escape }}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- elsif eintrag.merkmal.value != blank -%}
       <p class="plant-profile__trait" data-testid="plant-profile-trait">
         {{- eintrag.merkmal.value | escape -}}
       </p>
