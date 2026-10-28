@@ -32,7 +32,7 @@
   }
 {%- endstyle -%}
 
-<div class="collection-hero collection-hero--catalogue collection-hero--catalogue-{{ section.id }}{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
+<div class="collection-hero collection-hero--catalogue collection-hero--catalogue-{{ section.id }}{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient" style="--kollektion-bild: url('{{ 'tungacea-kollektion.jpg' | asset_url }}');">
   <div class="collection-hero__inner page-width {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
     <div class="collection-hero__text-wrapper">
       <p class="collection-hero__eyebrow caption" data-testid="collection-eyebrow">

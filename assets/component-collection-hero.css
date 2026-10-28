@@ -189,28 +189,34 @@
 }
 
 /*
-  Tungacea — Kopfzeile der Kollektion, kraeftiger gesetzt.
+  Tungacea — Kopfzeile der Kollektion mit Foto im Hintergrund.
 
-  Vorher standen eine kleine Zeile, eine mittelgrosse Ueberschrift und eine
-  Zaehlzeile mit viel Leere darum, das wirkte duenn. Jetzt traegt die
-  Ueberschrift mehr Gewicht, der Satz darunter faengt die Leere, und ein
-  weicher roter Schein links unten gibt der Flaeche Tiefe, ohne ein Bild zu
-  brauchen. Nur Schrift, Abstaende und ein Verlauf; die Struktur bleibt.
+  Das Foto (assets/tungacea-kollektion.jpg) liegt hinter dem Text. Damit die
+  Schrift lesbar bleibt, liegt eine dunkle Schicht darueber: am Handy gleich-
+  maessig stark, am Laptop von links (dunkel, dort steht der Text) nach rechts
+  (heller, dort zeigt sich das Blatt). Unten blendet die Flaeche in die Farbe
+  der Seite aus, damit unter der Kopfzeile keine harte Kante steht.
+
+  Nur Schrift, Abstaende und ein Hintergrund; die Struktur der Kopfzeile bleibt.
 */
-.collection-hero--catalogue {
+.collection-hero--catalogue.gradient {
   position: relative;
   overflow: hidden;
+  background:
+    linear-gradient(to bottom, rgba(10, 10, 10, 0) 55%, rgba(10, 10, 10, 0.92) 100%),
+    linear-gradient(to right, rgba(10, 10, 10, 0.56), rgba(10, 10, 10, 0.56)),
+    var(--kollektion-bild) center 32% / cover no-repeat,
+    rgb(10, 10, 10);
 }
 
-.collection-hero--catalogue::before {
-  content: '';
-  position: absolute;
-  left: -12rem;
-  bottom: -14rem;
-  width: 60rem;
-  height: 34rem;
-  background: radial-gradient(closest-side, rgba(var(--tungacea-accent, 150, 45, 58), 0.2), transparent);
-  pointer-events: none;
+@media screen and (min-width: 750px) {
+  .collection-hero--catalogue.gradient {
+    background:
+      linear-gradient(to bottom, rgba(10, 10, 10, 0) 50%, rgba(10, 10, 10, 0.95) 100%),
+      linear-gradient(to right, rgba(10, 10, 10, 0.86) 0%, rgba(10, 10, 10, 0.6) 45%, rgba(10, 10, 10, 0.14) 100%),
+      var(--kollektion-bild) center 30% / cover no-repeat,
+      rgb(10, 10, 10);
+  }
 }
 
 .collection-hero--catalogue .collection-hero__inner {
@@ -221,14 +227,20 @@
   font-size: clamp(5rem, 13.5vw, 7.2rem);
   line-height: 1.02;
   letter-spacing: -0.015em;
+  text-shadow: 0 0.2rem 2.4rem rgba(0, 0, 0, 0.45);
 }
 
 .collection-hero--catalogue .collection-hero__description {
   margin-top: 2rem;
+  color: rgba(242, 238, 232, 0.86);
 }
 
 .collection-hero--catalogue .collection-hero__description > p {
   margin: 0;
+}
+
+.collection-hero--catalogue .collection-hero__eyebrow {
+  color: rgba(242, 238, 232, 0.78);
 }
 
 .collection-hero--catalogue .collection-hero__meta {
@@ -240,10 +252,6 @@
 }
 
 @media screen and (max-width: 749px) {
-  .collection-hero--catalogue {
-    padding-bottom: 0.4rem;
-  }
-
   .collection-hero--catalogue .collection-hero__description {
     font-size: 1.6rem;
     max-width: 32ch;
