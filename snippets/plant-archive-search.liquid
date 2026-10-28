@@ -21,6 +21,7 @@
 
   Annahmen:
   - eintraege: {Array} Einträge vom Typ mutterpflanze (Pflicht)
+  - angebote:  {String} Pflanzen mit Angebot als |handle|handle| (optional)
 {% endcomment %}
 {%- liquid
   comment
@@ -75,19 +76,10 @@
       endif
     endif
 
-    for produkt in produkte limit: 100
-      if produkt.available
-        assign pm = produkt.metafields.custom.mutterpflanze.value
-        assign pv = produkt.metafields.custom.vaterpflanze.value
-        if pm != blank and pm.system.handle == e.system.handle
-          assign mit_angebot = mit_angebot | plus: 1
-          break
-        elsif pv != blank and pv.system.handle == e.system.handle
-          assign mit_angebot = mit_angebot | plus: 1
-          break
-        endif
-      endif
-    endfor
+    assign handle_marke = e.system.handle | prepend: '|' | append: '|'
+    if angebote contains handle_marke
+      assign mit_angebot = mit_angebot | plus: 1
+    endif
   endfor
 
   assign stadien_liste = stadien | split: '|' | uniq | sort

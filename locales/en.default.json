@@ -690,6 +690,8 @@
     "remove_filter": "Remove %name%",
     "shown_of": "%gezeigt% of %gesamt% shown",
     "show_more": "Show more",
+    "pages_label": "More archive pages",
+    "load_warning": "Only {{ geladen }} of {{ gesamt }} plants loaded. The archive needs to be split into pages.",
     "offers_heading": "Offers from this plant",
     "more_about_mother": "More about the mother plant",
     "more_about_father": "More about the pollen parent",

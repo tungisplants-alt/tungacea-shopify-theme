@@ -1,0 +1,33 @@
+{% comment %}
+  Tungacea — die Angebotszeilen einer Pflanze, selbst gefunden.
+
+  Jedes Produkt, dessen Feld Mutterpflanze oder Vaterpflanze auf diesen
+  Eintrag zeigt, gehoert hierher. Eine Pflanze kann an einem Angebot in zwei
+  Rollen beteiligt sein: als Mutter eines Cuttings oder als einer von zwei
+  Eltern eines Saemlings. Beide Rollen speisen dieselbe Liste.
+
+  Verkaufte Exemplare bleiben stehen. Sie sind die Geschichte dieser Pflanze.
+
+  Die Produkte werden vom Aufrufer hineingereicht und muessen dort in einem
+  paginate-Block stehen. Ohne ihn liefert Shopify beim Durchlaufen nur die
+  ersten 50 Produkte; mit paginate by 250 sind es bis zu 250.
+
+  Annahmen:
+  - eintrag:  {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
+  - produkte: {Array}  Produkte des Ladens (Pflicht)
+{% endcomment %}
+{%- for produkt in produkte -%}
+  {%- liquid
+    assign pm = produkt.metafields.custom.mutterpflanze.value
+    assign pv = produkt.metafields.custom.vaterpflanze.value
+    assign ist_kind = false
+    if pm != blank and pm.system.handle == eintrag.system.handle
+      assign ist_kind = true
+    elsif pv != blank and pv.system.handle == eintrag.system.handle
+      assign ist_kind = true
+    endif
+  -%}
+  {%- if ist_kind -%}
+    {%- render 'plant-offer-row', produkt: produkt -%}
+  {%- endif -%}
+{%- endfor -%}
