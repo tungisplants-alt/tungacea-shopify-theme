@@ -317,6 +317,25 @@
       "filter_and_operator_subtitle": "Allen entsprechen"
     }
   },
+  "catalogue_filter": {
+    "title": "Filter",
+    "quick_label": "Schnellauswahl",
+    "all": "Alle",
+    "in_stock": "Verfügbar",
+    "active_label": "Aktive Filter",
+    "remove": "{{ name }} entfernen",
+    "reset": "Zurücksetzen",
+    "close": "Schließen",
+    "sort_label": "Sortieren",
+    "price_from": "Von",
+    "price_to": "Bis",
+    "count_all": "{{ count }} Pflanzen",
+    "count_some": "{{ product_count }} von {{ count }} Pflanzen",
+    "apply_generic": "Ergebnisse anzeigen",
+    "apply_one": "1 Pflanze anzeigen",
+    "apply_many": "%anzahl% Pflanzen anzeigen",
+    "apply_none": "Keine Pflanze passt dazu"
+  },
   "templates": {
     "search": {
       "no_results": "Keine Ergebnisse gefunden für \"{{ terms }}\". Überprüfe die Schreibweise oder versuche es mit einer anderen Suchanfrage.",

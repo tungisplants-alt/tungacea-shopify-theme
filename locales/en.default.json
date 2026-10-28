@@ -317,6 +317,25 @@
       "clear_filter": "Remove filter"
     }
   },
+  "catalogue_filter": {
+    "title": "Filter",
+    "quick_label": "Quick filters",
+    "all": "All",
+    "in_stock": "In stock",
+    "active_label": "Active filters",
+    "remove": "Remove {{ name }}",
+    "reset": "Reset",
+    "close": "Close",
+    "sort_label": "Sort by",
+    "price_from": "From",
+    "price_to": "To",
+    "count_all": "{{ count }} plants",
+    "count_some": "{{ product_count }} of {{ count }} plants",
+    "apply_generic": "Show results",
+    "apply_one": "Show 1 plant",
+    "apply_many": "Show %anzahl% plants",
+    "apply_none": "No plant matches"
+  },
   "templates": {
     "search": {
       "no_results": "No results found for “{{ terms }}”. Check the spelling or use a different word or phrase.",
