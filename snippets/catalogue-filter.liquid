@@ -1,0 +1,304 @@
+{% comment %}
+  Tungacea — Schnellwahl, Filterblatt und aktive Filter der Kollektion.
+
+  Nur am Telefon (bis 749 px). Ab Tablet gilt Dawns waagerechte Filterleiste
+  unveraendert, dort aktualisiert Dawns Skript die Seite, und dieser Block
+  stuende nach jeder Auswahl auf einem alten Stand.
+
+  Dieselbe Bedienung wie im Archiv: eine Schnellwahl oben, ein Filterknopf mit
+  Zahl, das Blatt von unten, aktive Filter als Zeile, unten ein Knopf mit der
+  Trefferzahl. Dawns eigene Schublade fuer das Telefon bleibt im Dokument,
+  damit facets.js weiterarbeitet, ist aber ausgeblendet.
+
+  Die Auswahl im Blatt ist ein ganz gewoehnliches Formular mit GET. Es
+  funktioniert auch ohne JavaScript; das Skript holt nur nebenbei die
+  Trefferzahl fuer den Knopf.
+
+  Welche Filter es gibt, bestimmt Shopify (Search & Discovery). Hier wird
+  gezeigt, was dort freigegeben ist.
+
+  Annahmen:
+  - results:    {Object} collection (Pflicht)
+  - section_id: {String} Abschnitts-ID fuer die Zaehlung (Pflicht)
+  - enable_sorting: {Boolean} Sortierung im Blatt anbieten (optional)
+{% endcomment %}
+{{ 'component-catalogue-filter.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'catalogue-filter.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign ergebnis_url = results.url
+  assign sort_by = results.sort_by | default: results.default_sort_by
+  assign stadium_filter = nil
+  assign vorrat_filter = nil
+  assign aktive_zahl = 0
+
+  for filter in results.filters
+    if filter.param_name contains 'stadium'
+      assign stadium_filter = filter
+    elsif filter.param_name == 'filter.v.availability'
+      assign vorrat_filter = filter
+    endif
+
+    if filter.type == 'price_range'
+      if filter.min_value.value != blank or filter.max_value.value != blank
+        assign aktive_zahl = aktive_zahl | plus: 1
+      endif
+    else
+      assign aktive_zahl = aktive_zahl | plus: filter.active_values.size
+    endif
+  endfor
+
+  assign hat_schnellwahl = false
+  if stadium_filter != nil or vorrat_filter != nil
+    assign hat_schnellwahl = true
+  endif
+-%}
+
+<catalogue-filter
+  class="catalogue-filter page-width"
+  data-section-id="{{ section_id }}"
+  data-testid="catalogue-filter"
+>
+  {%- if hat_schnellwahl -%}
+    {%- comment -%}
+      Die Schnellwahl besteht aus Links. Jeder Tipp laedt die Seite neu, das
+      geht schnell und braucht kein Skript. Die Zahlen kommen von Shopify.
+    {%- endcomment -%}
+    <nav class="catalogue-filter__tabs" aria-label="{{ 'catalogue_filter.quick_label' | t }}" data-testid="catalogue-filter-tabs">
+      <a
+        class="catalogue-filter__tab"
+        href="{{ ergebnis_url }}"
+        {% if aktive_zahl == 0 %}aria-current="true"{% endif %}
+      >
+        {{- 'catalogue_filter.all' | t }} <span class="catalogue-filter__tab-count">{{ results.all_products_count }}</span>
+      </a>
+      {%- if stadium_filter != nil -%}
+        {%- for value in stadium_filter.values -%}
+          {%- if value.count > 0 or value.active -%}
+            {%- liquid
+              assign wert_label = value.label
+              case value.value
+                when 'Steckling'
+                  assign wert_label = 'products.product.specimen.stage_cutting' | t
+                when 'Samen'
+                  assign wert_label = 'products.product.specimen.stage_seeds' | t
+                when 'Sämling'
+                  assign wert_label = 'products.product.specimen.stage_seedling' | t
+                when 'Jungpflanze'
+                  assign wert_label = 'products.product.specimen.stage_young' | t
+                when 'Etabliert'
+                  assign wert_label = 'products.product.specimen.stage_established' | t
+                when 'Mutterpflanze'
+                  assign wert_label = 'products.product.specimen.stage_mother' | t
+              endcase
+            -%}
+            <a
+              class="catalogue-filter__tab"
+              href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
+              {% if value.active %}aria-current="true"{% endif %}
+            >
+              {{- wert_label | escape }} <span class="catalogue-filter__tab-count">{{ value.count }}</span>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- if vorrat_filter != nil -%}
+        {%- for value in vorrat_filter.values -%}
+          {%- if value.value == '1' -%}
+            <a
+              class="catalogue-filter__tab"
+              href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
+              {% if value.active %}aria-current="true"{% endif %}
+            >
+              {{- 'catalogue_filter.in_stock' | t }} <span class="catalogue-filter__tab-count">{{ value.count }}</span>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </nav>
+  {%- endif -%}
+
+  <div class="catalogue-filter__bar">
+    <button
+      type="button"
+      class="catalogue-filter__button"
+      aria-expanded="false"
+      aria-controls="CatalogueFilterSheet-{{ section_id }}"
+      data-testid="catalogue-filter-button"
+    >
+      <span>{{ 'catalogue_filter.title' | t }}</span>
+      {%- if aktive_zahl > 0 -%}
+        <span class="catalogue-filter__badge" data-testid="catalogue-filter-badge">{{ aktive_zahl }}</span>
+      {%- endif -%}
+    </button>
+    <p class="catalogue-filter__count" role="status" data-testid="catalogue-filter-count">
+      {%- if results.products_count == results.all_products_count -%}
+        {{ 'catalogue_filter.count_all' | t: count: results.products_count }}
+      {%- else -%}
+        {{ 'catalogue_filter.count_some' | t: product_count: results.products_count, count: results.all_products_count }}
+      {%- endif -%}
+    </p>
+  </div>
+
+  {%- if aktive_zahl > 0 -%}
+    <div class="catalogue-filter__active" data-testid="catalogue-filter-active">
+      <ul class="catalogue-filter__active-list" role="list" aria-label="{{ 'catalogue_filter.active_label' | t }}">
+        {%- for filter in results.filters -%}
+          {%- if filter.type == 'price_range' -%}
+            {%- if filter.min_value.value != blank or filter.max_value.value != blank -%}
+              <li>
+                <a class="catalogue-filter__active-chip" href="{{ filter.url_to_remove }}">
+                  <span>
+                    {%- if filter.min_value.value != blank -%}{{ filter.min_value.value | money_without_trailing_zeros }}{%- else -%}0{%- endif -%}
+                    –
+                    {%- if filter.max_value.value != blank -%}{{ filter.max_value.value | money_without_trailing_zeros }}{%- else -%}{{ filter.range_max | money_without_trailing_zeros }}{%- endif -%}
+                  </span>
+                  <span aria-hidden="true">&#x2715;</span>
+                  <span class="visually-hidden">{{ 'catalogue_filter.remove' | t: name: filter.label }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- else -%}
+            {%- for value in filter.active_values -%}
+              <li>
+                <a class="catalogue-filter__active-chip" href="{{ value.url_to_remove }}">
+                  <span>{{ value.label | escape }}</span>
+                  <span aria-hidden="true">&#x2715;</span>
+                  <span class="visually-hidden">{{ 'catalogue_filter.remove' | t: name: value.label }}</span>
+                </a>
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+      <a class="catalogue-filter__reset" href="{{ ergebnis_url }}">{{ 'catalogue_filter.reset' | t }}</a>
+    </div>
+  {%- endif -%}
+
+  <div class="catalogue-filter__backdrop" hidden data-testid="catalogue-filter-backdrop"></div>
+  <div
+    class="catalogue-filter__sheet"
+    id="CatalogueFilterSheet-{{ section_id }}"
+    role="dialog"
+    aria-label="{{ 'catalogue_filter.title' | t }}"
+    hidden
+    data-testid="catalogue-filter-sheet"
+  >
+    <div class="catalogue-filter__grab" aria-hidden="true"></div>
+    <div class="catalogue-filter__head">
+      <p class="catalogue-filter__title">{{ 'catalogue_filter.title' | t }}</p>
+      {%- if aktive_zahl > 0 -%}
+        <a class="catalogue-filter__reset" href="{{ ergebnis_url }}">{{ 'catalogue_filter.reset' | t }}</a>
+      {%- endif -%}
+      <button type="button" class="catalogue-filter__close" aria-label="{{ 'catalogue_filter.close' | t }}" data-testid="catalogue-filter-close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <form class="catalogue-filter__form" method="get" action="{{ ergebnis_url }}" data-testid="catalogue-filter-form">
+      <div class="catalogue-filter__body">
+        {%- if enable_sorting and results.sort_options.size > 1 -%}
+          <fieldset class="catalogue-filter__group">
+            <legend class="catalogue-filter__group-name">{{ 'catalogue_filter.sort_label' | t }}</legend>
+            <div class="catalogue-filter__chips">
+              {%- for option in results.sort_options -%}
+                <label class="catalogue-filter__chip">
+                  <input type="radio" name="sort_by" value="{{ option.value | escape }}" {% if option.value == sort_by %}checked{% endif %}>
+                  <span>{{ option.name | escape }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+        {%- endif -%}
+
+        {%- for filter in results.filters -%}
+          {%- if filter.type == 'price_range' -%}
+            <fieldset class="catalogue-filter__group">
+              <legend class="catalogue-filter__group-name">{{ filter.label | escape }}</legend>
+              <div class="catalogue-filter__price">
+                <label>
+                  <span class="catalogue-filter__price-label">{{ 'catalogue_filter.price_from' | t }}</span>
+                  <input
+                    type="number"
+                    inputmode="decimal"
+                    min="0"
+                    step="1"
+                    name="{{ filter.min_value.param_name }}"
+                    {% if filter.min_value.value != blank %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '.' | remove: ' ' }}"{% endif %}
+                    placeholder="0"
+                  >
+                </label>
+                <label>
+                  <span class="catalogue-filter__price-label">{{ 'catalogue_filter.price_to' | t }}</span>
+                  <input
+                    type="number"
+                    inputmode="decimal"
+                    min="0"
+                    step="1"
+                    name="{{ filter.max_value.param_name }}"
+                    {% if filter.max_value.value != blank %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '.' | remove: ' ' }}"{% endif %}
+                    placeholder="{{ filter.range_max | money_without_currency | replace: ',', '.' | remove: ' ' }}"
+                  >
+                </label>
+              </div>
+            </fieldset>
+          {%- else -%}
+            <fieldset class="catalogue-filter__group">
+              <legend class="catalogue-filter__group-name">{{ filter.label | escape }}</legend>
+              <div class="catalogue-filter__chips">
+                {%- for value in filter.values -%}
+                  {%- liquid
+                    assign gesperrt = false
+                    if value.count == 0 and value.active == false
+                      assign gesperrt = true
+                    endif
+                    assign wert_label = value.label
+                    if filter.param_name contains 'stadium'
+                      case value.value
+                        when 'Steckling'
+                          assign wert_label = 'products.product.specimen.stage_cutting' | t
+                        when 'Samen'
+                          assign wert_label = 'products.product.specimen.stage_seeds' | t
+                        when 'Sämling'
+                          assign wert_label = 'products.product.specimen.stage_seedling' | t
+                        when 'Jungpflanze'
+                          assign wert_label = 'products.product.specimen.stage_young' | t
+                        when 'Etabliert'
+                          assign wert_label = 'products.product.specimen.stage_established' | t
+                        when 'Mutterpflanze'
+                          assign wert_label = 'products.product.specimen.stage_mother' | t
+                      endcase
+                    endif
+                  -%}
+                  <label class="catalogue-filter__chip{% if gesperrt %} is-disabled{% endif %}">
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value | escape }}"
+                      {% if value.active %}checked{% endif %}
+                      {% if gesperrt %}disabled{% endif %}
+                    >
+                    <span>{{ wert_label | escape }} <span class="catalogue-filter__chip-count">{{ value.count }}</span></span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            </fieldset>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="catalogue-filter__foot">
+        <button
+          type="submit"
+          class="catalogue-filter__apply"
+          data-testid="catalogue-filter-apply"
+          data-text-eins="{{ 'catalogue_filter.apply_one' | t }}"
+          data-text-viele="{{ 'catalogue_filter.apply_many' | t }}"
+          data-text-keine="{{ 'catalogue_filter.apply_none' | t }}"
+        >
+          {{- 'catalogue_filter.apply_generic' | t -}}
+        </button>
+      </div>
+    </form>
+  </div>
+</catalogue-filter>

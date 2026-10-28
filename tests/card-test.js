@@ -33,14 +33,14 @@ const faelle = [
     titel: 'Anthurium Papillilaminum Marie',
     mf: mf({ specimen_id: 'TNG-0147', mutterpflanze: mutter('Anthurium papillilaminum × forgetii'),
              stadium: 'Steckling', generation: 'F2', blattlaenge_cm: 12 }),
-    erwartet: ['TNG-0147', 'Anthurium papillilaminum × forgetii', 'Steckling · Generation F2 · 12 cm', 'available', 'Verfügbar'] },
+    erwartet: ['TNG-0147', 'Anthurium papillilaminum × forgetii', 'Steckling/Klon · Generation F2 · 12 cm', 'available', 'Verfügbar'] },
 
   // Der Doppelname, den Tung gemeldet hat.
   { name: 'Mutterpflanze heisst wie das Produkt — Zeile muss wegfallen', available: true,
     titel: 'Anthurium Ralph Lynam x Fort Sherman F2 #4',
     mf: mf({ specimen_id: 'TNG-0147', mutterpflanze: mutter('Anthurium Ralph Lynam × Fort Sherman F2'),
              stadium: 'Steckling', generation: 'F2' }),
-    erwartet: ['TNG-0147', '', 'Steckling · Generation F2', 'available', 'Verfügbar'] },
+    erwartet: ['TNG-0147', '', 'Steckling/Klon · Generation F2', 'available', 'Verfügbar'] },
 
   { name: 'Apostrophe und Nummer duerfen die Erkennung nicht stoeren', available: true,
     titel: "Anthurium Black Widow '13' x '43' #2",
@@ -76,7 +76,7 @@ const faelle = [
   { name: 'Karte erbt Generation von der Mutter', available: true,
     titel: 'Anthurium Schwarze Perle',
     mf: mf({ mutterpflanze: mutter('Anthurium luxurians × dressleri', 'F3'), stadium: 'Steckling' }),
-    erwartet: ['', 'Anthurium luxurians × dressleri', 'Steckling · Generation F3', 'available', 'Verfügbar'] },
+    erwartet: ['', 'Anthurium luxurians × dressleri', 'Steckling/Klon · Generation F3', 'available', 'Verfügbar'] },
 
   { name: 'Eigene Generation schlaegt die geerbte', available: true,
     titel: 'Anthurium Schwarze Perle',

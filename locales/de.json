@@ -165,7 +165,8 @@
         "rooting_none": "Unbewurzelt",
         "rooting_fresh": "Frisch bewurzelt",
         "rooting_established": "Gut bewurzelt",
-        "stage_cutting": "Steckling",
+        "stage_cutting": "Steckling/Klon",
+        "stage_seeds": "Samen",
         "stage_seedling": "Sämling",
         "stage_young": "Jungpflanze",
         "stage_established": "Etabliert",
@@ -315,6 +316,25 @@
       "show_less": "Weniger anzeigen",
       "filter_and_operator_subtitle": "Allen entsprechen"
     }
+  },
+  "catalogue_filter": {
+    "title": "Filter",
+    "quick_label": "Schnellauswahl",
+    "all": "Alle",
+    "in_stock": "Verfügbar",
+    "active_label": "Aktive Filter",
+    "remove": "{{ name }} entfernen",
+    "reset": "Zurücksetzen",
+    "close": "Schließen",
+    "sort_label": "Sortieren",
+    "price_from": "Von",
+    "price_to": "Bis",
+    "count_all": "{{ count }} Pflanzen",
+    "count_some": "{{ product_count }} von {{ count }} Pflanzen",
+    "apply_generic": "Ergebnisse anzeigen",
+    "apply_one": "1 Pflanze anzeigen",
+    "apply_many": "%anzahl% Pflanzen anzeigen",
+    "apply_none": "Keine Pflanze passt dazu"
   },
   "templates": {
     "search": {

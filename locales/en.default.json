@@ -174,7 +174,8 @@
         "rooting_none": "Unrooted",
         "rooting_fresh": "Freshly rooted",
         "rooting_established": "Well rooted",
-        "stage_cutting": "Cutting",
+        "stage_cutting": "Cutting/Clone",
+        "stage_seeds": "Seeds",
         "stage_seedling": "Seedling",
         "stage_young": "Young plant",
         "stage_established": "Established",
@@ -315,6 +316,25 @@
       "to": "To",
       "clear_filter": "Remove filter"
     }
+  },
+  "catalogue_filter": {
+    "title": "Filter",
+    "quick_label": "Quick filters",
+    "all": "All",
+    "in_stock": "In stock",
+    "active_label": "Active filters",
+    "remove": "Remove {{ name }}",
+    "reset": "Reset",
+    "close": "Close",
+    "sort_label": "Sort by",
+    "price_from": "From",
+    "price_to": "To",
+    "count_all": "{{ count }} plants",
+    "count_some": "{{ product_count }} of {{ count }} plants",
+    "apply_generic": "Show results",
+    "apply_one": "Show 1 plant",
+    "apply_many": "Show %anzahl% plants",
+    "apply_none": "No plant matches"
   },
   "templates": {
     "search": {
