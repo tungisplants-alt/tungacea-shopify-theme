@@ -723,7 +723,17 @@
   },
   "whatsapp_contact": {
     "label": "Message me",
-    "aria_label": "Message me on WhatsApp",
+    "intro": "You're writing to me directly.",
+    "whatsapp_label": "On WhatsApp",
+    "mail_label": "By email",
+    "mail_name": "Your name (optional)",
+    "mail_email": "Your email address",
+    "mail_message": "Your message",
+    "mail_send": "Send",
+    "mail_success": "Thank you, your message has reached me.",
+    "mail_error": "That didn't work. Please check your email address and try again.",
+    "mail_privacy": "By sending, you share your name, email address and message with me. More in the",
+    "mail_privacy_link": "privacy policy",
     "message": "Hi Tung, I have a question about Tungacea.",
     "message_product": "Hi Tung, I have a question about {{ name }}."
   }

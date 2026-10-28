@@ -1,28 +1,42 @@
 {% comment %}
   Tungacea — Schreib-mir-Knopf.
 
-  Ein ruhiger Knopf unten rechts, der WhatsApp mit einem vorausgefuellten Satz
-  oeffnet. Kein Chat-Fenster und kein Skript eines Anbieters: Es ist ein Link
-  auf wa.me, und erst mit dem Klick verlaesst man die Seite.
+  Ein ruhiger Knopf unten rechts. Ein Klick klappt eine kleine Karte auf, mit
+  zwei Wegen: WhatsApp (ein Link auf wa.me mit vorausgefuelltem Satz) und
+  E-Mail (das Kontaktformular von Shopify). Kein Chat-Fenster und kein Skript
+  eines Anbieters; erst mit dem Klick auf WhatsApp verlaesst man die Seite.
 
-  Die Nummer steht im Theme-Editor unter Theme-Einstellungen, WhatsApp-Kontakt.
-  Sie darf mit Plus, Leerzeichen, Strichen oder fuehrender 0 stehen und wird
-  zu Ziffern mit Laendervorwahl. Was keine Nummer ergibt, blendet den Knopf aus,
-  statt einen Link ins Leere zu setzen.
+  Aufgeklappt wird mit <details>, das geht auch ohne Skript. whatsapp-contact.js
+  schliesst die Karte mit Escape und beim Klick daneben.
 
-  Auf Produktseiten steht der Produktname im Satz, sonst ein allgemeiner.
-  Der Satz kommt aus den Sprachdateien (whatsapp_contact.*), Deutsch und
-  Englisch getrennt.
+  Die Nachricht per E-Mail geht ueber Shopifys Formular an die E-Mail-Adresse
+  des Shops. Sie steht nirgends auf der Seite. Nach dem Absenden laedt Shopify
+  die Seite neu und meldet ueber form.posted_successfully? den Erfolg. Dann
+  steht die Karte offen, mit der Bestaetigung.
+
+  Theme-Editor, Theme-Einstellungen, Kontakt-Knopf:
+  - Knopf an oder aus
+  - WhatsApp-Nummer: mit Plus, Leerzeichen, Strichen oder fuehrender 0, wird zu
+    Ziffern mit Laendervorwahl. Was keine Nummer ergibt, laesst den
+    WhatsApp-Weg weg, statt einen Link ins Leere zu setzen.
+  - E-Mail-Formular an oder aus
+
+  Gibt es keinen der beiden Wege, erscheint auch der Knopf nicht.
+
+  Auf Produktseiten steht der Produktname im Satz, sonst ein allgemeiner. Alle
+  Texte stehen in den Sprachdateien (whatsapp_contact.*), Deutsch und Englisch
+  getrennt.
 
   Aufruf:
   {%- render 'whatsapp-contact' -%}
 {% endcomment %}
 {%- liquid
-  assign aktiv = true
+  assign schalter = true
   if settings.whatsapp_aktiv == false
-    assign aktiv = false
+    assign schalter = false
   endif
 
+  assign wa_ok = schalter
   assign nummer = settings.whatsapp_nummer | default: '' | strip
   assign nummer = nummer | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')' | remove: '/' | remove: '.'
   assign anfang = nummer | slice: 0, 2
@@ -36,47 +50,158 @@
 
   assign pruefung = nummer | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
   if pruefung != blank or nummer.size < 10 or nummer.size > 15
-    assign aktiv = false
+    assign wa_ok = false
   endif
 
-  if aktiv
+  assign mail_ok = schalter
+  if settings.kontakt_mail_aktiv == false
+    assign mail_ok = false
+  endif
+
+  assign zeigen = false
+  if wa_ok or mail_ok
+    assign zeigen = true
+  endif
+
+  if zeigen
     if template.name == 'product' and product.title != blank
       assign nachricht = 'whatsapp_contact.message_product' | t: name: product.title
     else
       assign nachricht = 'whatsapp_contact.message' | t
     endif
+  endif
+
+  if wa_ok
     assign kodiert = nachricht | url_encode | replace: '+', '%20'
     assign adresse = 'https://wa.me/' | append: nummer | append: '?text=' | append: kodiert
   endif
 -%}
 
-{%- if aktiv -%}
+{%- if mail_ok -%}
+  {%- capture formular -%}
+    {%- form 'contact', id: 'WhatsappContactForm', class: 'whatsapp-contact__form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="whatsapp-contact__status" role="status" tabindex="-1" data-kontakt-zustand="ok">
+          {{- 'whatsapp_contact.mail_success' | t -}}
+        </p>
+      {%- else -%}
+        {%- if form.errors -%}
+          <p class="whatsapp-contact__status whatsapp-contact__status--fehler" role="alert" tabindex="-1" data-kontakt-zustand="fehler">
+            {{- 'whatsapp_contact.mail_error' | t -}}
+          </p>
+        {%- endif -%}
+        <label class="whatsapp-contact__label" for="WhatsappContactForm-name">
+          {{- 'whatsapp_contact.mail_name' | t -}}
+        </label>
+        <input
+          class="whatsapp-contact__field"
+          type="text"
+          id="WhatsappContactForm-name"
+          name="contact[name]"
+          autocomplete="name"
+        >
+        <label class="whatsapp-contact__label" for="WhatsappContactForm-email">
+          {{- 'whatsapp_contact.mail_email' | t -}}
+        </label>
+        <input
+          class="whatsapp-contact__field"
+          type="email"
+          id="WhatsappContactForm-email"
+          name="contact[email]"
+          autocomplete="email"
+          required
+        >
+        <label class="whatsapp-contact__label" for="WhatsappContactForm-body">
+          {{- 'whatsapp_contact.mail_message' | t -}}
+        </label>
+        <textarea
+          class="whatsapp-contact__field whatsapp-contact__field--text"
+          id="WhatsappContactForm-body"
+          name="contact[body]"
+          rows="5"
+          required
+        >{{ nachricht | escape }}</textarea>
+        <button class="whatsapp-contact__option whatsapp-contact__send" type="submit">
+          {{- 'whatsapp_contact.mail_send' | t -}}
+        </button>
+        {%- if shop.privacy_policy.url != blank -%}
+          <p class="whatsapp-contact__privacy">
+            {{ 'whatsapp_contact.mail_privacy' | t }}
+            <a href="{{ shop.privacy_policy.url | escape }}">{{ 'whatsapp_contact.mail_privacy_link' | t }}</a>.
+          </p>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endform -%}
+  {%- endcapture -%}
+  {%- if formular contains 'data-kontakt-zustand' -%}
+    {%- assign offen = true -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if zeigen -%}
   {{ 'component-whatsapp-contact.css' | asset_url | stylesheet_tag }}
 
-  <a
-    class="whatsapp-contact"
-    href="{{ adresse | escape }}"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="{{ 'whatsapp_contact.aria_label' | t | escape }}"
-    aria-describedby="a11y-new-window-message"
-    data-whatsapp-contact
-  >
-    <svg
-      class="whatsapp-contact__icon"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width="22"
-      height="22"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.6"
-      stroke-linejoin="round"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
-    </svg>
-    <span class="whatsapp-contact__text">{{ 'whatsapp_contact.label' | t }}</span>
-  </a>
+  <details class="whatsapp-contact" data-whatsapp-contact{% if offen %} open{% endif %}>
+    <summary class="whatsapp-contact__toggle" aria-label="{{ 'whatsapp_contact.label' | t | escape }}">
+      <svg
+        class="whatsapp-contact__icon whatsapp-contact__icon--chat"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="22"
+        height="22"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
+      </svg>
+      <svg
+        class="whatsapp-contact__icon whatsapp-contact__icon--close"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="22"
+        height="22"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+      <span class="whatsapp-contact__text">{{ 'whatsapp_contact.label' | t }}</span>
+    </summary>
+
+    <div class="whatsapp-contact__panel">
+      <p class="whatsapp-contact__intro">{{ 'whatsapp_contact.intro' | t }}</p>
+
+      {%- if wa_ok -%}
+        <a
+          class="whatsapp-contact__option"
+          href="{{ adresse | escape }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-describedby="a11y-new-window-message"
+          data-whatsapp-link
+        >
+          {{- 'whatsapp_contact.whatsapp_label' | t -}}
+        </a>
+      {%- endif -%}
+
+      {%- if mail_ok -%}
+        <details class="whatsapp-contact__mail"{% if offen %} open{% endif %}>
+          <summary class="whatsapp-contact__option whatsapp-contact__option--mail">
+            {{- 'whatsapp_contact.mail_label' | t -}}
+          </summary>
+          {{ formular }}
+        </details>
+      {%- endif -%}
+    </div>
+  </details>
+
+  <script src="{{ 'whatsapp-contact.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
