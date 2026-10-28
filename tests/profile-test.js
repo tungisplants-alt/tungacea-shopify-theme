@@ -326,15 +326,9 @@ const faelle = [
       locale = loc;
       let html;
       try {
-        // Wie die Vorlage: erst die Angebotszeilen aus der Produktliste bauen,
-        // dann der Seite als fertigen Text mitgeben.
-        const zeilen = await engine.renderFile('plant-offer-list', {
-          eintrag: f.eintrag,
-          produkte: LADEN,
-        });
         html = await engine.renderFile('plant-profile', {
           eintrag: f.eintrag,
-          angebote_html: zeilen,
+          produkte: LADEN,
           alle: f.alle,
         });
       } catch (e) {

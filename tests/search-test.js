@@ -111,7 +111,7 @@ const faelle = [
   for (const loc of ['de', 'en']) {
     locale = loc;
     try {
-      html[loc] = await engine.renderFile('plant-archive-search', { eintraege: EINTRAEGE, angebote: '' });
+      html[loc] = await engine.renderFile('plant-archive-search', { eintraege: EINTRAEGE, produkte: [] });
     } catch (e) {
       console.log('FEHLER [' + loc + '] Rendern: ' + e.message);
       console.log('\n0/1 Pruefungen bestanden, 1 Fehler.');
@@ -192,7 +192,7 @@ const faelle = [
   locale = 'de';
   const einheitlich = await engine.renderFile('plant-archive-search', {
     eintraege: [pflanze({ stadium: feld('Jungpflanze'), reinheit: feld('Hybrid') }), pflanze({ stadium: feld('Jungpflanze'), reinheit: feld('Reine Art') })],
-    angebote: '',
+    produkte: [],
   });
   checks++;
   if (/plant-search__tabs/.test(einheitlich)) { fails++; console.log('FEHLER: Schnellwahl ohne trennende Werte'); }

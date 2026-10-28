@@ -12,8 +12,7 @@
 
   Annahmen:
   - eintraege: {Array} Metaobjekt-Einträge vom Typ mutterpflanze (Pflicht)
-  - angebote:  {String} Pflanzen mit Angebot als |handle|handle|, von der Vorlage gebaut
-  - seitenzaehler: {Object} das paginate-Objekt der Vorlage (optional)
+  - produkte:  {Array} Produkte des Ladens, für Angebot und Rückweg
   - eyebrow, heading, intro: {String} optional, sonst aus den Sprachdateien
 {% endcomment %}
 {{ 'component-plant-archive.css' | asset_url | stylesheet_tag }}
@@ -87,13 +86,13 @@
         an wie das Raster. Sonst boete sie Zuechter an, deren Pflanzen gar
         nicht in der Galerie stehen.
       {%- endcomment -%}
-      {%- render 'plant-archive-search', eintraege: eintraege, angebote: angebote -%}
+      {%- render 'plant-archive-search', eintraege: eintraege, produkte: produkte -%}
 
       <ul class="plant-archive__grid" role="list" data-testid="plant-archive-grid">
         {%- for eintrag in eintraege -%}
           {%- if eintrag.besitzer.value == blank -%}
             <li>
-              {%- render 'plant-card', eintrag: eintrag, angebote: angebote -%}
+              {%- render 'plant-card', eintrag: eintrag, produkte: produkte -%}
             </li>
           {%- endif -%}
         {%- endfor -%}
@@ -104,40 +103,6 @@
         Skript blendet sie ein, sobald mehr Treffer da sind als gezeigt werden;
         ohne Skript stehen alle Karten da und diese Zeile bleibt verborgen.
       {%- endcomment -%}
-      {%- comment -%}
-        Ab 250 Pflanzen teilt Shopify die Liste in Seiten. Dann stehen hier die
-        Links zu den weiteren Seiten; Suche und Filter wirken nur auf die
-        gezeigte Seite.
-      {%- endcomment -%}
-      {%- if seitenzaehler.pages > 1 -%}
-        <nav class="plant-archive__pages" aria-label="{{ 'private_archive.pages_label' | t }}">
-          {{- seitenzaehler | default_pagination -}}
-        </nav>
-      {%- endif -%}
-
-      {%- comment -%}
-        Selbstpruefung, nur im Theme-Editor sichtbar: die Liste meldet ihre
-        ganze Laenge, auch wenn der Durchlauf nur einen Teil liefert. Weicht
-        beides ab, fehlen Pflanzen, und der Besucher sieht es nicht.
-      {%- endcomment -%}
-      {%- if request.design_mode -%}
-        {%- liquid
-          assign geladen = 0
-          for eintrag in eintraege
-            assign geladen = geladen | plus: 1
-          endfor
-          assign erwartet = eintraege.size
-          if seitenzaehler.page_size > 0 and erwartet > seitenzaehler.page_size
-            assign erwartet = seitenzaehler.page_size
-          endif
-        -%}
-        {%- if geladen < erwartet -%}
-          <p class="plant-archive__warning" data-testid="plant-archive-warning">
-            {{ 'private_archive.load_warning' | t: geladen: geladen, gesamt: eintraege.size }}
-          </p>
-        {%- endif -%}
-      {%- endif -%}
-
       <div class="plant-archive__more" hidden data-testid="plant-archive-more">
         <div class="plant-archive__more-line" aria-hidden="true"><span></span></div>
         <p class="plant-archive__more-text" role="status" aria-live="polite"></p>

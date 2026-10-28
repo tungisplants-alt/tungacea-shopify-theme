@@ -17,7 +17,6 @@
   Annahmen:
   - eintrag: {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
   - alle:    {Array} alle Eintraege vom Typ mutterpflanze, fuer Vorherige und Naechste (optional)
-  - angebote_html: {String} fertige Angebotszeilen aus plant-offer-list (optional)
 {% endcomment %}
 {{ 'component-plant-archive.css' | asset_url | stylesheet_tag }}
 {{ 'component-specimen-passport.css' | asset_url | stylesheet_tag }}
@@ -165,17 +164,29 @@
     assign eigene_wahl = true
   endif
 
-  comment
-    Die selbst gefundenen Zeilen baut der Aufrufer in plant-offer-list, dort
-    steht der paginate-Block fuer die Produkte. Hier zaehlt nur, ob etwas da
-    ist: entweder die von Hand gewaehlten oder die fertigen Zeilen.
-  endcomment
-  assign gefundene_zeilen = angebote_html | default: '' | strip
   assign treffer = 0
   if eigene_wahl
     assign treffer = angebote.size
-  elsif gefundene_zeilen != blank
-    assign treffer = 1
+  else
+    comment
+      Eine Pflanze kann an einem Angebot in zwei Rollen beteiligt sein: als
+      Mutter eines Cuttings oder als einer von zwei Eltern eines Saemlings.
+      Beide Rollen speisen dieselbe Liste — sonst stuenden Cuttings und
+      Saemlinge derselben Pflanze an zwei verschiedenen Stellen.
+    endcomment
+    for produkt in produkte limit: 100
+      assign pm = produkt.metafields.custom.mutterpflanze.value
+      assign pv = produkt.metafields.custom.vaterpflanze.value
+      assign ist_kind = false
+      if pm != blank and pm.system.handle == eintrag.system.handle
+        assign ist_kind = true
+      elsif pv != blank and pv.system.handle == eintrag.system.handle
+        assign ist_kind = true
+      endif
+      if ist_kind
+        assign treffer = treffer | plus: 1
+      endif
+    endfor
   endif
 
   comment
@@ -476,7 +487,21 @@
               {%- render 'plant-offer-row', produkt: produkt -%}
             {%- endfor -%}
           {%- else -%}
-            {{ gefundene_zeilen }}
+            {%- for produkt in produkte limit: 100 -%}
+              {%- liquid
+                assign pm = produkt.metafields.custom.mutterpflanze.value
+                assign pv = produkt.metafields.custom.vaterpflanze.value
+                assign ist_kind = false
+                if pm != blank and pm.system.handle == eintrag.system.handle
+                  assign ist_kind = true
+                elsif pv != blank and pv.system.handle == eintrag.system.handle
+                  assign ist_kind = true
+                endif
+              -%}
+              {%- if ist_kind -%}
+                {%- render 'plant-offer-row', produkt: produkt -%}
+              {%- endif -%}
+            {%- endfor -%}
           {%- endif -%}
           {%- comment -%}
             Die Zeile selbst steht in plant-offer-row, damit beide Wege dieselbe
