@@ -39,8 +39,8 @@
   -%}
 </div>
 
-{%- comment -%} MESSUNG, nur fuer die Fehlersuche, wird wieder entfernt. Sichtbar nur mit ?diag=1. {%- endcomment -%}
-<div id="tungacea-diag" hidden style="position:relative;z-index:50;background:#fff;color:#000;padding:16px;font:14px/1.5 monospace;white-space:pre-wrap">
+{%- comment -%} MESSUNG, nur fuer die Fehlersuche, wird wieder entfernt. Im Vorschau-Theme immer sichtbar. {%- endcomment -%}
+<div id="tungacea-diag" style="position:relative;z-index:50;background:#fff;color:#000;padding:16px;font:14px/1.5 monospace;white-space:pre-wrap">
 {%- assign e_size = shop.metaobjects.mutterpflanze.values.size -%}
 {%- assign e1 = 0 -%}
 {%- for x in shop.metaobjects.mutterpflanze.values -%}{%- assign e1 = e1 | plus: 1 -%}{%- endfor -%}
@@ -102,9 +102,6 @@ Produkte:
   P5 paginate + Baustein bekommt Zwischenvariable = {{ p5 }}
   paginate: {{ pg_p }}
 </div>
-<script>
-  if (/[?&]diag=1/.test(location.search)) { var d = document.getElementById('tungacea-diag'); if (d) d.hidden = false; }
-</script>
 
 {% schema %}
 {
