@@ -139,6 +139,48 @@ const faelle = [
     verboten: [],
   },
   {
+    // Blaettern nach Exemplar-ID, nur unter eigenen Pflanzen. TA-1002 hat einen
+    // Besitzer und steht nicht in der Galerie, TA-1004 ohne ID gar nicht.
+    name: 'Vorherige und Naechste: ueberspringt fremde, sortiert nach ID',
+    eintrag: pflanze('ta-1003', { mutter_id: feld('TA-1003') }),
+    alle: [
+      pflanze('ta-1004', { mutter_id: feld('TA-1004') }),
+      pflanze('ta-1002', { mutter_id: feld('TA-1002'), besitzer: feld(fremdePerson('Jemand')) }),
+      pflanze('ta-1001', { mutter_id: feld('TA-1001') }),
+      pflanze('ta-1003', { mutter_id: feld('TA-1003') }),
+      pflanze('ohne-id'),
+    ],
+    erwartet: ['plant-profile-nav', 'href="/pflanzen/ta-1001"', 'href="/pflanzen/ta-1004"', 'rel="prev"', 'rel="next"'],
+    verboten: ['/pflanzen/ta-1002', '/pflanzen/ohne-id'],
+  },
+  {
+    name: 'Erste Pflanze: nur Naechste, keine Vorherige',
+    eintrag: pflanze('ta-1001', { mutter_id: feld('TA-1001') }),
+    alle: [pflanze('ta-1001', { mutter_id: feld('TA-1001') }), pflanze('ta-1003', { mutter_id: feld('TA-1003') })],
+    erwartet: ['rel="next"', 'href="/pflanzen/ta-1003"'],
+    verboten: ['rel="prev"'],
+  },
+  {
+    name: 'Einzige Pflanze: kein Blaettern',
+    eintrag: pflanze('ta-1001', { mutter_id: feld('TA-1001') }),
+    alle: [pflanze('ta-1001', { mutter_id: feld('TA-1001') })],
+    erwartet: [],
+    verboten: ['plant-profile-nav'],
+  },
+  {
+    name: 'Fremde Pflanze blaettert nicht',
+    eintrag: pflanze('ta-1002', { mutter_id: feld('TA-1002'), besitzer: feld(fremdePerson('Jemand')) }),
+    alle: [pflanze('ta-1001', { mutter_id: feld('TA-1001') }), pflanze('ta-1003', { mutter_id: feld('TA-1003') })],
+    erwartet: [],
+    verboten: ['plant-profile-nav'],
+  },
+  {
+    name: 'Ohne uebergebene Liste kein Blaettern, kein Fehler',
+    eintrag: pflanze('ta-1001', { mutter_id: feld('TA-1001') }),
+    erwartet: [],
+    verboten: ['plant-profile-nav'],
+  },
+  {
     name: 'Eine Pflanze ohne Produkte zeigt keinen leeren Block',
     eintrag: pflanze('mutter-drei'),
     erwartet: [],
@@ -287,6 +329,7 @@ const faelle = [
         html = await engine.renderFile('plant-profile', {
           eintrag: f.eintrag,
           produkte: LADEN,
+          alle: f.alle,
         });
       } catch (e) {
         fails++; checks++;

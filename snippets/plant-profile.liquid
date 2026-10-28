@@ -16,6 +16,7 @@
 
   Annahmen:
   - eintrag: {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
+  - alle:    {Array} alle Eintraege vom Typ mutterpflanze, fuer Vorherige und Naechste (optional)
 {% endcomment %}
 {{ 'component-plant-archive.css' | asset_url | stylesheet_tag }}
 {{ 'component-specimen-passport.css' | asset_url | stylesheet_tag }}
@@ -203,6 +204,44 @@
   endfor
 
   assign archiv_url = routes.root_url | default: '/' | append: 'pages/archive'
+
+  comment
+    Vorherige und Naechste nach Exemplar-ID, wie die Galerie sie zaehlt. Nur
+    eigene Pflanzen blaettern, fremde stehen nicht in der Galerie. Sortiert
+    wird als Zeichenkette, solange die Nummern gleich viele Stellen haben.
+  endcomment
+  assign vorher_id = ''
+  assign nachher_id = ''
+  assign vorher_url = ''
+  assign nachher_url = ''
+  if alle != blank and besitzer == blank and eintrag.mutter_id.value != blank
+    assign aktuelle_id = eintrag.mutter_id.value
+    assign id_roh = ''
+    for kandidat in alle
+      if kandidat.besitzer.value == blank and kandidat.mutter_id.value != blank
+        assign id_roh = id_roh | append: kandidat.mutter_id.value | append: '|'
+      endif
+    endfor
+    assign id_liste = id_roh | split: '|' | sort
+    assign gefunden = false
+    for nummer in id_liste
+      if nummer == aktuelle_id
+        assign gefunden = true
+      elsif gefunden == false
+        assign vorher_id = nummer
+      elsif nachher_id == blank
+        assign nachher_id = nummer
+      endif
+    endfor
+    for kandidat in alle
+      if vorher_id != blank and kandidat.mutter_id.value == vorher_id
+        assign vorher_url = kandidat.system.url
+      endif
+      if nachher_id != blank and kandidat.mutter_id.value == nachher_id
+        assign nachher_url = kandidat.system.url
+      endif
+    endfor
+  endif
 -%}
 
 <div class="plant-profile" data-testid="plant-profile">
@@ -470,6 +509,19 @@
           {%- endcomment -%}
         </ul>
       </section>
+    {%- endif -%}
+
+    {%- if vorher_url != blank or nachher_url != blank -%}
+      <nav class="plant-profile__nav caption-with-letter-spacing" aria-label="{{ 'private_archive.nav_label' | t }}" data-testid="plant-profile-nav">
+        {%- if vorher_url != blank -%}
+          <a class="plant-profile__nav-link" href="{{ vorher_url }}" rel="prev"><span aria-hidden="true">&larr;</span> {{ vorher_id | escape }}</a>
+        {%- else -%}
+          <span></span>
+        {%- endif -%}
+        {%- if nachher_url != blank -%}
+          <a class="plant-profile__nav-link" href="{{ nachher_url }}" rel="next">{{ nachher_id | escape }} <span aria-hidden="true">&rarr;</span></a>
+        {%- endif -%}
+      </nav>
     {%- endif -%}
   </div>
 </div>

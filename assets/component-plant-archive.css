@@ -383,6 +383,10 @@
     grid-column: 1 / -1;
   }
 
+  .plant-profile > .page-width > .plant-profile__nav {
+    grid-column: 1 / -1;
+  }
+
   .plant-profile > .page-width > .plant-profile__back {
     grid-column: 1 / -1;
     grid-row: 1;
@@ -647,6 +651,27 @@
 
 .plant-profile__back:hover {
   color: rgb(var(--color-foreground, 242, 238, 232));
+}
+
+/* Vorherige und Naechste: nur die Nummer, leise am Ende der Seite. */
+.plant-profile__nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.6rem;
+  margin-top: 4.8rem;
+}
+
+.plant-profile__nav-link {
+  color: var(--pl-muted);
+  text-decoration: none;
+}
+
+.plant-profile__nav-link:hover {
+  color: rgb(var(--color-foreground, 242, 238, 232));
+}
+
+.plant-profile > .page-width > .plant-profile__nav {
+  max-width: none;
 }
 
 /* Merkmale: eine Auswahl aus einer festen Liste, klein und mit duennem Rahmen,
