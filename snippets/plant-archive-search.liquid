@@ -34,6 +34,7 @@
   assign herkuenfte = ''
   assign linien = ''
   assign reinheiten = ''
+  assign merkmale = ''
   assign mit_angebot = 0
   assign eigene = 0
 
@@ -54,6 +55,12 @@
     endif
     for l in e.linie.value
       assign linien = linien | append: l | append: '|'
+    endfor
+    for m in e.merkmale.value
+      assign m_name = m.name.value | default: '' | strip
+      if m_name != blank
+        assign merkmale = merkmale | append: m_name | append: '|'
+      endif
     endfor
 
     assign z = e.zuechter.value
@@ -89,6 +96,7 @@
   assign herkunft_liste = herkuenfte | split: '|' | uniq | sort
   assign linien_liste = linien | split: '|' | uniq | sort
   assign reinheit_liste = reinheiten | split: '|' | uniq | sort
+  assign merkmale_liste = merkmale | split: '|' | uniq | sort
 
   comment
     Der Angebotsfilter lohnt nur, wenn er trennt: gibt es von allen oder von
@@ -99,8 +107,18 @@
     assign zeige_angebot = true
   endif
 
+  comment
+    Die Schnellwahl oben zeigt nur, was trennt: Stadien ab zwei verschiedenen
+    Werten, das Angebot nur, wenn es von einigen Pflanzen etwas gibt und von
+    anderen nicht. Ohne beides entfaellt die Leiste.
+  endcomment
+  assign hat_schnellwahl = false
+  if stadien_liste.size > 1 or zeige_angebot
+    assign hat_schnellwahl = true
+  endif
+
   assign hat_filter = false
-  if stadien_liste.size > 1 or generationen_liste.size > 1 or zuechter_liste.size > 1 or herkunft_liste.size > 1 or linien_liste.size > 1 or reinheit_liste.size > 1 or zeige_angebot
+  if stadien_liste.size > 1 or generationen_liste.size > 1 or zuechter_liste.size > 1 or herkunft_liste.size > 1 or linien_liste.size > 1 or reinheit_liste.size > 1 or merkmale_liste.size > 1 or zeige_angebot
     assign hat_filter = true
   endif
 -%}
@@ -112,7 +130,49 @@
   data-text-alle="{{ 'private_archive.count_all' | t }}"
   data-text-teil="{{ 'private_archive.count_some' | t }}"
   data-text-keine="{{ 'private_archive.count_none' | t }}"
+  data-text-gezeigt="{{ 'private_archive.shown_of' | t }}"
+  data-text-entfernen="{{ 'private_archive.remove_filter' | t }}"
+  data-seite="12"
 >
+  {%- if hat_schnellwahl -%}
+    {%- comment -%}
+      Die Schnellwahl: das, wonach am haeufigsten gefiltert wird, ohne das
+      Filterblatt zu oeffnen. Sie schaltet dieselben Filter wie das Blatt, die
+      Zahlen schreibt das Skript. Nur ein Stadium oder das Angebot gleichzeitig
+      ist hier Absicht; wer mehr will, nimmt das Blatt.
+    {%- endcomment -%}
+    <nav class="plant-search__tabs" aria-label="{{ 'private_archive.tabs_label' | t }}" data-testid="plant-search-tabs">
+      <button type="button" class="plant-search__tab" data-einstieg="alle" aria-pressed="true">
+        {{- 'private_archive.tab_all' | t }} <span class="plant-search__tab-count"></span>
+      </button>
+      {%- for wert in stadien_liste -%}
+        {%- liquid
+          assign wert_label = wert
+          case wert
+            when 'Steckling'
+              assign wert_label = 'products.product.specimen.stage_cutting' | t
+            when 'Sämling'
+              assign wert_label = 'products.product.specimen.stage_seedling' | t
+            when 'Jungpflanze'
+              assign wert_label = 'products.product.specimen.stage_young' | t
+            when 'Etabliert'
+              assign wert_label = 'products.product.specimen.stage_established' | t
+            when 'Mutterpflanze'
+              assign wert_label = 'products.product.specimen.stage_mother' | t
+          endcase
+        -%}
+        <button type="button" class="plant-search__tab" data-einstieg="stadium" data-wert="{{ wert | escape }}" aria-pressed="false">
+          {{- wert_label | escape }} <span class="plant-search__tab-count"></span>
+        </button>
+      {%- endfor -%}
+      {%- if zeige_angebot -%}
+        <button type="button" class="plant-search__tab" data-einstieg="angebot" data-wert="ja" aria-pressed="false">
+          {{- 'private_archive.facet_offer_yes' | t }} <span class="plant-search__tab-count"></span>
+        </button>
+      {%- endif -%}
+    </nav>
+  {%- endif -%}
+
   {%- comment -%}
     Das ganze Feld ist ein label. Ein Klick auf die Lupe oder auf das Wort setzt
     den Schreibzeiger ins Feld. Das Wort sieht aus wie ein Knopf, ist aber
@@ -139,21 +199,79 @@
 
   <div class="plant-search__bar">
     {%- if hat_filter -%}
-      <details class="plant-search__filters" data-testid="plant-search-filters">
-        <summary class="plant-search__summary">
-          <span class="plant-search__summary-text">{{ 'private_archive.filters_heading' | t }}</span>
-          <span class="plant-search__badge" hidden data-testid="plant-search-badge"></span>
-          <span class="plant-search__chevron" aria-hidden="true"></span>
-        </summary>
+      <button
+        type="button"
+        class="plant-search__filter-button"
+        aria-expanded="false"
+        aria-controls="PlantSearchSheet"
+        data-testid="plant-search-filters"
+      >
+        <span class="plant-search__summary-text">{{ 'private_archive.filters_heading' | t }}</span>
+        <span class="plant-search__badge" hidden data-testid="plant-search-badge"></span>
+      </button>
+    {%- endif -%}
 
+    {%- comment -%}
+      Zaehlzeile und Zuruecksetzen stehen neben dem Filterknopf. Die Zaehlzeile
+      ist das, was eine Galerie zu einem Bestand macht: sie sagt, wie viel es
+      insgesamt gibt und wie viel gerade zu sehen ist. Sie wird vom Skript
+      beschrieben und ist eine hoefliche Live-Region.
+    {%- endcomment -%}
+    <p
+      class="plant-search__count"
+      role="status"
+      aria-live="polite"
+      data-testid="plant-search-count"
+    ></p>
+
+  </div>
+
+  {%- comment -%}
+    Aktive Filter als Zeile unter der Leiste, jeder einzeln entfernbar. Das
+    Skript fuellt sie; ohne Skript bleibt sie leer und unsichtbar.
+  {%- endcomment -%}
+  <div class="plant-search__active-row" hidden data-testid="plant-search-active-row">
+    <ul class="plant-search__active" role="list" data-testid="plant-search-active"></ul>
+    <button
+      type="button"
+      class="plant-search__clear"
+      data-testid="plant-search-clear"
+    >
+      {{- 'private_archive.search_clear' | t -}}
+    </button>
+  </div>
+
+  {%- if hat_filter -%}
+    {%- comment -%}
+      Das Filterblatt. Am Telefon schiebt es sich von unten ueber die Seite, am
+      Laptop klappt es unter der Leiste auf. Es ist ein Dialog mit Titel und
+      Schliessen-Knopf; die Auswahl gilt sofort, der Knopf unten zeigt nur, wie
+      viele Pflanzen uebrig sind.
+    {%- endcomment -%}
+    <div class="plant-search__backdrop" hidden data-testid="plant-search-backdrop"></div>
+    <div
+      class="plant-search__sheet"
+      id="PlantSearchSheet"
+      role="dialog"
+      aria-label="{{ 'private_archive.filters_heading' | t }}"
+      hidden
+      data-testid="plant-search-sheet"
+    >
+      <div class="plant-search__sheet-grab" aria-hidden="true"></div>
+      <div class="plant-search__sheet-head">
+        <p class="plant-search__sheet-title">{{ 'private_archive.filters_heading' | t }}</p>
+        <button type="button" class="plant-search__sheet-reset" hidden data-testid="plant-search-sheet-reset">
+          {{- 'private_archive.search_clear' | t -}}
+        </button>
+        <button type="button" class="plant-search__sheet-close" data-testid="plant-search-sheet-close" aria-label="{{ 'private_archive.filter_close' | t }}">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="plant-search__sheet-body">
         <div class="plant-search__facets">
           {%- if zeige_angebot -%}
-            <details class="plant-search__group">
-              <summary class="plant-search__group-summary">
-                <span class="plant-search__group-name">{{ 'private_archive.facet_offer' | t }}</span>
-                <span class="plant-search__group-badge" hidden></span>
-                <span class="plant-search__chevron" aria-hidden="true"></span>
-              </summary>
+            <div class="plant-search__group">
+              <p class="plant-search__group-name">{{ 'private_archive.facet_offer' | t }}</p>
               <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_offer' | t }}">
                 <button
                   type="button"
@@ -165,16 +283,12 @@
                   {{- 'private_archive.facet_offer_yes' | t -}}
                 </button>
               </div>
-            </details>
+            </div>
           {%- endif -%}
 
           {%- if linien_liste.size > 1 -%}
-            <details class="plant-search__group">
-              <summary class="plant-search__group-summary">
-                <span class="plant-search__group-name">{{ 'private_archive.facet_line' | t }}</span>
-                <span class="plant-search__group-badge" hidden></span>
-                <span class="plant-search__chevron" aria-hidden="true"></span>
-              </summary>
+            <div class="plant-search__group">
+              <p class="plant-search__group-name">{{ 'private_archive.facet_line' | t }}</p>
               <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_line' | t }}">
                 {%- for wert in linien_liste -%}
                   <button
@@ -193,16 +307,32 @@
                   </button>
                 {%- endfor -%}
               </div>
-            </details>
+            </div>
+          {%- endif -%}
+
+          {%- if merkmale_liste.size > 1 -%}
+            <div class="plant-search__group">
+              <p class="plant-search__group-name">{{ 'private_archive.facet_traits' | t }}</p>
+              <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_traits' | t }}">
+                {%- for wert in merkmale_liste -%}
+                  <button
+                    type="button"
+                    class="plant-search__chip"
+                    data-facet="merkmale"
+                    data-mehrfach="true"
+                    data-wert="{{ wert | escape }}"
+                    aria-pressed="false"
+                  >
+                    {{- wert | escape -}}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </div>
           {%- endif -%}
 
           {%- if reinheit_liste.size > 1 -%}
-            <details class="plant-search__group">
-              <summary class="plant-search__group-summary">
-                <span class="plant-search__group-name">{{ 'private_archive.facet_purity' | t }}</span>
-                <span class="plant-search__group-badge" hidden></span>
-                <span class="plant-search__chevron" aria-hidden="true"></span>
-              </summary>
+            <div class="plant-search__group">
+              <p class="plant-search__group-name">{{ 'private_archive.facet_purity' | t }}</p>
               <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_purity' | t }}">
                 {%- for wert in reinheit_liste -%}
                   {%- liquid
@@ -233,16 +363,12 @@
                   </button>
                 {%- endfor -%}
               </div>
-            </details>
+            </div>
           {%- endif -%}
 
           {%- if stadien_liste.size > 1 -%}
-            <details class="plant-search__group">
-              <summary class="plant-search__group-summary">
-                <span class="plant-search__group-name">{{ 'private_archive.facet_stage' | t }}</span>
-                <span class="plant-search__group-badge" hidden></span>
-                <span class="plant-search__chevron" aria-hidden="true"></span>
-              </summary>
+            <div class="plant-search__group">
+              <p class="plant-search__group-name">{{ 'private_archive.facet_stage' | t }}</p>
               <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_stage' | t }}">
                 {%- for wert in stadien_liste -%}
                   {%- liquid
@@ -271,16 +397,12 @@
                   </button>
                 {%- endfor -%}
               </div>
-            </details>
+            </div>
           {%- endif -%}
 
           {%- if generationen_liste.size > 1 -%}
-            <details class="plant-search__group">
-              <summary class="plant-search__group-summary">
-                <span class="plant-search__group-name">{{ 'private_archive.facet_generation' | t }}</span>
-                <span class="plant-search__group-badge" hidden></span>
-                <span class="plant-search__chevron" aria-hidden="true"></span>
-              </summary>
+            <div class="plant-search__group">
+              <p class="plant-search__group-name">{{ 'private_archive.facet_generation' | t }}</p>
               <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_generation' | t }}">
                 {%- for wert in generationen_liste -%}
                   <button
@@ -294,16 +416,12 @@
                   </button>
                 {%- endfor -%}
               </div>
-            </details>
+            </div>
           {%- endif -%}
 
           {%- if herkunft_liste.size > 1 -%}
-            <details class="plant-search__group">
-              <summary class="plant-search__group-summary">
-                <span class="plant-search__group-name">{{ 'private_archive.facet_origin' | t }}</span>
-                <span class="plant-search__group-badge" hidden></span>
-                <span class="plant-search__chevron" aria-hidden="true"></span>
-              </summary>
+            <div class="plant-search__group">
+              <p class="plant-search__group-name">{{ 'private_archive.facet_origin' | t }}</p>
               <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_origin' | t }}">
                 {%- for wert in herkunft_liste -%}
                   <button
@@ -322,16 +440,12 @@
                   </button>
                 {%- endfor -%}
               </div>
-            </details>
+            </div>
           {%- endif -%}
 
           {%- if zuechter_liste.size > 1 -%}
-            <details class="plant-search__group">
-              <summary class="plant-search__group-summary">
-                <span class="plant-search__group-name">{{ 'private_archive.facet_breeder' | t }}</span>
-                <span class="plant-search__group-badge" hidden></span>
-                <span class="plant-search__chevron" aria-hidden="true"></span>
-              </summary>
+            <div class="plant-search__group">
+              <p class="plant-search__group-name">{{ 'private_archive.facet_breeder' | t }}</p>
               <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_breeder' | t }}">
                 {%- for wert in zuechter_liste -%}
                   <button
@@ -345,32 +459,20 @@
                   </button>
                 {%- endfor -%}
               </div>
-            </details>
+            </div>
           {%- endif -%}
         </div>
-      </details>
-    {%- endif -%}
-
-    {%- comment -%}
-      Die Zählzeile ist das, was eine Galerie zu einem Bestand macht: sie sagt,
-      wie viel es insgesamt gibt und wie viel gerade zu sehen ist. Sie wird vom
-      Skript beschrieben und ist eine höfliche Live-Region, damit ein
-      Vorlesegerät die neue Zahl nennt, ohne die Eingabe zu unterbrechen.
-    {%- endcomment -%}
-    <p
-      class="plant-search__count"
-      role="status"
-      aria-live="polite"
-      data-testid="plant-search-count"
-    ></p>
-
-    <button
-      type="button"
-      class="plant-search__clear"
-      hidden
-      data-testid="plant-search-clear"
-    >
-      {{- 'private_archive.search_clear' | t -}}
-    </button>
-  </div>
+      </div>
+      <div class="plant-search__sheet-foot">
+        <button
+          type="button"
+          class="plant-search__sheet-apply"
+          data-testid="plant-search-sheet-apply"
+          data-text-eins="{{ 'private_archive.filter_apply_one' | t }}"
+          data-text-viele="{{ 'private_archive.filter_apply_many' | t }}"
+          data-text-keine="{{ 'private_archive.filter_apply_none' | t }}"
+        ></button>
+      </div>
+    </div>
+  {%- endif -%}
 </plant-archive-search>

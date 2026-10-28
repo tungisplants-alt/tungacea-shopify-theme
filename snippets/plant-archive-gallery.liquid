@@ -97,6 +97,17 @@
           {%- endif -%}
         {%- endfor -%}
       </ul>
+
+      {%- comment -%}
+        Fusszeile der Liste: wie weit man ist, und ein Knopf fuer den Rest. Das
+        Skript blendet sie ein, sobald mehr Treffer da sind als gezeigt werden;
+        ohne Skript stehen alle Karten da und diese Zeile bleibt verborgen.
+      {%- endcomment -%}
+      <div class="plant-archive__more" hidden data-testid="plant-archive-more">
+        <div class="plant-archive__more-line" aria-hidden="true"><span></span></div>
+        <p class="plant-archive__more-text" role="status" aria-live="polite"></p>
+        <button type="button" class="plant-archive__more-button">{{ 'private_archive.show_more' | t }}</button>
+      </div>
     {%- endif -%}
   </div>
 </div>

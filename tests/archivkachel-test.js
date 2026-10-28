@@ -63,7 +63,7 @@ const pflanze = (handle, extra) => Object.assign({
   bezeichnung: feld('Anthurium Testpflanze'),
   kreuzung: feld(null), generation: feld(null), stadium: feld(null),
   merkmal: feld(null), notiz: feld(null), mutter_id: feld(null),
-  reinheit: feld(null), linie: { value: [] },
+  reinheit: feld(null), linie: { value: [] }, merkmale: { value: [] },
   zuechter: feld(null), besitzer: feld(null),
   fotos: { value: [] }, fotograf: feld(null), bildfreigabe: feld(null),
   bilder: { value: [] },
@@ -160,6 +160,19 @@ const faelle = [
     eintrag: pflanze('k-zehn'),
     erwartet: ['plant-card-link', '/pflanzen/k-zehn'],
     verboten: ['href=""'],
+  },
+  // --- Merkmale an der Kachel, fuer Filter und Suche ---
+  {
+    name: 'Merkmale stehen getrennt in data-merkmale und im Suchtext, leere fallen heraus',
+    eintrag: pflanze('k-elf', { merkmale: { value: [{ name: { value: 'Sehr dunkel' } }, { name: { value: '  ' } }, { name: { value: 'Samtig' } }] } }),
+    erwartet: ['data-merkmale="Sehr dunkel|Samtig"', 'sehr dunkel samtig'],
+    verboten: ['data-merkmale="Sehr dunkel|Samtig|"', '||'],
+  },
+  {
+    name: 'Ohne Merkmale ist data-merkmale leer',
+    eintrag: pflanze('k-zwoelf'),
+    erwartet: ['data-merkmale=""'],
+    verboten: [],
   },
 ];
 
