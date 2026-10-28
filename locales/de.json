@@ -725,6 +725,7 @@
     "label": "Schreib mir",
     "intro": "Du schreibst direkt an mich.",
     "whatsapp_label": "Per WhatsApp",
+    "whatsapp_hint": "schnellere Antwort",
     "mail_label": "Per E-Mail",
     "mail_name": "Dein Name (optional)",
     "mail_email": "Deine E-Mail-Adresse",

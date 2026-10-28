@@ -725,6 +725,7 @@
     "label": "Message me",
     "intro": "You're writing to me directly.",
     "whatsapp_label": "On WhatsApp",
+    "whatsapp_hint": "quicker reply",
     "mail_label": "By email",
     "mail_name": "Your name (optional)",
     "mail_email": "Your email address",
