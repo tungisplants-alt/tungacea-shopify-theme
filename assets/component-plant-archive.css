@@ -16,9 +16,51 @@
   --pl-ease: var(--tungacea-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
 }
 
+/* Kopfzeile mit Foto
+   -------------------------------------------------------------------------
+   Das Foto geht ueber die ganze Breite und ueber den oberen Abstand des
+   Abschnitts hinaus (der negative Rand holt diesen Abstand zurueck). Eine
+   dunkle Schicht liegt darueber: am Handy gleichmaessig, am Laptop von links
+   (dort steht der Text) etwas weniger stark nach rechts. Unten blendet die
+   Flaeche in die Seitenfarbe aus, damit keine harte Kante bleibt. */
+.plant-archive__hero {
+  position: relative;
+  overflow: hidden;
+  margin: calc(var(--archiv-pad-top, 0px) * -1) 0 4rem;
+  padding: 6rem 0 5.2rem;
+  background:
+    linear-gradient(to bottom, rgba(10, 10, 10, 0) 55%, rgb(10, 10, 10) 100%),
+    linear-gradient(to right, rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.7)),
+    var(--archiv-bild) 56% 30% / cover no-repeat,
+    rgb(10, 10, 10);
+}
+
+@media screen and (min-width: 750px) {
+  .plant-archive__hero {
+    padding: 8rem 0 7rem;
+    background:
+      linear-gradient(to bottom, rgba(10, 10, 10, 0) 55%, rgb(10, 10, 10) 100%),
+      linear-gradient(to right, rgba(10, 10, 10, 0.86) 0%, rgba(10, 10, 10, 0.7) 50%, rgba(10, 10, 10, 0.52) 100%),
+      var(--archiv-bild) center 30% / cover no-repeat,
+      rgb(10, 10, 10);
+  }
+}
+
 .plant-archive__intro {
   max-width: 62rem;
-  margin-bottom: 4.8rem;
+  margin-bottom: 0;
+}
+
+.plant-archive__hero .plant-archive__heading {
+  text-shadow: 0 0.2rem 2.4rem rgba(0, 0, 0, 0.5);
+}
+
+.plant-archive__hero .plant-archive__eyebrow {
+  color: rgb(236, 160, 170);
+}
+
+.plant-archive__hero .plant-archive__lead {
+  color: rgba(242, 238, 232, 0.88);
 }
 
 .plant-archive__eyebrow {

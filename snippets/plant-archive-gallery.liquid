@@ -37,7 +37,13 @@
 -%}
 
 <div class="plant-archive" data-testid="plant-archive">
-  <div class="page-width">
+  {%- comment -%}
+    Die Einleitung steht auf einem Foto (assets/tungacea-archiv-kopf.jpg), das
+    ueber die ganze Breite geht. Eine dunkle Schicht liegt darueber, damit die
+    Schrift lesbar bleibt. Alles Weitere steht darunter in der gewohnten Breite.
+  {%- endcomment -%}
+  <div class="plant-archive__hero" style="--archiv-bild: url('{{ 'tungacea-archiv-kopf.jpg' | asset_url }}');" data-testid="plant-archive-hero">
+    <div class="page-width">
     <header class="plant-archive__intro">
       {%- if oberzeile != blank -%}
         <p class="plant-archive__eyebrow caption-with-letter-spacing">{{ oberzeile | escape }}</p>
@@ -49,6 +55,10 @@
         <div class="plant-archive__lead rte"><p>{{ 'private_archive.intro' | t }}</p></div>
       {%- endif -%}
     </header>
+    </div>
+  </div>
+
+  <div class="page-width">
 
     {%- liquid
       comment
