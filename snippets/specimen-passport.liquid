@@ -108,6 +108,15 @@
   endcase
 
   comment
+    Ein Samen im Stadium "Samen" ist bereits gekeimt. Das Wort Saemling waere
+    hier falsch; die Auswahl am Produkt bleibt "Saemling aus dieser Kreuzung".
+  endcomment
+  if sp_stadium == 'Samen' and delivery_kind == 'seedling'
+    assign delivery_kind = 'seed'
+    assign thing_word = 'products.product.specimen.thing_seed' | t
+  endif
+
+  comment
     The experience hint is derived, never entered. It therefore cannot be
     forgotten on a product where it matters. Two parts so the opening can be
     set in bold without markup inside a translation string.
@@ -218,6 +227,12 @@
         assign lead = 'products.product.specimen.delivery_seedling_cross' | t
       else
         assign lead = 'products.product.specimen.delivery_seedling_plain' | t
+      endif
+    when 'seed'
+      if eltern_da
+        assign lead = 'products.product.specimen.delivery_seed_cross' | t
+      else
+        assign lead = 'products.product.specimen.delivery_seed_plain' | t
       endif
   endcase
 

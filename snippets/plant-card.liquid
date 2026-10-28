@@ -98,6 +98,8 @@
   case eintrag.stadium.value
     when 'Steckling'
       assign stage_label = 'products.product.specimen.stage_cutting' | t
+    when 'Samen'
+      assign stage_label = 'products.product.specimen.stage_seeds' | t
     when 'Sämling'
       assign stage_label = 'products.product.specimen.stage_seedling' | t
     when 'Jungpflanze'

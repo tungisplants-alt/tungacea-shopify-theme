@@ -71,6 +71,15 @@ const faelle = [
     erwartet: ['Samen'],
     verboten: [] },
 
+  // Ein Samen ist bereits gekeimt: Wort und Lieferzeile sagen "gekeimter Samen",
+  // nicht Saemling, obwohl die Auswahl am Produkt "Saemling aus dieser Kreuzung" bleibt.
+  { name: 'Samen mit Lieferumfang Saemling — gekeimter Samen, nicht Saemling',
+    mf: mf({ lieferumfang: 'Sämling aus dieser Kreuzung', stadium: 'Samen', specimen_id: 'TA-1021',
+             mutterpflanze: mutter('Anthurium regale', null, null, FOTOS) }),
+    erwartet: ['Gekeimter Samen', 'Du erhältst einen gekeimten Samen aus der unten gezeigten Kreuzung.',
+               'Dein gekeimter Samen stammt von dieser Pflanze aus meiner Sammlung.'],
+    verboten: ['Sämling', 'Sämling aus'] },
+
   // --- Saemlinge haben zwei Eltern -------------------------------------
   // Beide Eltern tragen Generation und Zuechter, das Produkt selbst nicht.
   // Nichts davon darf erscheinen: aus F2 x F1 folgt keine Generation, und
