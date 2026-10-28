@@ -32,7 +32,7 @@
   }
 {%- endstyle -%}
 
-<div class="collection-hero collection-hero--catalogue collection-hero--catalogue-{{ section.id }}{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
+<div class="collection-hero collection-hero--catalogue collection-hero--catalogue-{{ section.id }}{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient" style="--kollektion-bild: url('{{ 'tungacea-kollektion.jpg' | asset_url }}');">
   <div class="collection-hero__inner page-width {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
     <div class="collection-hero__text-wrapper">
       <p class="collection-hero__eyebrow caption" data-testid="collection-eyebrow">
@@ -44,10 +44,21 @@
         {{- collection_display_title | escape -}}
       </h1>
 
-      {%- if section.settings.show_collection_description and collection.description != blank -%}
-        <div class="collection-hero__description rte" data-testid="collection-description">
-          {{- collection.description -}}
-        </div>
+      {%- comment -%}
+        Eine eigene Beschreibung der Kollektion hat Vorrang. Fehlt sie bei der
+        Gesamtkollektion, steht dort der Satz aus den Sprachdateien, damit die
+        Kopfzeile nicht nur aus einer Ueberschrift besteht.
+      {%- endcomment -%}
+      {%- if section.settings.show_collection_description -%}
+        {%- if collection.description != blank -%}
+          <div class="collection-hero__description rte" data-testid="collection-description">
+            {{- collection.description -}}
+          </div>
+        {%- elsif collection.handle == 'all' -%}
+          <div class="collection-hero__description rte" data-testid="collection-description">
+            <p>{{ 'sections.collection_template.all_description' | t }}</p>
+          </div>
+        {%- endif -%}
       {%- endif -%}
 
       <div class="collection-hero__meta">

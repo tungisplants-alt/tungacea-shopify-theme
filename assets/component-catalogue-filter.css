@@ -25,15 +25,32 @@
   .tungacea-catalogue .mobile-facets__wrapper {
     display: none;
   }
+
+  /* Dawns eigene aktive Filter und Trefferzeile stehen sonst doppelt neben den
+     Gegenstuecken in diesem Block, mit anderen Woertern und auf Englisch noch
+     mit deutschen Filterwerten. Im Dokument bleiben sie, facets.js braucht sie. */
+  .tungacea-catalogue .active-facets,
+  .tungacea-catalogue .product-count {
+    display: none;
+  }
 }
 
+/* Die Schnellwahl laesst sich nur nach links und rechts wischen. Vorher stand
+   die Zeile mit einem Pixel negativem Rand ueber ihrem Kasten, dadurch gab es
+   ein Pixel senkrechten Spielraum, und die Zeile liess sich beim Wischen hin
+   und her schubsen. Jetzt liegt nichts mehr ueber: die untere Linie ist ein
+   Hintergrund des Kastens, die Auswahl markiert sich mit der eigenen
+   Unterkante. Obere und untere Linie sind gleich leise. */
 .catalogue-filter__tabs {
   display: flex;
   gap: 2.2rem;
   margin: 0 0 2rem;
   overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
   scrollbar-width: none;
-  border-bottom: 1px solid var(--cf-line);
+  border-top: 1px solid var(--cf-line-soft);
+  background: linear-gradient(var(--cf-line-soft), var(--cf-line-soft)) left bottom / 100% 1px no-repeat;
 }
 
 .catalogue-filter__tabs::-webkit-scrollbar {
@@ -42,7 +59,7 @@
 
 .catalogue-filter__tab {
   flex: none;
-  margin-bottom: -1px;
+  margin: 0;
   padding: 1.2rem 0;
   border-bottom: 1px solid transparent;
   color: var(--cf-muted);

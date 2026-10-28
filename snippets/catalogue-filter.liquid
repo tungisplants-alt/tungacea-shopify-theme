@@ -29,14 +29,11 @@
   assign ergebnis_url = results.url
   assign sort_by = results.sort_by | default: results.default_sort_by
   assign stadium_filter = nil
-  assign vorrat_filter = nil
   assign aktive_zahl = 0
 
   for filter in results.filters
     if filter.param_name contains 'stadium'
       assign stadium_filter = filter
-    elsif filter.param_name == 'filter.v.availability'
-      assign vorrat_filter = filter
     endif
 
     if filter.type == 'price_range'
@@ -49,7 +46,7 @@
   endfor
 
   assign hat_schnellwahl = false
-  if stadium_filter != nil or vorrat_filter != nil
+  if stadium_filter != nil
     assign hat_schnellwahl = true
   endif
 -%}
@@ -102,19 +99,6 @@
           {%- endif -%}
         {%- endfor -%}
       {%- endif -%}
-      {%- if vorrat_filter != nil -%}
-        {%- for value in vorrat_filter.values -%}
-          {%- if value.value == '1' -%}
-            <a
-              class="catalogue-filter__tab"
-              href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
-              {% if value.active %}aria-current="true"{% endif %}
-            >
-              {{- 'catalogue_filter.in_stock' | t }} <span class="catalogue-filter__tab-count">{{ value.count }}</span>
-            </a>
-          {%- endif -%}
-        {%- endfor -%}
-      {%- endif -%}
     </nav>
   {%- endif -%}
 
@@ -160,11 +144,30 @@
             {%- endif -%}
           {%- else -%}
             {%- for value in filter.active_values -%}
+              {%- liquid
+                assign chip_label = value.label
+                if filter.param_name contains 'stadium'
+                  case value.value
+                    when 'Steckling'
+                      assign chip_label = 'products.product.specimen.stage_cutting' | t
+                    when 'Samen'
+                      assign chip_label = 'products.product.specimen.stage_seeds' | t
+                    when 'Sämling'
+                      assign chip_label = 'products.product.specimen.stage_seedling' | t
+                    when 'Jungpflanze'
+                      assign chip_label = 'products.product.specimen.stage_young' | t
+                    when 'Etabliert'
+                      assign chip_label = 'products.product.specimen.stage_established' | t
+                    when 'Mutterpflanze'
+                      assign chip_label = 'products.product.specimen.stage_mother' | t
+                  endcase
+                endif
+              -%}
               <li>
                 <a class="catalogue-filter__active-chip" href="{{ value.url_to_remove }}">
-                  <span>{{ value.label | escape }}</span>
+                  <span>{{ chip_label | escape }}</span>
                   <span aria-hidden="true">&#x2715;</span>
-                  <span class="visually-hidden">{{ 'catalogue_filter.remove' | t: name: value.label }}</span>
+                  <span class="visually-hidden">{{ 'catalogue_filter.remove' | t: name: chip_label }}</span>
                 </a>
               </li>
             {%- endfor -%}
