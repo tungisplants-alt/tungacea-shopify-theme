@@ -100,10 +100,10 @@
         "variant_picker",
         "winterpack",
         "buy_buttons",
-        "versandinfo",
         "specimen",
         "description",
-        "share"
+        "share",
+        "versandinfo"
       ],
       "settings": {
         "enable_sticky_info": true,

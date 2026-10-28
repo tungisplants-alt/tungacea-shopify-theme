@@ -85,6 +85,7 @@ function pruefe(name, ist, soll) {
     pruefe('Block ist nicht standardmaessig offen, auch mit eigenen Texten', /<details[^>]* open/.test(await render({ zeile_1: 'x' })), false);
     const css = fs.readFileSync(path.join(THEME, 'assets/component-versandinfo.css'), 'utf8');
     pruefe('CSS entfernt das Dreieck des Browsers (list-style und webkit-marker)', /list-style:\s*none/.test(css) && /::-webkit-details-marker/.test(css), true);
+    pruefe('CSS gibt dem Block nur Abstand nach oben (unten steht nichts mehr)', /\.versandinfo \{\s*margin: 2\.4rem 0 0;/.test(css), true);
     pruefe('CSS schaltet Plus und Minus um', /\.versandinfo\[open\] \.versandinfo__indikator::after/.test(css), true);
     pruefe('CSS nimmt den Fokus-Rahmen auf Touch-Geraeten weg (wie bei Archiv-Fotos und Karte)', /hover: none\) and \(pointer: coarse\)[\s\S]*versandinfo__toggle:focus-visible/.test(css), true);
     const en = await render({}, { sprache: 'en' });
@@ -150,8 +151,10 @@ function pruefe(name, ist, soll) {
     pruefe('Block wird im Abschnitt ausgegeben (when)', /\{%-?\s*when 'versandinfo'\s*-?%\}\s*\{%\s*render 'versandinfo', block: block\s*%\}/.test(abschnitt), true);
     pruefe('Block steht in der Produktvorlage', haupt.blocks.versandinfo && haupt.blocks.versandinfo.type === 'versandinfo', true);
     const o = haupt.block_order;
-    pruefe('Reihenfolge: direkt nach dem Kaufknopf, vor dem Exemplar-Archiv',
-      o.indexOf('buy_buttons') + 1 === o.indexOf('versandinfo') && o.indexOf('versandinfo') + 1 === o.indexOf('specimen'), true);
+    pruefe('Reihenfolge: ganz am Ende der Produktspalte', o[o.length - 1], 'versandinfo');
+    pruefe('Reihenfolge: nach Kaufknopf, Exemplar-Archiv, Beschreibung und Teilen',
+      ['buy_buttons', 'specimen', 'description', 'share'].every((k) => o.indexOf(k) >= 0 && o.indexOf(k) < o.indexOf('versandinfo')), true);
+    pruefe('es steht kein anderer Block hinter dem Versand', o.indexOf('versandinfo') === o.length - 1, true);
     pruefe('Einstellungen der Vorlage kennt das Schema', Object.keys((haupt.blocks.versandinfo || { settings: {} }).settings).every((k) => blockSchema.settings.some((s) => s.id === k)), true);
     // Allgemein: Jeder Block der Vorlage ist im Schema angeboten.
     const unbekannt = Object.entries(haupt.blocks).filter(([, b]) => !typen.includes(b.type) && !/^@/.test(b.type)).map(([k, b]) => k + ':' + b.type);

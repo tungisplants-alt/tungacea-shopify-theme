@@ -1,7 +1,7 @@
 /*
- * Versandinfo unter dem Kaufknopf, zugeklappt.
+ * Versandinfo ganz am Ende der Produktspalte, zugeklappt.
  *
- * Eine Zeile mit Haarlinien oben und unten, wie die Winterverpackung darueber:
+ * Eine Zeile mit Haarlinien oben und unten, wie die Winterverpackung:
  * Haarlinien statt Kasten, weil Variantenfelder und Kaufknopf schon Rechtecke
  * sind. Zugeklappt, damit die Produktseite nicht voll wird; aufgeklappt stehen
  * darin drei gedaempfte Zeilen und der Link zu den ganzen Versandbedingungen.
@@ -10,7 +10,7 @@
  * innerhalb der Farbschema-Klassen (siehe component-winter-pack.css).
  */
 .versandinfo {
-  margin: 1.8rem 0 2rem;
+  margin: 2.4rem 0 0;
   border-top: 1px solid var(--tungacea-hairline);
   border-bottom: 1px solid var(--tungacea-hairline);
 }
