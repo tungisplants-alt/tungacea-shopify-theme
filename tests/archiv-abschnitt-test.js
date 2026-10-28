@@ -89,11 +89,11 @@ const zaehle = (html, muster) => (html.match(muster) || []).length;
   pruefe('Karten stehen als Listenpunkte im Raster', zaehle(html, /<li>\s*<article/g), 5);
   const jaNein = [...html.matchAll(/data-angebot="(ja|nein)"/g)].map((m) => m[1]);
   pruefe('Angebot: Mutter (p1), Mutter (p3) und Vater (p4) ja; verkauft (p2) und ohne Pflanze nein', jaNein, ['ja', 'nein', 'ja', 'ja', 'nein']);
-  pruefe('Zeile "Exemplare ... bis ..." aus den eigenen IDs', /TA-1001 bis TA-1006|TA-1001 to TA-1006/.test(html), true);
+  pruefe('Zeile "Exemplare ... bis ..." steht nicht mehr im Archiv', /TA-1001 bis TA-1006|TA-1001 to TA-1006|plant-archive-range/.test(html), false);
   pruefe('Suchleiste ist da', /data-testid="plant-search"/.test(html), true);
   pruefe('Schnellwahl bietet das Angebot an (trennt: 3 von 5)', /data-einstieg="angebot"/.test(html), true);
   pruefe('Merkmal aus der Auswahl wird zum Schalter, leerer Name nicht', /data-facet="merkmale"/.test(html) && !/data-wert="\s*"/.test(html), true);
-  pruefe('fremde Pflanze speist nichts ein: ID TA-1005 steht nicht in der Spanne', /TA-1001 bis TA-1006|TA-1001 to TA-1006/.test(html) && !/TA-1005/.test(html), true);
+  pruefe('fremde Pflanze speist nichts ein: ID TA-1005 steht nirgends im Archiv', /TA-1005/.test(html), false);
 
   // Ohne Produkte kein Angebot, kein Fehler.
   const ohne = await rendere(eintraege, []);
