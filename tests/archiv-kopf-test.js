@@ -22,7 +22,7 @@ pruefe('Foto ist unter 500 kB', fs.existsSync(bild) && fs.statSync(bild).size < 
 pruefe('Kopf setzt die Bildvariable aus der Asset-Datei', /--archiv-bild: url\('\{\{ 'tungacea-archiv-kopf\.jpg' \| asset_url \}\}'\)/.test(snippet), true);
 pruefe('CSS legt das Foto als Hintergrund unter den Kopf', /var\(--archiv-bild\) [^;]*cover no-repeat/.test(css), true);
 pruefe('dunkle Schichten ueber dem Foto (Handy und Laptop)', (css.match(/linear-gradient\(/g) || []).length >= 4, true);
-pruefe('Eyebrow hat im Kopf eine hellere Farbe', /plant-archive__hero \.plant-archive__eyebrow\s*\{[^}]*color/.test(css), true);
+pruefe('Eyebrow im Kopf wie in der Kollektion (rote Linie)', /plant-archive__eyebrow::before/.test(css), true);
 
 console.log(fehler + ' Fehler in ' + geprueft + ' Pruefungen');
 process.exit(fehler ? 1 : 0);

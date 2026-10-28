@@ -56,21 +56,50 @@
 }
 
 .plant-archive__hero .plant-archive__eyebrow {
-  color: rgb(244, 118, 134);
-  text-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.85), 0 0.1rem 0.4rem rgba(0, 0, 0, 0.6);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
+  display: inline-block;
+  margin: 0 0 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-size: 1.1rem;
+  color: rgba(242, 238, 232, 0.78);
+}
+
+.plant-archive__hero .plant-archive__eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 2.4rem;
+  height: 1px;
+  margin-right: 1.2rem;
+  vertical-align: middle;
+  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+.plant-archive__hero .plant-archive__heading {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(5rem, 13.5vw, 7.2rem);
+  line-height: 1.05;
 }
 
 @media screen and (min-width: 750px) {
   .plant-archive__hero .plant-archive__eyebrow {
-    font-size: 1.7rem;
+    letter-spacing: 0.32em;
+    margin-bottom: 1.8rem;
   }
 }
 
 .plant-archive__hero .plant-archive__lead {
-  color: rgba(242, 238, 232, 0.88);
+  margin-top: 2rem;
+  color: rgba(242, 238, 232, 0.86);
+  font-size: 1.5rem;
+  line-height: 1.6;
+}
+
+@media screen and (min-width: 750px) {
+  .plant-archive__hero .plant-archive__lead {
+    margin-top: 2.2rem;
+    font-size: 1.6rem;
+  }
 }
 
 .plant-archive__eyebrow {
