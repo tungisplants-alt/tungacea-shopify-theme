@@ -205,29 +205,30 @@
   box-shadow: none;
 }
 
-/* Festes 4:5 am Telefon.
+/* Festes Quadrat am Telefon, wie im Archiv.
  *
  * Dawn rechnet die Hoehe aus dem NATUERLICHEN Seitenverhaeltnis jedes Bildes
  * (--ratio-percent). Bei gemischten Formaten wechselt der Wagen damit von
- * Bild zu Bild die Hoehe, und beim Wischen springt die halbe Seite.
+ * Bild zu Bild die Hoehe, und beim Wischen springt die halbe Seite. Ein festes
+ * Mass haelt den Wagen ruhig.
  *
- * `contain` statt `cover`: Das entspricht Tungs Einstellung media_fit und
- * schneidet nichts ab. Was neben einem schmalen Hochformat uebrig bleibt,
- * verschwindet in der Seitenfarbe.
+ * `cover` statt `contain`: Vorher stand hier 4:5 mit `contain`. Neben einem
+ * schmalen Hochformat blieben dadurch links und rechts schwarze Balken stehen,
+ * die Galerie wirkte lueckig. Jetzt fuellt das Bild den Rahmen, so wie die
+ * Fotos auf der Archivseite. Dafuer wird bei sehr hohen Bildern oben und unten
+ * etwas abgeschnitten; im Vollbild (Tippen auf das Bild) bleibt das ganze Foto
+ * zu sehen.
  *
- * Der durchsichtige Hintergrund ist hier nur eine Absicherung: Dawn setzt
- * `media--transparent` bereits in der Auszeichnung (dreimal belegt in
- * snippets/product-thumbnail.liquid). Faellt die Klasse irgendwann weg,
- * legt die Grundregel `rgba(var(--color-foreground), .1)` einen hellen
- * Kasten unter das Hochformat.
+ * Der durchsichtige Hintergrund ist nur eine Absicherung: Dawn setzt
+ * `media--transparent` bereits in der Auszeichnung.
  */
 @media screen and (max-width: 749px) {
   .product__media-item .product-media-container .media {
-    padding-top: 125%;
+    padding-top: 100%;
     background-color: transparent;
   }
 
   .product__media-item .product-media-container .media img {
-    object-fit: contain;
+    object-fit: cover;
   }
 }
