@@ -20,7 +20,32 @@
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
-  {%- render 'plant-profile', eintrag: metaobject, produkte: collections.all.products, alle: shop.metaobjects.mutterpflanze.values -%}
+  {%- comment -%}
+    Beide Listen laufen durch paginate by 250, sonst liefert Shopify nur die
+    ersten 50. GEMESSEN im Shop: paginate wirkt nur, wenn der Durchlauf in
+    DIESER Datei steht. Reicht man das Feld an ein Snippet weiter, kommen
+    wieder nur 50. Darum laufen die Schleifen hier, und das Snippet bekommt
+    fertige Texte: die Angebotszeilen und ein Verzeichnis der Pflanzen.
+  {%- endcomment -%}
+  {%- assign angebote_html = '' -%}
+  {%- paginate collections.all.products by 250 -%}
+    {%- capture angebote_html -%}
+      {%- for produkt in collections.all.products -%}
+        {%- render 'plant-offer-match', eintrag: metaobject, produkt: produkt -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+  {%- endpaginate -%}
+
+  {%- assign verzeichnis = '' -%}
+  {%- paginate shop.metaobjects.mutterpflanze.values by 250 -%}
+    {%- for e in shop.metaobjects.mutterpflanze.values -%}
+      {%- if e.besitzer.value == blank and e.mutter_id.value != blank -%}
+        {%- assign verzeichnis = verzeichnis | append: e.mutter_id.value | append: '=' | append: e.system.url | append: ';' -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endpaginate -%}
+
+  {%- render 'plant-profile', eintrag: metaobject, angebote_html: angebote_html, verzeichnis: verzeichnis -%}
 </div>
 
 {% schema %}

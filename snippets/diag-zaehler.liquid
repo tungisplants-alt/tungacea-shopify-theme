@@ -1,7 +1,0 @@
-{% comment %}
-  Nur fuer die Messung: zaehlt, wie viele Eintraege ein hineingereichtes Feld
-  beim Durchlaufen liefert. Wird wieder entfernt.
-{% endcomment %}
-{%- assign n = 0 -%}
-{%- for x in liste -%}{%- assign n = n | plus: 1 -%}{%- endfor -%}
-{{- n -}}

@@ -25,82 +25,152 @@
 
 <div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
   {%- comment -%}
-    Der Produktbestand wird ausdruecklich hineingereicht, nicht in den Snippets
-    als globales Objekt vorausgesetzt. Ein render isoliert den Namensraum, und
-    eine Annahme darueber, was darin sichtbar bleibt, laesst sich ausserhalb von
-    Shopify nicht pruefen.
+    Zwei Listen, zwei paginate-Bloecke, einer nach dem anderen. Ohne paginate
+    liefert Shopify beim Durchlaufen nur die ersten 50 Eintraege, ab dem 51.
+    Produkt oder der 51. Pflanze fehlten stillschweigend Angebote und Karten.
+    Mit paginate by 250 sind es bis zu 250 je Liste.
+
+    GEMESSEN im Shop (Messung vom 28.10.): paginate wirkt nur, wenn der
+    Durchlauf in DIESER Datei steht, mit dem Ausdruck direkt in der Schleife.
+    Reicht man das Feld an ein Snippet weiter und laeuft dort durch, kommen
+    wieder nur 50 heraus. Deshalb laufen beide Schleifen hier, und die Snippets
+    bekommen nur fertige Texte und Zeichenketten.
+
+    Erst die Produkte, EINMAL durchlaufen: daraus die Pflanzen, zu denen es
+    gerade etwas zu kaufen gibt, als Zeichenkette mit senkrechten Strichen
+    (|handle|handle|). Vorher suchte jede Karte selbst durch alle Produkte.
+    Rueckweg ueber beide Rollen: Mutter eines Cuttings und einer von zwei
+    Eltern eines Saemlings. Verkauftes zaehlt nicht.
   {%- endcomment -%}
+  {%- assign pflanzen_mit_angebot = '|' -%}
+  {%- paginate collections.all.products by 250 -%}
+    {%- for produkt in collections.all.products -%}
+      {%- if produkt.available -%}
+        {%- assign pm = produkt.metafields.custom.mutterpflanze.value -%}
+        {%- assign pv = produkt.metafields.custom.vaterpflanze.value -%}
+        {%- if pm != blank -%}
+          {%- assign pflanzen_mit_angebot = pflanzen_mit_angebot | append: pm.system.handle | append: '|' -%}
+        {%- endif -%}
+        {%- if pv != blank -%}
+          {%- assign pflanzen_mit_angebot = pflanzen_mit_angebot | append: pv.system.handle | append: '|' -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endpaginate -%}
+
+  {%- comment -%}
+    Dann die Pflanzen: jede eigene Pflanze wird eine Kachel, und nebenbei
+    sammelt die Schleife, was die Filter anbieten. Fremde Pflanzen (Feld
+    besitzer) gehoeren nicht in diese Galerie und speisen nichts ein.
+  {%- endcomment -%}
+  {%- assign stadien = '' -%}
+  {%- assign generationen = '' -%}
+  {%- assign zuechter_namen = '' -%}
+  {%- assign herkuenfte = '' -%}
+  {%- assign linien = '' -%}
+  {%- assign reinheiten = '' -%}
+  {%- assign merkmale = '' -%}
+  {%- assign id_roh = '' -%}
+  {%- assign mit_angebot = 0 -%}
+  {%- assign eigene = 0 -%}
+  {%- assign geladen = 0 -%}
+  {%- assign seiten_html = '' -%}
+  {%- assign seiten_zahl = 1 -%}
+  {%- assign seiten_groesse = 250 -%}
+  {%- paginate shop.metaobjects.mutterpflanze.values by 250 -%}
+    {%- capture karten_html -%}
+      {%- for e in shop.metaobjects.mutterpflanze.values -%}
+        {%- assign geladen = geladen | plus: 1 -%}
+        {%- if e.besitzer.value != blank -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- assign eigene = eigene | plus: 1 -%}
+
+        {%- if e.mutter_id.value != blank -%}
+          {%- assign id_roh = id_roh | append: e.mutter_id.value | append: '|' -%}
+        {%- endif -%}
+        {%- if e.stadium.value != blank -%}
+          {%- assign stadien = stadien | append: e.stadium.value | append: '|' -%}
+        {%- endif -%}
+        {%- if e.generation.value != blank -%}
+          {%- assign generationen = generationen | append: e.generation.value | append: '|' -%}
+        {%- endif -%}
+        {%- if e.reinheit.value != blank -%}
+          {%- assign reinheiten = reinheiten | append: e.reinheit.value | append: '|' -%}
+        {%- endif -%}
+        {%- for l in e.linie.value -%}
+          {%- assign linien = linien | append: l | append: '|' -%}
+        {%- endfor -%}
+        {%- for m in e.merkmale.value -%}
+          {%- assign m_name = m.name.value | default: '' | strip -%}
+          {%- if m_name != blank -%}
+            {%- assign merkmale = merkmale | append: m_name | append: '|' -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- assign z = e.zuechter.value -%}
+        {%- if z != blank -%}
+          {%- assign zname = z.name.value | default: '' | strip -%}
+          {%- if zname != blank -%}
+            {%- assign zuechter_namen = zuechter_namen | append: zname | append: '|' -%}
+          {%- endif -%}
+          {%- assign zland = z.land.value | default: '' | strip -%}
+          {%- if zland != blank -%}
+            {%- assign herkuenfte = herkuenfte | append: zland | append: '|' -%}
+          {%- endif -%}
+        {%- endif -%}
+        {%- assign handle_marke = e.system.handle | prepend: '|' | append: '|' -%}
+        {%- if pflanzen_mit_angebot contains handle_marke -%}
+          {%- assign mit_angebot = mit_angebot | plus: 1 -%}
+        {%- endif -%}
+
+        <li>
+          {%- render 'plant-card', eintrag: e, angebote: pflanzen_mit_angebot -%}
+        </li>
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- assign seiten_zahl = paginate.pages -%}
+    {%- assign seiten_groesse = paginate.page_size -%}
+    {%- if paginate.pages > 1 -%}
+      {%- capture seiten_html -%}{{- paginate | default_pagination -}}{%- endcapture -%}
+    {%- endif -%}
+  {%- endpaginate -%}
+
   {%- render 'plant-archive-gallery',
-    eintraege: shop.metaobjects.mutterpflanze.values,
-    produkte: collections.all.products,
+    karten_html: karten_html,
+    id_roh: id_roh,
+    eigene: eigene,
+    mit_angebot: mit_angebot,
+    stadien: stadien,
+    generationen: generationen,
+    zuechter_namen: zuechter_namen,
+    herkuenfte: herkuenfte,
+    linien: linien,
+    reinheiten: reinheiten,
+    merkmale: merkmale,
+    seiten_html: seiten_html,
     eyebrow: section.settings.eyebrow,
     heading: section.settings.heading,
     intro: section.settings.intro
   -%}
-</div>
 
-{%- comment -%} MESSUNG, nur fuer die Fehlersuche, wird wieder entfernt. Im Vorschau-Theme immer sichtbar. {%- endcomment -%}
-<div id="tungacea-diag" style="position:relative;z-index:50;background:#fff;color:#000;padding:16px;font:14px/1.5 monospace;white-space:pre-wrap">
-{%- assign e_size = shop.metaobjects.mutterpflanze.values.size -%}
-{%- assign e1 = 0 -%}
-{%- for x in shop.metaobjects.mutterpflanze.values -%}{%- assign e1 = e1 | plus: 1 -%}{%- endfor -%}
-{%- assign e2 = 0 -%}
-{%- assign e3 = '' -%}
-{%- assign e4 = 0 -%}
-{%- assign e5 = '' -%}
-{%- paginate shop.metaobjects.mutterpflanze.values by 250 -%}
-  {%- for x in shop.metaobjects.mutterpflanze.values -%}{%- assign e2 = e2 | plus: 1 -%}{%- endfor -%}
-  {%- capture e3 -%}{%- render 'diag-zaehler', liste: shop.metaobjects.mutterpflanze.values -%}{%- endcapture -%}
-  {%- assign liste_e = shop.metaobjects.mutterpflanze.values -%}
-  {%- for x in liste_e -%}{%- assign e4 = e4 | plus: 1 -%}{%- endfor -%}
-  {%- capture e5 -%}{%- render 'diag-zaehler', liste: liste_e -%}{%- endcapture -%}
-  {%- assign pg_e = 'items=' | append: paginate.items | append: ' pages=' | append: paginate.pages | append: ' page_size=' | append: paginate.page_size | append: ' current=' | append: paginate.current_page -%}
-{%- endpaginate -%}
-
-{%- assign p_size = collections.all.products.size -%}
-{%- assign p1 = 0 -%}
-{%- assign p1v = 0 -%}
-{%- assign p1m = 0 -%}
-{%- for x in collections.all.products -%}
-  {%- assign p1 = p1 | plus: 1 -%}
-  {%- if x.available -%}{%- assign p1v = p1v | plus: 1 -%}{%- endif -%}
-  {%- if x.metafields.custom.mutterpflanze.value != blank -%}{%- assign p1m = p1m | plus: 1 -%}{%- endif -%}
-{%- endfor -%}
-{%- assign p2 = 0 -%}
-{%- assign p2v = 0 -%}
-{%- assign p2m = 0 -%}
-{%- assign p3 = '' -%}
-{%- assign p4 = 0 -%}
-{%- assign p5 = '' -%}
-{%- paginate collections.all.products by 250 -%}
-  {%- for x in collections.all.products -%}
-    {%- assign p2 = p2 | plus: 1 -%}
-    {%- if x.available -%}{%- assign p2v = p2v | plus: 1 -%}{%- endif -%}
-    {%- if x.metafields.custom.mutterpflanze.value != blank -%}{%- assign p2m = p2m | plus: 1 -%}{%- endif -%}
-  {%- endfor -%}
-  {%- capture p3 -%}{%- render 'diag-zaehler', liste: collections.all.products -%}{%- endcapture -%}
-  {%- assign liste_p = collections.all.products -%}
-  {%- for x in liste_p -%}{%- assign p4 = p4 | plus: 1 -%}{%- endfor -%}
-  {%- capture p5 -%}{%- render 'diag-zaehler', liste: liste_p -%}{%- endcapture -%}
-  {%- assign pg_p = 'items=' | append: paginate.items | append: ' pages=' | append: paginate.pages | append: ' page_size=' | append: paginate.page_size -%}
-{%- endpaginate -%}
-TUNGACEA MESSUNG
-Pflanzen (Eintraege):
-  E0 .size                         = {{ e_size }}
-  E1 Schleife ohne paginate        = {{ e1 }}
-  E2 paginate + Schleife im Abschnitt = {{ e2 }}
-  E3 paginate + Baustein bekommt Feld = {{ e3 }}
-  E4 paginate + Zwischenvariable   = {{ e4 }}
-  E5 paginate + Baustein bekommt Zwischenvariable = {{ e5 }}
-  paginate: {{ pg_e }}
-Produkte:
-  P0 .size                         = {{ p_size }}
-  P1 Schleife ohne paginate        = {{ p1 }} (verfuegbar {{ p1v }}, mit Mutterpflanze {{ p1m }})
-  P2 paginate + Schleife im Abschnitt = {{ p2 }} (verfuegbar {{ p2v }}, mit Mutterpflanze {{ p2m }})
-  P3 paginate + Baustein bekommt Feld = {{ p3 }}
-  P4 paginate + Zwischenvariable   = {{ p4 }}
-  P5 paginate + Baustein bekommt Zwischenvariable = {{ p5 }}
-  paginate: {{ pg_p }}
+  {%- comment -%}
+    Selbstpruefung, nur im Theme-Editor sichtbar: die Liste meldet ihre ganze
+    Laenge, auch wenn der Durchlauf nur einen Teil liefert. Weicht beides ab,
+    fehlen Pflanzen, und der Besucher sieht es nicht.
+  {%- endcomment -%}
+  {%- if request.design_mode -%}
+    {%- assign erwartet = shop.metaobjects.mutterpflanze.values.size -%}
+    {%- if seiten_groesse > 0 and erwartet > seiten_groesse -%}
+      {%- assign erwartet = seiten_groesse -%}
+    {%- endif -%}
+    {%- if geladen < erwartet -%}
+      <div class="page-width">
+        <p class="plant-archive__warning" data-testid="plant-archive-warning">
+          {{ 'private_archive.load_warning' | t: geladen: geladen, gesamt: shop.metaobjects.mutterpflanze.values.size }}
+        </p>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
 </div>
 
 {% schema %}

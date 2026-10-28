@@ -19,77 +19,23 @@
   JavaScript bleibt die Leiste unsichtbar und die Galerie vollständig — eine
   Suche, die nichts findet, weil ein Skript fehlt, wäre schlimmer als gar keine.
 
-  Annahmen:
-  - eintraege: {Array} Einträge vom Typ mutterpflanze (Pflicht)
+  Annahmen (alle von der Vorlage gesammelt, nur eigene Pflanzen):
+  - stadien, generationen, zuechter_namen, herkuenfte, linien, reinheiten,
+    merkmale: {String} Werte mit senkrechten Strichen getrennt
+  - eigene, mit_angebot: {Number} Anzahl eigener Pflanzen, davon mit Angebot
+  - stadien, generationen, zuechter_namen, herkuenfte, linien, reinheiten,
+    merkmale: {String} Werte eigener Pflanzen, mit senkrechten Strichen getrennt
+  - eigene, mit_angebot: {Number} Anzahl eigener Pflanzen, davon mit Angebot
+  Alles von der Vorlage gesammelt.
 {% endcomment %}
 {%- liquid
   comment
-    Vorkommende Werte je Gruppe sammeln. Liquid hat kein Set, deshalb der Weg
-    über eine Zeichenkette mit Trennzeichen und uniq. Fremde Pflanzen bleiben
-    aussen vor, genau wie im Raster.
+    Die vorkommenden Werte je Gruppe sammelt die Vorlage beim Durchlaufen der
+    Eintraege und reicht sie als Zeichenketten mit senkrechten Strichen herein.
+    Der Durchlauf muss dort stehen, wo der paginate-Block steht: ein Feld, das
+    an ein Snippet weitergegeben wird, liefert nur die ersten 50 Eintraege.
+    Liquid hat kein Set, deshalb uniq auf der aufgeteilten Zeichenkette.
   endcomment
-  assign stadien = ''
-  assign generationen = ''
-  assign zuechter_namen = ''
-  assign herkuenfte = ''
-  assign linien = ''
-  assign reinheiten = ''
-  assign merkmale = ''
-  assign mit_angebot = 0
-  assign eigene = 0
-
-  for e in eintraege
-    if e.besitzer.value != blank
-      continue
-    endif
-    assign eigene = eigene | plus: 1
-
-    if e.stadium.value != blank
-      assign stadien = stadien | append: e.stadium.value | append: '|'
-    endif
-    if e.generation.value != blank
-      assign generationen = generationen | append: e.generation.value | append: '|'
-    endif
-    if e.reinheit.value != blank
-      assign reinheiten = reinheiten | append: e.reinheit.value | append: '|'
-    endif
-    for l in e.linie.value
-      assign linien = linien | append: l | append: '|'
-    endfor
-    for m in e.merkmale.value
-      assign m_name = m.name.value | default: '' | strip
-      if m_name != blank
-        assign merkmale = merkmale | append: m_name | append: '|'
-      endif
-    endfor
-
-    assign z = e.zuechter.value
-    if z != blank
-      assign zname = z.name.value | default: '' | strip
-      if zname != blank
-        assign zuechter_namen = zuechter_namen | append: zname | append: '|'
-      endif
-      assign zland = z.land.value | default: '' | strip
-      if zland != blank
-        assign herkuenfte = herkuenfte | append: zland | append: '|'
-      endif
-    endif
-
-    for produkt in produkte limit: 100
-      if produkt.available
-        assign pm = produkt.metafields.custom.mutterpflanze.value
-        assign pv = produkt.metafields.custom.vaterpflanze.value
-        if pm != blank and pm.system.handle == e.system.handle
-          assign mit_angebot = mit_angebot | plus: 1
-          break
-        elsif pv != blank and pv.system.handle == e.system.handle
-          assign mit_angebot = mit_angebot | plus: 1
-          break
-        endif
-      endif
-    endfor
-  endfor
-
   assign stadien_liste = stadien | split: '|' | uniq | sort
   assign generationen_liste = generationen | split: '|' | uniq | sort
   assign zuechter_liste = zuechter_namen | split: '|' | uniq | sort
