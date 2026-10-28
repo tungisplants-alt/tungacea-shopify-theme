@@ -69,10 +69,10 @@ const zaehle = (h, m) => (h.match(m) || []).length;
 (async () => {
   locale = 'de';
   const h = await rendere(kollektion());
-  pruefe('Schnellwahl: Alle + 5 Stadien mit Treffern + Verfuegbar (Mutterpflanze mit 0 fehlt)', zaehle(h, /class="catalogue-filter__tab"/g), 7);
+  pruefe('Schnellwahl: Alle + 5 Stadien mit Treffern (Mutterpflanze mit 0 fehlt), kein Verfuegbar-Tab', zaehle(h, /class="catalogue-filter__tab"/g), 6);
   pruefe('Alle ist gewaehlt, wenn nichts aktiv ist', /href="\/collections\/x"\s+aria-current="true"/.test(h), true);
   pruefe('Stadien tragen die uebersetzte Aufschrift, Samen eingeschlossen', ['Steckling/Klon', 'Samen', 'Sämling', 'Jungpflanze', 'Etabliert'].every((w) => h.includes('>' + w + ' <span class="catalogue-filter__tab-count">')), true);
-  pruefe('Verfuegbar-Tab nimmt nur den Wert 1', /Verfügbar <span class="catalogue-filter__tab-count">13<\/span>/.test(h) && !/Nicht auf Lager <span class="catalogue-filter__tab-count">/.test(h), true);
+  pruefe('Kein Verfuegbar-Tab in der Schnellwahl (die Gruppe im Blatt bleibt)', !/catalogue-filter__tab-count">13</.test(h) && /Verfügbarkeit/.test(h), true);
   pruefe('kein Badge ohne Filter', /catalogue-filter__badge/.test(h), false);
   pruefe('Zaehlzeile ohne Filter: 14 Pflanzen', />\s*14 Pflanzen\s*</.test(h), true);
   pruefe('keine aktive Zeile ohne Filter', /catalogue-filter__active"/.test(h), false);
@@ -116,7 +116,7 @@ const zaehle = (h, m) => (h.match(m) || []).length;
   const k = kollektion();
   k.filters = k.filters.filter((f) => f.type === 'price_range');
   const ohne = await rendere(k);
-  pruefe('ohne Stadium- und Vorratsfilter keine Schnellwahl, Filterknopf bleibt', !/catalogue-filter__tabs/.test(ohne) && /catalogue-filter__button/.test(ohne), true);
+  pruefe('ohne Stadiumfilter keine Schnellwahl, Filterknopf bleibt', !/catalogue-filter__tabs/.test(ohne) && /catalogue-filter__button/.test(ohne), true);
 
   console.log(fehler + ' Fehler in ' + geprueft + ' Pruefungen');
   process.exit(fehler ? 1 : 0);

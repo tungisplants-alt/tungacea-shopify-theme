@@ -927,13 +927,19 @@
    gewaehlte hat eine feine rote Linie darunter, wie ein Reiter. Sie schaltet
    dieselben Filter wie das Filterblatt, nur schneller erreichbar. */
 
+/* Nur nach links und rechts wischbar, ohne senkrechten Spielraum (kein
+   negativer Rand mehr, die untere Linie ist ein Hintergrund des Kastens).
+   Obere und untere Linie sind gleich leise. */
 .plant-search__tabs {
   display: flex;
   gap: 2.2rem;
   margin: 0 0 2rem;
   overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
   scrollbar-width: none;
-  border-bottom: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
+  border-top: 1px solid var(--pl-line-soft, rgba(242, 238, 232, 0.08));
+  background: linear-gradient(var(--pl-line-soft, rgba(242, 238, 232, 0.08)), var(--pl-line-soft, rgba(242, 238, 232, 0.08))) left bottom / 100% 1px no-repeat;
 }
 
 .plant-search__tabs::-webkit-scrollbar {
@@ -943,7 +949,7 @@
 .plant-search__tab {
   appearance: none;
   flex: none;
-  margin: 0 0 -1px;
+  margin: 0;
   padding: 1.2rem 0;
   background: none;
   border: 0;

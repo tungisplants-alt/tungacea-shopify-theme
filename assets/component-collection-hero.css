@@ -202,19 +202,20 @@
 .collection-hero--catalogue.gradient {
   position: relative;
   overflow: hidden;
+  border-bottom: 0;
   background:
-    linear-gradient(to bottom, rgba(10, 10, 10, 0) 55%, rgba(10, 10, 10, 0.92) 100%),
-    linear-gradient(to right, rgba(10, 10, 10, 0.56), rgba(10, 10, 10, 0.56)),
-    var(--kollektion-bild) center 32% / cover no-repeat,
+    linear-gradient(to bottom, rgba(10, 10, 10, 0) 55%, rgb(10, 10, 10) 100%),
+    linear-gradient(to right, rgba(10, 10, 10, 0.46), rgba(10, 10, 10, 0.46)),
+    var(--kollektion-bild) center 0% / cover no-repeat,
     rgb(10, 10, 10);
 }
 
 @media screen and (min-width: 750px) {
   .collection-hero--catalogue.gradient {
     background:
-      linear-gradient(to bottom, rgba(10, 10, 10, 0) 50%, rgba(10, 10, 10, 0.95) 100%),
-      linear-gradient(to right, rgba(10, 10, 10, 0.86) 0%, rgba(10, 10, 10, 0.6) 45%, rgba(10, 10, 10, 0.14) 100%),
-      var(--kollektion-bild) center 30% / cover no-repeat,
+      linear-gradient(to bottom, rgba(10, 10, 10, 0) 55%, rgb(10, 10, 10) 100%),
+      linear-gradient(to right, rgba(10, 10, 10, 0.8) 0%, rgba(10, 10, 10, 0.5) 45%, rgba(10, 10, 10, 0.08) 100%),
+      var(--kollektion-bild) center 12% / cover no-repeat,
       rgb(10, 10, 10);
   }
 }

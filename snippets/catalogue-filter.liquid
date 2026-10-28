@@ -29,14 +29,11 @@
   assign ergebnis_url = results.url
   assign sort_by = results.sort_by | default: results.default_sort_by
   assign stadium_filter = nil
-  assign vorrat_filter = nil
   assign aktive_zahl = 0
 
   for filter in results.filters
     if filter.param_name contains 'stadium'
       assign stadium_filter = filter
-    elsif filter.param_name == 'filter.v.availability'
-      assign vorrat_filter = filter
     endif
 
     if filter.type == 'price_range'
@@ -49,7 +46,7 @@
   endfor
 
   assign hat_schnellwahl = false
-  if stadium_filter != nil or vorrat_filter != nil
+  if stadium_filter != nil
     assign hat_schnellwahl = true
   endif
 -%}
@@ -98,19 +95,6 @@
               {% if value.active %}aria-current="true"{% endif %}
             >
               {{- wert_label | escape }} <span class="catalogue-filter__tab-count">{{ value.count }}</span>
-            </a>
-          {%- endif -%}
-        {%- endfor -%}
-      {%- endif -%}
-      {%- if vorrat_filter != nil -%}
-        {%- for value in vorrat_filter.values -%}
-          {%- if value.value == '1' -%}
-            <a
-              class="catalogue-filter__tab"
-              href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
-              {% if value.active %}aria-current="true"{% endif %}
-            >
-              {{- 'catalogue_filter.in_stock' | t }} <span class="catalogue-filter__tab-count">{{ value.count }}</span>
             </a>
           {%- endif -%}
         {%- endfor -%}
