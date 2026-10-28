@@ -878,14 +878,14 @@
 .plant-search__bar {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: 1.2rem 2.4rem;
   margin-top: 1.6rem;
 }
 
 .plant-search__count {
   order: 1;
-  margin: 0;
+  margin: 0 0 0 auto;
   font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 0.18em;
@@ -893,7 +893,6 @@
 }
 
 .plant-search__clear {
-  order: 2;
   appearance: none;
   background: none;
   border: 0;
@@ -922,41 +921,91 @@
   outline-offset: 3px;
 }
 
-.plant-search__filters {
-  order: 3;
-  flex: 1 1 100%;
+/* Schnellwahl
+   -------------------------------------------------------------------------
+   Eine Zeile aus Woertern mit Zahl, die sich seitlich wischen laesst. Die
+   gewaehlte hat eine feine rote Linie darunter, wie ein Reiter. Sie schaltet
+   dieselben Filter wie das Filterblatt, nur schneller erreichbar. */
+
+.plant-search__tabs {
+  display: flex;
+  gap: 2.2rem;
+  margin: 0 0 2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
 }
 
-.plant-search__summary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-  width: max-content;
-  padding: 0.4rem 0;
-  list-style: none;
-  cursor: pointer;
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
-  transition: color 0.25s var(--pl-ease, ease);
-}
-
-.plant-search__summary::-webkit-details-marker {
+.plant-search__tabs::-webkit-scrollbar {
   display: none;
 }
 
-.plant-search__summary:hover {
-  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+.plant-search__tab {
+  appearance: none;
+  flex: none;
+  margin: 0 0 -1px;
+  padding: 1.2rem 0;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  font-family: inherit;
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.22s var(--pl-ease, ease), border-color 0.22s var(--pl-ease, ease);
 }
 
-.plant-search__summary:focus-visible {
+.plant-search__tab:hover {
+  color: #f2eee8;
+}
+
+.plant-search__tab[aria-pressed='true'] {
+  color: #f2eee8;
+  border-bottom-color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+}
+
+.plant-search__tab-count {
+  margin-left: 0.4rem;
+  opacity: 0.6;
+}
+
+.plant-search__tab:focus-visible {
   outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
   outline-offset: 3px;
 }
 
-.plant-search__filters.is-aktiv .plant-search__summary-text {
-  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+/* Der Filterknopf
+   ------------------------------------------------------------------------- */
+
+.plant-search__filter-button {
+  order: 0;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.9rem 1.6rem;
+  background: none;
+  border: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
+  color: #f2eee8;
+  font-family: inherit;
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  transition: border-color 0.22s var(--pl-ease, ease);
+}
+
+.plant-search__filter-button:hover,
+.plant-search__filter-button[aria-expanded='true'] {
+  border-color: rgba(242, 238, 232, 0.45);
+}
+
+.plant-search__filter-button:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
 }
 
 .plant-search__badge {
@@ -967,9 +1016,9 @@
   height: 1.8rem;
   padding: 0 0.5rem;
   border-radius: 999px;
-  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.9);
-  color: #f2eee8;
-  font-size: 1rem;
+  background: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  color: #0a0a0a;
+  font-size: 1.1rem;
   letter-spacing: 0;
 }
 
@@ -977,108 +1026,254 @@
   display: none;
 }
 
-.plant-search__chevron {
-  width: 0.7rem;
-  height: 0.7rem;
-  border-right: 1px solid currentColor;
-  border-bottom: 1px solid currentColor;
-  transform: rotate(45deg) translate(-0.15rem, -0.15rem);
-  transition: transform 0.25s var(--pl-ease, ease);
+/* Aktive Filter als Zeile, jeder einzeln entfernbar, dahinter Zuruecksetzen. */
+.plant-search__active-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1.6rem;
+  margin: 1.6rem 0 0;
 }
 
-/* Nur der Pfeil des eigenen Ausklappers, nicht jeder Pfeil darin. Ohne den
-   direkten Nachfahren traf diese Regel auch die Pfeile der Kategorien, und
-   die zeigten dauerhaft nach oben. */
-.plant-search__filters[open] > .plant-search__summary .plant-search__chevron {
-  transform: rotate(-135deg) translate(-0.2rem, -0.2rem);
+.plant-search__active-row[hidden] {
+  display: none;
 }
 
-/* Der Filterkasten
+.plant-search__active {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plant-search__active[hidden] {
+  display: none;
+}
+
+.plant-search__active-chip {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.45rem 1.1rem;
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.45);
+  border: 0;
+  color: #f2eee8;
+  font-family: inherit;
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.plant-search__active-chip:hover {
+  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.75);
+}
+
+.plant-search__active-chip:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 2px;
+}
+
+/* Das Filterblatt
    -------------------------------------------------------------------------
-   Kein Rahmen, keine harte Kante: eine etwas hellere Fläche, die sich vom
-   Hintergrund abhebt, ohne ihn zu zerschneiden. Tung: „nur leichter Kontrast,
-   nicht starke Linien."
+   Am Telefon schiebt es sich von unten ueber die Seite, mit abgerundeten
+   oberen Ecken, einem Griff und einem festen Knopf unten. Ab Tablet klappt es
+   unter der Leiste auf, ohne Schleier und ohne Knopf — dort gilt die Auswahl
+   ohnehin sofort und der Platz ist da. */
 
-   Jede Kategorie ist selbst ein Ausklapper. Eingeklappt sind es sieben ruhige
-   Zeilen — das trägt auch, wenn die Liste in einem Jahr doppelt so lang ist.
-   Eine Kategorie mit gesetztem Filter klappt von selbst auf, sonst wäre nicht
-   zu sehen, wo die Einschränkung sitzt. */
-
-.plant-search__facets {
+.plant-search__sheet {
   margin-top: 1.2rem;
-  padding: 0.8rem 1.6rem;
   background: rgba(242, 238, 232, 0.035);
 }
 
+.plant-search__sheet[hidden],
+.plant-search__backdrop[hidden] {
+  display: none;
+}
+
+.plant-search__sheet-grab,
+.plant-search__sheet-close,
+.plant-search__sheet-foot {
+  display: none;
+}
+
+.plant-search__sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 1.6rem 0;
+}
+
+.plant-search__sheet-title {
+  margin: 0;
+  font-family: var(--font-heading-family, Georgia, serif);
+  font-size: 2.4rem;
+  line-height: 1.1;
+}
+
+.plant-search__sheet-reset {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  font-family: inherit;
+  font-size: 1.2rem;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+  cursor: pointer;
+}
+
+.plant-search__sheet-reset[hidden] {
+  display: none;
+}
+
+.plant-search__sheet-body {
+  padding: 0.4rem 1.6rem 1rem;
+}
+
+.plant-search__facets {
+  margin: 0;
+}
+
 .plant-search__group {
-  border-top: 1px solid rgba(242, 238, 232, 0.05);
+  padding: 1.6rem 0 0.4rem;
+  border-top: 1px solid var(--pl-line-soft, rgba(242, 238, 232, 0.08));
 }
 
 .plant-search__group:first-child {
   border-top: 0;
 }
 
-.plant-search__group-summary {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 1.1rem 0;
-  list-style: none;
-  cursor: pointer;
-  font-size: 1rem;
+.plant-search__group-name {
+  margin: 0 0 1.2rem;
+  font-size: 1.05rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
-  opacity: 0.72;
-  transition: opacity 0.25s var(--pl-ease, ease), color 0.25s var(--pl-ease, ease);
 }
 
-.plant-search__group-summary::-webkit-details-marker {
-  display: none;
+.plant-search__filter-button .plant-search__summary-text {
+  display: inline;
 }
 
-.plant-search__group-summary:hover,
-.plant-search__group[open] .plant-search__group-summary {
-  opacity: 1;
+@media screen and (min-width: 750px) {
+  .plant-search__sheet-title {
+    display: none;
+  }
+
+  .plant-search__sheet-head {
+    justify-content: flex-end;
+  }
 }
 
-.plant-search__group-summary:focus-visible {
-  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
-  outline-offset: 2px;
+html.plant-search-lock {
+  overflow: hidden;
 }
 
-.plant-search__group-name {
-  flex: 1 1 auto;
+@media screen and (max-width: 749px) {
+  .plant-search__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(0, 0, 0, 0.62);
+  }
+
+  .plant-search__sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 41;
+    display: flex;
+    flex-direction: column;
+    max-height: 86vh;
+    margin: 0;
+    background: #121212;
+    border-top: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
+    border-radius: 1.6rem 1.6rem 0 0;
+    animation: plant-sheet-up 0.28s var(--pl-ease, ease);
+  }
+
+  .plant-search__sheet-grab {
+    display: block;
+    width: 4rem;
+    height: 0.4rem;
+    margin: 1rem auto 0;
+    border-radius: 999px;
+    background: rgba(242, 238, 232, 0.28);
+  }
+
+  .plant-search__sheet-head {
+    padding: 1.2rem 2rem 1rem;
+    gap: 1.6rem;
+  }
+
+  .plant-search__sheet-title {
+    flex: 1;
+  }
+
+  .plant-search__sheet-close {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    margin: -0.8rem -1rem -0.8rem 0;
+    background: none;
+    border: 0;
+    color: #f2eee8;
+    font-size: 2.8rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .plant-search__sheet-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 0 2rem 1.4rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .plant-search__sheet-foot {
+    display: block;
+    padding: 1.4rem 2rem calc(2rem + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--pl-line-soft, rgba(242, 238, 232, 0.08));
+  }
+
+  .plant-search__sheet-apply {
+    appearance: none;
+    width: 100%;
+    padding: 1.5rem;
+    background: #f2eee8;
+    border: 0;
+    color: #0a0a0a;
+    font-family: inherit;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+  }
+
+  .plant-search__sheet-apply:focus-visible {
+    outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+    outline-offset: 3px;
+  }
 }
 
-/* Der Chevron der Kategorie sitzt rechts und ist kleiner als der des
-   Hauptausklappers — eine Ebene tiefer, also leiser. */
-.plant-search__group[open] > .plant-search__group-summary .plant-search__chevron {
-  transform: rotate(-135deg) translate(-0.15rem, -0.15rem);
-}
-
-.plant-search__group-summary .plant-search__chevron {
-  width: 0.55rem;
-  height: 0.55rem;
-  opacity: 0.6;
-}
-
-.plant-search__group-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 1.6rem;
-  height: 1.6rem;
-  padding: 0 0.4rem;
-  border-radius: 999px;
-  background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.9);
-  color: #f2eee8;
-  font-size: 0.95rem;
-  letter-spacing: 0;
-}
-
-.plant-search__group-badge[hidden] {
-  display: none;
+@keyframes plant-sheet-up {
+  from {
+    transform: translateY(6%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
 }
 
 /* Die Optionen als Kacheln, aneinandergereiht und umbrechend. So wächst eine
@@ -1093,24 +1288,25 @@
 
 .plant-search__chip {
   appearance: none;
-  border: 0;
-  padding: 0.55rem 1.1rem;
-  background: rgba(242, 238, 232, 0.06);
-  color: var(--pl-muted, rgba(205, 198, 188, 0.88));
+  border: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
+  padding: 0.65rem 1.3rem;
+  background: none;
+  color: rgba(242, 238, 232, 0.9);
   font-family: inherit;
   font-size: 1.3rem;
   line-height: 1.3;
   cursor: pointer;
-  transition: background-color 0.22s var(--pl-ease, ease), color 0.22s var(--pl-ease, ease);
+  transition: background-color 0.22s var(--pl-ease, ease), border-color 0.22s var(--pl-ease, ease), color 0.22s var(--pl-ease, ease);
 }
 
 .plant-search__chip:hover {
-  background: rgba(242, 238, 232, 0.11);
+  border-color: rgba(242, 238, 232, 0.4);
   color: #f2eee8;
 }
 
 .plant-search__chip[aria-pressed='true'] {
   background: rgba(var(--tungacea-oxblood, 110, 28, 40), 0.85);
+  border-color: rgba(var(--tungacea-oxblood, 110, 28, 40), 1);
   color: #f2eee8;
 }
 
@@ -1154,20 +1350,87 @@
     letter-spacing: 0.14em;
   }
 
-  .plant-search__facets {
-    padding: 0.6rem 1.2rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .plant-search__field,
   .plant-search__word,
   .plant-search__chip,
-  .plant-search__chevron,
   .plant-search__icon,
-  .plant-search__group-summary {
+  .plant-search__tab,
+  .plant-archive__more-line span {
     transition: none;
   }
+
+  .plant-search__sheet {
+    animation: none;
+  }
+}
+
+/* Fusszeile der Liste
+   -------------------------------------------------------------------------
+   Ein duenner Strich, der zeigt, wie weit man ist, die Zahl darunter und ein
+   Knopf fuer den Rest. */
+
+.plant-archive__more {
+  margin: 4.8rem auto 0;
+  text-align: center;
+}
+
+.plant-archive__more[hidden] {
+  display: none;
+}
+
+.plant-archive__more-line {
+  position: relative;
+  max-width: 22rem;
+  height: 1px;
+  margin: 0 auto 2rem;
+  background: var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.08));
+}
+
+.plant-archive__more-line span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1px;
+  width: 0;
+  background: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  transition: width 0.3s var(--tungacea-ease, ease);
+}
+
+.plant-archive__more-text {
+  margin: 0 0 1.6rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+}
+
+.plant-archive__more-button {
+  appearance: none;
+  padding: 1.3rem 2.6rem;
+  background: none;
+  border: 1px solid rgba(242, 238, 232, 0.55);
+  color: inherit;
+  font-family: inherit;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+}
+
+.plant-archive__more-button[hidden] {
+  display: none;
+}
+
+.plant-archive__more-button:hover {
+  border-color: #f2eee8;
+}
+
+.plant-archive__more-button:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
 }
 
 /* Die Exemplar-ID

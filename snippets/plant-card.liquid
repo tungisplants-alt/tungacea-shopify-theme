@@ -170,6 +170,20 @@
   endcomment
   assign linien = eintrag.linie.value | join: '|'
 
+  comment
+    Gewaehlte Merkmale, mit Trennzeichen wie die Linie. Leere Namen fallen
+    heraus; die Namen kommen in der Sprache des Besuchers, genau wie die
+    Schalter im Filter, damit beide am selben Wort vergleichen.
+  endcomment
+  assign merkmale = ''
+  for m in eintrag.merkmale.value
+    assign m_name = m.name.value | default: '' | strip
+    if m_name != blank
+      assign merkmale = merkmale | append: m_name | append: '|'
+    endif
+  endfor
+  assign merkmale = merkmale | split: '|' | join: '|'
+
   assign suchtext = name
   assign suchtext = suchtext | append: ' ' | append: eintrag.kreuzung.value
   assign suchtext = suchtext | append: ' ' | append: zuechter_name
@@ -177,6 +191,7 @@
   assign suchtext = suchtext | append: ' ' | append: eintrag.reinheit.value
   assign suchtext = suchtext | append: ' ' | append: eintrag.mutter_id.value
   assign suchtext = suchtext | append: ' ' | append: eintrag.merkmal.value
+  assign suchtext = suchtext | append: ' ' | append: merkmale | replace: '|', ' '
   assign suchtext = suchtext | downcase | strip
 -%}
 <article
@@ -189,6 +204,7 @@
   data-herkunft="{{ zuechter_land | escape }}"
   data-linie="{{ linien | escape }}"
   data-reinheit="{{ eintrag.reinheit.value | escape }}"
+  data-merkmale="{{ merkmale | escape }}"
   data-angebot="{% if hat_angebot %}ja{% else %}nein{% endif %}"
 >
   <div class="plant-card__media">

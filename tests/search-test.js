@@ -45,7 +45,7 @@ const feld = v => ({ value: v === undefined ? null : v });
 const pflanze = extra => Object.assign({
   bezeichnung: feld('Anthurium Testpflanze'),
   stadium: feld(null), generation: feld(null), reinheit: feld(null),
-  linie: { value: [] }, zuechter: feld(null), besitzer: feld(null),
+  linie: { value: [] }, merkmale: { value: [] }, zuechter: feld(null), besitzer: feld(null),
   angebote: { value: [] },
 }, extra || {});
 
@@ -61,9 +61,11 @@ const EINTRAEGE = [
   // aus botanischen Eigennamen. Ohne diesen Fall laeuft der Waechter ins Leere.
   pflanze({ reinheit: feld('Komplexhybrid'), stadium: feld('Mutterpflanze'),
             linie: { value: ['Sonstige'] },
+            merkmale: { value: [{ name: { value: 'Samtig' } }, { name: { value: 'Sehr dunkel' } }] },
             zuechter: zuechter('Tungacea', 'Deutschland') }),
   pflanze({ reinheit: feld('Reine Art'), stadium: feld('Jungpflanze'),
             linie: { value: ['Papillilaminum'] },
+            merkmale: { value: [{ name: { value: 'Samtig' } }, { name: { value: '  ' } }] },
             zuechter: zuechter('secretfoliage', 'Niederlande') }),
   pflanze({ reinheit: feld('Hybrid'), stadium: feld('Steckling'),
             zuechter: zuechter('Variegated_Stingray', 'Schweiz') }),
@@ -153,6 +155,47 @@ const faelle = [
       console.log('FEHLER [en] deutsche Aufschrift im englischen Lauf: ' + deutsch);
     }
   }
+
+
+  // ---- Filterblatt und Schnellwahl -----------------------------------------
+  const bloecke = [
+    ['Filterknopf statt Ausklapper', (h) => /<button[^>]*class="plant-search__filter-button"[^>]*aria-expanded="false"[^>]*aria-controls="PlantSearchSheet"/.test(h), true],
+    ['kein details-Ausklapper mehr in der Leiste', (h) => /<details/.test(h), false],
+    ['Blatt ist ein Dialog und zu Beginn verborgen', (h) => /<div\s+class="plant-search__sheet"[^>]*role="dialog"[^>]*hidden/.test(h), true],
+    ['Blatt hat Schliessen-Knopf und Anwenden-Knopf', (h) => /plant-search__sheet-close/.test(h) && /plant-search__sheet-apply/.test(h), true],
+    ['Anwenden-Knopf traegt alle drei Saetze', (h) => /data-text-eins="[^"]+"[\s\S]*data-text-viele="[^"]*%anzahl%[^"]*"[\s\S]*data-text-keine="[^"]+"/.test(h), true],
+    ['Schnellwahl vorhanden', (h) => /data-testid="plant-search-tabs"/.test(h), true],
+    ['Schnellwahl: Alle ist zu Beginn gewaehlt', (h) => /data-einstieg="alle" aria-pressed="true"/.test(h), true],
+    ['Schnellwahl: Stadium mit Rohwert in data-wert', (h) => /data-einstieg="stadium" data-wert="Jungpflanze"/.test(h) && /data-einstieg="stadium" data-wert="Mutterpflanze"/.test(h), true],
+    ['Merkmale-Gruppe mit Rohwert (leere Namen fallen heraus)', (h) => /data-facet="merkmale"\s+data-mehrfach="true"\s+data-wert="Samtig"/.test(h) && /data-wert="Sehr dunkel"/.test(h) && !/data-wert="\s*"/.test(h), true],
+    ['Merkmal nur einmal als Schalter, obwohl zweimal vergeben', (h) => (h.match(/data-facet="merkmale"/g) || []).length, 2],
+    ['aktive Filter als eigene Zeile mit Liste und Zuruecksetzen, zu Beginn verborgen', (h) => /<div class="plant-search__active-row" hidden[^>]*>\s*<ul class="plant-search__active"[\s\S]*?<\/ul>\s*<button[^>]*plant-search__clear/.test(h), true],
+    ['Seitengroesse am Element', (h) => /data-seite="12"/.test(h), true],
+  ];
+  for (const loc of ['de', 'en']) {
+    for (const [name, fn, soll] of bloecke) {
+      checks++;
+      const ist = fn(html[loc]);
+      if (JSON.stringify(ist) !== JSON.stringify(soll)) {
+        fails++;
+        console.log('FEHLER [' + loc + '] ' + name + ' (ist ' + JSON.stringify(ist) + ')');
+      }
+    }
+  }
+  for (const [loc, tab, merk, apply] of [['de', '>Alle ', 'Merkmale', 'Pflanzen anzeigen'], ['en', '>All ', 'Traits', 'Show %anzahl% plants']]) {
+    for (const t of [tab, '>' + merk + '<', apply]) {
+      checks++;
+      if (!html[loc].includes(t)) { fails++; console.log('FEHLER [' + loc + '] fehlt ' + t); }
+    }
+  }
+  // Ohne Stadium-Unterschied und ohne Angebot gibt es keine Schnellwahl.
+  locale = 'de';
+  const einheitlich = await engine.renderFile('plant-archive-search', {
+    eintraege: [pflanze({ stadium: feld('Jungpflanze'), reinheit: feld('Hybrid') }), pflanze({ stadium: feld('Jungpflanze'), reinheit: feld('Reine Art') })],
+    produkte: [],
+  });
+  checks++;
+  if (/plant-search__tabs/.test(einheitlich)) { fails++; console.log('FEHLER: Schnellwahl ohne trennende Werte'); }
 
   // Die fremde Pflanze darf keinen eigenen Schalter bekommen.
   checks++;
