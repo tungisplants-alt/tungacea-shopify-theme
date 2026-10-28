@@ -394,6 +394,41 @@
   }
 }
 
+/* --- bis Laptop: das Bild zuerst, darunter Name und Merkmale ------------
+   Am Telefon steht das Foto ganz oben, dann folgt der Name. Die Reihenfolge
+   im HTML bleibt wie sie ist (Name vor Bild, gut fuer Vorlesegeraete); nur die
+   Anzeige wird umgestellt. */
+@media screen and (max-width: 989px) {
+  .plant-profile > .page-width {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .plant-profile > .page-width > * {
+    order: 5;
+  }
+
+  .plant-profile > .page-width > .plant-profile__back {
+    order: 0;
+    align-self: flex-start;
+  }
+
+  .plant-profile > .page-width > .plant-profile__media {
+    order: 1;
+  }
+
+  .plant-profile > .page-width > .plant-profile__head {
+    order: 2;
+    margin: 2.4rem 0 1.6rem;
+  }
+
+  .plant-profile > .page-width > .plant-profile__tags,
+  .plant-profile > .page-width > .plant-profile__trait {
+    order: 3;
+    margin-top: 0;
+  }
+}
+
 /* --- bis Telefon: Punkte im Bild --------------------------------------- */
 @media screen and (max-width: 749px) {
   .plant-profile__photos.hat-galerie .plant-profile__dots {
