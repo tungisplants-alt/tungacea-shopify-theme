@@ -18,6 +18,16 @@
   <div class="contact page-width page-width--narrow section-{{ section.id }}-padding">
     <div class="contact__intro rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
       <p>{{ 'templates.contact.intro' | t }}</p>
+      {%- if section.settings.show_whatsapp -%}
+        {%- comment -%}
+          Der Weg per WhatsApp kommt aus demselben Baustein wie die Karte unten
+          rechts: dieselbe Nummer, derselbe Satz. Ist die Nummer keine, bleibt
+          wa_knopf leer, und es erscheint weder der Knopf noch der Satz
+          "Oder per Formular".
+        {%- endcomment -%}
+        {%- capture wa_knopf -%}{%- render 'whatsapp-option', klasse: 'contact__whatsapp' -%}{%- endcapture -%}
+        {{ wa_knopf }}
+      {%- endif -%}
       {%- liquid
         comment
           Die Adresse kommt aus den Shop-Einstellungen statt aus dem Quelltext.
@@ -46,6 +56,9 @@
       </h2>
     {%- else -%}
       <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
+    {%- endif -%}
+    {%- if wa_knopf != blank -%}
+      <p class="contact__form-lead">{{ 'templates.contact.form_lead' | t }}</p>
     {%- endif -%}
     {%- liquid
       assign contact_form_class = 'isolate'
@@ -168,6 +181,12 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_whatsapp",
+      "default": true,
+      "label": "t:sections.contact-form.settings.show_whatsapp.label"
+    },
     {
       "type": "inline_richtext",
       "id": "heading",

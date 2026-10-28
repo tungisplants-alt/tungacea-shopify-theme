@@ -669,6 +669,9 @@
         "name": "Kontaktformular"
       },
       "settings": {
+        "show_whatsapp": {
+          "label": "WhatsApp-Knopf anzeigen"
+        },
         "title": {
           "default": "Kontaktformular",
           "label": "Titel"

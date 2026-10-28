@@ -1,0 +1,67 @@
+{% comment %}
+  Tungacea — der Weg "Per WhatsApp" als Link.
+
+  Ein Link auf wa.me mit vorausgefuelltem Satz und dem Zusatz "schnellere
+  Antwort". Er sitzt in der Karte unten rechts und auf der Kontaktseite, und
+  beide lesen hier dieselbe Nummer und denselben Text. Zweimal getippt laufen
+  Nummer und Aufschrift irgendwann auseinander.
+
+  Die Nummer steht im Theme-Editor unter Theme-Einstellungen, Kontakt-Knopf. Sie
+  darf mit Plus, Leerzeichen, Strichen oder fuehrender 0 stehen und wird zu
+  Ziffern mit Laendervorwahl. Was keine Nummer ergibt, gibt hier NICHTS aus,
+  statt einen Link ins Leere zu setzen. Wer das Ergebnis einbettet, prueft
+  deshalb auf blank.
+
+  Annahmen:
+  - klasse:     {String} zusaetzliche CSS-Klasse am Link (optional)
+  - css_laden:  {Boolean} false, wenn das Stylesheet schon geladen ist (optional)
+
+  Aufruf:
+  {%- render 'whatsapp-option', klasse: 'contact__whatsapp' -%}
+{% endcomment %}
+{%- liquid
+  assign nummer = settings.whatsapp_nummer | default: '' | strip
+  assign nummer = nummer | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')' | remove: '/' | remove: '.'
+  assign anfang = nummer | slice: 0, 2
+  assign erste = nummer | slice: 0, 1
+  if anfang == '00'
+    assign nummer = nummer | slice: 2, 20
+  elsif erste == '0'
+    assign rest = nummer | slice: 1, 20
+    assign nummer = '49' | append: rest
+  endif
+
+  assign gueltig = true
+  assign pruefung = nummer | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
+  if pruefung != blank or nummer.size < 10 or nummer.size > 15
+    assign gueltig = false
+  endif
+
+  if gueltig
+    assign nachricht = ''
+    capture nachricht
+      render 'whatsapp-message'
+    endcapture
+    assign kodiert = nachricht | url_encode | replace: '+', '%20'
+    assign adresse = 'https://wa.me/' | append: nummer | append: '?text=' | append: kodiert
+  endif
+-%}
+
+{%- if gueltig -%}
+  {%- unless css_laden == false -%}
+    {{ 'component-whatsapp-contact.css' | asset_url | stylesheet_tag }}
+  {%- endunless -%}
+  <a
+    class="whatsapp-contact__option{% if klasse != blank %} {{ klasse | escape }}{% endif %}"
+    href="{{ adresse | escape }}"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-describedby="a11y-new-window-message"
+    data-whatsapp-link
+  >
+    <span>
+      {{- 'whatsapp_contact.whatsapp_label' | t -}}
+      <span class="whatsapp-contact__hint"><span class="whatsapp-contact__dot" aria-hidden="true">&bull;</span>{{ 'whatsapp_contact.whatsapp_hint' | t }}</span>
+    </span>
+  </a>
+{%- endif -%}

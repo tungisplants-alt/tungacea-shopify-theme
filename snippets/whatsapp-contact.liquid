@@ -36,44 +36,28 @@
     assign schalter = false
   endif
 
-  assign wa_ok = schalter
-  assign nummer = settings.whatsapp_nummer | default: '' | strip
-  assign nummer = nummer | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')' | remove: '/' | remove: '.'
-  assign anfang = nummer | slice: 0, 2
-  assign erste = nummer | slice: 0, 1
-  if anfang == '00'
-    assign nummer = nummer | slice: 2, 20
-  elsif erste == '0'
-    assign rest = nummer | slice: 1, 20
-    assign nummer = '49' | append: rest
-  endif
-
-  assign pruefung = nummer | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
-  if pruefung != blank or nummer.size < 10 or nummer.size > 15
-    assign wa_ok = false
-  endif
-
   assign mail_ok = schalter
   if settings.kontakt_mail_aktiv == false
     assign mail_ok = false
+  endif
+-%}
+
+{%- comment -%}
+  Der WhatsApp-Weg und der Satz kommen aus eigenen Bausteinen, die auch die
+  Kontaktseite nutzt. Ist die Nummer keine, ist wa_knopf leer.
+{%- endcomment -%}
+{%- capture wa_knopf -%}{%- render 'whatsapp-option', css_laden: false -%}{%- endcapture -%}
+{%- capture nachricht -%}{%- render 'whatsapp-message' -%}{%- endcapture -%}
+
+{%- liquid
+  assign wa_ok = schalter
+  if wa_knopf == blank
+    assign wa_ok = false
   endif
 
   assign zeigen = false
   if wa_ok or mail_ok
     assign zeigen = true
-  endif
-
-  if zeigen
-    if template.name == 'product' and product.title != blank
-      assign nachricht = 'whatsapp_contact.message_product' | t: name: product.title
-    else
-      assign nachricht = 'whatsapp_contact.message' | t
-    endif
-  endif
-
-  if wa_ok
-    assign kodiert = nachricht | url_encode | replace: '+', '%20'
-    assign adresse = 'https://wa.me/' | append: nummer | append: '?text=' | append: kodiert
   endif
 -%}
 
@@ -180,19 +164,7 @@
       <p class="whatsapp-contact__intro">{{ 'whatsapp_contact.intro' | t }}</p>
 
       {%- if wa_ok -%}
-        <a
-          class="whatsapp-contact__option"
-          href="{{ adresse | escape }}"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-describedby="a11y-new-window-message"
-          data-whatsapp-link
-        >
-          <span>
-            {{- 'whatsapp_contact.whatsapp_label' | t -}}
-            <span class="whatsapp-contact__hint"><span class="whatsapp-contact__dot" aria-hidden="true">&bull;</span>{{ 'whatsapp_contact.whatsapp_hint' | t }}</span>
-          </span>
-        </a>
+        {{ wa_knopf }}
       {%- endif -%}
 
       {%- if mail_ok -%}

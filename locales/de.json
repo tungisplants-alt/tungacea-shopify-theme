@@ -341,6 +341,7 @@
     "contact": {
       "intro": "Du hast eine Frage zu einem Exemplar, zum Versand oder zur Eingewöhnung deiner Pflanze? Schreib mir direkt – ich antworte persönlich.",
       "direct_email": "Oder direkt per E-Mail:",
+      "form_lead": "Oder per Formular:",
       "form": {
         "name": "Name",
         "email": "E-Mail",

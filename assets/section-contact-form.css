@@ -15,6 +15,25 @@
   color: rgba(var(--color-foreground), 0.72);
 }
 
+/* Der Weg per WhatsApp unter dem Einleitungstext. Der Knopf selbst kommt aus
+   component-whatsapp-contact.css und sieht aus wie in der Karte unten rechts;
+   hier bekommt er nur Abstand und eine Hoechstbreite. Der Link soll nicht wie
+   ein Textlink unterstrichen werden. */
+.contact .contact__whatsapp {
+  max-width: 40rem;
+  margin: 2rem 0 2.4rem;
+  text-decoration: none;
+}
+
+.contact .contact__whatsapp:hover {
+  text-decoration: none;
+}
+
+.contact__form-lead {
+  margin: 0 0 2rem;
+  color: rgba(var(--color-foreground), 0.72);
+}
+
 .contact .form__message {
   align-items: flex-start;
 }
