@@ -61,10 +61,10 @@ function pruefe(name, ist, soll) {
     pruefe('Zeile 1: Liefergebiet und Dienstleister', z[0], 'Versand innerhalb Deutschlands mit DHL oder UPS.');
     pruefe('Zeile 2: Versandtage und Laufzeit', z[1], 'Ich versende montags und dienstags, die Pakete sind in der Regel 1–3 Werktage unterwegs.');
     pruefe('Zeile 3: Verschiebung bei Frost und Hitze', z[2], 'Bei Frost oder großer Hitze warte ich mit dem Versand, damit deine Pflanze sicher ankommt.');
-    pruefe('Link zu den Versandbedingungen aus Shopify', /<a class="versandinfo__link link" href="\/policies\/shipping-policy">Alle Versandinfos<\/a>/.test(html), true);
-    pruefe('Liste hat eine Rolle fuer Screenreader (Safari entfernt sonst die Listensemantik)', /<ul class="versandinfo__liste list-unstyled" role="list">/.test(html), true);
+    pruefe('Link zu den Versandbedingungen aus Shopify', /<a class="produkt-klappe__link link" href="\/policies\/shipping-policy">Alle Versandinfos<\/a>/.test(html), true);
+    pruefe('Liste hat eine Rolle fuer Screenreader (Safari entfernt sonst die Listensemantik)', /<ul class="produkt-klappe__liste list-unstyled" role="list">/.test(html), true);
     pruefe('Editor-Attribut des Blocks ist gesetzt', /data-shopify-editor-block="b1"/.test(html), true);
-    pruefe('Stylesheet wird geladen', /component-versandinfo\.css/.test(html), true);
+    pruefe('Stylesheet kommt nicht mehr aus dem Snippet (laedt einmal im Abschnitt, sonst steht ein link zwischen den Zeilen)', /<link/.test(html), false);
     pruefe('keine Version, Nummer oder Adresse getippt: nur Shopify-Link', /https?:\/\/|@/.test(html), false);
   }
 
@@ -72,24 +72,24 @@ function pruefe(name, ist, soll) {
   {
     const html = await render();
     const kompakt = html.replace(/\s+/g, ' ').replace(/> </g, '><');
-    pruefe('Block ist ein details mit summary', /<details class="versandinfo"[^>]*><summary class="versandinfo__toggle">/.test(kompakt), true);
-    pruefe('zugeklappt zu Beginn, die Produktseite wird nicht voller', /<details class="versandinfo"[^>]* open/.test(kompakt), false);
+    pruefe('Block ist ein details mit summary', /<details class="produkt-klappe"[^>]*><summary class="produkt-klappe__toggle">/.test(kompakt), true);
+    pruefe('zugeklappt zu Beginn, die Produktseite wird nicht voller', /<details class="produkt-klappe"[^>]* open/.test(kompakt), false);
     pruefe('zugeklappt steht nur der Titel sichtbar in der summary', (kompakt.match(/<summary[\s\S]*?<\/summary>/) || [''])[0].replace(/<[^>]+>/g, ''), 'Versand & Lieferung');
-    pruefe('Plus-Zeichen kommt aus dem CSS und ist fuer Screenreader versteckt', /<span class="versandinfo__indikator" aria-hidden="true"><\/span>/.test(kompakt), true);
-    const inhalt = (kompakt.match(/<div class="versandinfo__inhalt">([\s\S]*?)<\/div><\/details>/) || [])[1] || '';
+    pruefe('Plus-Zeichen kommt aus dem CSS und ist fuer Screenreader versteckt', /<span class="produkt-klappe__indikator" aria-hidden="true"><\/span>/.test(kompakt), true);
+    const inhalt = (kompakt.match(/<div class="produkt-klappe__inhalt">([\s\S]*?)<\/div><\/details>/) || [])[1] || '';
     pruefe('die drei Zeilen stehen im aufklappbaren Teil', (inhalt.match(/<li>/g) || []).length, 3);
-    pruefe('der Link "Alle Versandinfos" steht im aufklappbaren Teil', /<a class="versandinfo__link link" href="\/policies\/shipping-policy">Alle Versandinfos<\/a>/.test(inhalt), true);
-    pruefe('der Link steht NACH den drei Zeilen', inhalt.indexOf('versandinfo__link') > inhalt.lastIndexOf('</li>'), true);
-    pruefe('ausserhalb des aufklappbaren Teils steht weder Zeile noch Link', /<li>|<a /.test(kompakt.replace(/<div class="versandinfo__inhalt">[\s\S]*?<\/div><\/details>/, '')), false);
+    pruefe('der Link "Alle Versandinfos" steht im aufklappbaren Teil', /<a class="produkt-klappe__link link" href="\/policies\/shipping-policy">Alle Versandinfos<\/a>/.test(inhalt), true);
+    pruefe('der Link steht NACH den drei Zeilen', inhalt.indexOf('produkt-klappe__link') > inhalt.lastIndexOf('</li>'), true);
+    pruefe('ausserhalb des aufklappbaren Teils steht weder Zeile noch Link', /<li>|<a /.test(kompakt.replace(/<div class="produkt-klappe__inhalt">[\s\S]*?<\/div><\/details>/, '')), false);
     pruefe('Block hat genau eine summary (sonst ist die Bedienung unklar)', (kompakt.match(/<summary/g) || []).length, 1);
     pruefe('Block ist nicht standardmaessig offen, auch mit eigenen Texten', /<details[^>]* open/.test(await render({ zeile_1: 'x' })), false);
-    const css = fs.readFileSync(path.join(THEME, 'assets/component-versandinfo.css'), 'utf8');
+    const css = fs.readFileSync(path.join(THEME, 'assets/component-produkt-klappe.css'), 'utf8');
     pruefe('CSS entfernt das Dreieck des Browsers (list-style und webkit-marker)', /list-style:\s*none/.test(css) && /::-webkit-details-marker/.test(css), true);
-    pruefe('CSS gibt dem Block Abstand nach oben und unten (unten folgt "Teilen")', /\.versandinfo \{\s*margin: 2\.4rem 0 2rem;/.test(css), true);
-    pruefe('CSS schaltet Plus und Minus um', /\.versandinfo\[open\] \.versandinfo__indikator::after/.test(css), true);
-    pruefe('CSS nimmt den Fokus-Rahmen auf Touch-Geraeten weg (wie bei Archiv-Fotos und Karte)', /hover: none\) and \(pointer: coarse\)[\s\S]*versandinfo__toggle:focus-visible/.test(css), true);
+    pruefe('CSS gibt dem Block Abstand nach oben und unten (unten folgt "Teilen")', /\.produkt-klappe \{\s*margin: 2\.4rem 0 0;/.test(css) && /:not\(:has\(\+ \.produkt-klappe\)\) \{\s*margin-bottom: 2rem;/.test(css), true);
+    pruefe('CSS schaltet Plus und Minus um', /\.produkt-klappe\[open\] \.produkt-klappe__indikator::after/.test(css), true);
+    pruefe('CSS nimmt den Fokus-Rahmen auf Touch-Geraeten weg (wie bei Archiv-Fotos und Karte)', /hover: none\) and \(pointer: coarse\)[\s\S]*produkt-klappe__toggle:focus-visible/.test(css), true);
     const en = await render({}, { sprache: 'en' });
-    pruefe('Englisch: Titel', /<span class="versandinfo__titel">Shipping &amp; delivery<\/span>|<span class="versandinfo__titel">Shipping & delivery<\/span>/.test(en), true);
+    pruefe('Englisch: Titel', /<span class="produkt-klappe__titel">Shipping &amp; delivery<\/span>|<span class="produkt-klappe__titel">Shipping & delivery<\/span>/.test(en), true);
   }
 
   // ---- Die Aussagen festhalten --------------------------------------------
@@ -118,7 +118,7 @@ function pruefe(name, ist, soll) {
   // ---- Ohne Versandrichtlinie -----------------------------------------------
   {
     const html = await render({}, { richtlinie: null });
-    pruefe('ohne Richtlinie kein Link ins Leere', /<a[\s>]|versandinfo__link/.test(html), false);
+    pruefe('ohne Richtlinie kein Link ins Leere', /<a[\s>]|produkt-klappe__link/.test(html), false);
     pruefe('ohne Richtlinie bleiben die drei Zeilen', zeilen(html).length, 3);
   }
 
@@ -152,7 +152,8 @@ function pruefe(name, ist, soll) {
     pruefe('Block steht in der Produktvorlage', haupt.blocks.versandinfo && haupt.blocks.versandinfo.type === 'versandinfo', true);
     const o = haupt.block_order;
     pruefe('Reihenfolge: direkt nach der Beschreibung', o.indexOf('description') + 1 === o.indexOf('versandinfo'), true);
-    pruefe('Reihenfolge: direkt vor "Teilen"', o.indexOf('versandinfo') + 1 === o.indexOf('share'), true);
+    pruefe('Reihenfolge: danach "Hast du Fragen?", direkt vor "Teilen"', o.indexOf('versandinfo') + 1 === o.indexOf('fragen') && o.indexOf('fragen') + 1 === o.indexOf('share'), true);
+    pruefe('Stylesheet laedt einmal im Kopf des Abschnitts', /'component-produkt-klappe\.css' \| asset_url \| stylesheet_tag/.test(abschnitt), true);
     pruefe('Reihenfolge: "Teilen" bleibt der letzte Block der Spalte', o[o.length - 1], 'share');
     pruefe('Reihenfolge: nach Kaufknopf und Exemplar-Archiv',
       ['buy_buttons', 'specimen'].every((k) => o.indexOf(k) >= 0 && o.indexOf(k) < o.indexOf('versandinfo')), true);

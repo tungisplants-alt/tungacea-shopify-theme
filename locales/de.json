@@ -132,6 +132,10 @@
         "rare": "Selten",
         "sale": "Sale"
       },
+      "fragen": {
+        "titel": "Hast du Fragen?",
+        "text": "Schreib mir gern persönlich über WhatsApp – da antworte ich für gewöhnlich schneller."
+      },
       "versandinfo": {
         "titel": "Versand & Lieferung",
         "gebiet": "Versand innerhalb Deutschlands mit DHL oder UPS.",

@@ -57,6 +57,13 @@
             "zeile_3": ""
           }
         },
+        "fragen": {
+          "type": "fragen",
+          "settings": {
+            "titel": "",
+            "text": ""
+          }
+        },
         "specimen": {
           "type": "specimen",
           "settings": {
@@ -103,6 +110,7 @@
         "specimen",
         "description",
         "versandinfo",
+        "fragen",
         "share"
       ],
       "settings": {

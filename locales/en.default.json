@@ -141,6 +141,10 @@
         "rare": "Rare",
         "sale": "Sale"
       },
+      "fragen": {
+        "titel": "Any questions?",
+        "text": "Feel free to message me personally on WhatsApp – I usually reply faster there."
+      },
       "versandinfo": {
         "titel": "Shipping & delivery",
         "gebiet": "Shipping within Germany with DHL or UPS.",

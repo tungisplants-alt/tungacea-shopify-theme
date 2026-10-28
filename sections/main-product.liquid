@@ -17,6 +17,8 @@
   {{ 'component-rating.css' | asset_url | stylesheet_tag }}
   {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
   {{ 'component-specimen-passport.css' | asset_url | stylesheet_tag }}
+  {{ 'component-produkt-klappe.css' | asset_url | stylesheet_tag }}
+  {{ 'component-whatsapp-contact.css' | asset_url | stylesheet_tag }}
 
   {% unless product.has_only_default_variant %}
     {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
@@ -204,6 +206,8 @@
                   {% render 'winter-pack', block: block %}
                 {%- when 'versandinfo' -%}
                   {% render 'versandinfo', block: block %}
+                {%- when 'fragen' -%}
+                  {% render 'produkt-fragen', block: block %}
                 {%- when 'specimen' -%}
                   {% render 'specimen-passport', product: product, block: block %}
                 {%- when 'sku' -%}
@@ -1009,6 +1013,29 @@
           "type": "text",
           "id": "zeile_3",
           "label": "Zeile 3: Verschiebung bei Frost und Hitze",
+          "info": "Leer lassen: Dann wird übersetzt."
+        }
+      ]
+    },
+    {
+      "type": "fragen",
+      "name": "Hast du Fragen?",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Zugeklappte Zeile mit einem kurzen Satz und dem Weg per WhatsApp. Nummer und Satz im Knopf kommen aus Theme-Einstellungen, Kontakt-Knopf: Ist dort keine gültige Nummer eingetragen, erscheint die Zeile nicht. Unten in der Produktspalte einordnen, vor „Teilen“, direkt unter der Zeile Versand."
+        },
+        {
+          "type": "text",
+          "id": "titel",
+          "label": "Titel",
+          "info": "Leer lassen: Dann wird übersetzt. Ein eigener Text erscheint in beiden Sprachen gleich."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Satz darin",
           "info": "Leer lassen: Dann wird übersetzt."
         }
       ]
