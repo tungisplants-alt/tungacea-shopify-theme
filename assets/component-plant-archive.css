@@ -31,7 +31,7 @@
   background:
     linear-gradient(to bottom, rgba(10, 10, 10, 0) 55%, rgb(10, 10, 10) 100%),
     linear-gradient(to right, rgba(10, 10, 10, 0.38), rgba(10, 10, 10, 0.38)),
-    var(--archiv-bild) 56% 0 / auto 93% no-repeat,
+    var(--archiv-bild) 56% 40% / cover no-repeat,
     rgb(10, 10, 10);
 }
 
@@ -41,7 +41,7 @@
     background:
       linear-gradient(to bottom, rgba(10, 10, 10, 0) 55%, rgb(10, 10, 10) 100%),
       linear-gradient(to right, rgba(10, 10, 10, 0.72) 0%, rgba(10, 10, 10, 0.3) 50%, rgba(10, 10, 10, 0.06) 100%),
-      var(--archiv-bild) center 30% / cover no-repeat,
+      var(--archiv-bild) center 45% / cover no-repeat,
       rgb(10, 10, 10);
   }
 }
