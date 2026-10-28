@@ -1,5 +1,5 @@
 /*
- * Versandinfo ganz am Ende der Produktspalte, zugeklappt.
+ * Versandinfo unten in der Produktspalte, vor "Teilen", zugeklappt.
  *
  * Eine Zeile mit Haarlinien oben und unten, wie die Winterverpackung:
  * Haarlinien statt Kasten, weil Variantenfelder und Kaufknopf schon Rechtecke
@@ -10,7 +10,7 @@
  * innerhalb der Farbschema-Klassen (siehe component-winter-pack.css).
  */
 .versandinfo {
-  margin: 2.4rem 0 0;
+  margin: 2.4rem 0 2rem;
   border-top: 1px solid var(--tungacea-hairline);
   border-bottom: 1px solid var(--tungacea-hairline);
 }

@@ -102,8 +102,8 @@
         "buy_buttons",
         "specimen",
         "description",
-        "share",
-        "versandinfo"
+        "versandinfo",
+        "share"
       ],
       "settings": {
         "enable_sticky_info": true,
