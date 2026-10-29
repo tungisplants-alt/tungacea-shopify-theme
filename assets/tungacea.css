@@ -299,22 +299,23 @@ h1, h2, h3, h4, h5,
   display: block;
 }
 
-/* cinematic gradient wash so text sits calmly */
+/* cinematic gradient wash so text sits calmly. Unten läuft das Foto in die
+   Seitenfarbe aus (wie im Archiv und in der Kollektion), damit es mit der
+   Seite verschmilzt. */
 .banner::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(6, 6, 6, 0.72) 0%, rgba(6, 6, 6, 0.28) 45%, rgba(6, 6, 6, 0) 78%),
-    linear-gradient(0deg, rgba(6, 6, 6, 0.55) 0%, rgba(6, 6, 6, 0) 40%),
-    linear-gradient(rgba(6, 6, 6, 0.16), rgba(6, 6, 6, 0.16));
+  background: linear-gradient(to bottom, rgba(10, 10, 10, 0) 68%, rgb(10, 10, 10) 100%),
+    linear-gradient(90deg, rgba(6, 6, 6, 0.72) 0%, rgba(6, 6, 6, 0.28) 45%, rgba(6, 6, 6, 0) 78%);
 }
 @media screen and (max-width: 749px) {
-  /* Am Handy liegt der Text mitten auf dem Foto. Eine gleichmäßige Schicht
-     beruhigt das Bild, ohne es zu verstecken. */
+  /* Am Handy liegt der Text mitten auf dem Foto: eine gleichmäßige leichte
+     Schicht, so viel wie im Archiv, dazu der Auslauf nach unten. */
   .banner::after {
-    background: linear-gradient(0deg, rgba(6, 6, 6, 0.55) 0%, rgba(6, 6, 6, 0) 40%),
-      linear-gradient(rgba(6, 6, 6, 0.4), rgba(6, 6, 6, 0.4));
+    background: linear-gradient(to bottom, rgba(10, 10, 10, 0) 68%, rgb(10, 10, 10) 100%),
+      linear-gradient(rgba(6, 6, 6, 0.3), rgba(6, 6, 6, 0.3));
   }
 }
 .banner__content { z-index: 2; }
