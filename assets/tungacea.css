@@ -728,6 +728,12 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 .content-for-layout > .shopify-section + .shopify-section .color-scheme-1:first-child {
   box-shadow: inset 0 1px 0 var(--tungacea-hairline-soft);
 }
+/* Unter einem Foto-Kopf (Startseite, Kollektion) läuft das Bild in die Seite
+   aus. Die Linie wäre dort eine Kante durch den Übergang. */
+.content-for-layout > .shopify-section:has(.banner) + .shopify-section .color-scheme-1:first-child,
+.content-for-layout > .shopify-section:has(.collection-hero--catalogue) + .shopify-section .color-scheme-1:first-child {
+  box-shadow: none;
+}
 
 /* ---------- Editorial eyebrows get a small oxblood tick ---------- */
 .rich-text__caption.caption-with-letter-spacing::before,
