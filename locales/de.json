@@ -120,7 +120,6 @@
   "products": {
     "product": {
       "add_to_cart": "In den Warenkorb legen",
-      "sticky_bar_add": "In den Warenkorb",
       "description": "Beschreibung",
       "on_sale": "Sale",
       "specimen_status": {
