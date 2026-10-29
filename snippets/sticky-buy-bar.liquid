@@ -10,58 +10,9 @@
   Parameter:
   - product: das Produkt
   - section_id: Abschnitt-ID der Produktseite (wie bei buy-buttons)
-  - winter_block: optional, der Block `winterpack` der Produktseite
-
-  Die Winterverpackung steht als eigene Zeile über dem Kaufknopf, damit sie
-  nicht vergessen wird, wer unten kauft. Der Knopf dort löst den echten
-  Winterverpackungs-Knopf der Seite aus; nichts ist vorausgewählt.
 {%- endcomment -%}
-{%- liquid
-  assign wp_variante = nil
-  if winter_block != blank
-    assign wp = winter_block.settings.produkt
-    assign wp_variante = wp.selected_or_first_available_variant
-  endif
-  assign wp_zeigen = false
-  if wp_variante != blank and wp_variante.available
-    assign wp_zeigen = true
-  endif
-  assign wp_titel = winter_block.settings.ueberschrift | default: '' | strip
-  if wp_titel == blank
-    assign wp_titel = 'products.product.winterpack.title' | t
-  endif
-  assign wp_hinweis = winter_block.settings.hinweis | default: '' | strip
-  if wp_hinweis == blank
-    assign wp_hinweis = 'products.product.winterpack.hint' | t
-  endif
--%}
 {%- if product.available -%}
   <sticky-buy-bar class="sticky-buy-bar" data-section-id="{{ section_id }}" data-testid="sticky-buy-bar">
-    {%- if wp_zeigen -%}
-      <div class="sticky-buy-bar__winter" data-testid="sticky-buy-bar-winter">
-        <span class="sticky-buy-bar__winter-text">
-          <span class="sticky-buy-bar__winter-titel">
-            {{- wp_titel | escape -}}
-            <span class="sticky-buy-bar__winter-preis">+ {{ wp_variante.price | money }}</span>
-          </span>
-          {%- if wp_hinweis != blank -%}
-            <span class="sticky-buy-bar__winter-sub">{{ wp_hinweis | escape }}</span>
-          {%- endif -%}
-        </span>
-        <button
-          type="button"
-          class="sticky-buy-bar__winter-knopf"
-          data-sticky-winter
-          data-label-start="{{ 'products.product.winterpack.add' | t | escape }}"
-          data-label-fertig="{{ 'products.product.winterpack.added' | t | escape }}"
-          tabindex="-1"
-        >
-          <span aria-hidden="true">+</span>
-          <span data-sticky-winter-text>{{ 'products.product.winterpack.add' | t | escape }}</span>
-        </button>
-      </div>
-    {%- endif -%}
-    <div class="sticky-buy-bar__zeile">
     <div class="sticky-buy-bar__price">
       <span class="sticky-buy-bar__label">{{ 'products.product.specimen_status.available' | t }}</span>
       <span class="sticky-buy-bar__amount" data-sticky-price>
@@ -71,6 +22,5 @@
     <button type="button" class="sticky-buy-bar__button" data-sticky-button tabindex="-1">
       {{- 'products.product.sticky_bar_add' | t -}}
     </button>
-    </div>
   </sticky-buy-bar>
 {%- endif -%}

@@ -47,11 +47,7 @@
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
   {{ 'component-sticky-buy-bar.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'sticky-buy-bar.js' | asset_url }}" defer="defer"></script>
-  {%- assign winter_block = nil -%}
-  {%- for b in section.blocks -%}
-    {%- if b.type == 'winterpack' -%}{%- assign winter_block = b -%}{%- endif -%}
-  {%- endfor -%}
-  {%- render 'sticky-buy-bar', product: product, section_id: section.id, winter_block: winter_block -%}
+  {%- render 'sticky-buy-bar', product: product, section_id: section.id -%}
   {%- if product.quantity_price_breaks_configured? -%}
     <script src="{{ 'show-more.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>

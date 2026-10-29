@@ -31,15 +31,10 @@ function pruefe(name, ist, soll) {
   }
 }
 
-async function render(produkt, sprache = 'de', winter = null) {
+async function render(produkt, sprache = 'de') {
   locale = sprache;
-  return engine.renderFile('sticky-buy-bar', { product: produkt, section_id: 'template--1__main', winter_block: winter });
+  return engine.renderFile('sticky-buy-bar', { product: produkt, section_id: 'template--1__main' });
 }
-
-const winterBlock = (verfuegbar = true, einstellungen = {}) => ({
-  type: 'winterpack',
-  settings: { produkt: { selected_or_first_available_variant: { id: 44556677, price: 490, available: verfuegbar } }, ...einstellungen },
-});
 
 (async () => {
   const frei = { available: true, selected_or_first_available_variant: { price: 3499 } };
@@ -53,17 +48,6 @@ const winterBlock = (verfuegbar = true, einstellungen = {}) => ({
   const en = await render(frei, 'en');
   pruefe('Englisch: Knopf und Verfuegbarkeit', />Add to cart</.test(en) && />Available</.test(en), true);
   pruefe('Englisch: kein deutsches Wort', /Warenkorb|Verfügbar/.test(en), false);
-
-  pruefe('ohne Winterverpackungs-Block: keine Winterzeile', /sticky-buy-bar__winter\b/.test(de), false);
-  const wde = await render(frei, 'de', winterBlock());
-  pruefe('mit Block: Winterzeile mit Titel und Preis', /Winterverpackung/.test(wde) && /\+ 4,90€/.test(wde), true);
-  pruefe('mit Block: der Hinweistext steht dabei', /Heatpack und Isolierfolie\. Unter 10 °C empfohlen/.test(wde), true);
-  pruefe('mit Block: Knopf + Hinzufügen, nichts vorausgewählt', /data-sticky-winter/.test(wde) && />Hinzufügen</.test(wde) && !/type="checkbox"|checked/.test(wde), true);
-  const wen = await render(frei, 'en', winterBlock());
-  pruefe('Englisch: Winterzeile mit Hinweis', /Winter packaging/.test(wen) && /Heat pack and thermal wrap/.test(wen) && />Add</.test(wen), true);
-  pruefe('Eigener Titel und Hinweis aus dem Block haben Vorrang', /Eigener Titel/.test(await render(frei, 'de', winterBlock(true, { ueberschrift: 'Eigener Titel', hinweis: 'Eigener Hinweis' }))) && /Eigener Hinweis/.test(await render(frei, 'de', winterBlock(true, { hinweis: 'Eigener Hinweis' }))), true);
-  pruefe('Winterprodukt ausverkauft: keine Winterzeile, Kaufleiste bleibt', /sticky-buy-bar__winter\b/.test(await render(frei, 'de', winterBlock(false))) === false && /<sticky-buy-bar\b/.test(await render(frei, 'de', winterBlock(false))), true);
-  pruefe('Produkt ausverkauft: auch mit Winterblock gar nichts', (await render(aus, 'de', winterBlock())).trim(), '');
 
   const leer = await render(aus, 'de');
   pruefe('ausverkauft: gar keine Leiste', leer.trim(), '');
