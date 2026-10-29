@@ -131,6 +131,7 @@
 
     {%- comment -%} 4. Social + language — compact utility column {%- endcomment -%}
     <div class="tungacea-footer__utility">
+      <div class="tungacea-footer__socials">
       {%- if settings.social_instagram_link != blank -%}
         <div class="tungacea-footer__social">
           <span class="tungacea-footer__social-label">Instagram</span>
@@ -147,6 +148,18 @@
           </a>
         </div>
       {%- endif -%}
+      {%- if settings.whatsapp_aktiv != false -%}
+        {%- capture wa_symbol -%}
+          {%- render 'whatsapp-option', symbol: true, css_laden: false, klasse: 'tungacea-footer__social-link link' -%}
+        {%- endcapture -%}
+        {%- if wa_symbol != blank -%}
+          <div class="tungacea-footer__social" data-testid="footer-whatsapp">
+            <span class="tungacea-footer__social-label">WhatsApp</span>
+            {{ wa_symbol }}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+      </div>
 
       {%- if section.settings.enable_language_selector
         and localization.available_languages.size > 1

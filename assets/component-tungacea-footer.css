@@ -220,6 +220,12 @@
   }
 }
 
+.tungacea-footer .tungacea-footer__socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem 3.6rem;
+}
+
 .tungacea-footer .tungacea-footer__social {
   display: flex;
   flex-direction: column;
