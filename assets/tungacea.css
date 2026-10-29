@@ -302,14 +302,16 @@ h1, h2, h3, h4, h5,
 /* Wash über dem Hero-Foto, damit der Text ruhig liegt, und Auslauf nach unten
    in die Seitenfarbe (wie im Archiv und in der Kollektion).
 
-   Er sitzt auf .banner__media::after. Auf .banner::after setzt der Abschnitt
+   Er sitzt auf .banner__media::after. Die Selektoren sind absichtlich
+   doppelt (.banner .banner__media), weil das Stylesheet des Abschnitts erst
+   NACH diesem geladen wird und bei gleicher Spezifität gewinnen würde. Auf .banner::after setzt der Abschnitt
    die Deckkraft der Einstellung "Überlagerung" (hier 20 %) und würde alle
    Verläufe darauf auf ein Fünftel dämpfen — deshalb war hier vorher nichts zu
    sehen. Der Regler im Editor bleibt dadurch ohne Wirkung. */
-.banner::after {
+.banner.banner::after {
   background: none;
 }
-.banner__media::after {
+.banner .banner__media::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -324,7 +326,7 @@ h1, h2, h3, h4, h5,
 @media screen and (max-width: 749px) {
   /* Am Handy liegt der Text mitten auf dem Foto: eine gleichmäßige leichte
      Schicht, so viel wie im Archiv, dazu der Auslauf nach unten. */
-  .banner__media::after {
+  .banner .banner__media::after {
     background: linear-gradient(to bottom, rgba(10, 10, 10, 0) 62%, rgb(10, 10, 10) 100%),
       linear-gradient(rgba(10, 10, 10, 0.3), rgba(10, 10, 10, 0.3));
   }
