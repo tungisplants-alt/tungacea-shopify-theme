@@ -1,0 +1,26 @@
+{%- comment -%}
+  Feste Kaufleiste am Handy.
+
+  Sie erscheint erst, wenn der Kaufknopf der Seite nach oben aus dem Bild
+  gescrollt ist, und verschwindet, sobald er nicht kaufbar ist (ausverkauft
+  oder Variante nicht verfügbar). Ein ausverkauftes Produkt bekommt sie gar
+  nicht erst. Der Knopf löst den echten Kaufknopf aus, es gibt also keinen
+  zweiten Weg in den Warenkorb.
+
+  Parameter:
+  - product: das Produkt
+  - section_id: Abschnitt-ID der Produktseite (wie bei buy-buttons)
+{%- endcomment -%}
+{%- if product.available -%}
+  <sticky-buy-bar class="sticky-buy-bar" data-section-id="{{ section_id }}" data-testid="sticky-buy-bar">
+    <div class="sticky-buy-bar__price">
+      <span class="sticky-buy-bar__label">{{ 'products.product.specimen_status.available' | t }}</span>
+      <span class="sticky-buy-bar__amount" data-sticky-price>
+        {{- product.selected_or_first_available_variant.price | money -}}
+      </span>
+    </div>
+    <button type="button" class="sticky-buy-bar__button" data-sticky-button tabindex="-1">
+      {{- 'products.product.sticky_bar_add' | t -}}
+    </button>
+  </sticky-buy-bar>
+{%- endif -%}
