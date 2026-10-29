@@ -95,6 +95,15 @@ const zaehle = (html, muster) => (html.match(muster) || []).length;
   pruefe('Merkmal aus der Auswahl wird zum Schalter, leerer Name nicht', /data-facet="merkmale"/.test(html) && !/data-wert="\s*"/.test(html), true);
   pruefe('fremde Pflanze speist nichts ein: ID TA-1005 steht nirgends im Archiv', /TA-1005/.test(html), false);
 
+  // Reihenfolge der Schnellwahl: Alle, Angebot vorhanden, Mutterpflanze, Etabliert,
+  // Jungpflanze, dann Steckling/Klon und gekeimter Samen.
+  const stufen = ['Jungpflanze', 'Samen', 'Etabliert', 'Steckling', 'Mutterpflanze'].map((st, i) => pflanze(i + 1, { stadium: feld(st), besitzer: feld(null) }));
+  const h2 = await rendere(stufen, [produkt('A', true, 'p1')]);
+  const nav = h2.slice(h2.indexOf('plant-search__tabs'), h2.indexOf('</nav>', h2.indexOf('plant-search__tabs')));
+  const folge = [...nav.matchAll(/data-einstieg="(alle|angebot|stadium)"(?:\s+data-wert="([^"]*)")?/g)].map((m) => (m[1] === 'stadium' ? m[2] : m[1]));
+  pruefe('Schnellwahl im Archiv: Alle, Angebot, Mutterpflanze, Etabliert, Jungpflanze, Steckling, Samen', folge, ['alle', 'angebot', 'Mutterpflanze', 'Etabliert', 'Jungpflanze', 'Steckling', 'Samen']);
+  pruefe('Samen traegt im Archiv die Aufschrift Gekeimter Samen', />Gekeimter Samen </.test(nav), true);
+
   // Ohne Produkte kein Angebot, kein Fehler.
   const ohne = await rendere(eintraege, []);
   pruefe('ohne Produkte kein Angebot und keine Angebots-Schnellwahl', zaehle(ohne, /data-angebot="ja"/g) === 0 && !/data-einstieg="angebot"/.test(ohne), true);
