@@ -17,6 +17,8 @@
   - css_laden:  {Boolean} false, wenn das Stylesheet schon geladen ist (optional)
   - ohne_zusatz: {Boolean} true laesst "schnellere Antwort" weg, wenn der Satz
                  daneben es schon sagt (optional)
+  - symbol:     {Boolean} true gibt nur das WhatsApp-Symbol als Link aus
+                 (Fusszeile), mit Beschriftung fuer Screenreader (optional)
 
   Aufruf:
   {%- render 'whatsapp-option', klasse: 'contact__whatsapp' -%}
@@ -49,7 +51,21 @@
   endif
 -%}
 
-{%- if gueltig -%}
+{%- if gueltig and symbol -%}
+  <a
+    class="{% if klasse != blank %}{{ klasse | escape }}{% endif %}"
+    href="{{ adresse | escape }}"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="{{ 'whatsapp_contact.whatsapp_label' | t | escape }}"
+    aria-describedby="a11y-new-window-message"
+    data-whatsapp-link
+  >
+    <span class="tungacea-footer__social-icon svg-wrapper" aria-hidden="true">
+      {{- 'icon-whatsapp.svg' | inline_asset_content -}}
+    </span>
+  </a>
+{%- elsif gueltig -%}
   {%- unless css_laden == false -%}
     {{ 'component-whatsapp-contact.css' | asset_url | stylesheet_tag }}
   {%- endunless -%}
