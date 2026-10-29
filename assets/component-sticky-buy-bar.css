@@ -13,8 +13,8 @@
     right: 0;
     bottom: 0;
     z-index: 5;
-    align-items: center;
-    gap: 1.6rem;
+    flex-direction: column;
+    gap: 1.1rem;
     padding: 1.2rem 1.6rem calc(1.2rem + env(safe-area-inset-bottom, 0px));
     background: rgba(10, 10, 10, 0.94);
     -webkit-backdrop-filter: blur(8px);
@@ -29,6 +29,76 @@
     transform: none;
     visibility: visible;
     transition: transform 0.3s var(--tungacea-ease, ease);
+  }
+
+  .sticky-buy-bar__zeile {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+  }
+
+  /* Winterverpackung: eigene Zeile über dem Kaufknopf, durch eine Haarlinie
+     getrennt. Dieselbe Sprache wie auf der Seite (component-winter-pack.css). */
+  .sticky-buy-bar__winter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.08));
+  }
+
+  .sticky-buy-bar__winter-text {
+    display: block;
+    min-width: 0;
+  }
+
+  .sticky-buy-bar__winter-titel {
+    display: block;
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+    color: #f2eee8;
+  }
+
+  .sticky-buy-bar__winter-preis {
+    margin-left: 0.4rem;
+    color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  }
+
+  .sticky-buy-bar__winter-sub {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 1.05rem;
+    line-height: 1.45;
+    color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  }
+
+  .sticky-buy-bar__winter-knopf {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0.8rem 1.2rem;
+    border: 1px solid rgba(242, 238, 232, 0.42);
+    border-radius: 0;
+    background: transparent;
+    color: #f2eee8;
+    font: inherit;
+    font-size: 1.05rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .sticky-buy-bar__winter-knopf:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  .sticky-buy-bar__winter-knopf:focus-visible {
+    outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+    outline-offset: 2px;
   }
 
   .sticky-buy-bar__price {
@@ -76,11 +146,11 @@
   /* Der Schreib-mir-Knopf rückt über die Leiste und die Seite bekommt unten
      Luft, damit am Seitenende nichts verdeckt wird. */
   body.has-buy-bar .whatsapp-contact {
-    bottom: calc(8.4rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(var(--kaufleiste-hoehe, 7.2rem) + 1.2rem);
   }
 
   body.has-buy-bar {
-    padding-bottom: 7.2rem;
+    padding-bottom: var(--kaufleiste-hoehe, 7.2rem);
   }
 }
 

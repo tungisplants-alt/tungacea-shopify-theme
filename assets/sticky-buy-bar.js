@@ -14,6 +14,8 @@ if (!customElements.get('sticky-buy-bar')) {
         this.sectionId = this.dataset.sectionId;
         this.priceAnzeige = this.querySelector('[data-sticky-price]');
         this.knopf = this.querySelector('[data-sticky-button]');
+        this.winterKnopf = this.querySelector('[data-sticky-winter]');
+        this.winterText = this.querySelector('[data-sticky-winter-text]');
         this.hauptKnopf = null;
         this.vorbei = false;
 
@@ -22,6 +24,14 @@ if (!customElements.get('sticky-buy-bar')) {
           this.vorbei = !e.isIntersecting && e.boundingClientRect.top < 0;
           this.aktualisieren();
         });
+
+        if (this.winterKnopf) {
+          this.winterKnopf.addEventListener('click', () => {
+            const echt = document.querySelector('[data-winter-pack]');
+            if (echt && !echt.disabled) echt.click();
+          });
+          window.addEventListener('resize', () => this.hoeheSetzen());
+        }
 
         this.knopf.addEventListener('click', () => {
           if (this.hauptKnopf && !this.kaufbar()) return;
@@ -49,6 +59,7 @@ if (!customElements.get('sticky-buy-bar')) {
         if (this.beobachter) this.beobachter.disconnect();
         if (this.aenderungen) this.aenderungen.disconnect();
         document.body.classList.remove('has-buy-bar');
+        document.body.style.removeProperty('--kaufleiste-hoehe');
       }
 
       kaufbar() {
@@ -64,7 +75,29 @@ if (!customElements.get('sticky-buy-bar')) {
           if (neu) this.beobachter.observe(neu);
         }
         this.preisLesen();
+        this.winterSpiegeln();
         this.aktualisieren();
+      }
+
+      // Die Zeile spiegelt den Zustand des echten Winterverpackungs-Knopfs
+      // (gesperrt während des Legens, "Hinzugefügt" danach). Sie behauptet
+      // nichts über den Warenkorb.
+      winterSpiegeln() {
+        if (!this.winterKnopf) return;
+        const echt = document.querySelector('[data-winter-pack]');
+        if (!echt) return;
+        this.winterKnopf.disabled = !!echt.disabled;
+        if (this.winterText) {
+          this.winterText.textContent = echt.classList.contains('ist-fertig')
+            ? this.winterKnopf.dataset.labelFertig
+            : this.winterKnopf.dataset.labelStart;
+        }
+      }
+
+      hoeheSetzen() {
+        if (this.classList.contains('is-visible')) {
+          document.body.style.setProperty('--kaufleiste-hoehe', this.offsetHeight + 'px');
+        }
       }
 
       preisLesen() {
@@ -83,7 +116,9 @@ if (!customElements.get('sticky-buy-bar')) {
         const sichtbar = this.vorbei && this.kaufbar();
         this.classList.toggle('is-visible', sichtbar);
         this.knopf.tabIndex = sichtbar ? 0 : -1;
+        if (this.winterKnopf) this.winterKnopf.tabIndex = sichtbar ? 0 : -1;
         document.body.classList.toggle('has-buy-bar', sichtbar);
+        this.hoeheSetzen();
       }
     }
   );
