@@ -25,6 +25,12 @@
 {{ 'component-catalogue-filter.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'catalogue-filter.js' | asset_url }}" defer="defer"></script>
 
+{%- comment -%}
+  Reihenfolge der Stufen: Steckling/Klon, Etabliert, Jungpflanze, Sämling,
+  gekeimter Samen (Mutterpflanze zuletzt). Was Shopify liefert und hier nicht
+  vorkommt, steht hinten. Gelingt das Sortieren nicht (Größen ungleich), bleibt
+  Shopifys Reihenfolge.
+{%- endcomment -%}
 {%- liquid
   assign ergebnis_url = results.url
   assign sort_by = results.sort_by | default: results.default_sort_by
@@ -46,8 +52,24 @@
   endfor
 
   assign hat_schnellwahl = false
+  assign stadium_sortiert = nil
   if stadium_filter != nil
     assign hat_schnellwahl = true
+    assign stadium_sortiert = stadium_filter.values | where: 'value', 'unmoeglicher-wert'
+    assign reihenfolge = 'Steckling,Etabliert,Jungpflanze,Sämling,Samen,Mutterpflanze' | split: ','
+    for name in reihenfolge
+      assign treffer = stadium_filter.values | where: 'value', name
+      assign stadium_sortiert = stadium_sortiert | concat: treffer
+    endfor
+    for v in stadium_filter.values
+      unless reihenfolge contains v.value
+        assign treffer = stadium_filter.values | where: 'value', v.value
+        assign stadium_sortiert = stadium_sortiert | concat: treffer
+      endunless
+    endfor
+    if stadium_sortiert.size != stadium_filter.values.size
+      assign stadium_sortiert = stadium_filter.values
+    endif
   endif
 -%}
 
@@ -70,7 +92,7 @@
         {{- 'catalogue_filter.all' | t }} <span class="catalogue-filter__tab-count">{{ results.all_products_count }}</span>
       </a>
       {%- if stadium_filter != nil -%}
-        {%- for value in stadium_filter.values -%}
+        {%- for value in stadium_sortiert -%}
           {%- if value.count > 0 or value.active -%}
             {%- liquid
               assign wert_label = value.label
@@ -249,7 +271,11 @@
             <fieldset class="catalogue-filter__group">
               <legend class="catalogue-filter__group-name">{{ filter.label | escape }}</legend>
               <div class="catalogue-filter__chips">
-                {%- for value in filter.values -%}
+                {%- assign werte_liste = filter.values -%}
+                {%- if filter.param_name contains 'stadium' -%}
+                  {%- assign werte_liste = stadium_sortiert -%}
+                {%- endif -%}
+                {%- for value in werte_liste -%}
                   {%- liquid
                     assign gesperrt = false
                     if value.count == 0 and value.active == false

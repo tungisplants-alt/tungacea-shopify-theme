@@ -37,6 +37,28 @@
     Liquid hat kein Set, deshalb uniq auf der aufgeteilten Zeichenkette.
   endcomment
   assign stadien_liste = stadien | split: '|' | uniq | sort
+
+  comment
+    Reihenfolge der Stufen in Schnellwahl und Blatt: Mutterpflanze, Etabliert,
+    Jungpflanze, dann Steckling/Klon, Saemling, gekeimter Samen. Was hier nicht
+    vorkommt, steht hinten. Die Zeichenkette beginnt mit einem Komma, das
+    remove_first entfernt, damit kein leerer Eintrag entsteht.
+  endcomment
+  assign stufen_reihenfolge = 'Mutterpflanze,Etabliert,Jungpflanze,Steckling,Sämling,Samen' | split: ','
+  assign stufen_text = ''
+  for name in stufen_reihenfolge
+    if stadien_liste contains name
+      assign stufen_text = stufen_text | append: ',' | append: name
+    endif
+  endfor
+  for name in stadien_liste
+    unless stufen_reihenfolge contains name
+      if name != blank
+        assign stufen_text = stufen_text | append: ',' | append: name
+      endif
+    endunless
+  endfor
+  assign stadien_sortiert = stufen_text | remove_first: ',' | split: ','
   assign generationen_liste = generationen | split: '|' | uniq | sort
   assign zuechter_liste = zuechter_namen | split: '|' | uniq | sort
   assign herkunft_liste = herkuenfte | split: '|' | uniq | sort
@@ -91,12 +113,19 @@
       <button type="button" class="plant-search__tab" data-einstieg="alle" aria-pressed="true">
         {{- 'private_archive.tab_all' | t }} <span class="plant-search__tab-count"></span>
       </button>
-      {%- for wert in stadien_liste -%}
+      {%- if zeige_angebot -%}
+        <button type="button" class="plant-search__tab" data-einstieg="angebot" data-wert="ja" aria-pressed="false">
+          {{- 'private_archive.facet_offer_yes' | t }} <span class="plant-search__tab-count"></span>
+        </button>
+      {%- endif -%}
+      {%- for wert in stadien_sortiert -%}
         {%- liquid
           assign wert_label = wert
           case wert
             when 'Steckling'
               assign wert_label = 'products.product.specimen.stage_cutting' | t
+            when 'Samen'
+              assign wert_label = 'products.product.specimen.stage_seeds' | t
             when 'Sämling'
               assign wert_label = 'products.product.specimen.stage_seedling' | t
             when 'Jungpflanze'
@@ -111,11 +140,6 @@
           {{- wert_label | escape }} <span class="plant-search__tab-count"></span>
         </button>
       {%- endfor -%}
-      {%- if zeige_angebot -%}
-        <button type="button" class="plant-search__tab" data-einstieg="angebot" data-wert="ja" aria-pressed="false">
-          {{- 'private_archive.facet_offer_yes' | t }} <span class="plant-search__tab-count"></span>
-        </button>
-      {%- endif -%}
     </nav>
   {%- endif -%}
 
@@ -316,12 +340,14 @@
             <div class="plant-search__group">
               <p class="plant-search__group-name">{{ 'private_archive.facet_stage' | t }}</p>
               <div class="plant-search__chips" role="group" aria-label="{{ 'private_archive.facet_stage' | t }}">
-                {%- for wert in stadien_liste -%}
+                {%- for wert in stadien_sortiert -%}
                   {%- liquid
                     assign wert_label = wert
                     case wert
                       when 'Steckling'
                         assign wert_label = 'products.product.specimen.stage_cutting' | t
+                      when 'Samen'
+                        assign wert_label = 'products.product.specimen.stage_seeds' | t
                       when 'Sämling'
                         assign wert_label = 'products.product.specimen.stage_seedling' | t
                       when 'Jungpflanze'

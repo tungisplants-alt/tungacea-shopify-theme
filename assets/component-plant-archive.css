@@ -1049,6 +1049,23 @@
   display: none;
 }
 
+/* Schnellwahl wischbar: wo es weitergeht, läuft der Rand weich aus (die Linien
+   mit). Das Skript setzt data-mehr-links / data-mehr-rechts. */
+.plant-search__tabs[data-mehr-rechts] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 5.6rem), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 5.6rem), transparent);
+}
+
+.plant-search__tabs[data-mehr-links] {
+  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 5.6rem), transparent);
+  mask-image: linear-gradient(to left, #000 calc(100% - 5.6rem), transparent);
+}
+
+.plant-search__tabs[data-mehr-links][data-mehr-rechts] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 5.6rem, #000 calc(100% - 5.6rem), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 5.6rem, #000 calc(100% - 5.6rem), transparent);
+}
+
 .plant-search__tab {
   appearance: none;
   flex: none;

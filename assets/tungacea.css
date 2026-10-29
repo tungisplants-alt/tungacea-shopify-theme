@@ -299,14 +299,37 @@ h1, h2, h3, h4, h5,
   display: block;
 }
 
-/* cinematic gradient wash so text sits calmly */
-.banner::after {
+/* Wash über dem Hero-Foto, damit der Text ruhig liegt, und Auslauf nach unten
+   in die Seitenfarbe (wie im Archiv und in der Kollektion).
+
+   Er sitzt auf .banner__media::after. Die Selektoren sind absichtlich
+   doppelt (.banner .banner__media), weil das Stylesheet des Abschnitts erst
+   NACH diesem geladen wird und bei gleicher Spezifität gewinnen würde. Auf .banner::after setzt der Abschnitt
+   die Deckkraft der Einstellung "Überlagerung" (hier 20 %) und würde alle
+   Verläufe darauf auf ein Fünftel dämpfen — deshalb war hier vorher nichts zu
+   sehen. Der Regler im Editor bleibt dadurch ohne Wirkung. */
+.banner.banner::after {
+  background: none;
+}
+.banner .banner__media::after {
   content: '';
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(6, 6, 6, 0.72) 0%, rgba(6, 6, 6, 0.28) 45%, rgba(6, 6, 6, 0) 78%),
-    linear-gradient(0deg, rgba(6, 6, 6, 0.55) 0%, rgba(6, 6, 6, 0) 40%);
+  z-index: 1;
+  background: linear-gradient(to bottom, rgba(10, 10, 10, 0) 62%, rgb(10, 10, 10) 100%),
+    linear-gradient(90deg, rgba(10, 10, 10, 0.58) 0%, rgba(10, 10, 10, 0.24) 48%, rgba(10, 10, 10, 0) 80%);
+}
+@media screen and (max-width: 749px) {
+  /* Am Handy liegt der Text mitten auf dem Foto: eine gleichmäßige leichte
+     Schicht, so viel wie im Archiv, dazu der Auslauf nach unten. */
+  .banner .banner__media::after {
+    background: linear-gradient(to bottom, rgba(10, 10, 10, 0) 62%, rgb(10, 10, 10) 100%),
+      linear-gradient(rgba(10, 10, 10, 0.3), rgba(10, 10, 10, 0.3));
+  }
 }
 .banner__content { z-index: 2; }
 
@@ -324,6 +347,10 @@ h1, h2, h3, h4, h5,
   margin-bottom: 1.8rem;
   overflow: visible;
   padding-bottom: 0.06em;
+}
+/* Die Überschrift der Startseite etwas größer als die normale h0-Größe. */
+.banner__heading.h0 {
+  font-size: clamp(4.4rem, 7.4vw, 8.4rem);
 }
 .banner__text {
   color: rgba(242, 238, 232, 0.82);
@@ -700,6 +727,12 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 /* ---------- Section separators (quiet tonal transitions) ---------- */
 .content-for-layout > .shopify-section + .shopify-section .color-scheme-1:first-child {
   box-shadow: inset 0 1px 0 var(--tungacea-hairline-soft);
+}
+/* Unter einem Foto-Kopf (Startseite, Kollektion) läuft das Bild in die Seite
+   aus. Die Linie wäre dort eine Kante durch den Übergang. */
+.content-for-layout > .shopify-section:has(.banner) + .shopify-section .color-scheme-1:first-child,
+.content-for-layout > .shopify-section:has(.collection-hero--catalogue) + .shopify-section .color-scheme-1:first-child {
+  box-shadow: none;
 }
 
 /* ---------- Editorial eyebrows get a small oxblood tick ---------- */

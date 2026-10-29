@@ -15,6 +15,8 @@
  */
 class CatalogueFilter extends HTMLElement {
   connectedCallback() {
+    this.schnellwahlHinweis(this.querySelector('.catalogue-filter__tabs'));
+
     this.knopf = this.querySelector('.catalogue-filter__button');
     this.blatt = this.querySelector('.catalogue-filter__sheet');
     this.schleier = this.querySelector('.catalogue-filter__backdrop');
@@ -51,6 +53,47 @@ class CatalogueFilter extends HTMLElement {
           if (feld.value.trim() === '') feld.disabled = true;
         });
       });
+    }
+  }
+
+  /*
+   * Hinweis, dass die Schnellwahl seitlich wischbar ist: ein weicher Auslauf am
+   * Rand, wo es weitergeht (Attribute data-mehr-links / data-mehr-rechts, das
+   * CSS blendet die Kante aus), und einmal pro Sitzung ein kurzes Anstupsen.
+   * Ein aktiver Reiter außerhalb des Bildes wird zuerst sichtbar gerückt.
+   */
+  schnellwahlHinweis(tabs) {
+    if (!tabs) return;
+    const pruefen = () => {
+      const max = tabs.scrollWidth - tabs.clientWidth;
+      tabs.toggleAttribute('data-mehr-links', tabs.scrollLeft > 2);
+      tabs.toggleAttribute('data-mehr-rechts', max > 2 && tabs.scrollLeft < max - 2);
+    };
+    tabs.addEventListener('scroll', pruefen, { passive: true });
+    window.addEventListener('resize', pruefen);
+
+    let verschoben = false;
+    const aktiv = tabs.querySelector('[aria-current], .is-active, [aria-selected="true"]');
+    if (aktiv) {
+      const t = tabs.getBoundingClientRect();
+      const a = aktiv.getBoundingClientRect();
+      if (a.right > t.right - 8 || a.left < t.left) {
+        tabs.scrollLeft += a.left - t.left - 24;
+        verschoben = true;
+      }
+    }
+    pruefen();
+
+    let schon = false;
+    try { schon = window.sessionStorage.getItem('tungaceaSchnellwahlHinweis') === '1'; } catch (e) { /* ohne Speicher: jedes Mal */ }
+    const ruhig = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!schon && !verschoben && !ruhig && tabs.hasAttribute('data-mehr-rechts')) {
+      try { window.sessionStorage.setItem('tungaceaSchnellwahlHinweis', '1'); } catch (e) { /* egal */ }
+      setTimeout(() => {
+        if (tabs.scrollLeft > 2) return;
+        tabs.scrollTo({ left: 56, behavior: 'smooth' });
+        setTimeout(() => tabs.scrollTo({ left: 0, behavior: 'smooth' }), 650);
+      }, 900);
     }
   }
 
