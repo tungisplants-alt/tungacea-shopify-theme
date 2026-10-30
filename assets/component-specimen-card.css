@@ -280,3 +280,21 @@
     font-size: 1.5rem;
   }
 }
+
+/* Vergeben: leiser Hinweis, dass man die naechste Nachzucht vormerken kann */
+.product-card-wrapper .specimen-card__vormerken {
+  margin: 0.8rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f2eee8;
+}
+.product-card-wrapper .specimen-card__vormerken::after {
+  content: ' ›';
+  color: rgb(var(--tungacea-accent-text, 204, 96, 112));
+}
+/* Vergebene Karten treten etwas zurueck, bleiben aber lesbar */
+.product-card-wrapper:has(.specimen-card__status--sold) .card__media img {
+  filter: saturate(0.6) brightness(0.8);
+}

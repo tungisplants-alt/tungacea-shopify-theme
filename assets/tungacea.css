@@ -1321,3 +1321,156 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 .specimen-passport__hint-link::after {
   margin-left: 0.6rem;
 }
+
+/* Notiz zur Mutterpflanze unter dem Preis
+   -------------------------------------------------------------------------
+   Tungs eigene Worte zur Mutterpflanze, leise gesetzt wie im Archiv: rote
+   Linie links, Zitat in der Serifenschrift, darunter Name und Link. */
+.mutter-notiz {
+  margin: 2rem 0 0.8rem;
+  padding-left: 1.6rem;
+  border-left: 1px solid rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+.mutter-notiz__kopf {
+  margin: 0 0 0.8rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+}
+
+.mutter-notiz__text {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: var(--font-heading-family);
+  font-style: italic;
+  font-size: 1.8rem;
+  line-height: 1.5;
+  color: rgba(242, 238, 232, 0.92);
+}
+
+.mutter-notiz__fuss {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1.6rem;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+}
+
+.mutter-notiz__link {
+  color: #f2eee8;
+  text-decoration: none;
+  border-bottom: 1px solid rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  padding-bottom: 0.2rem;
+}
+
+.mutter-notiz__link::after {
+  content: ' ›';
+}
+
+.mutter-notiz__link:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 3px;
+}
+
+/* Nächste Nachzucht vormerken (vergebenes Exemplar)
+   -------------------------------------------------------------------------
+   Statt einer Sackgasse ein kurzes Formular. Gleiche Sprache wie der
+   Sammlerzugang: Linie unten statt Kasten, ein roter Knopf. */
+.nachzucht {
+  margin: 2.4rem 0 0;
+  padding: 2rem 0 0;
+  border-top: 1px solid var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.08));
+}
+
+.nachzucht__kopf {
+  margin: 0 0 0.8rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #f2eee8;
+}
+
+.nachzucht__text {
+  margin: 0 0 1.6rem;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgba(242, 238, 232, 0.85);
+}
+
+.nachzucht__feld {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+}
+
+.nachzucht__eingabe {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 1.3rem 1.4rem;
+  border: 0;
+  background: transparent;
+  color: #f2eee8;
+  font: inherit;
+  font-size: 1.6rem;
+  border-radius: 0;
+}
+
+.nachzucht__eingabe::placeholder {
+  color: rgba(205, 198, 188, 0.6);
+}
+
+.nachzucht__eingabe:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: -2px;
+}
+
+.nachzucht__knopf {
+  flex: none;
+  padding: 0 2rem;
+  border: 0;
+  border-radius: 0;
+  background: rgb(var(--tungacea-accent, 110, 28, 40));
+  color: #f2eee8;
+  font: inherit;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nachzucht__knopf:hover {
+  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+.nachzucht__knopf:focus-visible {
+  outline: 2px solid #f2eee8;
+  outline-offset: 2px;
+}
+
+.nachzucht__hinweis,
+.nachzucht__fehler {
+  margin: 1rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+}
+
+.nachzucht__fehler {
+  color: rgb(var(--tungacea-accent-text, 204, 96, 112));
+}
+
+.nachzucht__erfolg {
+  margin: 0;
+  padding: 1.2rem 0 0;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: #f2eee8;
+}

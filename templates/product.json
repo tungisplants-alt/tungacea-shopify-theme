@@ -27,6 +27,10 @@
           "type": "price",
           "settings": {}
         },
+        "notiz": {
+          "type": "notiz",
+          "settings": {}
+        },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
@@ -111,6 +115,7 @@
         "vendor",
         "title",
         "price",
+        "notiz",
         "variant_picker",
         "winterpack",
         "buy_buttons",

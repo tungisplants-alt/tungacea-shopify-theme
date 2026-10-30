@@ -124,7 +124,7 @@
       "on_sale": "Sale",
       "specimen_status": {
         "available": "Verfügbar",
-        "sold": "Verkauft"
+        "sold": "Vergeben"
       },
       "specimen_flags": {
         "new": "Neu",
@@ -286,6 +286,20 @@
       "taxes_included": "Inkl. Steuern.",
       "duties_included": "Inkl. Zollgebühren.",
       "duties_and_taxes_included": "Inkl. Zollgebühren und Steuern.",
+      "nachzucht": {
+        "heading": "Nächste Nachzucht vormerken",
+        "text_mother": "Dieses Exemplar ist vergeben. Wenn ich von dieser Mutterpflanze wieder etwas abgeben kann, schreibe ich dir.",
+        "text_cross": "Dieses Exemplar ist vergeben. Wenn ich aus dieser Kreuzung wieder etwas abgeben kann, schreibe ich dir.",
+        "placeholder": "E-Mail-Adresse",
+        "button": "Vormerken",
+        "success": "Danke, du stehst auf der Liste. Ich melde mich, sobald es so weit ist.",
+        "note": "Nur diese eine Nachricht, keine regelmäßige Werbung.",
+        "card": "Nachzucht vormerken"
+      },
+      "mutter_notiz": {
+        "label": "Meine Notiz zur Mutterpflanze",
+        "link": "Im Archiv ansehen"
+      },
       "pflege": {
         "titel": "Pflegeanleitung",
         "text": "So pflege ich meine Pflanzen – meine Bedingungen, Stufe für Stufe, vom Steckling bis zur Mutterpflanze.",

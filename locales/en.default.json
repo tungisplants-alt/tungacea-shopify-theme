@@ -286,6 +286,20 @@
       "duties_included": "Duties included.",
       "duties_and_taxes_included": "Duties and taxes included.",
       "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
+      "nachzucht": {
+        "heading": "Get notified about the next one",
+        "text_mother": "This specimen is taken. When I have something from this mother plant again, I'll let you know.",
+        "text_cross": "This specimen is taken. When I have something from this cross again, I'll let you know.",
+        "placeholder": "Email address",
+        "button": "Notify me",
+        "success": "Thanks, you're on the list. I'll get in touch when it's ready.",
+        "note": "Just this one message, no regular promotions.",
+        "card": "Get notified"
+      },
+      "mutter_notiz": {
+        "label": "My note on the mother plant",
+        "link": "View in the archive"
+      },
       "pflege": {
         "titel": "Care guide",
         "text": "How I care for my plants – my conditions, stage by stage, from cutting to mother plant.",

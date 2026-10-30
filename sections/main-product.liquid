@@ -204,6 +204,8 @@
                   {%- endif -%}
                 {%- when 'winterpack' -%}
                   {% render 'winter-pack', block: block %}
+                {%- when 'notiz' -%}
+                  {% render 'mutter-notiz', product: product, block: block %}
                 {%- when 'pflege' -%}
                   {% render 'pflege-zeile', block: block %}
                 {%- when 'versandinfo' -%}
@@ -513,6 +515,7 @@
                     section_id: section.id,
                     show_pickup_availability: true
                   -%}
+                  {%- render 'nachzucht-vormerken', product: product -%}
                 {%- when 'rating' -%}
                   {%- if product.metafields.reviews.rating.value != blank -%}
                     <div class="rating-wrapper">
@@ -987,6 +990,17 @@
           "id": "hinweis",
           "label": "Hinweis darunter",
           "info": "Leer lassen: Dann wird übersetzt. — Das Kästchen ist bewusst nicht vorausgewählt: Vorausgewählte kostenpflichtige Zusatzleistungen sind nach § 312a Abs. 3 BGB unwirksam."
+        }
+      ]
+    },
+    {
+      "type": "notiz",
+      "name": "Notiz zur Mutterpflanze",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Zeigt deine persönliche Notiz aus dem Archiveintrag der Mutterpflanze, mit Link ins Archiv. Hat das Produkt keine Mutterpflanze oder die Mutterpflanze keine Notiz, erscheint nichts. Am besten direkt unter dem Preis."
         }
       ]
     },

@@ -265,6 +265,17 @@
                 {%- endif -%}
                 {% render 'price', product: card_product, price_class: 'specimen-card__price', show_compare_at_price: true %}
               </div>
+              {%- comment -%}
+                Vergeben ist keine Sackgasse: auf der Produktseite kann man die
+                naechste Nachzucht vormerken. Die Karte sagt es leise, die ganze
+                Karte fuehrt dorthin. Nur mit Mutterpflanze, sonst gaebe es
+                nichts, worauf man warten koennte.
+              {%- endcomment -%}
+              {%- if specimen_status_state == 'sold' and card_product.metafields.custom.mutterpflanze.value != blank -%}
+                <p class="specimen-card__vormerken" data-testid="specimen-card-vormerken">
+                  {{- 'products.product.nachzucht.card' | t -}}
+                </p>
+              {%- endif -%}
               {%- if card_product.quantity_price_breaks_configured? -%}
                 {% if card_product.variants_count == 1 and quick_add == 'bulk' %}
                   {% liquid

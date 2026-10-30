@@ -1,0 +1,76 @@
+{% comment %}
+  Tungacea — "Nächste Nachzucht vormerken" bei einem vergebenen Exemplar.
+
+  Wer eine vergebene Pflanze ansieht, wollte sie vielleicht haben. Statt einer
+  Sackgasse steht hier ein kurzes Formular: E-Mail eintragen, und Tung
+  schreibt, wenn es von dieser Mutterpflanze oder aus dieser Kreuzung wieder
+  etwas gibt. Es ist Shopifys eigenes Kundenformular; die Adresse landet bei
+  den Kunden mit den Tags "nachzucht" und "nachzucht-<Nummer der Mutterpflanze>",
+  damit Tung später genau diese Liste anschreiben kann.
+
+  Erscheint nur, wenn das Produkt nicht mehr verfügbar ist und eine
+  Mutterpflanze hat. Ohne Mutterpflanze gäbe es nichts, worauf man warten
+  könnte.
+
+  Annahmen:
+  - product: {Object} das Produkt (Pflicht)
+{% endcomment %}
+{%- liquid
+  assign mutter = product.metafields.custom.mutterpflanze.value
+  assign vater = product.metafields.custom.vaterpflanze.value
+  assign zeigen = false
+  if product.available == false and mutter != blank
+    assign zeigen = true
+  endif
+
+  assign marke = mutter.mutter_id.value | default: mutter.system.handle | default: '' | downcase | strip | replace: ' ', '-'
+  assign tags = 'nachzucht'
+  if marke != blank
+    assign tags = tags | append: ',nachzucht-' | append: marke
+  endif
+
+  if vater != blank
+    assign text = 'products.product.nachzucht.text_cross' | t
+  else
+    assign text = 'products.product.nachzucht.text_mother' | t
+  endif
+-%}
+{%- if zeigen -%}
+  <div class="nachzucht" id="nachzucht" data-testid="nachzucht">
+    <p class="nachzucht__kopf">{{ 'products.product.nachzucht.heading' | t }}</p>
+    <p class="nachzucht__text">{{ text }}</p>
+    {%- form 'customer', id: 'NachzuchtForm', class: 'nachzucht__form' -%}
+      <input type="hidden" name="contact[tags]" value="{{ tags | escape }}">
+      {%- if form.posted_successfully? -%}
+        <p class="nachzucht__erfolg" role="status" tabindex="-1" autofocus data-testid="nachzucht-erfolg">
+          {{- 'products.product.nachzucht.success' | t -}}
+        </p>
+      {%- else -%}
+        <div class="nachzucht__feld">
+          <label class="visually-hidden" for="Nachzucht-email">{{ 'products.product.nachzucht.placeholder' | t }}</label>
+          <input
+            id="Nachzucht-email"
+            class="nachzucht__eingabe"
+            type="email"
+            name="contact[email]"
+            value="{{ form.email }}"
+            placeholder="{{ 'products.product.nachzucht.placeholder' | t }}"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            required
+            {%- if form.errors %} aria-invalid="true" aria-describedby="Nachzucht-fehler"{% endif %}
+          >
+          <button type="submit" class="nachzucht__knopf">{{ 'products.product.nachzucht.button' | t }}</button>
+        </div>
+        {%- if form.errors -%}
+          <p class="nachzucht__fehler" id="Nachzucht-fehler">
+            {{- form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email -}}
+          </p>
+        {%- endif -%}
+        <p class="nachzucht__hinweis">{{ 'products.product.nachzucht.note' | t }}</p>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+{%- endif -%}
