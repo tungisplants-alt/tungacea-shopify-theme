@@ -226,7 +226,7 @@
       "product_variants": "Product variants",
       "media": {
         "go_to_media": "Show image {{ index }}",
-          "gallery_viewer": "Gallery Viewer",
+        "gallery_viewer": "Gallery Viewer",
         "load_image": "Load image {{ index }} in gallery view",
         "load_model": "Load 3D Model {{ index }} in gallery view",
         "load_video": "Play video {{ index }} in gallery view",
@@ -285,7 +285,12 @@
       "taxes_included": "Taxes included.",
       "duties_included": "Duties included.",
       "duties_and_taxes_included": "Duties and taxes included.",
-      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout."
+      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
+      "pflege": {
+        "titel": "Care guide",
+        "text": "How I care for my plants – my conditions, stage by stage, from cutting to mother plant.",
+        "link": "To the care guide"
+      }
     },
     "modal": {
       "label": "Media gallery"
@@ -791,5 +796,43 @@
     "mail_privacy_link": "privacy policy",
     "message": "Hi Tung, I have a question about…",
     "message_product": "Hi Tung, I have a question about {{ name }}."
+  },
+  "care_guide": {
+    "eyebrow": "Care guide",
+    "heading": "How I care for my Anthuriums.",
+    "lead": "My conditions, my experience – stage by stage, from cutting to mother plant.",
+    "disclaimer_title": "Disclaimer",
+    "disclaimer": "These are my own experiences under my own conditions. They may differ from recommendations in studies. Treat them as guidance, not as a fixed recipe.",
+    "nav_label": "Chapters",
+    "nav_conditions": "Conditions",
+    "nav_stages": "Stages",
+    "nav_nutrients": "Nutrients",
+    "nav_water": "Water",
+    "nav_questions": "Questions",
+    "conditions_title": "My conditions",
+    "conditions_lead": "Where and how my plants grow. Your space is different – that's why this comes first.",
+    "stages_title": "Care by stage",
+    "stages_lead": "In the same order as in the shop. Tap a stage to open it.",
+    "nutrients_title": "Nutrients & additives",
+    "nutrients_lead": "What I use, how much and when.",
+    "water_title": "My water",
+    "water_lead": "pH and EC, the way I set them.",
+    "questions_title": "Questions",
+    "questions_text": "Something unclear, or different on your end? Message me directly.",
+    "stage_step": "Stage {{ nummer }}",
+    "stage_breeding": "Breeding",
+    "empty": "Content coming soon.",
+    "figure_humidity": "Humidity",
+    "figure_light": "Light",
+    "figure_temperature": "Temperature",
+    "figure_fertilizer": "Fertilizer",
+    "value_vpd": "VPD {{ wert }} kPa",
+    "value_ppfd": "PPFD {{ wert }} µmol/m²/s",
+    "value_temperature": "{{ wert }} °C",
+    "value_ec": "EC {{ wert }} mS/cm",
+    "type_basis": "Base",
+    "type_addition": "Additive",
+    "water_target": "Target",
+    "water_unit": "mS/cm"
   }
 }

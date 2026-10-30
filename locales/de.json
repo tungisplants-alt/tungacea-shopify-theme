@@ -255,7 +255,7 @@
         "play_model": "3D-Viewer abspielen",
         "play_video": "Video abspielen",
         "go_to_media": "Bild {{ index }} anzeigen",
-          "gallery_viewer": "Galerie-Viewer",
+        "gallery_viewer": "Galerie-Viewer",
         "load_image": "Bild {{ index }} in Galerieansicht laden",
         "load_model": "3D-Modell {{ index }} in Galerieansicht laden",
         "load_video": "Video {{ index }} in Galerieansicht abspielen",
@@ -285,7 +285,12 @@
       "product_variants": "Produktvarianten",
       "taxes_included": "Inkl. Steuern.",
       "duties_included": "Inkl. Zollgebühren.",
-      "duties_and_taxes_included": "Inkl. Zollgebühren und Steuern."
+      "duties_and_taxes_included": "Inkl. Zollgebühren und Steuern.",
+      "pflege": {
+        "titel": "Pflegeanleitung",
+        "text": "So pflege ich meine Pflanzen – meine Bedingungen, Stufe für Stufe, vom Steckling bis zur Mutterpflanze.",
+        "link": "Zum Pflegeguide"
+      }
     },
     "modal": {
       "label": "Medien-Galerie"
@@ -791,5 +796,43 @@
     "mail_privacy_link": "Datenschutzerklärung",
     "message": "Hallo Tung, ich habe eine Frage zu…",
     "message_product": "Hallo Tung, ich habe eine Frage zu {{ name }}."
+  },
+  "care_guide": {
+    "eyebrow": "Pflegeguide",
+    "heading": "So pflege ich meine Anthurien.",
+    "lead": "Meine Bedingungen, meine Erfahrung – Stufe für Stufe, vom Steckling bis zur Mutterpflanze.",
+    "disclaimer_title": "Disclaimer",
+    "disclaimer": "Das sind meine eigenen Erfahrungen unter meinen Bedingungen. Sie können von Empfehlungen aus Studien abweichen. Sieh sie als Orientierung, nicht als festes Rezept.",
+    "nav_label": "Kapitel",
+    "nav_conditions": "Bedingungen",
+    "nav_stages": "Stadien",
+    "nav_nutrients": "Nährstoffe",
+    "nav_water": "Gießwasser",
+    "nav_questions": "Fragen",
+    "conditions_title": "Meine Bedingungen",
+    "conditions_lead": "Wo und wie meine Pflanzen wachsen. Dein Platz ist anders – deshalb steht das zuerst.",
+    "stages_title": "Pflege nach Stadium",
+    "stages_lead": "In der Reihenfolge wie im Shop. Tipp ein Stadium an, dann klappt es auf.",
+    "nutrients_title": "Nährstoffe & Zusätze",
+    "nutrients_lead": "Was ich verwende, wie viel und wann.",
+    "water_title": "Mein Gießwasser",
+    "water_lead": "pH- und EC-Wert, so wie ich sie einstelle.",
+    "questions_title": "Fragen",
+    "questions_text": "Etwas unklar oder bei dir anders? Schreib mir direkt.",
+    "stage_step": "Stufe {{ nummer }}",
+    "stage_breeding": "Zucht",
+    "empty": "Inhalt folgt.",
+    "figure_humidity": "Luftfeuchtigkeit",
+    "figure_light": "Licht",
+    "figure_temperature": "Temperatur",
+    "figure_fertilizer": "Dünger",
+    "value_vpd": "VPD {{ wert }} kPa",
+    "value_ppfd": "PPFD {{ wert }} µmol/m²/s",
+    "value_temperature": "{{ wert }} °C",
+    "value_ec": "EC {{ wert }} mS/cm",
+    "type_basis": "Basis",
+    "type_addition": "Zusatz",
+    "water_target": "Zielwert",
+    "water_unit": "mS/cm"
   }
 }

@@ -204,6 +204,8 @@
                   {%- endif -%}
                 {%- when 'winterpack' -%}
                   {% render 'winter-pack', block: block %}
+                {%- when 'pflege' -%}
+                  {% render 'pflege-zeile', block: block %}
                 {%- when 'versandinfo' -%}
                   {% render 'versandinfo', block: block %}
                 {%- when 'fragen' -%}
@@ -985,6 +987,29 @@
           "id": "hinweis",
           "label": "Hinweis darunter",
           "info": "Leer lassen: Dann wird übersetzt. — Das Kästchen ist bewusst nicht vorausgewählt: Vorausgewählte kostenpflichtige Zusatzleistungen sind nach § 312a Abs. 3 BGB unwirksam."
+        }
+      ]
+    },
+    {
+      "type": "pflege",
+      "name": "Pflegeanleitung",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Zugeklappte Zeile \"Pflegeanleitung\" mit einem Satz und dem Knopf zum Pflegeguide (Seite mit dem Namen \"Pflegeguide\"). Gibt es diese Seite nicht oder ist sie nicht veröffentlicht, erscheint die Zeile nicht. Unten in der Produktspalte einordnen, vor der Zeile Versand."
+        },
+        {
+          "type": "text",
+          "id": "titel",
+          "label": "Titel",
+          "info": "Leer lassen: Dann wird übersetzt. Ein eigener Text erscheint in beiden Sprachen gleich."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Satz darin",
+          "info": "Leer lassen: Dann wird übersetzt."
         }
       ]
     },

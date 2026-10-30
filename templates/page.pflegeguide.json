@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-care-guide",
+      "blocks": {
+        "stadium_steckling": { "type": "stadium", "settings": { "stadium": "steckling" } },
+        "stadium_etabliert": { "type": "stadium", "settings": { "stadium": "etabliert" } },
+        "stadium_jungpflanze": { "type": "stadium", "settings": { "stadium": "jungpflanze" } },
+        "stadium_saemling": { "type": "stadium", "settings": { "stadium": "saemling" } },
+        "stadium_samen": { "type": "stadium", "settings": { "stadium": "samen" } },
+        "stadium_mutterpflanze": { "type": "stadium", "settings": { "stadium": "mutterpflanze" } }
+      },
+      "block_order": [
+        "stadium_steckling",
+        "stadium_etabliert",
+        "stadium_jungpflanze",
+        "stadium_saemling",
+        "stadium_samen",
+        "stadium_mutterpflanze"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": ["main"]
+}

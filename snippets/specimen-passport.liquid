@@ -392,8 +392,19 @@
       belongs after the case it qualifies, not in front of it.
     {%- endcomment -%}
     {%- if hint_title != blank -%}
+      {%- comment -%}
+        The care guide link sits with the caveat: a statement like "for
+        experienced hands" should be followed by where the care is explained.
+        It points to the start of the guide and only appears if that page exists.
+      {%- endcomment -%}
+      {%- assign pflege_seite = pages['pflegeguide'] -%}
       <p class="specimen-passport__hint" role="note" data-testid="specimen-hint">
         <strong>{{ hint_title }}</strong> {{ hint_body }}
+        {%- if pflege_seite != blank and pflege_seite.url != blank -%}
+          <a class="specimen-passport__hint-link" href="{{ pflege_seite.url | escape }}" data-testid="specimen-hint-guide">
+            {{- 'products.product.pflege.link' | t }} &rsaquo;
+          </a>
+        {%- endif -%}
       </p>
     {%- endif -%}
   </section>
