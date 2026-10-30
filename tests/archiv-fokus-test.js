@@ -66,10 +66,11 @@ const faelle = [
       bilder: { value: [bild('eins.jpg'), bild('zwei.jpg')] },
     }),
     erwartet: { de: ['Im Fokus', 'Zum Exemplar'], en: ['In focus', 'View specimen'] },
-    immer: ['TA-1001', 'Anthurium Fokuspflanze', 'plant-focus-cross', 'plant-focus-note', 'Lieblingsexemplar', 'Tung',
+    immer: ['TA-1001', 'Anthurium Fokuspflanze', 'plant-focus-note', 'Lieblingsexemplar', 'Tung',
       'cdn://eins.jpg', 'plant-focus__image--zweites', 'href="/pflanzen/fokus"'],
-    verboten: ['plant-focus-trait', 'Längliche Form'],
-    reihenfolge: ['plant-focus__eyebrow', 'plant-focus__id', 'plant-focus__name', 'plant-focus-cross', 'plant-focus-note', 'plant-focus-link'],
+    // Keine Abstammungszeile: der Name nennt die Kreuzung meist schon.
+    verboten: ['plant-focus-trait', 'Längliche Form', 'plant-focus-cross', '(Ralph Lynam x Fort Sherman)'],
+    reihenfolge: ['plant-focus__eyebrow', 'plant-focus__id', 'plant-focus__name', 'plant-focus-note', 'plant-focus-link'],
   },
   {
     name: 'Ohne Notiz steht das Hauptmerkmal',

@@ -26,17 +26,6 @@
   assign ziel = eintrag.system.url
 
   comment
-    Die Abstammung steht kursiv unter dem Namen, wie die Beschriftung im
-    Herbar. "Nicht bekannt" und "Unbekannt" sind keine Abstammung; dann
-    bleibt die Zeile weg.
-  endcomment
-  assign abstammung = eintrag.kreuzung.value | default: '' | strip
-  assign abstammung_klein = abstammung | downcase
-  if abstammung_klein == 'nicht bekannt' or abstammung_klein == 'unbekannt'
-    assign abstammung = ''
-  endif
-
-  comment
     Die leise Zeile unter dem Namen. Stadium und Generation sind dieselben
     Auswahlwerte wie am Produkt, damit Archiv und Laden dasselbe Wort benutzen.
   endcomment
@@ -180,10 +169,6 @@
     {%- endcomment -%}
     {%- if eintrag.mutter_id.value != blank -%}
       <p class="plant-card__id" data-testid="plant-card-id">{{ eintrag.mutter_id.value | escape }}</p>
-    {%- endif -%}
-
-    {%- if abstammung != blank -%}
-      <p class="plant-card__cross" data-testid="plant-card-cross">{{ abstammung | escape }}</p>
     {%- endif -%}
 
     {%- if leise != blank -%}

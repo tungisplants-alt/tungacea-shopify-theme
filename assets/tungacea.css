@@ -1322,70 +1322,6 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   margin-left: 0.6rem;
 }
 
-/* Notiz zur Mutterpflanze unter dem Preis
-   -------------------------------------------------------------------------
-   Tungs eigene Worte zur Mutterpflanze, leise gesetzt wie im Archiv: rote
-   Linie links, Zitat in der Serifenschrift, darunter Name und Link. */
-.mutter-notiz {
-  margin: 2rem 0 0.8rem;
-  padding-left: 1.6rem;
-  border-left: 1px solid rgb(var(--tungacea-accent-bright, 168, 52, 66));
-}
-
-.mutter-notiz__kopf {
-  margin: 0 0 0.8rem;
-  font-size: 1.2rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
-}
-
-.mutter-notiz__text {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-family: var(--font-heading-family);
-  font-style: italic;
-  font-size: 1.8rem;
-  line-height: 1.5;
-  color: rgba(242, 238, 232, 0.92);
-}
-
-.mutter-notiz__fuss {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.4rem 1.6rem;
-  margin-top: 1rem;
-  font-size: 1.2rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
-}
-
-.mutter-notiz__link {
-  color: #f2eee8;
-  text-decoration: none;
-  border-bottom: 1px solid rgb(var(--tungacea-accent-bright, 168, 52, 66));
-  padding-bottom: 0.2rem;
-}
-
-.mutter-notiz__link::after {
-  content: ' ›';
-}
-
-/* Die ganze Notiz unten im Pass: Sprungziel von "Weiterlesen". Abstand oben,
-   damit der feste Seitenkopf sie nicht verdeckt. */
-.mutter-notiz--voll {
-  margin: 2.4rem 0;
-  scroll-margin-top: 12rem;
-}
-
-.mutter-notiz__link:focus-visible {
-  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
-  outline-offset: 3px;
-}
-
 /* Nächste Nachzucht vormerken (vergebenes Exemplar)
    -------------------------------------------------------------------------
    Statt einer Sackgasse ein kurzes Formular. Gleiche Sprache wie der
@@ -1480,10 +1416,4 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   font-size: 1.5rem;
   line-height: 1.6;
   color: #f2eee8;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html:has(#notiz-mutterpflanze) {
-    scroll-behavior: smooth;
-  }
 }

@@ -296,10 +296,6 @@
         "note": "Nur diese eine Nachricht, keine regelmäßige Werbung.",
         "card": "Nachzucht vormerken"
       },
-      "mutter_notiz": {
-        "label": "Meine Notiz zur Mutterpflanze",
-        "link": "Weiterlesen"
-      },
       "pflege": {
         "titel": "Pflegeanleitung",
         "text": "So pflege ich meine Pflanzen – meine Bedingungen, Stufe für Stufe, vom Steckling bis zur Mutterpflanze.",
@@ -742,6 +738,7 @@
     "load_warning": "Nur {{ geladen }} von {{ gesamt }} Pflanzen geladen. Das Archiv muss auf Seiten umgestellt werden.",
     "offers_heading": "Angebote von dieser Pflanze",
     "more_about_mother": "Mehr über die Mutterpflanze",
+    "read_note": "Meine Notiz lesen",
     "more_about_father": "Mehr über die Vaterpflanze",
     "eyebrow": "MEIN ARCHIV",
     "heading": "Ein Blick auf das, was gerade heranwächst.",

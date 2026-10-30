@@ -357,27 +357,6 @@
       {%- endif -%}
     {%- endif -%}
 
-    {%- comment -%}
-      Tungs Notiz zur Mutterpflanze, ganz. Am Preis steht nur der Anfang
-      (snippets/mutter-notiz.liquid) mit "Weiterlesen", das hierher springt.
-      Ist die Notiz kurz genug, steht sie oben schon ganz und hier nicht noch
-      einmal. Die Grenze von 14 Woertern muss in beiden Dateien gleich sein.
-    {%- endcomment -%}
-    {%- liquid
-      assign voll_notiz = ''
-      if mutter != blank
-        assign voll_notiz = mutter.notiz.value | default: '' | strip
-      endif
-      assign voll_woerter = voll_notiz | split: ' ' | size
-    -%}
-    {%- if voll_woerter > 14 -%}
-      <figure class="mutter-notiz mutter-notiz--voll" id="notiz-mutterpflanze" data-testid="mutter-notiz-voll">
-        <p class="mutter-notiz__kopf">{{ 'products.product.mutter_notiz.label' | t }}</p>
-        <blockquote class="mutter-notiz__text">{{ voll_notiz | escape | newline_to_br }}</blockquote>
-        <figcaption class="mutter-notiz__fuss"><span>Tung</span></figcaption>
-      </figure>
-    {%- endif -%}
-
     {%- if has_lower -%}
       <dl class="specimen-passport__grid">
         {%- if zuechter_name != blank -%}

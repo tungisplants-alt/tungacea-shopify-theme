@@ -171,20 +171,19 @@ const faelle = [
                'Generation F1', '28 cm', 'aus meiner Sammlung'],
     verboten: ['Aufmerksamkeit', 'erfahrene Hände', 'Foto:'] },
 
-  // Die ganze Notiz zur Mutterpflanze steht im Pass nur, wenn der Anriss am
-  // Preis gekuerzt ist (mehr als 14 Woerter). Sonst stuende sie zweimal da.
-  { name: 'Lange Notiz der Mutter steht ganz im Pass, mit Sprungziel',
+  // Hat die Mutter eine Notiz, verspricht der Knopf genau die und springt im
+  // Archiv dorthin. Die Notiz selbst steht nicht auf der Produktseite.
+  { name: 'Mutter mit Notiz: Knopf "Meine Notiz lesen" springt zur Notiz im Archiv',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Gut bewurzelt',
              mutterpflanze: mutter('Anthurium Black Widow', null, null, FOTOS, undefined, '/pages/pflanzen/bw',
-               { notiz: 'Diese Black Widow hebt sich durch die minimale Aderung hervor und kommt der echten BW sehr nahe.' }) }),
-    erwartet: ['id="notiz-mutterpflanze"', 'kommt der echten BW sehr nahe.', 'Meine Notiz zur Mutterpflanze'],
-    verboten: [] },
-  { name: 'Kurze Notiz der Mutter steht nicht im Pass (steht schon am Preis)',
+               { notiz: 'Diese Black Widow hebt sich durch die minimale Aderung hervor.' }) }),
+    erwartet: ['href="/pages/pflanzen/bw#notiz"', 'Meine Notiz lesen'],
+    verboten: ['minimale Aderung', 'Mehr über die Mutterpflanze'] },
+  { name: 'Mutter ohne Notiz: Knopf bleibt "Mehr über die Mutterpflanze"',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Gut bewurzelt',
-             mutterpflanze: mutter('Anthurium Black Widow', null, null, FOTOS, undefined, '/pages/pflanzen/bw',
-               { notiz: 'Lieblingsexemplar aus dieser F2-Kreuzung.' }) }),
-    erwartet: ['Anthurium Black Widow'],
-    verboten: ['notiz-mutterpflanze', 'Lieblingsexemplar'] },
+             mutterpflanze: mutter('Anthurium Black Widow', null, null, FOTOS, undefined, '/pages/pflanzen/bw') }),
+    erwartet: ['href="/pages/pflanzen/bw"', 'Mehr über die Mutterpflanze'],
+    verboten: ['#notiz', 'Meine Notiz lesen'] },
 
   { name: 'Cutting OHNE Mutterpflanze — darf nicht nach unten zeigen',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Unbewurzelt', blaetter: 1 }),

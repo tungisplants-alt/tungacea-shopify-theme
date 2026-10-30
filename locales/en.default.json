@@ -296,10 +296,6 @@
         "note": "Just this one message, no regular promotions.",
         "card": "Get notified"
       },
-      "mutter_notiz": {
-        "label": "My note on the mother plant",
-        "link": "Read more"
-      },
       "pflege": {
         "titel": "Care guide",
         "text": "How I care for my plants – my conditions, stage by stage, from cutting to mother plant.",
@@ -742,6 +738,7 @@
     "load_warning": "Only {{ geladen }} of {{ gesamt }} plants loaded. The archive needs to be split into pages.",
     "offers_heading": "Offers from this plant",
     "more_about_mother": "More about the mother plant",
+    "read_note": "Read my note",
     "more_about_father": "More about the pollen parent",
     "eyebrow": "MY ARCHIVE",
     "heading": "A glimpse of what’s growing.",

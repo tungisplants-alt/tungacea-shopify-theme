@@ -2,7 +2,8 @@
   Tungacea — eine Pflanze im Fokus, oben im Archiv.
 
   Ein grosses Foto und daneben das, was an dieser Pflanze besonders ist: Nummer,
-  Name, Abstammung und Tungs eigene Notiz. Es ist der Einstieg ins Stöbern, so
+  Name und Tungs eigene Notiz. Die Abstammung steht nicht dabei: der Name
+  nennt die Kreuzung meist schon, oft wortgleich. Es ist der Einstieg ins Stöbern, so
   wie in einer Ausstellung ein Stück vorn steht. Die Pflanze bleibt auch im
   Raster darunter, der Fokus ist eine Hervorhebung, kein Ersatz.
 
@@ -22,12 +23,6 @@
   endif
 
   assign ziel = eintrag.system.url
-
-  assign abstammung = eintrag.kreuzung.value | default: '' | strip
-  assign abstammung_klein = abstammung | downcase
-  if abstammung_klein == 'nicht bekannt' or abstammung_klein == 'unbekannt'
-    assign abstammung = ''
-  endif
 
   assign notiz = eintrag.notiz.value | default: '' | strip
   assign merkmal = eintrag.merkmal.value | default: '' | strip
@@ -56,10 +51,6 @@
     {%- endif -%}
 
     <h2 class="plant-focus__name">{{ name | escape }}</h2>
-
-    {%- if abstammung != blank -%}
-      <p class="plant-focus__cross" data-testid="plant-focus-cross">{{ abstammung | escape }}</p>
-    {%- endif -%}
 
     {%- if notiz != blank -%}
       <figure class="plant-focus__note" data-testid="plant-focus-note">

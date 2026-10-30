@@ -229,8 +229,8 @@
   }
 }
 
-/* Das Schild: rote Linie und Nummer, der Name in der Serifenschrift, die
-   Abstammung kursiv, darunter Stufe und Generation in kleinen Versalien. */
+/* Das Schild: rote Linie und Nummer, der Name in der Serifenschrift,
+   darunter Stufe und Generation in kleinen Versalien. */
 .plant-card__body {
   display: flex;
   flex-direction: column;
@@ -247,19 +247,6 @@
   letter-spacing: 0;
 }
 
-.plant-card__cross {
-  margin: 0;
-  font-family: var(--font-heading-family);
-  font-style: italic;
-  font-size: 1.5rem;
-  line-height: 1.35;
-  color: var(--pl-muted);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
 @media screen and (max-width: 749px) {
   .plant-card {
     padding: 1rem 1rem 0;
@@ -271,10 +258,6 @@
 
   .plant-card__name {
     font-size: 1.6rem;
-  }
-
-  .plant-card__cross {
-    font-size: 1.3rem;
   }
 
   .plant-card__meta,
@@ -759,6 +742,7 @@
  * deshalb nicht wie eine Fussnote aussehen.
  */
 .plant-profile__note {
+  scroll-margin-top: 12rem; /* Sprungziel von "Meine Notiz lesen" auf der Produktseite */
   max-width: 62rem;
   margin: 0 0 4rem;
   padding-left: 2rem;
@@ -1776,15 +1760,6 @@ html.plant-search-lock {
   font-size: clamp(2.8rem, 3.4vw, 4.4rem);
   line-height: 1.1;
   letter-spacing: -0.005em;
-}
-
-.plant-focus__cross {
-  margin: 0;
-  font-family: var(--font-heading-family);
-  font-style: italic;
-  font-size: 1.8rem;
-  line-height: 1.4;
-  color: var(--pl-muted);
 }
 
 .plant-focus__note {

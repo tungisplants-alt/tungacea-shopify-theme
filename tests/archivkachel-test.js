@@ -147,27 +147,12 @@ const faelle = [
     verboten: ['cdn://a.jpg', 'cdn://b.jpg'],
   },
 
-  // --- Abstammung kursiv unter dem Namen ---
+  // --- Keine Abstammungszeile: der Name nennt die Kreuzung meist schon ---
   {
-    name: 'Abstammung steht unter dem Namen, vor Stufe und Generation',
-    eintrag: pflanze('k-abst-a', {
-      kreuzung: feld("'King of Spades' × 'Michelle'"), generation: feld('F1'),
-    }),
-    erwartet: ['plant-card-cross', 'King of Spades'],
-    verboten: [],
-    reihenfolge: ['plant-card__name', 'plant-card-cross', 'plant-card-meta'],
-  },
-  {
-    name: '"Nicht bekannt" ist keine Abstammung',
-    eintrag: pflanze('k-abst-b', { kreuzung: feld('Nicht bekannt') }),
-    erwartet: [],
-    verboten: ['plant-card-cross', 'Nicht bekannt'],
-  },
-  {
-    name: 'Ohne Abstammung keine leere Zeile',
-    eintrag: pflanze('k-abst-c'),
-    erwartet: [],
-    verboten: ['plant-card-cross'],
+    name: 'Abstammung steht nicht auf der Kachel, auch wenn sie eingetragen ist',
+    eintrag: pflanze('k-abst-a', { kreuzung: feld("'King of Spades' × 'Michelle'"), generation: feld('F1') }),
+    erwartet: ['plant-card-meta'],
+    verboten: ['plant-card-cross', 'King of Spades'],
   },
 
   // --- Der alte Weg bleibt unveraendert ---
