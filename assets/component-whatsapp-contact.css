@@ -7,7 +7,20 @@
  * Am Telefon nur das Symbol (48 px, die Mindestgroesse fuer einen Finger), ab
  * Tablet mit Text. Aufgeklappt wird mit <details>; die Karte sitzt ueber dem
  * Knopf und waechst nach oben. */
+.whatsapp-contact.ist-weg {
+  transform: translateY(calc(100% + 2.4rem));
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-contact {
+    transition: none !important;
+  }
+}
+
 .whatsapp-contact {
+  transition: transform 0.3s var(--tungacea-ease, ease), opacity 0.3s var(--tungacea-ease, ease);
   position: fixed;
   right: 1.6rem;
   bottom: calc(1.6rem + env(safe-area-inset-bottom, 0px));

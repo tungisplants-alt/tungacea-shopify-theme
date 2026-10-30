@@ -402,7 +402,7 @@
         <strong>{{ hint_title }}</strong> {{ hint_body }}
         {%- if pflege_seite != blank and pflege_seite.url != blank -%}
           <a class="specimen-passport__hint-link" href="{{ pflege_seite.url | escape }}" data-testid="specimen-hint-guide">
-            {{- 'products.product.pflege.link' | t }} &rsaquo;
+            {{- 'products.product.pflege.link' | t -}}
           </a>
         {%- endif -%}
       </p>

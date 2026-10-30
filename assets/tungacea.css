@@ -1245,3 +1245,80 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 .shopify-pc__prefs__option + .shopify-pc__prefs__option {
   border-top: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
 }
+
+/* ---------- Ein Stil fuer alle zweiten Wege ----------
+   Pro Bildschirm gibt es genau einen gefuellten weinroten Knopf (die
+   Haupthandlung). Alles andere ist ein Textlink: helle Schrift, eine rote
+   Linie darunter, ein "›" dahinter. Keine Rahmen, keine roten Umrandungen. */
+.specimen-passport__mother-link,
+.produkt-klappe__link,
+.care-guide__button,
+.image-with-text .button--secondary {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin-top: 1.2rem;
+  padding: 0 0 0.3rem !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgb(var(--tungacea-accent-bright, 168, 52, 66)) !important;
+  border-radius: 0;
+  background: none !important;
+  box-shadow: none !important;
+  color: #f2eee8 !important;
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  line-height: 1.4;
+}
+
+.image-with-text .button--secondary::before {
+  content: none !important;
+}
+
+.specimen-passport__hint-link::after,
+.specimen-passport__mother-link::after,
+.produkt-klappe__link::after,
+.care-guide__button::after,
+.image-with-text .button--secondary::after {
+  content: '›' !important;
+  position: static !important;
+  inset: auto !important;
+  display: inline !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  font-size: 1.5rem;
+  line-height: 1;
+  transform: none;
+  transition: transform 0.25s var(--tungacea-ease, ease);
+}
+
+.specimen-passport__mother-link:hover::after,
+.produkt-klappe__link:hover::after,
+.care-guide__button:hover::after,
+.image-with-text .button--secondary:hover::after {
+  transform: translateX(3px);
+}
+
+.specimen-passport__mother-link:hover,
+.produkt-klappe__link:hover,
+.care-guide__button:hover,
+.image-with-text .button--secondary:hover {
+  color: #ffffff !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .specimen-passport__mother-link::after,
+  .produkt-klappe__link::after,
+  .care-guide__button::after,
+  .image-with-text .button--secondary::after {
+    transition: none;
+  }
+}
+
+.specimen-passport__hint-link::after {
+  margin-left: 0.6rem;
+}

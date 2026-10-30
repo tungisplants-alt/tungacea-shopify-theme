@@ -129,11 +129,12 @@
     justify-content: center;
     padding: 1.5rem 3rem;
     font-family: var(--font-body-family);
-    font-size: 1.4rem;
-    letter-spacing: 0.06rem;
+    font-size: 1.2rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     line-height: 1;
-    color: rgb(var(--color-foreground));
-    background-color: transparent;
+    color: rgb(var(--color-button-text));
+    background-color: rgb(var(--color-button));
     border: 0.1rem solid rgb(var(--color-button));
     border-radius: 0;
     cursor: pointer;
@@ -141,8 +142,7 @@
   }
 
   #CollectorAccess-{{ section.id }} .collector-access__submit:hover {
-    background-color: rgb(var(--color-button));
-    color: rgb(var(--color-button-text));
+    filter: brightness(1.12);
   }
 
   #CollectorAccess-{{ section.id }} .collector-access__submit:focus-visible {
