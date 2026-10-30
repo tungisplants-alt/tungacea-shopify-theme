@@ -26,68 +26,14 @@
   assign ziel = eintrag.system.url
 
   comment
-    Erstes Foto als Kachelbild, aber nur, wenn es gezeigt werden darf. Dieselbe
-    Sperre wie auf der Produktseite: ein fremder Fotograf ohne Freigabe bedeutet
-    kein Bild. Leerer Fotograf heisst eigenes Bild.
+    Die Abstammung steht kursiv unter dem Namen, wie die Beschriftung im
+    Herbar. "Nicht bekannt" und "Unbekannt" sind keine Abstammung; dann
+    bleibt die Zeile weg.
   endcomment
-  comment
-    Das erste Foto wird erlaufen, nicht indiziert. Shopify liefert bei
-    fotos[0] auf einer Dateiliste nichts zurueck, und image_url bricht dann
-    mit invalid url input ab. Die Schleife ist das Muster, das im Pass
-    nachweislich funktioniert.
-  endcomment
-  comment
-    Liegen Bildnachweise vor, wird das erste Bild genommen, das gezeigt werden
-    DARF, nicht einfach das erste. Sonst entscheidet ein fremdes Bild ohne
-    Freigabe an Position eins darueber, dass die Kachel leer bleibt, obwohl
-    eigene Bilder dahinter stehen. Die Kachel selbst nennt keinen Fotografen —
-    dafuer ist sie zu klein; die Nennung steht auf der Seite am Bild.
-  endcomment
-  comment
-    Vorhandensein wird am Wahrheitswert geprueft, nicht mit != blank. Shopify
-    zaehlt nil zu blank, liquidjs im Pruefstand nicht — eine Pflanze ganz ohne
-    Fotos lieferte dort ein img mit leerer Adresse statt des Platzhalters.
-    Der Wahrheitswert verhaelt sich auf beiden Motoren gleich, und ein eigener
-    Schalter sagt ohnehin genauer, was gemeint ist.
-  endcomment
-  assign bilder = eintrag.bilder.value
-  assign erstes_foto = nil
-  assign zeige_foto = false
-
-  if bilder.size > 0
-    for bn in bilder
-      if zeige_foto == false
-        assign bn_foto = bn.bild.value
-        assign bn_fotograf = bn.fotograf.value
-        assign bn_freigabe = bn.bildfreigabe.value
-        if bn_foto
-          if bn_fotograf == blank
-            assign erstes_foto = bn_foto
-            assign zeige_foto = true
-          elsif bn_freigabe == true or bn_freigabe == 'true'
-            assign erstes_foto = bn_foto
-            assign zeige_foto = true
-          endif
-        endif
-      endif
-    endfor
-  else
-    assign fotos = eintrag.fotos.value
-    assign hat_foto = false
-    for f in fotos limit: 1
-      assign erstes_foto = f
-      assign hat_foto = true
-    endfor
-
-    if hat_foto
-      assign fotograf = eintrag.fotograf.value
-      assign freigabe = eintrag.bildfreigabe.value
-      if fotograf == blank
-        assign zeige_foto = true
-      elsif freigabe == true or freigabe == 'true'
-        assign zeige_foto = true
-      endif
-    endif
+  assign abstammung = eintrag.kreuzung.value | default: '' | strip
+  assign abstammung_klein = abstammung | downcase
+  if abstammung_klein == 'nicht bekannt' or abstammung_klein == 'unbekannt'
+    assign abstammung = ''
   endif
 
   comment
@@ -203,21 +149,19 @@
   data-merkmale="{{ merkmale | escape }}"
   data-angebot="{% if hat_angebot %}ja{% else %}nein{% endif %}"
 >
+  {%- comment -%}
+    Erstes Foto, das gezeigt werden darf, und das zweite dahinter. Beim
+    Überfahren mit der Maus blendet das zweite ein. Die Kachel nennt keinen
+    Fotografen, dafür ist sie zu klein; die Nennung steht auf der Seite am Bild.
+  {%- endcomment -%}
   <div class="plant-card__media">
-    {%- if zeige_foto -%}
-      {{
-        erstes_foto
-        | image_url: width: 800
-        | image_tag:
-          loading: 'lazy',
-          alt: name,
-          sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw',
-          widths: '300, 400, 600, 800',
-          class: 'plant-card__image'
-      }}
-    {%- else -%}
-      {{ 'image' | placeholder_svg_tag: 'plant-card__image plant-card__image--placeholder' }}
-    {%- endif -%}
+    {%- render 'plant-fotos',
+      eintrag: eintrag,
+      name: name,
+      klasse: 'plant-card__image',
+      sizes: '(min-width: 1200px) 25vw, (min-width: 750px) 33vw, 50vw',
+      zweites: true
+    -%}
   </div>
 
   <div class="plant-card__body">
@@ -236,6 +180,10 @@
     {%- endcomment -%}
     {%- if eintrag.mutter_id.value != blank -%}
       <p class="plant-card__id" data-testid="plant-card-id">{{ eintrag.mutter_id.value | escape }}</p>
+    {%- endif -%}
+
+    {%- if abstammung != blank -%}
+      <p class="plant-card__cross" data-testid="plant-card-cross">{{ abstammung | escape }}</p>
     {%- endif -%}
 
     {%- if leise != blank -%}

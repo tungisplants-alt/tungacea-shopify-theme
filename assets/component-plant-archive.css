@@ -159,14 +159,24 @@
   min-width: 0;
 }
 
+/* Die Kachel ist ein Passepartout: das Foto sitzt mit Rand in einem sehr
+   dunklen Feld, darunter das Schild. Beim Überfahren färbt sich der Rahmen
+   leicht rot, das Foto rückt langsam näher und das zweite Foto blendet ein. */
 .plant-card {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 0;
   padding: 1.6rem 1.6rem 0;
-  background: #0e0e10;
-  border: 1px solid var(--pl-line-soft);
+  background: #0b0b0d;
+  border: 1px solid rgba(242, 238, 232, 0.07);
+  transition: border-color 0.6s var(--pl-ease);
+}
+
+@media (hover: hover) {
+  .plant-card:hover {
+    border-color: rgba(var(--tungacea-accent-bright, 168, 52, 66), 0.55);
+  }
 }
 
 .plant-card__media {
@@ -181,7 +191,19 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.7s var(--pl-ease);
+  transition: transform 1.4s var(--pl-ease), opacity 0.8s var(--pl-ease);
+}
+
+.plant-card__image--zweites {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+@media (hover: hover) {
+  .plant-card:hover .plant-card__image--zweites {
+    opacity: 1;
+  }
 }
 
 .plant-card__image--placeholder {
@@ -192,11 +214,12 @@
 
 @media (hover: hover) {
   .plant-card:hover .plant-card__image {
-    transform: scale(1.035);
+    transform: scale(1.04);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .plant-card,
   .plant-card__image {
     transition: none;
   }
@@ -206,19 +229,59 @@
   }
 }
 
+/* Das Schild: rote Linie und Nummer, der Name in der Serifenschrift, die
+   Abstammung kursiv, darunter Stufe und Generation in kleinen Versalien. */
 .plant-card__body {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  padding: 1.6rem 0;
+  padding: 1.8rem 0 2rem;
 }
 
 .plant-card__name {
   margin: 0;
+  font-family: var(--font-heading-family);
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.plant-card__cross {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-style: italic;
   font-size: 1.5rem;
   line-height: 1.35;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  color: var(--pl-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 749px) {
+  .plant-card {
+    padding: 1rem 1rem 0;
+  }
+
+  .plant-card__body {
+    padding: 1.4rem 0 1.6rem;
+  }
+
+  .plant-card__name {
+    font-size: 1.6rem;
+  }
+
+  .plant-card__cross {
+    font-size: 1.3rem;
+  }
+
+  .plant-card__meta,
+  .plant-card__offer,
+  .plant-card__id {
+    letter-spacing: 0.08em;
+  }
 }
 
 /*
@@ -252,11 +315,12 @@
 }
 
 .plant-card__meta {
-  margin: 0;
+  margin: 0.4rem 0 0;
   font-size: 1.2rem;
-  text-transform: none;
-  letter-spacing: 0.01em;
-  color: rgba(242, 238, 232, 0.8);
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(205, 198, 188, 0.78);
 }
 
 /* Einzelseite
@@ -849,23 +913,12 @@
    Pflanze es gerade etwas gibt — ohne dass die Sammlung zum Laden wird. */
 
 .plant-card__offer {
-  margin: 0.8rem 0 0;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  margin: 0.6rem 0 0;
   font-size: 1.2rem;
-  text-transform: none;
-  letter-spacing: 0.01em;
-  color: rgba(242, 238, 232, 0.92);
-}
-
-.plant-card__offer::before {
-  content: '';
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: rgba(var(--tungacea-accent-bright, 177, 61, 76), 1);
-  flex: none;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
 }
 
 /* Suche und Filter
@@ -1573,7 +1626,11 @@ html.plant-search-lock {
 }
 
 .plant-card__id::before {
-  content: none;
+  content: '';
+  flex: none;
+  width: 1.6rem;
+  height: 1px;
+  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
 }
 
 /* Die Spanne der vergebenen Nummern, direkt unter der Einleitung. Die nächste
@@ -1606,4 +1663,221 @@ html.plant-search-lock {
   border: 1px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.8);
   color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
   font-size: 1.5rem;
+}
+
+/* Im Fokus
+   -------------------------------------------------------------------------
+   Eine Pflanze steht vorn, wie das erste Stück einer Ausstellung: grosses
+   Foto ohne Kasten, daneben das Schild und Tungs Notiz. Auf dem Telefon steht
+   der Text unter dem Foto. */
+
+.plant-focus {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.4rem;
+  margin: 0 0 6.4rem;
+}
+
+@media screen and (min-width: 990px) {
+  .plant-focus {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 6.4rem;
+    align-items: center;
+    margin-bottom: 9.6rem;
+  }
+}
+
+.plant-focus__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+@media screen and (min-width: 990px) {
+  .plant-focus__media {
+    aspect-ratio: 5 / 6;
+  }
+}
+
+.plant-focus__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.6s var(--pl-ease), opacity 0.9s var(--pl-ease);
+}
+
+.plant-focus__image--zweites {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.plant-focus__image--placeholder {
+  opacity: 0.22;
+  object-fit: contain;
+  padding: 18%;
+}
+
+@media (hover: hover) {
+  .plant-focus__media:hover .plant-focus__image {
+    transform: scale(1.03);
+  }
+
+  .plant-focus__media:hover .plant-focus__image--zweites {
+    opacity: 1;
+  }
+}
+
+.plant-focus__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 48rem;
+}
+
+.plant-focus__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 0.8rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #f2eee8;
+}
+
+.plant-focus__eyebrow::before {
+  content: '';
+  flex: none;
+  width: 2.4rem;
+  height: 1px;
+  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+.plant-focus__id {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  color: var(--pl-muted);
+}
+
+.plant-focus__name {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-weight: 400;
+  font-size: clamp(2.8rem, 3.4vw, 4.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+}
+
+.plant-focus__cross {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-style: italic;
+  font-size: 1.8rem;
+  line-height: 1.4;
+  color: var(--pl-muted);
+}
+
+.plant-focus__note {
+  margin: 1.6rem 0 0;
+  padding-left: 2rem;
+  border-left: 1px solid rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+.plant-focus__note blockquote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: var(--font-heading-family);
+  font-size: 1.8rem;
+  line-height: 1.55;
+  color: rgba(242, 238, 232, 0.92);
+}
+
+.plant-focus__note figcaption {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pl-muted);
+}
+
+.plant-focus__trait {
+  margin: 1.2rem 0 0;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgba(242, 238, 232, 0.88);
+}
+
+.plant-focus__link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #f2eee8;
+  text-decoration: none;
+}
+
+.plant-focus__link::after {
+  content: '›';
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform 0.4s var(--pl-ease);
+}
+
+.plant-focus__link:hover::after {
+  transform: translateX(0.3rem);
+}
+
+.plant-focus__link:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plant-focus__image,
+  .plant-focus__link::after {
+    transition: none;
+  }
+
+  .plant-focus__media:hover .plant-focus__image {
+    transform: none;
+  }
+}
+
+/* Einblenden beim Scrollen
+   -------------------------------------------------------------------------
+   Kacheln und Fokus kommen ruhig herein, wenn sie ins Bild rücken. Das
+   Skript setzt die Klassen erst, wenn es läuft; ohne Skript oder mit
+   reduzierter Bewegung steht alles sofort da. */
+
+.plant-archive--einblenden .plant-card,
+.plant-archive--einblenden .plant-focus {
+  opacity: 0;
+  transform: translateY(2.4rem);
+  transition: opacity 0.9s var(--pl-ease), transform 0.9s var(--pl-ease), border-color 0.6s var(--pl-ease);
+}
+
+.plant-archive--einblenden .plant-card.ist-da,
+.plant-archive--einblenden .plant-focus.ist-da {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plant-archive--einblenden .plant-card,
+  .plant-archive--einblenden .plant-focus {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

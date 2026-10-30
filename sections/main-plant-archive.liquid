@@ -79,6 +79,8 @@
   {%- assign seiten_html = '' -%}
   {%- assign seiten_zahl = 1 -%}
   {%- assign seiten_groesse = 250 -%}
+  {%- assign fokus_auto = '' -%}
+  {%- assign fokus_gefunden = false -%}
   {%- paginate shop.metaobjects.mutterpflanze.values by 250 -%}
     {%- capture karten_html -%}
       {%- for e in shop.metaobjects.mutterpflanze.values -%}
@@ -87,6 +89,22 @@
           {%- continue -%}
         {%- endif -%}
         {%- assign eigene = eigene | plus: 1 -%}
+        {%- comment -%}
+          Ist im Editor keine Pflanze für den Fokus gewählt, steht dort die
+          erste eigene Pflanze mit persönlicher Notiz und einem Foto, das
+          gezeigt werden darf.
+        {%- endcomment -%}
+        {%- if fokus_gefunden == false and e.notiz.value != blank -%}
+          {%- if e.bilder.value.size > 0 -%}
+            {%- assign fokus_auto = e -%}
+            {%- assign fokus_gefunden = true -%}
+          {%- elsif e.fotos.value.size > 0 -%}
+            {%- if e.fotograf.value == blank or e.bildfreigabe.value == true or e.bildfreigabe.value == 'true' -%}
+              {%- assign fokus_auto = e -%}
+              {%- assign fokus_gefunden = true -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
 
         {%- if e.mutter_id.value != blank -%}
           {%- assign id_roh = id_roh | append: e.mutter_id.value | append: '|' -%}
@@ -137,7 +155,19 @@
     {%- endif -%}
   {%- endpaginate -%}
 
+  {%- liquid
+    assign fokus = ''
+    if section.settings.fokus_zeigen
+      if section.settings.fokus != blank
+        assign fokus = section.settings.fokus
+      elsif fokus_gefunden
+        assign fokus = fokus_auto
+      endif
+    endif
+  -%}
+
   {%- render 'plant-archive-gallery',
+    fokus: fokus,
     karten_html: karten_html,
     id_roh: id_roh,
     eigene: eigene,
@@ -195,6 +225,23 @@
       "type": "richtext",
       "id": "intro",
       "label": "t:sections.private-archive.settings.intro.label"
+    },
+    {
+      "type": "header",
+      "content": "Im Fokus"
+    },
+    {
+      "type": "checkbox",
+      "id": "fokus_zeigen",
+      "label": "Eine Pflanze im Fokus zeigen",
+      "default": true
+    },
+    {
+      "type": "metaobject",
+      "id": "fokus",
+      "label": "Pflanze im Fokus",
+      "metaobject_type": "mutterpflanze",
+      "info": "Leer lassen: dann steht dort die erste Pflanze mit Foto und persönlicher Notiz."
     },
     {
       "type": "color_scheme",

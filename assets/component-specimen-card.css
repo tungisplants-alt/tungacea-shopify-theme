@@ -20,6 +20,20 @@
   text-align: left;
 }
 
+/* Nummer und Etikett in einer Zeile: links die rote Linie mit der Nummer,
+   rechts hoechstens ein Etikett. */
+.product-card-wrapper .specimen-card__kopf {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 0.8rem;
+  min-width: 0;
+}
+.product-card-wrapper .specimen-card__id {
+  white-space: nowrap;
+}
+
 /* Specimen ID — a quiet collection reference, not a SKU */
 .product-card-wrapper .specimen-card__id {
   display: inline-flex;
@@ -33,18 +47,20 @@
   color: var(--tungacea-muted);
 }
 .product-card-wrapper .specimen-card__id::before {
-  content: none;
+  content: '';
+  flex: none;
+  width: 1.6rem;
+  height: 1px;
+  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
 }
 
-/* ---------- Flags: Neu / Selten / Sale ----------
-   Three quiet specimen annotations, not shop stickers. Neu is an outline only;
-   Selten and Sale are filled in the two oxblood tones so the hierarchy reads
-   without colour alone carrying the meaning — the word does that. */
+/* ---------- Etikett: Neu / Selten / Unicorn / Sale ----------
+   Hoechstens eines pro Karte, als Schrift ohne Kasten: eine Anmerkung wie im
+   Herbar, kein Aufkleber. Selten, Unicorn und Sale in Rot, Neu leise. */
 .product-card-wrapper .specimen-card__flags {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
+  margin-left: auto;
 }
 .product-card-wrapper .specimen-card__flag {
   display: inline-flex;
@@ -54,21 +70,16 @@
   letter-spacing: 0.16em;
   font-size: 1.2rem;
   line-height: 1;
-  /* extra right padding: letter-spacing adds a trailing gap after the last glyph */
-  padding: 0.5rem 0.62rem 0.45rem 0.8rem;
-  border: 1px solid var(--tungacea-hairline);
+  padding: 0;
+  border: 0;
+  background: none;
   color: var(--tungacea-muted);
   white-space: nowrap;
 }
 .product-card-wrapper .specimen-card__flag--rare,
 .product-card-wrapper .specimen-card__flag--sale,
 .product-card-wrapper .specimen-card__flag--unicorn {
-  /* Ein Etiketten-Stil fuer alle: Haarlinie, keine Flaeche. Selten, Sale und
-     Unicorn heben sich nur durch die rote Linie und helle Schrift ab, nicht
-     durch Fuellung, Gold oder Bewegung. */
-  background: none;
-  border-color: rgb(var(--tungacea-accent-bright, 168, 52, 66));
-  color: #f2eee8;
+  color: rgb(var(--tungacea-accent-text, 204, 96, 112));
 }
 
 /* Title — the primary line */
@@ -77,17 +88,18 @@
   line-height: 1.12;
 }
 .product-card-wrapper .card__heading.specimen-card__title a {
-  font-size: 1.8rem;
+  font-size: 2rem;
   letter-spacing: -0.005em;
 }
 
-/* Parentage — visibly secondary to the title */
+/* Abstammung kursiv in der Serifenschrift, wie die Beschriftung im Herbar */
 .product-card-wrapper .specimen-card__parentage {
   margin-top: -0.1rem;
-  font-family: var(--font-body-family);
+  font-family: var(--font-heading-family);
+  font-style: italic;
   font-size: 1.5rem;
   line-height: 1.35;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
   color: var(--tungacea-muted);
 }
 
@@ -98,11 +110,11 @@
   align-items: baseline;
   gap: 0.2rem 0.7rem;
   font-family: var(--font-body-family);
-  text-transform: none;
-  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
   font-size: 1.2rem;
-  line-height: 1.3;
-  color: rgba(242, 238, 232, 0.8); /* Stufe und Generation sind Kerninfo: hell, nicht gedaempft */
+  line-height: 1.5;
+  color: rgba(205, 198, 188, 0.78); /* Kleine Versalien wie ein Museumsschild, Kontrast ueber 7:1 */
 }
 .product-card-wrapper .specimen-card__sep {
   color: rgba(185, 178, 169, 0.4);
@@ -117,8 +129,15 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 1.2rem;
-  padding-top: 1.6rem;
+  padding-top: 1.2rem;
   border-top: 0;
+}
+/* Ohne Status steht der Preis links unter dem Schild */
+.product-card-wrapper .specimen-card__footer .price:only-child {
+  text-align: left;
+}
+.product-card-wrapper .specimen-card__footer .price:only-child .price__container {
+  justify-content: flex-start;
 }
 
 .product-card-wrapper .specimen-card__status {
@@ -170,10 +189,12 @@
 .product-card-wrapper .specimen-card__footer .price .price__container {
   justify-content: flex-end;
 }
+/* Der Preis steht ruhig am Ende, nicht als groesste Zahl der Karte */
 .product-card-wrapper .specimen-card__footer .price .price-item {
   font-size: 1.5rem;
-  letter-spacing: 0.03em;
-  color: #f2eee8;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: rgba(242, 238, 232, 0.82);
 }
 
 /* ---------- Hide Dawn's overlay badge chip (status now lives in the footer).
@@ -182,32 +203,32 @@
   display: none;
 }
 
-/* ---------- Image: calm, premium — no exaggerated zoom ---------- */
+/* ---------- Bild: langsam naeher, zweites Foto blendet ein ----------
+   Beim Ueberfahren rueckt das Foto ueber gut eine Sekunde ein kleines Stueck
+   naeher; gibt es ein zweites, blendet es ueber. Nichts springt. */
 .product-card-wrapper .card__media .media img {
-  transition: opacity 0.4s var(--tungacea-ease);
-  transform: none !important;
-  will-change: opacity;
+  transition: opacity 0.8s var(--tungacea-ease), transform 1.4s var(--tungacea-ease) !important;
+  will-change: opacity, transform;
 }
 
 @media screen and (min-width: 990px) {
-  /* Single-image cards stay perfectly still on hover */
-  .product-card-wrapper:hover .card__media .media--hover-effect > img:first-child:only-child {
-    transform: none !important;
+  .product-card-wrapper:hover .card__media .media--hover-effect > img {
+    transform: scale(1.04) !important;
   }
-  /* Two-image cards: gentle crossfade to the secondary image */
   .product-card-wrapper:hover .card__media .media--hover-effect > img:first-child:not(:only-child) {
     opacity: 0;
   }
   .product-card-wrapper:hover .card__media .media--hover-effect > img + img {
     opacity: 1;
-    transform: none !important;
-    transition: opacity 0.4s var(--tungacea-ease);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .product-card-wrapper .card__media .media img {
-    transition: none;
+    transition: none !important;
+  }
+  .product-card-wrapper:hover .card__media .media--hover-effect > img {
+    transform: none !important;
   }
 }
 
@@ -226,27 +247,26 @@
     padding-top: 1.3rem;
   }
   .product-card-wrapper .card__heading.specimen-card__title a {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
   .product-card-wrapper .specimen-card__id {
     font-size: 1.2rem;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.1em;
     gap: 0.6rem;
   }
   .product-card-wrapper .specimen-card__id::before {
     width: 1.2rem;
   }
   .product-card-wrapper .specimen-card__parentage {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
   .product-card-wrapper .specimen-card__traits {
     font-size: 1.2rem;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.08em;
   }
   .product-card-wrapper .specimen-card__flag {
     font-size: 1.2rem;
-    letter-spacing: 0.16em;
-    padding: 0.45rem 0.55rem 0.4rem 0.7rem;
+    letter-spacing: 0.1em;
   }
   .product-card-wrapper .specimen-card__footer {
     padding-top: 1.1rem;

@@ -1,0 +1,72 @@
+{% comment %}
+  Tungacea — eine Pflanze im Fokus, oben im Archiv.
+
+  Ein grosses Foto und daneben das, was an dieser Pflanze besonders ist: Nummer,
+  Name, Abstammung und Tungs eigene Notiz. Es ist der Einstieg ins Stöbern, so
+  wie in einer Ausstellung ein Stück vorn steht. Die Pflanze bleibt auch im
+  Raster darunter, der Fokus ist eine Hervorhebung, kein Ersatz.
+
+  Ohne Notiz steht das Hauptmerkmal an ihrer Stelle; fehlt beides, bleibt nur
+  das Schild. Leere Felder werden nicht gezeigt.
+
+  Annahmen:
+  - eintrag: {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
+{% endcomment %}
+{%- liquid
+  assign name = eintrag.bezeichnung.value | default: '' | strip
+  if name == blank
+    assign name = 'private_archive.unnamed' | t
+  endif
+
+  assign ziel = eintrag.system.url
+
+  assign abstammung = eintrag.kreuzung.value | default: '' | strip
+  assign abstammung_klein = abstammung | downcase
+  if abstammung_klein == 'nicht bekannt' or abstammung_klein == 'unbekannt'
+    assign abstammung = ''
+  endif
+
+  assign notiz = eintrag.notiz.value | default: '' | strip
+  assign merkmal = eintrag.merkmal.value | default: '' | strip
+-%}
+<article class="plant-focus" data-testid="plant-focus">
+  <div class="plant-focus__media">
+    {%- render 'plant-fotos',
+      eintrag: eintrag,
+      name: name,
+      klasse: 'plant-focus__image',
+      sizes: '(min-width: 990px) 55vw, 100vw',
+      zweites: true
+    -%}
+  </div>
+
+  <div class="plant-focus__text">
+    <p class="plant-focus__eyebrow">{{ 'private_archive.focus_eyebrow' | t }}</p>
+
+    {%- if eintrag.mutter_id.value != blank -%}
+      <p class="plant-focus__id">{{ eintrag.mutter_id.value | escape }}</p>
+    {%- endif -%}
+
+    <h2 class="plant-focus__name">{{ name | escape }}</h2>
+
+    {%- if abstammung != blank -%}
+      <p class="plant-focus__cross" data-testid="plant-focus-cross">{{ abstammung | escape }}</p>
+    {%- endif -%}
+
+    {%- if notiz != blank -%}
+      <figure class="plant-focus__note" data-testid="plant-focus-note">
+        <blockquote>{{ notiz | escape | newline_to_br }}</blockquote>
+        <figcaption>Tung</figcaption>
+      </figure>
+    {%- elsif merkmal != blank -%}
+      <p class="plant-focus__trait" data-testid="plant-focus-trait">{{ merkmal | escape }}</p>
+    {%- endif -%}
+
+    {%- if ziel != blank -%}
+      <a href="{{ ziel }}" class="plant-focus__link" data-testid="plant-focus-link">
+        {{- 'private_archive.focus_link' | t -}}
+        <span class="visually-hidden">: {{ name | escape }}</span>
+      </a>
+    {%- endif -%}
+  </div>
+</article>

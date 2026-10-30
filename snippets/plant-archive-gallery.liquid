@@ -20,8 +20,10 @@
     herkuenfte, linien, reinheiten, merkmale: gesammelte Werte (siehe Vorlage)
   - seiten_html: {String} Seitenlinks, leer unter 250 Pflanzen
   - eyebrow, heading, intro: {String} optional, sonst aus den Sprachdateien
+  - fokus: {Object} Pflanze im Fokus, leer heisst kein Fokus (optional)
 {% endcomment %}
 {{ 'component-plant-archive.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'plant-archive-reveal.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign titel = heading | default: '' | strip
@@ -61,6 +63,10 @@
   <div class="page-width">
 
     {%- assign anzahl = eigene | default: 0 -%}
+
+    {%- if fokus != blank -%}
+      {%- render 'plant-archive-focus', eintrag: fokus -%}
+    {%- endif -%}
 
     {%- if anzahl > 0 -%}
       <script src="{{ 'plant-archive-search.js' | asset_url }}" defer="defer"></script>
