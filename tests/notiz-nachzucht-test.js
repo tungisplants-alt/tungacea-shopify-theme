@@ -58,17 +58,22 @@ const produkt = (m, extra) => Object.assign({
 let fails = 0, checks = 0;
 const pruefe = (ok, text) => { checks++; if (!ok) { fails++; console.log('FEHLER ' + text); } };
 
+const lang = 'Diese Black Widow hebt sich durch die minimale Aderung hervor und kommt der echten BW sehr nahe, sagen viele Sammler.';
 const notizFaelle = [
-  { name: 'Mit Notiz: Kopf, Zitat, Tung, Link mit Nummer', p: produkt(mutter()),
-    immer: ['mutter-notiz', 'Lieblingsexemplar', 'Tung', 'href="/pages/archiv/rl-fs-f2-4"', 'TA-1001 ·'],
-    de: ['Meine Notiz zur Mutterpflanze', 'Im Archiv ansehen'], en: ['My note on the mother plant', 'View in the archive'] },
+  { name: 'Kurze Notiz: ganz, ohne Weiterlesen', p: produkt(mutter()),
+    immer: ['mutter-notiz', 'Lieblingsexemplar aus dieser F2-Kreuzung.', 'Tung'],
+    verboten: ['mutter-notiz-link', '…', 'href'],
+    de: ['Meine Notiz zur Mutterpflanze'], en: ['My note on the mother plant'] },
+  { name: 'Lange Notiz: 14 Woerter, dann … und Weiterlesen nach unten', p: produkt(mutter({ notiz: feld(lang) })),
+    immer: ['Diese Black Widow hebt sich durch die minimale Aderung hervor und kommt der echten…', 'href="#notiz-mutterpflanze"'],
+    verboten: ['BW sehr nahe', 'TA-1001', 'pages/archiv'],
+    de: ['Weiterlesen'], en: ['Read more'] },
+  { name: 'Genau 14 Woerter: ganz, ohne Weiterlesen',
+    p: produkt(mutter({ notiz: feld('eins zwei drei vier fünf sechs sieben acht neun zehn elf zwölf dreizehn vierzehn') })),
+    immer: ['vierzehn'], verboten: ['…', 'mutter-notiz-link'] },
   { name: 'Ohne Mutterpflanze: nichts', p: produkt(null), leer: true },
   { name: 'Mutterpflanze ohne Notiz: nichts', p: produkt(mutter({ notiz: feld('   ') })), leer: true },
-  { name: 'Ohne Archivseite: kein Link, Notiz bleibt', p: produkt(mutter({ system: { handle: 'x', url: null } })),
-    immer: ['Lieblingsexemplar'], verboten: ['mutter-notiz-link', 'href'] },
-  { name: 'Ohne Nummer: Link ohne Punkt davor', p: produkt(mutter({ mutter_id: feld(null) })),
-    immer: ['mutter-notiz-link'], verboten: [' ·'] },
-  { name: 'Zeilenumbruch und HTML in der Notiz werden sicher ausgegeben',
+  { name: 'HTML in der Notiz wird sicher ausgegeben',
     p: produkt(mutter({ notiz: feld('Zeile eins\nZeile <b>zwei</b>') })),
     immer: ['Zeile eins<br />', '&lt;b&gt;'], verboten: ['<b>'] },
 ];
@@ -101,11 +106,20 @@ const nachzuchtFaelle = [
         for (const v of f.verboten || []) pruefe(!html.includes(v), '[' + loc + '] ' + f.name + ': enthaelt "' + v + '"');
         // Nur der sichtbare Text zaehlt, nicht Klassennamen. Die Notiz selbst ist
         // Inhalt aus dem Archiv und wird von Shopify uebersetzt geliefert.
-        const sichtbar = html.replace(/<[^>]*>/g, ' ').replace(/Lieblingsexemplar[^<]*|Zeile[^<]*/g, '');
+        const sichtbar = html.replace(/<[^>]*>/g, ' ').replace(/Lieblingsexemplar[^<]*|Zeile[^<]*|Diese Black Widow[^<]*|eins zwei[^<]*/g, '');
         if (loc === 'en') pruefe(!/Notiz|Mutterpflanze|Vormerken|vergeben|Kreuzung|E-Mail/.test(sichtbar), '[en] ' + f.name + ': deutscher Text');
       }
     }
   }
+
+  // Der Pass zeigt die ganze Notiz nur, wenn der Anriss gekuerzt ist, mit
+  // derselben Grenze wie mutter-notiz.liquid.
+  const pass = fs.readFileSync(path.join(THEME, 'snippets/specimen-passport.liquid'), 'utf8');
+  const anriss = fs.readFileSync(path.join(THEME, 'snippets/mutter-notiz.liquid'), 'utf8');
+  const grenzePass = (pass.match(/voll_woerter > (\d+)/) || [])[1];
+  const grenzeAnriss = (anriss.match(/woerter > (\d+)/) || [])[1];
+  pruefe(grenzePass && grenzePass === grenzeAnriss, 'Grenze im Pass (' + grenzePass + ') und am Preis (' + grenzeAnriss + ') verschieden');
+  pruefe(/id="notiz-mutterpflanze"/.test(pass), 'Pass: Sprungziel fuer Weiterlesen fehlt');
 
   // Einbau: Block nach dem Preis, Formular unter dem Kaufknopf, Karte.
   const sektion = fs.readFileSync(path.join(THEME, 'sections/main-product.liquid'), 'utf8');

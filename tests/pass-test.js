@@ -47,6 +47,7 @@ const mutter = (bez, besitzer, fotograf, fotos, freigabe, url, extra) => ({
   mutter_id: { value: (extra && extra.mutter_id) || null },
   zuechter: { value: (extra && extra.zuechter) || null },
   bilder: { value: (extra && extra.bilder) || [] },
+  notiz: { value: (extra && extra.notiz) || null },
 });
 
 // Ein Bildnachweis: ein Foto mit eigenem Fotografen und eigener Freigabe.
@@ -169,6 +170,21 @@ const faelle = [
     erwartet: ['genau dieses Exemplar', 'Fotografiert am 26.9.2026', 'Gut bewurzelt',
                'Generation F1', '28 cm', 'aus meiner Sammlung'],
     verboten: ['Aufmerksamkeit', 'erfahrene Hände', 'Foto:'] },
+
+  // Die ganze Notiz zur Mutterpflanze steht im Pass nur, wenn der Anriss am
+  // Preis gekuerzt ist (mehr als 14 Woerter). Sonst stuende sie zweimal da.
+  { name: 'Lange Notiz der Mutter steht ganz im Pass, mit Sprungziel',
+    mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Gut bewurzelt',
+             mutterpflanze: mutter('Anthurium Black Widow', null, null, FOTOS, undefined, '/pages/pflanzen/bw',
+               { notiz: 'Diese Black Widow hebt sich durch die minimale Aderung hervor und kommt der echten BW sehr nahe.' }) }),
+    erwartet: ['id="notiz-mutterpflanze"', 'kommt der echten BW sehr nahe.', 'Meine Notiz zur Mutterpflanze'],
+    verboten: [] },
+  { name: 'Kurze Notiz der Mutter steht nicht im Pass (steht schon am Preis)',
+    mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Gut bewurzelt',
+             mutterpflanze: mutter('Anthurium Black Widow', null, null, FOTOS, undefined, '/pages/pflanzen/bw',
+               { notiz: 'Lieblingsexemplar aus dieser F2-Kreuzung.' }) }),
+    erwartet: ['Anthurium Black Widow'],
+    verboten: ['notiz-mutterpflanze', 'Lieblingsexemplar'] },
 
   { name: 'Cutting OHNE Mutterpflanze — darf nicht nach unten zeigen',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Unbewurzelt', blaetter: 1 }),

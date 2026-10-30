@@ -1374,6 +1374,13 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   content: ' ›';
 }
 
+/* Die ganze Notiz unten im Pass: Sprungziel von "Weiterlesen". Abstand oben,
+   damit der feste Seitenkopf sie nicht verdeckt. */
+.mutter-notiz--voll {
+  margin: 2.4rem 0;
+  scroll-margin-top: 12rem;
+}
+
 .mutter-notiz__link:focus-visible {
   outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
   outline-offset: 3px;
@@ -1473,4 +1480,10 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   font-size: 1.5rem;
   line-height: 1.6;
   color: #f2eee8;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(#notiz-mutterpflanze) {
+    scroll-behavior: smooth;
+  }
 }

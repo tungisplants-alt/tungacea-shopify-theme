@@ -1,10 +1,14 @@
 {% comment %}
-  Tungacea — Tungs Notiz zur Mutterpflanze, direkt unter dem Preis.
+  Tungacea — Anriss von Tungs Notiz zur Mutterpflanze, direkt unter dem Preis.
 
-  Eine Pflanze mit Geschichte ist mehr wert als dieselbe Pflanze ohne. Die
-  Notiz steht im Archiveintrag der Mutterpflanze; hier wird sie nah am Preis
-  gezeigt, damit man beim Preis schon weiss, wovon dieser Steckling oder
-  Sämling stammt. Ein Link führt zur Mutterpflanze ins Archiv.
+  Eine Pflanze mit Geschichte ist mehr wert als dieselbe Pflanze ohne. Am
+  Preis steht deshalb der Anfang der Notiz aus dem Archiveintrag der
+  Mutterpflanze, höchstens 14 Wörter. Ist sie länger, endet sie mit "…" und
+  "Weiterlesen" springt nach unten zur Mutterpflanze im botanischen Pass. Dort
+  steht die Notiz ganz und der Link ins Archiv; hier nicht noch einmal.
+
+  Die Grenze von 14 Wörtern steht auch in specimen-passport.liquid. Beide
+  müssen gleich sein: was hier ganz steht, wiederholt der Pass nicht.
 
   Ohne Mutterpflanze oder ohne Notiz erscheint nichts. Bei einem Sämling ist
   die Mutterpflanze die Samenpflanze, ihre Notiz passt also auch dort.
@@ -19,6 +23,13 @@
   if mutter != blank
     assign notiz = mutter.notiz.value | default: '' | strip
   endif
+
+  assign woerter = notiz | split: ' ' | size
+  assign gekuerzt = false
+  if woerter > 14
+    assign gekuerzt = true
+    assign notiz = notiz | strip_newlines | truncatewords: 14, '…'
+  endif
 -%}
 {%- if notiz != blank -%}
   <figure class="mutter-notiz" data-testid="mutter-notiz" {{ block.shopify_attributes }}>
@@ -26,11 +37,8 @@
     <blockquote class="mutter-notiz__text">{{ notiz | escape | newline_to_br }}</blockquote>
     <figcaption class="mutter-notiz__fuss">
       <span>Tung</span>
-      {%- if mutter.system.url != blank -%}
-        <a href="{{ mutter.system.url }}" class="mutter-notiz__link" data-testid="mutter-notiz-link">
-          {%- if mutter.mutter_id.value != blank -%}
-            {{ mutter.mutter_id.value | escape }} ·
-          {% endif -%}
+      {%- if gekuerzt -%}
+        <a href="#notiz-mutterpflanze" class="mutter-notiz__link" data-testid="mutter-notiz-link">
           {{- 'products.product.mutter_notiz.link' | t -}}
         </a>
       {%- endif -%}
