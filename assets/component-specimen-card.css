@@ -96,7 +96,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.7rem;
+  gap: 0.2rem 0.7rem;
   font-family: var(--font-body-family);
   text-transform: none;
   letter-spacing: 0.01em;
