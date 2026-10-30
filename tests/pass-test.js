@@ -113,7 +113,7 @@ const faelle = [
                                   { generation: 'F1', zuechter: grower }) }),
     erwartet: ['Mutterpflanze', 'Vaterpflanze', 'Anthurium papillilaminum', 'Anthurium dressleri',
                'Sämling aus der unten gezeigten Kreuzung',
-               'Mehr über die Mutterpflanze', 'Mehr über die Vaterpflanze'],
+               'Mutterpflanze im Archiv ansehen', 'Vaterpflanze im Archiv ansehen'],
     verboten: ['Generation F2', 'Generation F1', 'Ree Gardens', 'Tropical Grower'] },
 
   // In der Kreuzung bleiben Exemplar-ID und Herkunftszeile der Eltern weg.
@@ -173,17 +173,17 @@ const faelle = [
 
   // Hat die Mutter eine Notiz, verspricht der Knopf genau die und springt im
   // Archiv dorthin. Die Notiz selbst steht nicht auf der Produktseite.
-  { name: 'Mutter mit Notiz: Knopf "Meine Notiz lesen" springt zur Notiz im Archiv',
+  { name: 'Mutter mit Notiz: Knopf springt im Archiv direkt zur Notiz',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Gut bewurzelt',
              mutterpflanze: mutter('Anthurium Black Widow', null, null, FOTOS, undefined, '/pages/pflanzen/bw',
                { notiz: 'Diese Black Widow hebt sich durch die minimale Aderung hervor.' }) }),
-    erwartet: ['href="/pages/pflanzen/bw#notiz"', 'Meine Notiz lesen'],
-    verboten: ['minimale Aderung', 'Mehr über die Mutterpflanze'] },
-  { name: 'Mutter ohne Notiz: Knopf bleibt "Mehr über die Mutterpflanze"',
+    erwartet: ['href="/pages/pflanzen/bw#notiz"', 'Mutterpflanze im Archiv ansehen'],
+    verboten: ['minimale Aderung'] },
+  { name: 'Mutter ohne Notiz: gleicher Knopf, ohne Sprung',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Gut bewurzelt',
              mutterpflanze: mutter('Anthurium Black Widow', null, null, FOTOS, undefined, '/pages/pflanzen/bw') }),
-    erwartet: ['href="/pages/pflanzen/bw"', 'Mehr über die Mutterpflanze'],
-    verboten: ['#notiz', 'Meine Notiz lesen'] },
+    erwartet: ['href="/pages/pflanzen/bw"', 'Mutterpflanze im Archiv ansehen'],
+    verboten: ['#notiz'] },
 
   { name: 'Cutting OHNE Mutterpflanze — darf nicht nach unten zeigen',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Unbewurzelt', blaetter: 1 }),
@@ -296,14 +296,14 @@ const faelle = [
   { name: 'Mutterpflanze MIT eigener Seite — Knopf erscheint',
     mf: mf({ lieferumfang: 'Dieses Exemplar',
              mutterpflanze: mutter('Anthurium regale', null, null, FOTOS, null, '/pflanzen/anthurium-regale') }),
-    erwartet: ['specimen-mother-link', '/pflanzen/anthurium-regale', 'Mehr über die Mutterpflanze'],
+    erwartet: ['specimen-mother-link', '/pflanzen/anthurium-regale', 'Mutterpflanze im Archiv ansehen'],
     verboten: [] },
 
   { name: 'Mutterpflanze OHNE eigene Seite — kein Knopf ins Leere',
     mf: mf({ lieferumfang: 'Dieses Exemplar',
              mutterpflanze: mutter('Anthurium regale', null, null, FOTOS) }),
     erwartet: ['Anthurium regale'],
-    verboten: ['specimen-mother-link', 'Mehr über die Mutterpflanze', 'href=""'] },
+    verboten: ['specimen-mother-link', 'Mutterpflanze im Archiv ansehen', 'href=""'] },
 
   // --- Bildfreigabe: die Sperre muss in beide Richtungen greifen ---
   { name: 'Eigenes Foto — wird gezeigt, ohne Freigabe zu brauchen',

@@ -61,15 +61,12 @@
   assign p_link_text = 'private_archive.more_about_mother' | t
   assign p_link_ziel = eintrag.system.url
   comment
-    Hat die Mutterpflanze eine persoenliche Notiz, verspricht der Knopf
-    genau die: "Meine Notiz lesen" und springt im Archiv direkt dorthin.
-    Die Notiz selbst steht nicht auf der Produktseite; der Knopf weckt
-    Neugier, ohne die Seite laenger zu machen.
+    Hat die Mutterpflanze eine persoenliche Notiz, springt der Knopf im
+    Archiv direkt dorthin. Die Notiz selbst steht nicht auf der Produktseite.
   endcomment
   if rolle != 'vater' and eintrag.system.url != blank
     assign p_notiz = eintrag.notiz.value | default: '' | strip
     if p_notiz != blank
-      assign p_link_text = 'private_archive.read_note' | t
       assign p_link_ziel = eintrag.system.url | append: '#notiz'
     endif
   endif
