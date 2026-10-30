@@ -231,7 +231,7 @@
     "collector_access": {
       "type": "collector-access",
       "settings": {
-        "eyebrow": "SAMMLERZUGANG / 01",
+        "eyebrow": "SAMMLERZUGANG",
         "heading": "Erfahre zuerst, was als Nächstes wächst.",
         "heading_size": "h1",
         "body": "<p>Ich informiere dich frühzeitig über neue Verkaufsstarts, ausgewählte Sämlinge und Ergänzungen im Archiv.</p>",

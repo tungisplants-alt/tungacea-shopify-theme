@@ -412,7 +412,7 @@
     "header": {
       "announcement": "Announcement",
       "menu": "Menu",
-      "navigation_eyebrow": "TUNGACEA NAVIGATION / 01",
+      "navigation_eyebrow": "TUNGACEA NAVIGATION",
       "drawer_note": "Rare Anthuriums · living art",
       "cart_count": {
         "one": "{{ count }} item",
@@ -477,7 +477,7 @@
       "all_title": "Specimens",
       "all_description": "Discover all Anthuriums and collector specimens currently on display.",
       "use_fewer_filters_html": "Use fewer filters or <a class=\"{{ class }}\" href=\"{{ link }}\">remove all</a>",
-      "eyebrow": "TUNGACEA COLLECTION / 01",
+      "eyebrow": "TUNGACEA COLLECTION",
       "specimen_count": {
         "one": "{{ count }} specimen",
         "other": "{{ count }} specimens"
@@ -730,7 +730,7 @@
     "eyebrow": "MY ARCHIVE",
     "heading": "A glimpse of what’s growing.",
     "intro": "Here I document mother plants, my own crosses, and other Anthuriums from my collection. Over time, they may become the source of cuttings/clones and offspring that join the collection as new specimens.",
-    "teaser_eyebrow": "MY ARCHIVE / 01",
+    "teaser_eyebrow": "MY ARCHIVE",
     "teaser_heading": "A glimpse of what’s growing.",
     "teaser_body": "In my archive, I document mother plants, my own crosses, and other Anthuriums from my collection. Over time, they may become the source of cuttings/clones and offspring that join the collection as new specimens.",
     "view_specimen": "View specimen",

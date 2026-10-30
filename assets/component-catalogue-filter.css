@@ -49,7 +49,6 @@
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
-  border-top: 1px solid var(--cf-line-soft);
   background: linear-gradient(var(--cf-line-soft), var(--cf-line-soft)) left bottom / 100% 1px no-repeat;
 }
 

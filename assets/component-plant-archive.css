@@ -174,7 +174,6 @@
   overflow: hidden;
   aspect-ratio: 4 / 5;
   background: rgba(0, 0, 0, 0.28);
-  border: 1px solid var(--pl-line-soft);
 }
 
 .plant-card__image {
@@ -850,9 +849,7 @@
    Pflanze es gerade etwas gibt — ohne dass die Sammlung zum Laden wird. */
 
 .plant-card__offer {
-  margin: 0.4rem 0 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--pl-line-soft);
+  margin: 0.8rem 0 0;
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -1041,7 +1038,6 @@
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
-  border-top: 1px solid var(--pl-line-soft, rgba(242, 238, 232, 0.08));
   background: linear-gradient(var(--pl-line-soft, rgba(242, 238, 232, 0.08)), var(--pl-line-soft, rgba(242, 238, 232, 0.08))) left bottom / 100% 1px no-repeat;
 }
 
@@ -1577,11 +1573,7 @@ html.plant-search-lock {
 }
 
 .plant-card__id::before {
-  content: '';
-  flex: none;
-  width: 1.6rem;
-  height: 1px;
-  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  content: none;
 }
 
 /* Die Spanne der vergebenen Nummern, direkt unter der Einleitung. Die nächste

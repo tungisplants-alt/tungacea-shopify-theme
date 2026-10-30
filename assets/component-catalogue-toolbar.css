@@ -164,7 +164,7 @@
 }
 
 .tungacea-catalogue .collection-empty__eyebrow::before {
-  content: '';
+  content: none;
   display: inline-block;
   width: 2.4rem;
   height: 1px;

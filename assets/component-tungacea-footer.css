@@ -6,7 +6,7 @@
  */
 
 .tungacea-footer {
-  border-top: 1px solid rgba(var(--color-foreground), 0.12);
+  border-top: 0;
 }
 
 /* ------------------------------------------------------------------
@@ -310,8 +310,8 @@
    5. Bottom row — copyright + compact, dynamic payment icons
    ------------------------------------------------------------------ */
 .tungacea-footer .tungacea-footer__bottom {
-  border-top: 1px solid rgba(var(--color-foreground), 0.12);
-  margin-top: 2.4rem;
+  border-top: 0;
+  margin-top: 4rem;
   padding-top: 1.8rem;
 }
 

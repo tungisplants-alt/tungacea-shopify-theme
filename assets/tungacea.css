@@ -626,7 +626,7 @@ fieldset.product-form__input .active { color: rgb(var(--color-foreground)); }
 
 /* ---------- Footer ---------- */
 .footer {
-  border-top: 1px solid var(--tungacea-hairline-soft);
+  border-top: 0;
 }
 .footer__content-top { padding-bottom: 4rem; }
 .footer-block__heading {
@@ -724,29 +724,12 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   );
 }
 
-/* ---------- Section separators (quiet tonal transitions) ---------- */
-.content-for-layout > .shopify-section + .shopify-section .color-scheme-1:first-child {
-  box-shadow: inset 0 1px 0 var(--tungacea-hairline-soft);
-}
-/* Unter einem Foto-Kopf (Startseite, Kollektion) läuft das Bild in die Seite
-   aus. Die Linie wäre dort eine Kante durch den Übergang. */
-.content-for-layout > .shopify-section:has(.banner) + .shopify-section .color-scheme-1:first-child,
-.content-for-layout > .shopify-section:has(.collection-hero--catalogue) + .shopify-section .color-scheme-1:first-child {
-  box-shadow: none;
-}
+/* ---------- Abschnitte trennt der Abstand, keine Linie ---------- */
 
-/* ---------- Editorial eyebrows get a small oxblood tick ---------- */
-.rich-text__caption.caption-with-letter-spacing::before,
-.image-with-text .caption-with-letter-spacing::before,
-.multicolumn .title-wrapper .caption-with-letter-spacing::before {
-  content: '';
-  display: inline-block;
-  width: 2.4rem;
-  height: 1px;
-  margin-right: 1.2rem;
-  vertical-align: middle;
-  background: rgb(var(--tungacea-accent-bright));
-}
+/* ---------- Rote Linie vor Labels ----------
+   Nur noch im Seitenkopf von Kollektion, Archiv und Pflegeguide (eigene
+   Stylesheets). In "Über Tungacea", im Markensatz und in Spalten stand sie
+   zusätzlich und machte die Seite unruhig. */
 
 /* ---------- Buttons ---------- */
 /* Outline / secondary buttons pick up oxblood on hover (controlled red) */
@@ -805,10 +788,10 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 
 /* ---------- Footer polish: quiet oxblood crown + tighter rhythm ---------- */
 .footer {
-  border-top: 1px solid var(--tungacea-hairline-accent);
+  border-top: 0;
 }
 .footer__content-bottom {
-  border-top: 1px solid var(--tungacea-hairline-soft);
+  border-top: 0;
 }
 .footer .list-social__link:hover .icon,
 .footer .list-social__link:focus-visible .icon {

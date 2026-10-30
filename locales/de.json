@@ -405,7 +405,7 @@
     "header": {
       "announcement": "Ankündigung",
       "menu": "Menü",
-      "navigation_eyebrow": "TUNGACEA NAVIGATION / 01",
+      "navigation_eyebrow": "TUNGACEA NAVIGATION",
       "drawer_note": "Seltene Anthurien · lebende Kunst",
       "cart_count": {
         "one": "{{ count }} Artikel",
@@ -470,7 +470,7 @@
       "all_description": "Entdecke alle aktuell gezeigten Anthurien und Sammlerstücke.",
       "empty": "Keine Produkte gefunden",
       "use_fewer_filters_html": "Verwende weniger Filter oder <a class=\"{{ class }}\" href=\"{{ link }}\">entferne alle</a>",
-      "eyebrow": "TUNGACEA KOLLEKTION / 01",
+      "eyebrow": "TUNGACEA KOLLEKTION",
       "specimen_count": {
         "one": "{{ count }} Exemplar",
         "other": "{{ count }} Exemplare"
@@ -730,7 +730,7 @@
     "eyebrow": "MEIN ARCHIV",
     "heading": "Ein Blick auf das, was gerade heranwächst.",
     "intro": "Hier dokumentiere ich Mutterpflanzen, eigene Kreuzungen und weitere Anthurien aus meiner Sammlung. Aus ihnen können später Stecklinge/Klone und Nachzuchten entstehen, die als neue Exemplare in die Kollektion kommen.",
-    "teaser_eyebrow": "MEIN ARCHIV / 01",
+    "teaser_eyebrow": "MEIN ARCHIV",
     "teaser_heading": "Ein Blick auf das, was gerade heranwächst.",
     "teaser_body": "In meinem Archiv dokumentiere ich Mutterpflanzen, eigene Kreuzungen und weitere Anthurien aus meiner Sammlung. Aus ihnen können später Stecklinge/Klone und Nachzuchten entstehen, die als neue Exemplare in die Kollektion kommen.",
     "view_specimen": "Exemplar ansehen",

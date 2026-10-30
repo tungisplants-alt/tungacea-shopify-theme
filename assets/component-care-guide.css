@@ -55,6 +55,10 @@
   color: rgba(242, 238, 232, 0.78);
 }
 
+.care-guide__questions .care-guide__eyebrow::before {
+  content: none;
+}
+
 .care-guide__eyebrow::before {
   content: '';
   width: 2.4rem;

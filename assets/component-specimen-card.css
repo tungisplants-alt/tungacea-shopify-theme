@@ -33,11 +33,7 @@
   color: var(--tungacea-muted);
 }
 .product-card-wrapper .specimen-card__id::before {
-  content: '';
-  width: 1.6rem;
-  height: 1px;
-  background: rgb(var(--tungacea-accent-bright));
-  flex: 0 0 auto;
+  content: none;
 }
 
 /* ---------- Flags: Neu / Selten / Sale ----------
@@ -150,8 +146,8 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 1.2rem;
-  padding-top: 1.3rem;
-  border-top: 1px solid var(--tungacea-hairline);
+  padding-top: 1.6rem;
+  border-top: 0;
 }
 
 .product-card-wrapper .specimen-card__status {

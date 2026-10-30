@@ -152,7 +152,7 @@
 }
 
 .collection-hero__rule {
-  display: block;
+  display: none;
   width: 4.8rem;
   height: 1px;
   flex: 0 0 auto;
