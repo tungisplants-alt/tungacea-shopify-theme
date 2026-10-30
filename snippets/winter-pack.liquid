@@ -64,7 +64,7 @@
       <span class="winter-pack__text">
         <span class="winter-pack__titel">
           {{- ueberschrift | escape -}}
-          <span class="winter-pack__preis">+ {{ variante.price | money }}</span>
+          <span class="winter-pack__preis">+ {{ variante.price | money_without_trailing_zeros | replace: '€', ' €' }}</span>
         </span>
         {%- if hinweis != blank -%}
           <span class="winter-pack__sub">{{ hinweis | escape }}</span>

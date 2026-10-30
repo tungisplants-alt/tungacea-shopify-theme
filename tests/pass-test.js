@@ -173,15 +173,15 @@ const faelle = [
                'Generation F1', '28 cm', 'aus meiner Sammlung'],
     verboten: ['Aufmerksamkeit', 'erfahrene Hände', 'Foto:'] },
 
-  // Hat die Mutter eine Notiz, verspricht der Knopf genau die und springt im
-  // Archiv dorthin. Die Notiz selbst steht nicht auf der Produktseite.
-  { name: 'Mutter mit Notiz: Knopf springt im Archiv direkt zur Notiz',
+  // Der Knopf fuehrt immer an den Anfang der Archivseite, zum Bild, auch wenn
+  // die Mutter eine Notiz hat. Die Notiz selbst steht nicht auf der Produktseite.
+  { name: 'Mutter mit Notiz: Knopf fuehrt an den Anfang der Archivseite',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Gut bewurzelt',
              mutterpflanze: mutter('Anthurium Black Widow', null, null, FOTOS, undefined, '/pages/pflanzen/bw',
                { notiz: 'Diese Black Widow hebt sich durch die minimale Aderung hervor.' }) }),
-    erwartet: ['href="/pages/pflanzen/bw#notiz"', 'Mutterpflanze im Archiv ansehen'],
-    verboten: ['minimale Aderung'] },
-  { name: 'Mutter ohne Notiz: gleicher Knopf, ohne Sprung',
+    erwartet: ['href="/pages/pflanzen/bw"', 'Mutterpflanze im Archiv ansehen'],
+    verboten: ['minimale Aderung', '#notiz'] },
+  { name: 'Mutter ohne Notiz: gleicher Knopf',
     mf: mf({ lieferumfang: 'Cutting der Mutterpflanze', bewurzelung: 'Gut bewurzelt',
              mutterpflanze: mutter('Anthurium Black Widow', null, null, FOTOS, undefined, '/pages/pflanzen/bw') }),
     erwartet: ['href="/pages/pflanzen/bw"', 'Mutterpflanze im Archiv ansehen'],

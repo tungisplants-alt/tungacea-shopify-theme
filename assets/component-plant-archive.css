@@ -742,7 +742,6 @@
  * deshalb nicht wie eine Fussnote aussehen.
  */
 .plant-profile__note {
-  scroll-margin-top: 12rem; /* Sprungziel von "Meine Notiz lesen" auf der Produktseite */
   max-width: 62rem;
   margin: 0 0 4rem;
   padding-left: 2rem;

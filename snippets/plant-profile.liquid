@@ -477,7 +477,7 @@
     {%- endif -%}
 
     {%- if eintrag.notiz.value != blank -%}
-      <div class="plant-profile__note rte" id="notiz" data-testid="plant-profile-note">
+      <div class="plant-profile__note rte" data-testid="plant-profile-note">
         {{- eintrag.notiz.value | escape | newline_to_br -}}
       </div>
     {%- endif -%}

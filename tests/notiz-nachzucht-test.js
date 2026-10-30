@@ -103,8 +103,8 @@ const nachzuchtFaelle = [
   pruefe(!schema.blocks.some(b => b.type === 'notiz'), 'Schema: Block notiz steht noch da');
   const vorlage = JSON.parse(strip(fs.readFileSync(path.join(THEME, 'templates/product.json'), 'utf8')));
   pruefe(!vorlage.sections.main.block_order.includes('notiz') && !vorlage.sections.main.blocks.notiz, 'product.json: Block notiz steht noch da');
-  const profil = fs.readFileSync(path.join(THEME, 'snippets/plant-profile.liquid'), 'utf8');
-  pruefe(/plant-profile__note rte" id="notiz"/.test(profil), 'Archiv: Sprungziel #notiz fehlt');
+  const eltern = fs.readFileSync(path.join(THEME, 'snippets/specimen-parent.liquid'), 'utf8');
+  pruefe(!/#notiz/.test(eltern), 'Knopf springt noch zur Notiz statt an den Anfang der Archivseite');
   const karte = fs.readFileSync(path.join(THEME, 'snippets/card-product.liquid'), 'utf8');
   pruefe(/specimen_status_state == 'sold' and card_product\.metafields\.custom\.mutterpflanze\.value != blank/.test(karte), 'Karte: Hinweis Nachzucht fehlt');
   pruefe(LOC.de.products.product.specimen_status.sold === 'Vergeben', 'Karte: DE heisst nicht Vergeben');

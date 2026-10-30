@@ -62,17 +62,6 @@
 
   assign p_label = 'products.product.specimen.mother' | t
   assign p_link_text = 'private_archive.more_about_mother' | t
-  assign p_link_ziel = eintrag.system.url
-  comment
-    Hat die Mutterpflanze eine persoenliche Notiz, springt der Knopf im
-    Archiv direkt dorthin. Die Notiz selbst steht nicht auf der Produktseite.
-  endcomment
-  if rolle != 'vater' and eintrag.system.url != blank
-    assign p_notiz = eintrag.notiz.value | default: '' | strip
-    if p_notiz != blank
-      assign p_link_ziel = eintrag.system.url | append: '#notiz'
-    endif
-  endif
   if rolle == 'mutter'
     assign p_label = 'products.product.specimen.parent_mother' | t
   elsif rolle == 'vater'
@@ -275,7 +264,7 @@
     {%- endcomment -%}
     {%- if eintrag.system.url != blank -%}
       <a
-        href="{{ p_link_ziel }}"
+        href="{{ eintrag.system.url }}"
         class="specimen-passport__mother-link"
         data-testid="specimen-mother-link"
       >
