@@ -122,7 +122,9 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('Zeile ohne Seite: gar nichts', (await zeile(false)).trim(), '');
   pruefe('Zeile auf Englisch', /Care guide/.test(await zeile(true, 'en')) && /To the care guide/.test(await zeile(true, 'en')), true);
   const passport = fs.readFileSync(path.join(THEME, 'snippets/specimen-passport.liquid'), 'utf8');
-  pruefe('Hinweistext im Passport traegt den Link zum Guide, nur wenn die Seite existiert', /pages\['pflegeguide'\]/.test(passport) && /specimen-passport__hint-link/.test(passport) && /products\.product\.pflege\.link/.test(passport), true);
+  // Der Hinweistext traegt keinen eigenen Link mehr: die Zeile Pflegeanleitung
+  // direkt darunter fuehrt zum Guide, zwei Links zum selben Ziel waren doppelt.
+  pruefe('Hinweistext im Passport ohne eigenen Link zum Guide', /specimen-passport__hint-link|specimen-hint-guide/.test(passport), false);
 
   // Vorlage.
   const vorlage = JSON.parse(strip(fs.readFileSync(path.join(THEME, 'templates/page.pflegeguide.json'), 'utf8')));

@@ -1278,7 +1278,6 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   content: none !important;
 }
 
-.specimen-passport__hint-link::after,
 .specimen-passport__mother-link::after,
 .produkt-klappe__link::after,
 .care-guide__button::after,
@@ -1316,10 +1315,6 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   .image-with-text .button--secondary::after {
     transition: none;
   }
-}
-
-.specimen-passport__hint-link::after {
-  margin-left: 0.6rem;
 }
 
 /* Nächste Nachzucht vormerken (vergebenes Exemplar)
