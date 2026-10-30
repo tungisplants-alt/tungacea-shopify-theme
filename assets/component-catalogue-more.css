@@ -29,7 +29,7 @@
   margin: 0 0 1.6rem;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
 }
 
@@ -40,7 +40,7 @@
   color: inherit;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-decoration: none;
   cursor: pointer;
 }

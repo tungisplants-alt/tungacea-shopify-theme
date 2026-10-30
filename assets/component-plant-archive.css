@@ -59,7 +59,7 @@
   display: inline-block;
   margin: 0 0 1.4rem;
   text-transform: uppercase;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.16em;
   font-size: 1.2rem;
   color: rgba(242, 238, 232, 0.78);
 }
@@ -83,7 +83,7 @@
 
 @media screen and (min-width: 750px) {
   .plant-archive__hero .plant-archive__eyebrow {
-    letter-spacing: 0.32em;
+    letter-spacing: 0.16em;
     margin-bottom: 1.8rem;
   }
 }
@@ -98,7 +98,7 @@
 @media screen and (min-width: 750px) {
   .plant-archive__hero .plant-archive__lead {
     margin-top: 2.2rem;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -254,8 +254,8 @@
 .plant-card__meta {
   margin: 0;
   font-size: 1.2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
+  text-transform: none;
+  letter-spacing: 0.01em;
   color: rgba(242, 238, 232, 0.8);
 }
 
@@ -295,7 +295,7 @@
   margin: 0;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   color: var(--pl-muted);
 }
 
@@ -654,7 +654,7 @@
 .plant-profile__trait {
   max-width: 62rem;
   margin: 0 0 3.2rem;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   line-height: 1.55;
 }
 
@@ -720,7 +720,7 @@
   margin: 0 0 1.6rem;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   color: var(--pl-muted);
 }
 
@@ -840,7 +840,7 @@
   font-size: 1.2rem;
   line-height: 1.5;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
 }
 
 /* Der leise Hinweis auf der Kachel
@@ -854,8 +854,8 @@
   align-items: center;
   gap: 0.6rem;
   font-size: 1.2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
+  text-transform: none;
+  letter-spacing: 0.01em;
   color: rgba(242, 238, 232, 0.92);
 }
 
@@ -933,7 +933,7 @@
   border: 0;
   color: inherit;
   font-family: inherit;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   line-height: 1.6;
   padding: 1.2rem;
   min-width: 0;
@@ -962,7 +962,7 @@
   border-left: 1px solid rgba(var(--tungacea-oxblood, 110, 28, 40), 0.55);
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.16em;
   color: #f2eee8;
   white-space: nowrap;
   transition: background-color 0.3s var(--pl-ease, ease);
@@ -988,7 +988,7 @@
   margin: 0 0 0 auto;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
 }
 
@@ -1186,7 +1186,7 @@
   font-family: inherit;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
   cursor: pointer;
 }
 
@@ -1232,7 +1232,7 @@
 .plant-search__sheet-title {
   margin: 0;
   font-family: var(--font-heading-family, Georgia, serif);
-  font-size: 2.4rem;
+  font-size: 2.8rem;
   line-height: 1.1;
 }
 
@@ -1274,7 +1274,7 @@
   margin: 0 0 1.2rem;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.16em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
 }
 
@@ -1375,9 +1375,9 @@ html.plant-search-lock {
     border: 0;
     color: #0a0a0a;
     font-family: inherit;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     cursor: pointer;
   }
 
@@ -1415,7 +1415,7 @@ html.plant-search-lock {
   background: none;
   color: rgba(242, 238, 232, 0.9);
   font-family: inherit;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   line-height: 1.3;
   cursor: pointer;
   transition: background-color 0.22s var(--pl-ease, ease), border-color 0.22s var(--pl-ease, ease), color 0.22s var(--pl-ease, ease);
@@ -1525,7 +1525,7 @@ html.plant-search-lock {
   margin: 0 0 1.6rem;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
 }
 
@@ -1538,7 +1538,7 @@ html.plant-search-lock {
   font-family: inherit;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   cursor: pointer;
 }
 
@@ -1568,7 +1568,7 @@ html.plant-search-lock {
   gap: 0.8rem;
   margin: 0 0 0.2rem;
   font-size: 1.2rem;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.16em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
 }
 
@@ -1582,7 +1582,7 @@ html.plant-search-lock {
 .plant-archive__pages {
   margin-top: 4rem;
   text-align: center;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   letter-spacing: 0.1em;
 }
 
@@ -1605,5 +1605,5 @@ html.plant-search-lock {
   padding: 1.2rem 1.6rem;
   border: 1px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.8);
   color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
-  font-size: 1.3rem;
+  font-size: 1.5rem;
 }

@@ -50,7 +50,7 @@
   gap: 1.2rem;
   margin: 0 0 1.4rem;
   font-size: 1.2rem;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(242, 238, 232, 0.78);
 }
@@ -84,7 +84,7 @@
 
 @media screen and (min-width: 750px) {
   .care-guide__lead {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -108,14 +108,14 @@
   margin-bottom: 0.4rem;
   font-size: 1.2rem;
   font-weight: 400;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--cg-muted);
 }
 
 .care-guide__disclaimer p {
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   line-height: 1.6;
   color: var(--cg-muted);
 }
@@ -128,7 +128,7 @@
 .care-guide__picker-title {
   margin: 0 0 1.6rem;
   font-family: var(--font-heading-family);
-  font-size: 2.4rem;
+  font-size: 2.8rem;
   line-height: 1.2;
 }
 
@@ -142,8 +142,8 @@
   padding: 1rem 1.6rem;
   border: 1px solid var(--cg-line);
   border-radius: 0;
-  font-size: 1.25rem;
-  letter-spacing: 0.1em;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   text-decoration: none;
   color: #f2eee8;
@@ -167,7 +167,7 @@
 
 .care-guide__nav-label {
   font-size: 1.2rem;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--cg-muted);
   opacity: 0.8;
@@ -175,8 +175,8 @@
 
 .care-guide__nav-link {
   padding: 0.4rem 0;
-  font-size: 1.25rem;
-  letter-spacing: 0.14em;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   text-decoration: none;
   color: #f2eee8;
@@ -204,7 +204,7 @@
 .care-guide__chapter-lead {
   max-width: 58rem;
   margin: 0 0 2.4rem;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   line-height: 1.6;
   color: var(--cg-muted);
 }
@@ -221,12 +221,12 @@
   gap: 1.6rem;
   padding: 1.3rem 0;
   border-bottom: 1px solid var(--cg-line-soft);
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 
 .care-guide__fact dt {
   font-size: 1.2rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--cg-muted);
 }
@@ -280,7 +280,7 @@
 .care-guide__stage-title {
   display: block;
   font-family: var(--font-heading-family);
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   line-height: 1.2;
 }
 
@@ -305,7 +305,7 @@
 .care-guide__indicator::after {
   content: '+';
   color: var(--cg-accent);
-  font-size: 2rem;
+  font-size: 1.8rem;
   line-height: 1;
 }
 
@@ -325,13 +325,13 @@
 .care-guide__short {
   margin: 0 0 2rem;
   font-family: var(--font-heading-family);
-  font-size: 1.9rem;
+  font-size: 1.8rem;
   line-height: 1.4;
 }
 
 .care-guide__empty {
   margin: 0;
-  font-size: 1.35rem;
+  font-size: 1.5rem;
   color: var(--cg-muted);
 }
 
@@ -349,19 +349,19 @@
 
 .care-guide__figures dt {
   font-size: 1.2rem;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--cg-muted);
 }
 
 .care-guide__figures dd {
   margin: 0.3rem 0 0;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   line-height: 1.35;
 }
 
 .care-guide__text {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   line-height: 1.7;
   color: rgba(242, 238, 232, 0.9);
 }
@@ -401,12 +401,12 @@
   margin: 0;
   font-family: var(--font-heading-family);
   font-weight: 400;
-  font-size: 1.9rem;
+  font-size: 1.8rem;
 }
 
 .care-guide__item-main p {
   margin: 0.2rem 0 0;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: var(--cg-muted);
 }
 
@@ -447,7 +447,7 @@
   color: var(--cg-muted) !important;
   display: block;
   font-size: 1.2rem;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--cg-accent);
 }
@@ -476,7 +476,7 @@
 
 .care-guide__questions p:not(.care-guide__eyebrow) {
   margin: 0.8rem 0 1.6rem;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   color: var(--cg-muted);
 }
 

@@ -32,7 +32,7 @@
 .winter-pack__titel {
   display: block;
   font-family: var(--font-body-family);
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   letter-spacing: 0.02em;
 }
 
@@ -64,7 +64,7 @@
   color: #f2eee8;
   font-family: var(--font-body-family);
   font-size: 1.2rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
