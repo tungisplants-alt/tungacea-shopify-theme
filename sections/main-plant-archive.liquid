@@ -79,8 +79,8 @@
   {%- assign seiten_html = '' -%}
   {%- assign seiten_zahl = 1 -%}
   {%- assign seiten_groesse = 250 -%}
-  {%- assign fokus_auto = '' -%}
-  {%- assign fokus_gefunden = false -%}
+  {%- assign fokus_html = '' -%}
+  {%- assign fokus_zahl = 0 -%}
   {%- paginate shop.metaobjects.mutterpflanze.values by 250 -%}
     {%- capture karten_html -%}
       {%- for e in shop.metaobjects.mutterpflanze.values -%}
@@ -90,19 +90,31 @@
         {%- endif -%}
         {%- assign eigene = eigene | plus: 1 -%}
         {%- comment -%}
-          Ist im Editor keine Pflanze für den Fokus gewählt, steht dort die
-          erste eigene Pflanze mit persönlicher Notiz und einem Foto, das
-          gezeigt werden darf.
+          Ist im Editor keine Pflanze für den Fokus gewählt, wechselt der Fokus
+          bei jedem Besuch. In Frage kommen eigene Pflanzen mit persönlicher
+          Notiz und einem Foto, das gezeigt werden darf, höchstens zwölf. Alle
+          werden ausgegeben, sichtbar ist die erste; das Skript im Fokus
+          wählt beim Laden eine andere.
         {%- endcomment -%}
-        {%- if fokus_gefunden == false and e.notiz.value != blank -%}
+        {%- if fokus_zahl < 12 and e.notiz.value != blank -%}
+          {%- assign fokus_passt = false -%}
           {%- if e.bilder.value.size > 0 -%}
-            {%- assign fokus_auto = e -%}
-            {%- assign fokus_gefunden = true -%}
+            {%- assign fokus_passt = true -%}
           {%- elsif e.fotos.value.size > 0 -%}
             {%- if e.fotograf.value == blank or e.bildfreigabe.value == true or e.bildfreigabe.value == 'true' -%}
-              {%- assign fokus_auto = e -%}
-              {%- assign fokus_gefunden = true -%}
+              {%- assign fokus_passt = true -%}
             {%- endif -%}
+          {%- endif -%}
+          {%- if fokus_passt -%}
+            {%- assign fokus_versteckt = true -%}
+            {%- if fokus_zahl == 0 -%}
+              {%- assign fokus_versteckt = false -%}
+            {%- endif -%}
+            {%- capture fokus_eins -%}
+              {%- render 'plant-archive-focus', eintrag: e, versteckt: fokus_versteckt, wechsel: true -%}
+            {%- endcapture -%}
+            {%- assign fokus_html = fokus_html | append: fokus_eins -%}
+            {%- assign fokus_zahl = fokus_zahl | plus: 1 -%}
           {%- endif -%}
         {%- endif -%}
 
@@ -157,17 +169,19 @@
 
   {%- liquid
     assign fokus = ''
+    assign fokus_wechsel = ''
     if section.settings.fokus_zeigen
       if section.settings.fokus != blank
         assign fokus = section.settings.fokus
-      elsif fokus_gefunden
-        assign fokus = fokus_auto
+      elsif fokus_zahl > 0
+        assign fokus_wechsel = fokus_html
       endif
     endif
   -%}
 
   {%- render 'plant-archive-gallery',
     fokus: fokus,
+    fokus_wechsel: fokus_wechsel,
     karten_html: karten_html,
     id_roh: id_roh,
     eigene: eigene,
@@ -241,7 +255,7 @@
       "id": "fokus",
       "label": "Pflanze im Fokus",
       "metaobject_type": "mutterpflanze",
-      "info": "Leer lassen: dann steht dort die erste Pflanze mit Foto und persönlicher Notiz."
+      "info": "Leer lassen: dann wechselt der Fokus bei jedem Besuch zwischen deinen Pflanzen mit Foto und persönlicher Notiz. Wählst du eine Pflanze, bleibt sie fest stehen."
     },
     {
       "type": "color_scheme",

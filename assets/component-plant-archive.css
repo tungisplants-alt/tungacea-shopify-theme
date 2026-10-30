@@ -1678,6 +1678,12 @@ html.plant-search-lock {
   margin: 0 0 6.4rem;
 }
 
+/* Der wechselnde Fokus gibt alle Pflanzen aus und versteckt alle bis auf
+   eine; display: grid darf das hidden nicht aushebeln. */
+.plant-focus[hidden] {
+  display: none;
+}
+
 @media screen and (min-width: 990px) {
   .plant-focus {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);

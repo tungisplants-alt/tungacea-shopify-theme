@@ -11,6 +11,9 @@
 
   Annahmen:
   - eintrag: {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
+  - wechsel: {Boolean} Teil des wechselnden Fokus, bekommt den Handle als
+    Merkmal für das Skript (optional)
+  - versteckt: {Boolean} beim Laden verborgen, das Skript wählt (optional)
 {% endcomment %}
 {%- liquid
   assign name = eintrag.bezeichnung.value | default: '' | strip
@@ -29,7 +32,12 @@
   assign notiz = eintrag.notiz.value | default: '' | strip
   assign merkmal = eintrag.merkmal.value | default: '' | strip
 -%}
-<article class="plant-focus" data-testid="plant-focus">
+<article
+  class="plant-focus"
+  data-testid="plant-focus"
+  {%- if wechsel %} data-fokus-wahl="{{ eintrag.system.handle | escape }}"{% endif -%}
+  {%- if versteckt %} hidden{% endif -%}
+>
   <div class="plant-focus__media">
     {%- render 'plant-fotos',
       eintrag: eintrag,

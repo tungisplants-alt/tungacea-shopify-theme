@@ -20,7 +20,9 @@
     herkuenfte, linien, reinheiten, merkmale: gesammelte Werte (siehe Vorlage)
   - seiten_html: {String} Seitenlinks, leer unter 250 Pflanzen
   - eyebrow, heading, intro: {String} optional, sonst aus den Sprachdateien
-  - fokus: {Object} Pflanze im Fokus, leer heisst kein Fokus (optional)
+  - fokus: {Object} feste Pflanze im Fokus, im Editor gewählt (optional)
+  - fokus_wechsel: {String} fertige Fokus-Blöcke zum Wechseln, der erste
+    sichtbar (optional). Leer und kein fokus heisst kein Fokus.
 {% endcomment %}
 {{ 'component-plant-archive.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'plant-archive-reveal.js' | asset_url }}" defer="defer"></script>
@@ -66,6 +68,29 @@
 
     {%- if fokus != blank -%}
       {%- render 'plant-archive-focus', eintrag: fokus -%}
+    {%- elsif fokus_wechsel != blank -%}
+      {%- comment -%}
+        Bei jedem Besuch eine andere Pflanze. Das Skript steht direkt im
+        Block und läuft, bevor die Seite gezeichnet wird; so springt nichts
+        um. Es merkt sich die zuletzt gezeigte Pflanze und nimmt sie beim
+        nächsten Mal nicht. Shopify speichert die Seite zwischen, deshalb
+        wählt der Browser und nicht die Vorlage. Ohne Skript steht die erste.
+      {%- endcomment -%}
+      <div class="plant-focus-wechsel" data-testid="plant-focus-wechsel">
+        {{- fokus_wechsel -}}
+        <script>
+          (function () {
+            var wahl = document.currentScript.parentNode.querySelectorAll('[data-fokus-wahl]');
+            if (wahl.length < 2) return;
+            var zuletzt = '';
+            try { zuletzt = localStorage.getItem('tungaceaFokus') || ''; } catch (e) {}
+            var i = Math.floor(Math.random() * wahl.length);
+            if (wahl[i].getAttribute('data-fokus-wahl') === zuletzt) i = (i + 1) % wahl.length;
+            for (var j = 0; j < wahl.length; j++) wahl[j].hidden = j !== i;
+            try { localStorage.setItem('tungaceaFokus', wahl[i].getAttribute('data-fokus-wahl')); } catch (e) {}
+          })();
+        </script>
+      </div>
     {%- endif -%}
 
     {%- if anzahl > 0 -%}
