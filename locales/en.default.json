@@ -226,7 +226,7 @@
       "product_variants": "Product variants",
       "media": {
         "go_to_media": "Show image {{ index }}",
-          "gallery_viewer": "Gallery Viewer",
+        "gallery_viewer": "Gallery Viewer",
         "load_image": "Load image {{ index }} in gallery view",
         "load_model": "Load 3D Model {{ index }} in gallery view",
         "load_video": "Play video {{ index }} in gallery view",
@@ -285,7 +285,22 @@
       "taxes_included": "Taxes included.",
       "duties_included": "Duties included.",
       "duties_and_taxes_included": "Duties and taxes included.",
-      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout."
+      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
+      "nachzucht": {
+        "heading": "Get notified about the next one",
+        "text_mother": "This specimen is taken. When I have something from this mother plant again, I'll let you know.",
+        "text_cross": "This specimen is taken. When I have something from this cross again, I'll let you know.",
+        "placeholder": "Email address",
+        "button": "Notify me",
+        "success": "Thanks, you're on the list. I'll get in touch when it's ready.",
+        "note": "Just this one message, no regular promotions.",
+        "card": "Get notified"
+      },
+      "pflege": {
+        "titel": "Care guide",
+        "text": "How I care for my plants – my conditions, stage by stage, from cutting to mother plant.",
+        "link": "To the care guide"
+      }
     },
     "modal": {
       "label": "Media gallery"
@@ -407,7 +422,7 @@
     "header": {
       "announcement": "Announcement",
       "menu": "Menu",
-      "navigation_eyebrow": "TUNGACEA NAVIGATION / 01",
+      "navigation_eyebrow": "TUNGACEA NAVIGATION",
       "drawer_note": "Rare Anthuriums · living art",
       "cart_count": {
         "one": "{{ count }} item",
@@ -472,7 +487,7 @@
       "all_title": "Specimens",
       "all_description": "Discover all Anthuriums and collector specimens currently on display.",
       "use_fewer_filters_html": "Use fewer filters or <a class=\"{{ class }}\" href=\"{{ link }}\">remove all</a>",
-      "eyebrow": "TUNGACEA COLLECTION / 01",
+      "eyebrow": "TUNGACEA COLLECTION",
       "specimen_count": {
         "one": "{{ count }} specimen",
         "other": "{{ count }} specimens"
@@ -692,6 +707,8 @@
     "facet_offer_yes": "Offer available",
     "facet_origin": "Origin",
     "has_offer": "Offer available",
+    "focus_eyebrow": "In focus",
+    "focus_link": "View specimen",
     "search_label": "Search",
     "search_placeholder": "Name, cross, breeder …",
     "search_clear": "Reset",
@@ -720,12 +737,13 @@
     "pages_label": "More archive pages",
     "load_warning": "Only {{ geladen }} of {{ gesamt }} plants loaded. The archive needs to be split into pages.",
     "offers_heading": "Offers from this plant",
-    "more_about_mother": "More about the mother plant",
-    "more_about_father": "More about the pollen parent",
+    "more_about_mother": "See the mother plant in the archive",
+    "more_about_father": "See the pollen parent in the archive",
+    "view_in_archive": "View in the archive",
     "eyebrow": "MY ARCHIVE",
     "heading": "A glimpse of what’s growing.",
     "intro": "Here I document mother plants, my own crosses, and other Anthuriums from my collection. Over time, they may become the source of cuttings/clones and offspring that join the collection as new specimens.",
-    "teaser_eyebrow": "MY ARCHIVE / 01",
+    "teaser_eyebrow": "MY ARCHIVE",
     "teaser_heading": "A glimpse of what’s growing.",
     "teaser_body": "In my archive, I document mother plants, my own crosses, and other Anthuriums from my collection. Over time, they may become the source of cuttings/clones and offspring that join the collection as new specimens.",
     "view_specimen": "View specimen",
@@ -791,5 +809,45 @@
     "mail_privacy_link": "privacy policy",
     "message": "Hi Tung, I have a question about…",
     "message_product": "Hi Tung, I have a question about {{ name }}."
+  },
+  "care_guide": {
+    "eyebrow": "Care guide",
+    "heading": "How I care for my Anthuriums.",
+    "lead": "My conditions, my experience – from cutting to mother plant.",
+    "disclaimer_title": "Disclaimer",
+    "disclaimer": "These are my own experiences under my own conditions. They may differ from recommendations in studies. Treat them as guidance, not as a fixed recipe.",
+    "nav_label": "Chapters",
+    "nav_conditions": "Conditions",
+    "nav_stages": "Stages",
+    "nav_nutrients": "Nutrients",
+    "nav_water": "Water",
+    "nav_questions": "Questions",
+    "conditions_title": "My conditions",
+    "conditions_lead": "Where and how my plants grow. Yours may be different.",
+    "stages_title": "Care by stage",
+    "stages_lead": "Tap a stage to open it.",
+    "nutrients_title": "Nutrients & additives",
+    "nutrients_lead": "What I use, how much and when.",
+    "water_title": "My water",
+    "water_lead": "pH and EC, the way I set them.",
+    "questions_title": "Questions",
+    "questions_text": "Something unclear, or different on your end? Message me directly.",
+    "stage_step": "Stage {{ nummer }}",
+    "stage_breeding": "Breeding",
+    "empty": "Content coming soon.",
+    "figure_humidity": "Humidity",
+    "figure_light": "Light",
+    "figure_temperature": "Temperature",
+    "figure_fertilizer": "Fertilizer",
+    "value_vpd": "VPD {{ wert }} kPa",
+    "value_ppfd": "PPFD {{ wert }} µmol/m²/s",
+    "value_temperature": "{{ wert }} °C",
+    "value_ec": "EC {{ wert }} mS/cm",
+    "type_basis": "Base",
+    "type_addition": "Additive",
+    "water_target": "Target",
+    "water_unit": "mS/cm",
+    "picker_title": "Which stage do you have?",
+    "more_label": "Also"
   }
 }

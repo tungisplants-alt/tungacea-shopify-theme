@@ -6,7 +6,7 @@
  */
 
 .tungacea-footer {
-  border-top: 1px solid rgba(var(--color-foreground), 0.12);
+  border-top: 0;
 }
 
 /* ------------------------------------------------------------------
@@ -53,15 +53,15 @@
 .tungacea-footer .tungacea-footer__brand-title {
   margin: 0 0 1rem;
   font-family: var(--font-heading-family);
-  font-size: 1.7rem;
-  letter-spacing: 0.22rem;
+  font-size: 1.5rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgb(var(--color-foreground));
 }
 
 .tungacea-footer .tungacea-footer__brand-desc.rte {
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   line-height: 1.7;
   color: rgba(var(--color-foreground), 0.7);
   max-width: 34ch;
@@ -113,8 +113,8 @@
 }
 
 .tungacea-footer .tungacea-footer__group-heading {
-  font-size: 1.1rem;
-  letter-spacing: 0.14rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(var(--color-foreground), 0.72);
 }
@@ -164,7 +164,7 @@
 }
 
 .tungacea-footer .tungacea-footer__link {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   letter-spacing: 0.03rem;
   color: rgba(var(--color-foreground), 0.72);
   transition: color 0.2s ease;
@@ -233,8 +233,8 @@
 }
 
 .tungacea-footer .tungacea-footer__social-label {
-  font-size: 1.1rem;
-  letter-spacing: 0.14rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(var(--color-foreground), 0.72);
 }
@@ -310,8 +310,8 @@
    5. Bottom row — copyright + compact, dynamic payment icons
    ------------------------------------------------------------------ */
 .tungacea-footer .tungacea-footer__bottom {
-  border-top: 1px solid rgba(var(--color-foreground), 0.12);
-  margin-top: 2.4rem;
+  border-top: 0;
+  margin-top: 4rem;
   padding-top: 1.8rem;
 }
 
@@ -324,7 +324,7 @@
 }
 
 .tungacea-footer .tungacea-footer__copyright.copyright__content {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.05rem;
   color: rgba(var(--color-foreground), 0.6);
 }
@@ -348,8 +348,8 @@
   align-items: center;
   font-family: var(--font-body-family);
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 1.05rem;
+  letter-spacing: 0.16em;
+  font-size: 1.2rem;
   line-height: 1;
   /* extra right padding: letter-spacing adds a trailing gap after the last glyph */
   padding: 0.7rem 0.75rem 0.65rem 0.95rem;
@@ -368,8 +368,8 @@
 
 @media screen and (max-width: 749px) {
   .tungacea-footer .tungacea-footer__withdrawal--bottom {
-    font-size: 1rem;
-    letter-spacing: 0.14em;
+    font-size: 1.2rem;
+    letter-spacing: 0.16em;
     padding: 0.65rem 0.6rem 0.6rem 0.8rem;
   }
 }

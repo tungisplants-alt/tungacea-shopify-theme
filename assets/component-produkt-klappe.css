@@ -38,7 +38,7 @@
   padding: 1.4rem 0;
   list-style: none;
   cursor: pointer;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   letter-spacing: 0.02em;
   color: rgba(242, 238, 232, 0.92);
 }
@@ -65,7 +65,7 @@
 
 .produkt-klappe__inhalt {
   padding: 0 0 1.6rem;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   line-height: 1.6;
   color: var(--tungacea-muted);
 }
@@ -128,3 +128,7 @@
   text-decoration: none;
 }
 
+
+.produkt-klappe__satz {
+  margin: 0;
+}

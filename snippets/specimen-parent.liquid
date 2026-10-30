@@ -14,6 +14,9 @@
   - rolle:      {String} 'einzeln' | 'mutter' | 'vater' (Pflicht)
                 'einzeln' ist der bisherige Fall mit genau einer Mutterpflanze.
   - thing_word: {String} uebersetztes Wort fuer das Angebotene (optional)
+  - kurz:       {Boolean} kurzer Knopftext "Im Archiv ansehen" (optional).
+                In der Kreuzung stehen zwei Spalten nebeneinander, und die
+                Rolle steht schon darueber; der lange Text braeche um.
   - max_fotos:  {Number} wie viele Bilder hoechstens (optional, Vorgabe 6).
                 In der Kreuzung steht eins je Elternteil: zwei Reihen
                 nebeneinander waren mehr Bild als Aussage.
@@ -59,6 +62,17 @@
 
   assign p_label = 'products.product.specimen.mother' | t
   assign p_link_text = 'private_archive.more_about_mother' | t
+  assign p_link_ziel = eintrag.system.url
+  comment
+    Hat die Mutterpflanze eine persoenliche Notiz, springt der Knopf im
+    Archiv direkt dorthin. Die Notiz selbst steht nicht auf der Produktseite.
+  endcomment
+  if rolle != 'vater' and eintrag.system.url != blank
+    assign p_notiz = eintrag.notiz.value | default: '' | strip
+    if p_notiz != blank
+      assign p_link_ziel = eintrag.system.url | append: '#notiz'
+    endif
+  endif
   if rolle == 'mutter'
     assign p_label = 'products.product.specimen.parent_mother' | t
   elsif rolle == 'vater'
@@ -68,6 +82,9 @@
       Derselbe Knopf an zwei Rollen braucht zwei Beschriftungen.
     endcomment
     assign p_link_text = 'private_archive.more_about_father' | t
+  endif
+  if kurz
+    assign p_link_text = 'private_archive.view_in_archive' | t
   endif
 
   assign fotograf = eintrag.fotograf.value
@@ -258,7 +275,7 @@
     {%- endcomment -%}
     {%- if eintrag.system.url != blank -%}
       <a
-        href="{{ eintrag.system.url }}"
+        href="{{ p_link_ziel }}"
         class="specimen-passport__mother-link"
         data-testid="specimen-mother-link"
       >

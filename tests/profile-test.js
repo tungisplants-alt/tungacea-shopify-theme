@@ -97,7 +97,7 @@ const faelle = [
   {
     name: 'Findet die eigenen Produkte selbst',
     eintrag: pflanze('mutter-eins'),
-    erwartet: ['plant-profile-offers', 'Cutting A', '299,00 €', 'Cutting B', 'Verkauft'],
+    erwartet: ['plant-profile-offers', 'Cutting A', '299,00 €', 'Cutting B', 'Vergeben'],
     verboten: ['Fremdes Cutting', 'Produkt ohne Mutter'],
     // 'Saemling aus Kreuzung' steht hier bewusst in keiner der beiden Listen —
     // der eigene Fall unten prueft ihn, und zwar auf Anwesenheit.
@@ -370,7 +370,7 @@ const faelle = [
         // englischen Seite. Sie kannte "Komplexhybrid" und "Reine Art" nicht,
         // und genau dort stand der Fehler. Wer hier ein Feld ergaenzt, dessen
         // Werte Tung auf Deutsch eintraegt, traegt das Wort hier mit ein.
-        const deutsch = /Verkauft|Angebote von dieser Pflanze|Diese Pflanze steht bei|Komplexhybrid|Reine Art|\(Niederlande\)|\(Deutschland\)|\(Schweiz\)/;
+        const deutsch = /Verkauft|Vergeben|Angebote von dieser Pflanze|Diese Pflanze steht bei|Komplexhybrid|Reine Art|\(Niederlande\)|\(Deutschland\)|\(Schweiz\)/;
         if (deutsch.test(html)) {
           fails++; console.log('FEHLER [en] ' + f.name + ': deutscher Text im englischen Lauf');
         }

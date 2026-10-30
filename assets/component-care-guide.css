@@ -1,0 +1,496 @@
+/*
+ * Pflegeguide. Dunkel, ruhig, wie Archiv und Kollektion: Kopf mit abgedunkeltem
+ * Foto, Disclaimer als stiller Kasten, Kapitel mit Nummer, Stadien als
+ * aufklappbare Kästen. Farben stehen als feste Werte, weil Dawn
+ * --color-foreground nur innerhalb der Farbschema-Klassen setzt.
+ *
+ * Aufgeklappt wird mit <details>; das Attribut hidden wird nirgends benutzt,
+ * weil display es aushebeln würde.
+ */
+.care-guide {
+  --cg-line: var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  --cg-line-soft: var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.08));
+  --cg-muted: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  --cg-accent: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  --cg-ox: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  --cg-panel: #0e0e10;
+  display: block;
+  color: #f2eee8;
+}
+
+/* ---------- Kopf ---------- */
+.care-guide__hero {
+  position: relative;
+  padding: 6rem 0 5.2rem;
+  background:
+    linear-gradient(to bottom, rgba(10, 10, 10, 0) 62%, rgb(10, 10, 10) 100%),
+    linear-gradient(rgba(10, 10, 10, 0.42), rgba(10, 10, 10, 0.42)),
+    var(--guide-bild) 56% 40% / cover no-repeat,
+    rgb(10, 10, 10);
+}
+
+@media screen and (min-width: 750px) {
+  .care-guide__hero {
+    padding: 8rem 0 7rem;
+    background:
+      linear-gradient(to bottom, rgba(10, 10, 10, 0) 62%, rgb(10, 10, 10) 100%),
+      linear-gradient(to right, rgba(10, 10, 10, 0.74) 0%, rgba(10, 10, 10, 0.4) 50%, rgba(10, 10, 10, 0.12) 100%),
+      var(--guide-bild) center 45% / cover no-repeat,
+      rgb(10, 10, 10);
+  }
+}
+
+.care-guide__intro {
+  max-width: 62rem;
+}
+
+.care-guide__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin: 0 0 1.4rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(242, 238, 232, 0.78);
+}
+
+.care-guide__questions .care-guide__eyebrow::before {
+  content: none;
+}
+
+.care-guide__eyebrow::before {
+  content: '';
+  width: 2.4rem;
+  height: 1px;
+  background: var(--cg-ox);
+}
+
+.care-guide__heading {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(4rem, 10vw, 5.6rem);
+  line-height: 1.08;
+  text-shadow: 0 0.2rem 2.4rem rgba(0, 0, 0, 0.5);
+}
+
+.care-guide__lead {
+  margin: 2rem 0 0;
+  max-width: 54rem;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgba(242, 238, 232, 0.86);
+}
+
+@media screen and (min-width: 750px) {
+  .care-guide__lead {
+    font-size: 1.5rem;
+  }
+}
+
+/* ---------- Disclaimer ----------
+   Eine leise Notiz mit roter Linie, wie der Hinweis am Produkt: sichtbar, aber
+   nicht der Einstieg. */
+.care-guide__disclaimer {
+  margin: 0;
+  padding: 0.2rem 0 0.2rem 1.6rem;
+  border-left: 2px solid var(--cg-ox);
+}
+
+@media screen and (min-width: 750px) {
+  .care-guide__disclaimer {
+    max-width: 62rem;
+  }
+}
+
+.care-guide__disclaimer strong {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cg-muted);
+}
+
+.care-guide__disclaimer p {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: var(--cg-muted);
+}
+
+/* ---------- Stadium-Einstieg ---------- */
+.care-guide__picker {
+  margin-top: 4rem;
+}
+
+.care-guide__picker-title {
+  margin: 0 0 1.6rem;
+  font-family: var(--font-heading-family);
+  font-size: 2.8rem;
+  line-height: 1.2;
+}
+
+.care-guide__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.care-guide__chip-link {
+  padding: 1rem 1.6rem;
+  border: 1px solid var(--cg-line);
+  border-radius: 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #f2eee8;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.care-guide__chip-link:hover,
+.care-guide__chip-link:focus-visible {
+  border-color: rgba(242, 238, 232, 0.5);
+  background: rgba(242, 238, 232, 0.06);
+}
+
+/* ---------- Weitere Kapitel: eine leise Textzeile ---------- */
+.care-guide__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem 2.2rem;
+  margin: 3.2rem 0 0;
+}
+
+.care-guide__nav-label {
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cg-muted);
+  opacity: 0.8;
+}
+
+.care-guide__nav-link {
+  padding: 0.4rem 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #f2eee8;
+  border-bottom: 1px solid transparent;
+}
+
+.care-guide__nav-link:hover,
+.care-guide__nav-link:focus-visible {
+  border-bottom-color: var(--cg-accent);
+}
+
+/* ---------- Kapitel ---------- */
+.care-guide__chapter {
+  padding-top: 5.2rem;
+  scroll-margin-top: 9rem;
+}
+
+.care-guide__title {
+  margin: 0 0 1.2rem;
+  font-weight: 400;
+  font-size: clamp(2.8rem, 6vw, 3.6rem);
+  line-height: 1.15;
+}
+
+.care-guide__chapter-lead {
+  max-width: 58rem;
+  margin: 0 0 2.4rem;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: var(--cg-muted);
+}
+
+/* Datenzeilen (Bedingungen, Wasser je Stadium) */
+.care-guide__facts {
+  margin: 0;
+  border-top: 1px solid var(--cg-line-soft);
+}
+
+.care-guide__fact {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.6rem;
+  padding: 1.3rem 0;
+  border-bottom: 1px solid var(--cg-line-soft);
+  font-size: 1.5rem;
+}
+
+.care-guide__fact dt {
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cg-muted);
+}
+
+.care-guide__fact dd {
+  margin: 0;
+  text-align: right;
+}
+
+@media screen and (min-width: 750px) {
+  .care-guide__facts {
+    max-width: 78rem;
+  }
+}
+
+/* Stadien (aufklappbar): Zeilen mit Haarlinie, wie "Versand & Lieferung" am
+   Produkt; kein Kasten. */
+.care-guide__stage {
+  border-bottom: 1px solid var(--cg-line-soft);
+}
+
+.care-guide__stage:first-of-type {
+  border-top: 1px solid var(--cg-line-soft);
+}
+
+@media screen and (min-width: 750px) {
+  .care-guide__stage {
+    max-width: 78rem;
+  }
+}
+
+.care-guide__stage-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  padding: 1.8rem 0;
+  list-style: none;
+  cursor: pointer;
+}
+
+.care-guide__stage-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.care-guide__stage-name {
+  display: block;
+  min-width: 0;
+}
+
+.care-guide__stage-title {
+  display: block;
+  font-family: var(--font-heading-family);
+  font-size: 1.8rem;
+  line-height: 1.2;
+}
+
+/* Kennzahlen in der zugeklappten Zeile, damit man das Wichtigste sieht, ohne
+   aufzuklappen. Aufgeklappt stehen sie darunter in groß. */
+.care-guide__stage-peek {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--cg-muted);
+}
+
+.care-guide__stage[open] .care-guide__stage-peek {
+  display: none;
+}
+
+.care-guide__indicator {
+  flex: none;
+}
+
+.care-guide__indicator::after {
+  content: '+';
+  color: var(--cg-accent);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.care-guide__stage[open] .care-guide__indicator::after {
+  content: '–';
+}
+
+.care-guide__stage-toggle:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 2px;
+}
+
+.care-guide__stage-body {
+  padding: 0 0 2.4rem;
+}
+
+.care-guide__short {
+  margin: 0 0 2rem;
+  font-family: var(--font-heading-family);
+  font-size: 1.8rem;
+  line-height: 1.4;
+}
+
+.care-guide__empty {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--cg-muted);
+}
+
+.care-guide__figures {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8rem 1.6rem;
+  margin: 0 0 2rem;
+}
+
+.care-guide__figures > div {
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--cg-line-soft);
+}
+
+.care-guide__figures dt {
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cg-muted);
+}
+
+.care-guide__figures dd {
+  margin: 0.3rem 0 0;
+  font-size: 1.5rem;
+  line-height: 1.35;
+}
+
+.care-guide__text {
+  font-size: 1.5rem;
+  line-height: 1.7;
+  color: rgba(242, 238, 232, 0.9);
+}
+
+.care-guide__text > :first-child {
+  margin-top: 0;
+}
+
+/* Nährstoffe */
+.care-guide__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--cg-line-soft);
+}
+
+@media screen and (min-width: 750px) {
+  .care-guide__list {
+    max-width: 78rem;
+  }
+}
+
+.care-guide__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.4rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--cg-line-soft);
+}
+
+.care-guide__item-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.care-guide__item-name {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-weight: 400;
+  font-size: 1.8rem;
+}
+
+.care-guide__item-main p {
+  margin: 0.2rem 0 0;
+  font-size: 1.5rem;
+  color: var(--cg-muted);
+}
+
+.care-guide__item-main .care-guide__dose {
+  color: rgba(242, 238, 232, 0.9);
+}
+
+.care-guide__chip {
+  flex: none;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--cg-line);
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cg-muted);
+}
+
+/* Gießwasser */
+.care-guide__tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+@media screen and (min-width: 750px) {
+  .care-guide__tiles {
+    max-width: 78rem;
+  }
+}
+
+.care-guide__tile {
+  padding: 1.4rem 0 0;
+  border-top: 1px solid var(--cg-line);
+}
+
+.care-guide__tile small {
+  color: var(--cg-muted) !important;
+  display: block;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cg-accent);
+}
+
+.care-guide__tile b {
+  display: block;
+  margin: 0.6rem 0 0.2rem;
+  font-family: var(--font-heading-family);
+  font-weight: 400;
+  font-size: 4.4rem;
+  line-height: 1.1;
+}
+
+.care-guide__tile span {
+  font-size: 1.2rem;
+  color: var(--cg-muted);
+}
+
+/* Fragen am Ende */
+.care-guide__questions {
+  margin-top: 5.2rem;
+  padding-top: 2.4rem;
+  border-top: 1px solid var(--cg-line-soft);
+  scroll-margin-top: 9rem;
+}
+
+.care-guide__questions p:not(.care-guide__eyebrow) {
+  margin: 0.8rem 0 1.6rem;
+  font-size: 1.5rem;
+  color: var(--cg-muted);
+}
+
+.care-guide__button {
+  display: inline-block;
+  padding: 1.1rem 1.8rem;
+  border: 1px solid rgba(242, 238, 232, 0.42);
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #f2eee8;
+}
+
+.care-guide__button:hover {
+  background: rgba(242, 238, 232, 0.09);
+}

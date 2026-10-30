@@ -63,7 +63,7 @@ h1, h2, h3, h4, h5,
 .caption-large,
 .caption {
   text-transform: uppercase;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.16em;
   font-family: var(--font-body-family);
   font-weight: 400;
   color: var(--tungacea-muted);
@@ -82,7 +82,7 @@ h1, h2, h3, h4, h5,
 
 .caption-with-letter-spacing,
 .subtitle {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
 }
 
 .rich-text__caption,
@@ -103,7 +103,7 @@ h1, h2, h3, h4, h5,
 .button,
 .shopify-payment-button__button--unbranded {
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   font-family: var(--font-body-family);
   font-size: 1.2rem;
   font-weight: 500;
@@ -185,8 +185,8 @@ h1, h2, h3, h4, h5,
 
 .header__menu-item {
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 1.15rem;
+  letter-spacing: 0.16em;
+  font-size: 1.2rem;
   font-weight: 400;
 }
 
@@ -251,8 +251,8 @@ h1, h2, h3, h4, h5,
 /* ---------- Announcement bar ---------- */
 .announcement-bar__message {
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  font-size: 1.2rem;
   padding: 1.1rem;
   color: var(--tungacea-muted);
 }
@@ -265,7 +265,7 @@ h1, h2, h3, h4, h5,
 .menu-drawer__inner-container { background: #0a0a0a; }
 .menu-drawer__navigation .menu-drawer__menu-item {
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   font-size: 1.5rem;
   font-family: var(--font-body-family);
   padding-top: 1.6rem;
@@ -354,7 +354,7 @@ h1, h2, h3, h4, h5,
 }
 .banner__text {
   color: rgba(242, 238, 232, 0.82);
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   letter-spacing: 0.02em;
 }
 .banner__buttons {
@@ -441,7 +441,7 @@ h1, h2, h3, h4, h5,
   letter-spacing: 0;
 }
 .card__heading a {
-  font-size: 1.9rem;
+  font-size: 1.8rem;
   transition: color 0.3s ease;
 }
 .card-information .card__heading a:hover,
@@ -454,7 +454,7 @@ h1, h2, h3, h4, h5,
 .price {
   font-family: var(--font-body-family);
   letter-spacing: 0.04em;
-  font-size: 1.35rem;
+  font-size: 1.5rem;
   color: var(--tungacea-muted);
 }
 .price .price-item { color: var(--tungacea-muted); }
@@ -463,7 +463,7 @@ h1, h2, h3, h4, h5,
 .card__badge .badge {
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-size: 1rem;
+  font-size: 1.2rem;
   padding: 0.5rem 1rem;
   border: 0;
   font-weight: 500;
@@ -478,14 +478,14 @@ h1, h2, h3, h4, h5,
 .product-count__text,
 .facets__label,
 .facets-container .mobile-facets__count {
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   color: var(--tungacea-muted);
 }
 .facets .facets__summary,
 .facets__disclosure .facets__display { border-color: var(--tungacea-hairline); }
-.facets__button { text-transform: uppercase; letter-spacing: 0.14em; }
+.facets__button { text-transform: uppercase; letter-spacing: 0.16em; }
 
 .collection-hero__title { font-weight: 400; }
 .collection-hero { border-bottom: 1px solid var(--tungacea-hairline-soft); }
@@ -501,7 +501,7 @@ h1, h2, h3, h4, h5,
 .product .product__text.caption-with-letter-spacing { color: var(--tungacea-muted); }
 
 .product .price {
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   color: rgb(var(--color-foreground));
 }
 
@@ -527,7 +527,7 @@ h1, h2, h3, h4, h5,
   font-family: var(--font-body-family);
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 500;
 }
 .accordion__content { padding-bottom: 2rem; color: var(--tungacea-muted); }
@@ -535,7 +535,7 @@ h1, h2, h3, h4, h5,
 .product__description { color: var(--tungacea-muted); }
 
 /* Variant pills sharp & editorial */
-.product-form__input .form__label { text-transform: uppercase; letter-spacing: 0.14em; font-size: 1.1rem; color: var(--tungacea-muted); }
+.product-form__input .form__label { text-transform: uppercase; letter-spacing: 0.16em; font-size: 1.2rem; color: var(--tungacea-muted); }
 fieldset.product-form__input .active { color: rgb(var(--color-foreground)); }
 
 /* ---------- Specimen record (product page) ---------- */
@@ -546,8 +546,8 @@ fieldset.product-form__input .active { color: rgb(var(--color-foreground)); }
 }
 .specimen__title {
   text-transform: uppercase;
-  letter-spacing: 0.28em;
-  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  font-size: 1.2rem;
   color: var(--tungacea-muted);
   margin: 2.2rem 0 0.8rem;
 }
@@ -561,13 +561,13 @@ fieldset.product-form__input .active { color: rgb(var(--color-foreground)); }
 }
 .specimen__label {
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  font-size: 1.2rem;
   color: var(--tungacea-muted);
   margin: 0;
 }
 .specimen__value {
-  font-size: 1.55rem;
+  font-size: 1.5rem;
   margin: 0;
   color: rgb(var(--color-foreground));
 }
@@ -587,8 +587,8 @@ fieldset.product-form__input .active { color: rgb(var(--color-foreground)); }
   padding: 0.5rem 1.1rem;
   border: 1px solid var(--tungacea-hairline);
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 1rem;
+  letter-spacing: 0.16em;
+  font-size: 1.2rem;
   color: var(--tungacea-muted);
 }
 .specimen__tag::before {
@@ -608,7 +608,7 @@ fieldset.product-form__input .active { color: rgb(var(--color-foreground)); }
   height: 100%;
 }
 .image-with-text__heading { font-weight: 400; }
-.image-with-text__text { color: var(--tungacea-muted); font-size: 1.6rem; }
+.image-with-text__text { color: var(--tungacea-muted); font-size: 1.5rem; }
 
 /* ---------- Multicolumn (community) ---------- */
 .multicolumn-card { background: transparent; box-shadow: none; }
@@ -626,13 +626,13 @@ fieldset.product-form__input .active { color: rgb(var(--color-foreground)); }
 
 /* ---------- Footer ---------- */
 .footer {
-  border-top: 1px solid var(--tungacea-hairline-soft);
+  border-top: 0;
 }
 .footer__content-top { padding-bottom: 4rem; }
 .footer-block__heading {
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 1.15rem;
+  letter-spacing: 0.16em;
+  font-size: 1.2rem;
   font-family: var(--font-body-family);
   font-weight: 500;
   color: var(--tungacea-muted);
@@ -671,7 +671,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   .banner__text { font-size: 1.5rem; }
   .banner--content-align-left .banner__content { padding-left: 2.4rem; padding-right: 2.4rem; }
   .title-wrapper-with-link { margin-bottom: 3rem; }
-  .card__heading a { font-size: 1.7rem; }
+  .card__heading a { font-size: 1.5rem; }
   .header__brand { gap: 0.3rem; }
   .header__heading-logo-wrapper--default { width: 68px; height: 60px; }
   .header__heading-logo--default { top: -48px; left: -17px; width: 104px; }
@@ -724,29 +724,12 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   );
 }
 
-/* ---------- Section separators (quiet tonal transitions) ---------- */
-.content-for-layout > .shopify-section + .shopify-section .color-scheme-1:first-child {
-  box-shadow: inset 0 1px 0 var(--tungacea-hairline-soft);
-}
-/* Unter einem Foto-Kopf (Startseite, Kollektion) läuft das Bild in die Seite
-   aus. Die Linie wäre dort eine Kante durch den Übergang. */
-.content-for-layout > .shopify-section:has(.banner) + .shopify-section .color-scheme-1:first-child,
-.content-for-layout > .shopify-section:has(.collection-hero--catalogue) + .shopify-section .color-scheme-1:first-child {
-  box-shadow: none;
-}
+/* ---------- Abschnitte trennt der Abstand, keine Linie ---------- */
 
-/* ---------- Editorial eyebrows get a small oxblood tick ---------- */
-.rich-text__caption.caption-with-letter-spacing::before,
-.image-with-text .caption-with-letter-spacing::before,
-.multicolumn .title-wrapper .caption-with-letter-spacing::before {
-  content: '';
-  display: inline-block;
-  width: 2.4rem;
-  height: 1px;
-  margin-right: 1.2rem;
-  vertical-align: middle;
-  background: rgb(var(--tungacea-accent-bright));
-}
+/* ---------- Rote Linie vor Labels ----------
+   Nur noch im Seitenkopf von Kollektion, Archiv und Pflegeguide (eigene
+   Stylesheets). In "Über Tungacea", im Markensatz und in Spalten stand sie
+   zusätzlich und machte die Seite unruhig. */
 
 /* ---------- Buttons ---------- */
 /* Outline / secondary buttons pick up oxblood on hover (controlled red) */
@@ -805,10 +788,10 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 
 /* ---------- Footer polish: quiet oxblood crown + tighter rhythm ---------- */
 .footer {
-  border-top: 1px solid var(--tungacea-hairline-accent);
+  border-top: 0;
 }
 .footer__content-bottom {
-  border-top: 1px solid var(--tungacea-hairline-soft);
+  border-top: 0;
 }
 .footer .list-social__link:hover .icon,
 .footer .list-social__link:focus-visible .icon {
@@ -862,8 +845,8 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   cursor: pointer;
   color: var(--tungacea-muted);
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  font-size: 1.2rem;
   font-weight: 400;
   line-height: 1;
   transition: color 0.3s var(--tungacea-ease);
@@ -900,7 +883,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 .tungacea-lang .tungacea-lang__panel {
   background-color: #141416;
   border: 1px solid rgba(242, 238, 232, 0.08);
-  border-radius: 3px;
+  border-radius: 0;
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
   overflow: hidden;
 }
@@ -967,8 +950,8 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   flex: 0 0 auto;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-size: 0.85rem;
-  color: rgba(var(--tungacea-accent-bright, 168, 52, 66), 0.85);
+  font-size: 1.2rem;
+  color: var(--tungacea-muted);
 }
 
 /* Divider between preferred languages and the alphabetical list */
@@ -985,7 +968,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   justify-content: flex-start;
   gap: 1rem;
   padding: 1.4rem 0;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   letter-spacing: 0.16em;
 }
 .menu-drawer__localization .tungacea-lang__current {
@@ -1031,19 +1014,18 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   --color-background: 10, 10, 10;
 }
 
-/* Product imagery and information now read as one quiet collector card.
-   Direct-child selectors leave Dawn's badge overlay and click handling intact. */
+/* Das Foto steht direkt auf Schwarz, das Schild darunter ohne Kasten, wie
+   in einer Galerie. Direct-child selectors leave Dawn's badge overlay and
+   click handling intact. */
 .product-card-wrapper .card--standard > .card__inner {
   background-color: #19191c;
   box-shadow: inset 0 0 0 1px var(--tungacea-hairline-soft);
 }
 
 .product-card-wrapper .card--standard > .card__content {
-  background-color: #141416;
-  border-right: 1px solid var(--tungacea-hairline-soft);
-  border-bottom: 1px solid var(--tungacea-hairline-soft);
-  border-left: 1px solid var(--tungacea-hairline-soft);
-  padding: 1.4rem 1.4rem 1.6rem;
+  background-color: transparent;
+  border: 0;
+  padding: 1.8rem 0 0;
 }
 
 .product-card-wrapper .card--standard > .card__content .card__information {
@@ -1057,7 +1039,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 
 @media screen and (max-width: 749px) {
   .product-card-wrapper .card--standard > .card__content {
-    padding: 1.2rem 1.2rem 1.4rem;
+    padding: 1.4rem 0 0;
   }
 }
 
@@ -1126,7 +1108,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   font-family: var(--font-body-family);
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   padding: 1rem 2rem;
   transition: background-color 0.25s var(--tungacea-ease, ease);
 }
@@ -1222,7 +1204,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   font-family: var(--font-body-family);
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   padding: 1.2rem 2.6rem;
   transition: background-color 0.25s var(--tungacea-ease, ease);
 }
@@ -1245,7 +1227,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   font-family: var(--font-body-family);
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   padding: 1.2rem 2.6rem;
 }
 
@@ -1261,4 +1243,172 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 
 .shopify-pc__prefs__option + .shopify-pc__prefs__option {
   border-top: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+}
+
+/* ---------- Ein Stil fuer alle zweiten Wege ----------
+   Pro Bildschirm gibt es genau einen gefuellten weinroten Knopf (die
+   Haupthandlung). Alles andere ist ein Textlink: helle Schrift, eine rote
+   Linie darunter, ein "›" dahinter. Keine Rahmen, keine roten Umrandungen. */
+.specimen-passport__mother-link,
+.produkt-klappe__link,
+.care-guide__button,
+.image-with-text .button--secondary {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin-top: 1.2rem;
+  padding: 0 0 0.3rem !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgb(var(--tungacea-accent-bright, 168, 52, 66)) !important;
+  border-radius: 0;
+  background: none !important;
+  box-shadow: none !important;
+  color: #f2eee8 !important;
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  line-height: 1.4;
+}
+
+.image-with-text .button--secondary::before {
+  content: none !important;
+}
+
+.specimen-passport__mother-link::after,
+.produkt-klappe__link::after,
+.care-guide__button::after,
+.image-with-text .button--secondary::after {
+  content: '›' !important;
+  position: static !important;
+  inset: auto !important;
+  display: inline !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  font-size: 1.5rem;
+  line-height: 1;
+  transform: none;
+  transition: transform 0.25s var(--tungacea-ease, ease);
+}
+
+.specimen-passport__mother-link:hover::after,
+.produkt-klappe__link:hover::after,
+.care-guide__button:hover::after,
+.image-with-text .button--secondary:hover::after {
+  transform: translateX(3px);
+}
+
+.specimen-passport__mother-link:hover,
+.produkt-klappe__link:hover,
+.care-guide__button:hover,
+.image-with-text .button--secondary:hover {
+  color: #ffffff !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .specimen-passport__mother-link::after,
+  .produkt-klappe__link::after,
+  .care-guide__button::after,
+  .image-with-text .button--secondary::after {
+    transition: none;
+  }
+}
+
+/* Nächste Nachzucht vormerken (vergebenes Exemplar)
+   -------------------------------------------------------------------------
+   Statt einer Sackgasse ein kurzes Formular. Gleiche Sprache wie der
+   Sammlerzugang: Linie unten statt Kasten, ein roter Knopf. */
+.nachzucht {
+  margin: 2.4rem 0 0;
+  padding: 2rem 0 0;
+  border-top: 1px solid var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.08));
+}
+
+.nachzucht__kopf {
+  margin: 0 0 0.8rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #f2eee8;
+}
+
+.nachzucht__text {
+  margin: 0 0 1.6rem;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgba(242, 238, 232, 0.85);
+}
+
+.nachzucht__feld {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+}
+
+.nachzucht__eingabe {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 1.3rem 1.4rem;
+  border: 0;
+  background: transparent;
+  color: #f2eee8;
+  font: inherit;
+  font-size: 1.6rem;
+  border-radius: 0;
+}
+
+.nachzucht__eingabe::placeholder {
+  color: rgba(205, 198, 188, 0.6);
+}
+
+.nachzucht__eingabe:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: -2px;
+}
+
+.nachzucht__knopf {
+  flex: none;
+  padding: 0 2rem;
+  border: 0;
+  border-radius: 0;
+  background: rgb(var(--tungacea-accent, 110, 28, 40));
+  color: #f2eee8;
+  font: inherit;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nachzucht__knopf:hover {
+  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+.nachzucht__knopf:focus-visible {
+  outline: 2px solid #f2eee8;
+  outline-offset: 2px;
+}
+
+.nachzucht__hinweis,
+.nachzucht__fehler {
+  margin: 1rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+}
+
+.nachzucht__fehler {
+  color: rgb(var(--tungacea-accent-text, 204, 96, 112));
+}
+
+.nachzucht__erfolg {
+  margin: 0;
+  padding: 1.2rem 0 0;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: #f2eee8;
 }

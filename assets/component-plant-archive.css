@@ -59,8 +59,8 @@
   display: inline-block;
   margin: 0 0 1.4rem;
   text-transform: uppercase;
-  letter-spacing: 0.26em;
-  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  font-size: 1.2rem;
   color: rgba(242, 238, 232, 0.78);
 }
 
@@ -83,7 +83,7 @@
 
 @media screen and (min-width: 750px) {
   .plant-archive__hero .plant-archive__eyebrow {
-    letter-spacing: 0.32em;
+    letter-spacing: 0.16em;
     margin-bottom: 1.8rem;
   }
 }
@@ -98,7 +98,7 @@
 @media screen and (min-width: 750px) {
   .plant-archive__hero .plant-archive__lead {
     margin-top: 2.2rem;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -159,14 +159,24 @@
   min-width: 0;
 }
 
+/* Die Kachel ist ein Passepartout: das Foto sitzt mit Rand in einem sehr
+   dunklen Feld, darunter das Schild. Beim Überfahren färbt sich der Rahmen
+   leicht rot, das Foto rückt langsam näher und das zweite Foto blendet ein. */
 .plant-card {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding: 1.2rem 1.2rem 0;
-  background: #0e0e10;
-  border: 1px solid var(--pl-line-soft);
+  padding: 1.6rem 1.6rem 0;
+  background: #0b0b0d;
+  border: 1px solid rgba(242, 238, 232, 0.07);
+  transition: border-color 0.6s var(--pl-ease);
+}
+
+@media (hover: hover) {
+  .plant-card:hover {
+    border-color: rgba(var(--tungacea-accent-bright, 168, 52, 66), 0.55);
+  }
 }
 
 .plant-card__media {
@@ -174,7 +184,6 @@
   overflow: hidden;
   aspect-ratio: 4 / 5;
   background: rgba(0, 0, 0, 0.28);
-  border: 1px solid var(--pl-line-soft);
 }
 
 .plant-card__image {
@@ -182,7 +191,19 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.7s var(--pl-ease);
+  transition: transform 1.4s var(--pl-ease), opacity 0.8s var(--pl-ease);
+}
+
+.plant-card__image--zweites {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+@media (hover: hover) {
+  .plant-card:hover .plant-card__image--zweites {
+    opacity: 1;
+  }
 }
 
 .plant-card__image--placeholder {
@@ -193,11 +214,12 @@
 
 @media (hover: hover) {
   .plant-card:hover .plant-card__image {
-    transform: scale(1.035);
+    transform: scale(1.04);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .plant-card,
   .plant-card__image {
     transition: none;
   }
@@ -207,19 +229,42 @@
   }
 }
 
+/* Das Schild: rote Linie und Nummer, der Name in der Serifenschrift,
+   darunter Stufe und Generation in kleinen Versalien. */
 .plant-card__body {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  padding: 1.4rem 0 1.6rem;
+  padding: 1.8rem 0 2rem;
 }
 
 .plant-card__name {
   margin: 0;
-  font-size: 1.5rem;
-  line-height: 1.35;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  font-family: var(--font-heading-family);
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+@media screen and (max-width: 749px) {
+  .plant-card {
+    padding: 1rem 1rem 0;
+  }
+
+  .plant-card__body {
+    padding: 1.4rem 0 1.6rem;
+  }
+
+  .plant-card__name {
+    font-size: 1.6rem;
+  }
+
+  .plant-card__meta,
+  .plant-card__offer,
+  .plant-card__id {
+    letter-spacing: 0.08em;
+  }
 }
 
 /*
@@ -253,11 +298,12 @@
 }
 
 .plant-card__meta {
-  margin: 0;
-  font-size: 1.1rem;
+  margin: 0.4rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--pl-muted);
+  letter-spacing: 0.14em;
+  color: rgba(205, 198, 188, 0.78);
 }
 
 /* Einzelseite
@@ -278,7 +324,7 @@
 
 .plant-profile__eyebrow {
   margin: 0 0 1.2rem;
-  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  color: rgba(242, 238, 232, 0.78);
 }
 
 .plant-profile__name {
@@ -296,7 +342,7 @@
   margin: 0;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   color: var(--pl-muted);
 }
 
@@ -630,7 +676,7 @@
 
 .plant-profile__credit {
   margin: 0 0 3.2rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--pl-muted);
 }
 
@@ -647,7 +693,7 @@
 }
 
 .plant-profile__figure-credit {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1.4;
   color: var(--pl-muted);
 }
@@ -655,7 +701,7 @@
 .plant-profile__trait {
   max-width: 62rem;
   margin: 0 0 3.2rem;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   line-height: 1.55;
 }
 
@@ -677,7 +723,7 @@
 
 .plant-profile__fact dt {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   color: var(--pl-muted);
@@ -696,6 +742,7 @@
  * deshalb nicht wie eine Fussnote aussehen.
  */
 .plant-profile__note {
+  scroll-margin-top: 12rem; /* Sprungziel von "Meine Notiz lesen" auf der Produktseite */
   max-width: 62rem;
   margin: 0 0 4rem;
   padding-left: 2rem;
@@ -721,7 +768,7 @@
   margin: 0 0 1.6rem;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   color: var(--pl-muted);
 }
 
@@ -781,7 +828,7 @@
 }
 
 .plant-profile__offer-state {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   color: var(--pl-muted);
@@ -838,10 +885,10 @@
 .plant-profile__tag {
   padding: 0.25rem 0.8rem;
   border: 1px solid var(--pl-line);
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   line-height: 1.5;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
 }
 
 /* Der leise Hinweis auf der Kachel
@@ -850,25 +897,12 @@
    Pflanze es gerade etwas gibt — ohne dass die Sammlung zum Laden wird. */
 
 .plant-card__offer {
-  margin: 0.4rem 0 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--pl-line-soft);
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 1.1rem;
+  margin: 0.6rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
-}
-
-.plant-card__offer::before {
-  content: '';
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: rgba(var(--tungacea-accent-bright, 177, 61, 76), 1);
-  flex: none;
 }
 
 /* Suche und Filter
@@ -936,7 +970,7 @@
   border: 0;
   color: inherit;
   font-family: inherit;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   line-height: 1.6;
   padding: 1.2rem;
   min-width: 0;
@@ -963,10 +997,10 @@
   padding: 0 1.8rem;
   background: rgba(var(--tungacea-wine, 78, 20, 30), 0.55);
   border-left: 1px solid rgba(var(--tungacea-oxblood, 110, 28, 40), 0.55);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  letter-spacing: 0.16em;
+  color: #f2eee8;
   white-space: nowrap;
   transition: background-color 0.3s var(--pl-ease, ease);
 }
@@ -989,9 +1023,9 @@
 .plant-search__count {
   order: 1;
   margin: 0 0 0 auto;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
 }
 
@@ -1002,7 +1036,7 @@
   padding: 0;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
   font-family: inherit;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   cursor: pointer;
@@ -1041,7 +1075,6 @@
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
-  border-top: 1px solid var(--pl-line-soft, rgba(242, 238, 232, 0.08));
   background: linear-gradient(var(--pl-line-soft, rgba(242, 238, 232, 0.08)), var(--pl-line-soft, rgba(242, 238, 232, 0.08))) left bottom / 100% 1px no-repeat;
 }
 
@@ -1076,7 +1109,7 @@
   border-bottom: 1px solid transparent;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
   font-family: inherit;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   white-space: nowrap;
@@ -1117,7 +1150,7 @@
   border: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
   color: #f2eee8;
   font-family: inherit;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   cursor: pointer;
@@ -1141,10 +1174,10 @@
   min-width: 1.8rem;
   height: 1.8rem;
   padding: 0 0.5rem;
-  border-radius: 999px;
+  border-radius: 0;
   background: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
   color: #0a0a0a;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0;
 }
 
@@ -1188,9 +1221,9 @@
   border: 0;
   color: #f2eee8;
   font-family: inherit;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
   cursor: pointer;
 }
 
@@ -1236,7 +1269,7 @@
 .plant-search__sheet-title {
   margin: 0;
   font-family: var(--font-heading-family, Georgia, serif);
-  font-size: 2.4rem;
+  font-size: 2.8rem;
   line-height: 1.1;
 }
 
@@ -1276,9 +1309,9 @@
 
 .plant-search__group-name {
   margin: 0 0 1.2rem;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.16em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
 }
 
@@ -1320,7 +1353,7 @@ html.plant-search-lock {
     margin: 0;
     background: #121212;
     border-top: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
-    border-radius: 1.6rem 1.6rem 0 0;
+    border-radius: 0;
     animation: plant-sheet-up 0.28s var(--pl-ease, ease);
   }
 
@@ -1329,7 +1362,7 @@ html.plant-search-lock {
     width: 4rem;
     height: 0.4rem;
     margin: 1rem auto 0;
-    border-radius: 999px;
+    border-radius: 0;
     background: rgba(242, 238, 232, 0.28);
   }
 
@@ -1379,9 +1412,9 @@ html.plant-search-lock {
     border: 0;
     color: #0a0a0a;
     font-family: inherit;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     cursor: pointer;
   }
 
@@ -1419,7 +1452,7 @@ html.plant-search-lock {
   background: none;
   color: rgba(242, 238, 232, 0.9);
   font-family: inherit;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   line-height: 1.3;
   cursor: pointer;
   transition: background-color 0.22s var(--pl-ease, ease), border-color 0.22s var(--pl-ease, ease), color 0.22s var(--pl-ease, ease);
@@ -1527,9 +1560,9 @@ html.plant-search-lock {
 
 .plant-archive__more-text {
   margin: 0 0 1.6rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
 }
 
@@ -1542,7 +1575,7 @@ html.plant-search-lock {
   font-family: inherit;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   cursor: pointer;
 }
 
@@ -1571,8 +1604,8 @@ html.plant-search-lock {
   align-items: center;
   gap: 0.8rem;
   margin: 0 0 0.2rem;
-  font-size: 1.1rem;
-  letter-spacing: 0.2em;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
 }
 
@@ -1590,7 +1623,7 @@ html.plant-search-lock {
 .plant-archive__pages {
   margin-top: 4rem;
   text-align: center;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   letter-spacing: 0.1em;
 }
 
@@ -1613,5 +1646,219 @@ html.plant-search-lock {
   padding: 1.2rem 1.6rem;
   border: 1px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.8);
   color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
-  font-size: 1.3rem;
+  font-size: 1.5rem;
+}
+
+/* Im Fokus
+   -------------------------------------------------------------------------
+   Eine Pflanze steht vorn, wie das erste Stück einer Ausstellung: grosses
+   Foto ohne Kasten, daneben das Schild und Tungs Notiz. Auf dem Telefon steht
+   der Text unter dem Foto. */
+
+.plant-focus {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.4rem;
+  margin: 0 0 6.4rem;
+}
+
+/* Der wechselnde Fokus gibt alle Pflanzen aus und versteckt alle bis auf
+   eine; display: grid darf das hidden nicht aushebeln. */
+.plant-focus[hidden] {
+  display: none;
+}
+
+@media screen and (min-width: 990px) {
+  .plant-focus {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 6.4rem;
+    align-items: center;
+    margin-bottom: 9.6rem;
+  }
+}
+
+.plant-focus__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+@media screen and (min-width: 990px) {
+  .plant-focus__media {
+    aspect-ratio: 5 / 6;
+  }
+}
+
+.plant-focus__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.6s var(--pl-ease), opacity 0.9s var(--pl-ease);
+}
+
+.plant-focus__image--zweites {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.plant-focus__image--placeholder {
+  opacity: 0.22;
+  object-fit: contain;
+  padding: 18%;
+}
+
+@media (hover: hover) {
+  .plant-focus__media:hover .plant-focus__image {
+    transform: scale(1.03);
+  }
+
+  .plant-focus__media:hover .plant-focus__image--zweites {
+    opacity: 1;
+  }
+}
+
+.plant-focus__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 48rem;
+}
+
+.plant-focus__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 0.8rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #f2eee8;
+}
+
+.plant-focus__eyebrow::before {
+  content: '';
+  flex: none;
+  width: 2.4rem;
+  height: 1px;
+  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+.plant-focus__id {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  color: var(--pl-muted);
+}
+
+.plant-focus__name {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-weight: 400;
+  font-size: clamp(2.8rem, 3.4vw, 4.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+}
+
+.plant-focus__note {
+  margin: 1.6rem 0 0;
+  padding-left: 2rem;
+  border-left: 1px solid rgb(var(--tungacea-accent-bright, 168, 52, 66));
+}
+
+.plant-focus__note blockquote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: var(--font-heading-family);
+  font-size: 1.8rem;
+  line-height: 1.55;
+  color: rgba(242, 238, 232, 0.92);
+}
+
+.plant-focus__note figcaption {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pl-muted);
+}
+
+.plant-focus__trait {
+  margin: 1.2rem 0 0;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgba(242, 238, 232, 0.88);
+}
+
+.plant-focus__link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #f2eee8;
+  text-decoration: none;
+}
+
+.plant-focus__link::after {
+  content: '›';
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform 0.4s var(--pl-ease);
+}
+
+.plant-focus__link:hover::after {
+  transform: translateX(0.3rem);
+}
+
+.plant-focus__link:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plant-focus__image,
+  .plant-focus__link::after {
+    transition: none;
+  }
+
+  .plant-focus__media:hover .plant-focus__image {
+    transform: none;
+  }
+}
+
+/* Einblenden beim Scrollen
+   -------------------------------------------------------------------------
+   Kacheln und Fokus kommen ruhig herein, wenn sie ins Bild rücken. Das
+   Skript setzt die Klassen erst, wenn es läuft; ohne Skript oder mit
+   reduzierter Bewegung steht alles sofort da. */
+
+.plant-archive--einblenden .plant-card,
+.plant-archive--einblenden .plant-focus {
+  opacity: 0;
+  transform: translateY(2.4rem);
+  transition: opacity 0.9s var(--pl-ease), transform 0.9s var(--pl-ease), border-color 0.6s var(--pl-ease);
+}
+
+.plant-archive--einblenden .plant-card.ist-da,
+.plant-archive--einblenden .plant-focus.ist-da {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plant-archive--einblenden .plant-card,
+  .plant-archive--einblenden .plant-focus {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

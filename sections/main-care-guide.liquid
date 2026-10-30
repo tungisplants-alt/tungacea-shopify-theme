@@ -1,0 +1,523 @@
+{% comment %}
+  Tungacea — Pflegeguide.
+
+  Eine Seite, die Tungs eigene Erfahrung beschreibt: Bedingungen, Pflege je
+  Stadium, Nährstoffe, Gießwasser (pH und EC). Alle Inhalte stehen in Blöcken im
+  Theme-Editor; die Vorlage muss dafür nicht angefasst werden. Leere Felder und
+  leere Kapitel werden ausgeblendet, auch in der Kapitel-Leiste.
+
+  Blöcke:
+  - bedingung:  Zeile für Kapitel 1 (Name und Wert)
+  - stadium:    Pflege eines Stadiums (aufklappbar), mit vier Kennzahlen:
+                VPD in kPa, PPFD in µmol/m²/s, Temperatur in °C, EC in mS/cm.
+                Die Einheiten setzt die Vorlage, es werden nur Zahlen getippt.
+  - naehrstoff: Dünger oder Zusatz (Name, Art, Zweck, Dosierung)
+  - wasser:     Zeile der Tabelle pH und EC je Stadium
+
+  Der Disclaimer steht fest oben unter dem Kopf. Ohne eigenen Text kommt er aus
+  den Sprachdateien (care_guide.disclaimer), Deutsch und Englisch getrennt.
+
+  Die Seite erreicht man über /pages/pflegeguide. Die Produktseite verlinkt nur,
+  wenn es diese Seite gibt.
+{% endcomment %}
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{{ 'component-care-guide.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'care-guide.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign titel = section.settings.heading | default: '' | strip
+  if titel == blank
+    assign titel = 'care_guide.heading' | t
+  endif
+  assign eyebrow = section.settings.eyebrow | default: '' | strip
+  if eyebrow == blank
+    assign eyebrow = 'care_guide.eyebrow' | t
+  endif
+  assign lead = section.settings.lead | default: '' | strip
+  if lead == blank
+    assign lead = 'care_guide.lead' | t
+  endif
+  assign disclaimer = section.settings.disclaimer | default: '' | strip
+  if disclaimer == blank
+    assign disclaimer = 'care_guide.disclaimer' | t
+  endif
+  assign disclaimer_titel = 'care_guide.disclaimer_title' | t
+
+  assign hat_bedingungen = false
+  assign hat_stadien = false
+  assign hat_naehrstoffe = false
+  assign hat_wasser = false
+  for block in section.blocks
+    case block.type
+      when 'bedingung'
+        assign hat_bedingungen = true
+      when 'stadium'
+        assign hat_stadien = true
+      when 'naehrstoff'
+        assign hat_naehrstoffe = true
+      when 'wasser'
+        assign hat_wasser = true
+    endcase
+  endfor
+  assign ph_ziel = section.settings.ph_ziel | default: '' | strip
+  assign ec_ziel = section.settings.ec_ziel | default: '' | strip
+  if ph_ziel != blank or ec_ziel != blank
+    assign hat_wasser = true
+  endif
+
+  assign kapitel_bedingungen = section.settings.bedingungen_titel | default: '' | strip
+  if kapitel_bedingungen == blank
+    assign kapitel_bedingungen = 'care_guide.conditions_title' | t
+  endif
+  assign lead_bedingungen = section.settings.bedingungen_lead | default: '' | strip
+  if lead_bedingungen == blank
+    assign lead_bedingungen = 'care_guide.conditions_lead' | t
+  endif
+  assign kapitel_stadien = section.settings.stadien_titel | default: '' | strip
+  if kapitel_stadien == blank
+    assign kapitel_stadien = 'care_guide.stages_title' | t
+  endif
+  assign lead_stadien = section.settings.stadien_lead | default: '' | strip
+  if lead_stadien == blank
+    assign lead_stadien = 'care_guide.stages_lead' | t
+  endif
+  assign kapitel_naehrstoffe = section.settings.naehrstoffe_titel | default: '' | strip
+  if kapitel_naehrstoffe == blank
+    assign kapitel_naehrstoffe = 'care_guide.nutrients_title' | t
+  endif
+  assign lead_naehrstoffe = section.settings.naehrstoffe_lead | default: '' | strip
+  if lead_naehrstoffe == blank
+    assign lead_naehrstoffe = 'care_guide.nutrients_lead' | t
+  endif
+  assign kapitel_wasser = section.settings.wasser_titel | default: '' | strip
+  if kapitel_wasser == blank
+    assign kapitel_wasser = 'care_guide.water_title' | t
+  endif
+  assign lead_wasser = section.settings.wasser_lead | default: '' | strip
+  if lead_wasser == blank
+    assign lead_wasser = 'care_guide.water_lead' | t
+  endif
+
+  assign bild_vorhanden = false
+  if section.settings.bild != blank
+    assign bild_vorhanden = true
+  endif
+
+  capture wa_link
+    render 'whatsapp-option', css_laden: false, ohne_zusatz: true, klasse: 'care-guide__button'
+  endcapture
+-%}
+
+<care-guide class="care-guide color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding" data-testid="care-guide">
+  {%- if bild_vorhanden -%}
+    {%- capture bild_url -%}{{ section.settings.bild | image_url: width: 1600 }}{%- endcapture -%}
+  {%- else -%}
+    {%- capture bild_url -%}{{ 'tungacea-archiv-kopf.jpg' | asset_url }}{%- endcapture -%}
+  {%- endif -%}
+  <div class="care-guide__hero" style="--guide-bild: url('{{ bild_url }}');">
+    <div class="page-width">
+      <header class="care-guide__intro">
+        <p class="care-guide__eyebrow">{{ eyebrow | escape }}</p>
+        <h1 class="care-guide__heading">{{ titel | escape }}</h1>
+        <p class="care-guide__lead">{{ lead | escape }}</p>
+      </header>
+    </div>
+  </div>
+
+  <div class="page-width">
+    <aside class="care-guide__disclaimer" role="note" data-testid="care-guide-disclaimer">
+      <strong>{{ disclaimer_titel | escape }}</strong>
+      <p>{{ disclaimer | escape }}</p>
+    </aside>
+
+    {%- if hat_stadien -%}
+      <div class="care-guide__picker" data-testid="care-guide-picker">
+        <p class="care-guide__picker-title">{{ 'care_guide.picker_title' | t }}</p>
+        <div class="care-guide__chips">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'stadium' -%}
+              {%- liquid
+                assign c_label = ''
+                case block.settings.stadium
+                  when 'steckling'
+                    assign c_label = 'products.product.specimen.stage_cutting' | t
+                  when 'etabliert'
+                    assign c_label = 'products.product.specimen.stage_established' | t
+                  when 'jungpflanze'
+                    assign c_label = 'products.product.specimen.stage_young' | t
+                  when 'saemling'
+                    assign c_label = 'products.product.specimen.stage_seedling' | t
+                  when 'samen'
+                    assign c_label = 'products.product.specimen.stage_seeds' | t
+                  when 'mutterpflanze'
+                    assign c_label = 'products.product.specimen.stage_mother' | t
+                endcase
+              -%}
+              <a class="care-guide__chip-link" href="#stadium-{{ block.settings.stadium }}">{{ c_label | escape }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if hat_bedingungen or hat_naehrstoffe or hat_wasser -%}
+      <nav class="care-guide__nav" aria-label="{{ 'care_guide.nav_label' | t }}" data-testid="care-guide-nav">
+        <span class="care-guide__nav-label">{{ 'care_guide.more_label' | t }}</span>
+        {%- if hat_bedingungen -%}
+          <a class="care-guide__nav-link" href="#bedingungen">{{ 'care_guide.nav_conditions' | t }}</a>
+        {%- endif -%}
+        {%- if hat_naehrstoffe -%}
+          <a class="care-guide__nav-link" href="#naehrstoffe">{{ 'care_guide.nav_nutrients' | t }}</a>
+        {%- endif -%}
+        {%- if hat_wasser -%}
+          <a class="care-guide__nav-link" href="#wasser">{{ 'care_guide.nav_water' | t }}</a>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+
+    {%- if hat_stadien -%}
+      <section class="care-guide__chapter" id="stadien" data-testid="care-guide-stages">
+        <h2 class="care-guide__title">{{ kapitel_stadien | escape }}</h2>
+        <p class="care-guide__chapter-lead">{{ lead_stadien | escape }}</p>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'stadium' -%}
+            {%- liquid
+              assign s = block.settings.stadium
+              assign s_label = ''
+              case s
+                when 'steckling'
+                  assign s_label = 'products.product.specimen.stage_cutting' | t
+                when 'etabliert'
+                  assign s_label = 'products.product.specimen.stage_established' | t
+                when 'jungpflanze'
+                  assign s_label = 'products.product.specimen.stage_young' | t
+                when 'saemling'
+                  assign s_label = 'products.product.specimen.stage_seedling' | t
+                when 'samen'
+                  assign s_label = 'products.product.specimen.stage_seeds' | t
+                when 'mutterpflanze'
+                  assign s_label = 'products.product.specimen.stage_mother' | t
+              endcase
+              assign kurz = block.settings.kurz | default: '' | strip
+              assign vpd = block.settings.vpd | default: '' | strip
+              assign ppfd = block.settings.ppfd | default: '' | strip
+              assign temperatur = block.settings.temperatur | default: '' | strip
+              assign ec = block.settings.ec | default: '' | strip
+              assign peek = ''
+              if vpd != blank
+                assign peek = 'care_guide.value_vpd' | t: wert: vpd
+              endif
+              if ppfd != blank
+                if peek != blank
+                  assign peek = peek | append: ' · '
+                endif
+                assign peek_teil = 'care_guide.value_ppfd' | t: wert: ppfd
+                assign peek = peek | append: peek_teil
+              endif
+              if temperatur != blank
+                if peek != blank
+                  assign peek = peek | append: ' · '
+                endif
+                assign peek_teil = 'care_guide.value_temperature' | t: wert: temperatur
+                assign peek = peek | append: peek_teil
+              endif
+              if ec != blank
+                if peek != blank
+                  assign peek = peek | append: ' · '
+                endif
+                assign peek_teil = 'care_guide.value_ec' | t: wert: ec
+                assign peek = peek | append: peek_teil
+              endif
+              assign hat_inhalt = false
+              if kurz != blank or vpd != blank or ppfd != blank or temperatur != blank or ec != blank or block.settings.text != blank
+                assign hat_inhalt = true
+              endif
+            -%}
+            <details class="care-guide__stage" id="stadium-{{ s }}" {{ block.shopify_attributes }}>
+              <summary class="care-guide__stage-toggle">
+                <span class="care-guide__stage-name">
+                  <span class="care-guide__stage-title">{{ s_label | escape }}</span>
+                  {%- if peek != blank -%}
+                    <span class="care-guide__stage-peek">{{ peek | escape }}</span>
+                  {%- endif -%}
+                </span>
+                <span class="care-guide__indicator" aria-hidden="true"></span>
+              </summary>
+              <div class="care-guide__stage-body">
+                {%- if hat_inhalt -%}
+                  {%- if kurz != blank -%}
+                    <p class="care-guide__short">{{ kurz | escape }}</p>
+                  {%- endif -%}
+                  {%- if vpd != blank or ppfd != blank or temperatur != blank or ec != blank -%}
+                    <dl class="care-guide__figures">
+                      {%- if vpd != blank -%}
+                        <div><dt>{{ 'care_guide.figure_humidity' | t }}</dt><dd>{{ 'care_guide.value_vpd' | t: wert: vpd | escape }}</dd></div>
+                      {%- endif -%}
+                      {%- if ppfd != blank -%}
+                        <div><dt>{{ 'care_guide.figure_light' | t }}</dt><dd>{{ 'care_guide.value_ppfd' | t: wert: ppfd | escape }}</dd></div>
+                      {%- endif -%}
+                      {%- if temperatur != blank -%}
+                        <div><dt>{{ 'care_guide.figure_temperature' | t }}</dt><dd>{{ 'care_guide.value_temperature' | t: wert: temperatur | escape }}</dd></div>
+                      {%- endif -%}
+                      {%- if ec != blank -%}
+                        <div><dt>{{ 'care_guide.figure_fertilizer' | t }}</dt><dd>{{ 'care_guide.value_ec' | t: wert: ec | escape }}</dd></div>
+                      {%- endif -%}
+                    </dl>
+                  {%- endif -%}
+                  {%- if block.settings.text != blank -%}
+                    <div class="care-guide__text rte">{{ block.settings.text }}</div>
+                  {%- endif -%}
+                {%- else -%}
+                  <p class="care-guide__empty">{{ 'care_guide.empty' | t }}</p>
+                {%- endif -%}
+              </div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </section>
+    {%- endif -%}
+
+    {%- if hat_bedingungen -%}
+      <section class="care-guide__chapter" id="bedingungen" data-testid="care-guide-conditions">
+        <h2 class="care-guide__title">{{ kapitel_bedingungen | escape }}</h2>
+        <p class="care-guide__chapter-lead">{{ lead_bedingungen | escape }}</p>
+        <dl class="care-guide__facts">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'bedingung' -%}
+              {%- assign wert = block.settings.wert | default: '' | strip -%}
+              {%- if block.settings.name != blank and wert != blank -%}
+                <div class="care-guide__fact" {{ block.shopify_attributes }}>
+                  <dt>{{ block.settings.name | escape }}</dt>
+                  <dd>{{ wert | escape }}</dd>
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </dl>
+      </section>
+    {%- endif -%}
+
+    {%- if hat_naehrstoffe -%}
+      <section class="care-guide__chapter" id="naehrstoffe" data-testid="care-guide-nutrients">
+        <h2 class="care-guide__title">{{ kapitel_naehrstoffe | escape }}</h2>
+        <p class="care-guide__chapter-lead">{{ lead_naehrstoffe | escape }}</p>
+        <ul class="care-guide__list" role="list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'naehrstoff' and block.settings.name != blank -%}
+              <li class="care-guide__item" {{ block.shopify_attributes }}>
+                <div class="care-guide__item-main">
+                  <h3 class="care-guide__item-name">{{ block.settings.name | escape }}</h3>
+                  {%- if block.settings.zweck != blank -%}
+                    <p>{{ block.settings.zweck | escape }}</p>
+                  {%- endif -%}
+                  {%- if block.settings.dosierung != blank -%}
+                    <p class="care-guide__dose">{{ block.settings.dosierung | escape }}</p>
+                  {%- endif -%}
+                </div>
+                <span class="care-guide__chip">
+                  {%- if block.settings.art == 'zusatz' -%}
+                    {{ 'care_guide.type_addition' | t }}
+                  {%- else -%}
+                    {{ 'care_guide.type_basis' | t }}
+                  {%- endif -%}
+                </span>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </section>
+    {%- endif -%}
+
+    {%- if hat_wasser -%}
+      <section class="care-guide__chapter" id="wasser" data-testid="care-guide-water">
+        <h2 class="care-guide__title">{{ kapitel_wasser | escape }}</h2>
+        <p class="care-guide__chapter-lead">{{ lead_wasser | escape }}</p>
+        {%- if ph_ziel != blank or ec_ziel != blank -%}
+          <div class="care-guide__tiles">
+            {%- if ph_ziel != blank -%}
+              <div class="care-guide__tile"><small>pH</small><b>{{ ph_ziel | escape }}</b><span>{{ 'care_guide.water_target' | t }}</span></div>
+            {%- endif -%}
+            {%- if ec_ziel != blank -%}
+              <div class="care-guide__tile"><small>EC</small><b>{{ ec_ziel | escape }}</b><span>{{ 'care_guide.water_unit' | t }}</span></div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        <dl class="care-guide__facts">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'wasser' -%}
+              {%- liquid
+                assign w_label = ''
+                case block.settings.stadium
+                  when 'steckling'
+                    assign w_label = 'products.product.specimen.stage_cutting' | t
+                  when 'etabliert'
+                    assign w_label = 'products.product.specimen.stage_established' | t
+                  when 'jungpflanze'
+                    assign w_label = 'products.product.specimen.stage_young' | t
+                  when 'saemling'
+                    assign w_label = 'products.product.specimen.stage_seedling' | t
+                  when 'samen'
+                    assign w_label = 'products.product.specimen.stage_seeds' | t
+                  when 'mutterpflanze'
+                    assign w_label = 'products.product.specimen.stage_mother' | t
+                endcase
+                assign w_ph = block.settings.ph | default: '' | strip
+                assign w_ec = block.settings.ec | default: '' | strip
+                assign w_wert = ''
+                if w_ph != blank
+                  assign w_wert = 'pH ' | append: w_ph
+                endif
+                if w_ec != blank
+                  if w_wert != blank
+                    assign w_wert = w_wert | append: ' · '
+                  endif
+                  assign w_wert = w_wert | append: 'EC ' | append: w_ec
+                endif
+              -%}
+              {%- if w_wert != blank -%}
+                <div class="care-guide__fact" {{ block.shopify_attributes }}>
+                  <dt>{{ w_label | escape }}</dt>
+                  <dd>{{ w_wert | escape }}</dd>
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </dl>
+      </section>
+    {%- endif -%}
+
+    {%- if wa_link != blank -%}
+      <section class="care-guide__questions" id="fragen" data-testid="care-guide-questions">
+        <p class="care-guide__eyebrow">{{ 'care_guide.questions_title' | t }}</p>
+        <p>{{ 'care_guide.questions_text' | t }}</p>
+        {{ wa_link }}
+      </section>
+    {%- endif -%}
+  </div>
+</care-guide>
+
+{% schema %}
+{
+  "name": "Pflegeguide",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 60,
+  "settings": [
+    { "type": "header", "content": "Kopf" },
+    { "type": "text", "id": "eyebrow", "label": "Kleine Zeile", "info": "Leer lassen: Dann wird übersetzt." },
+    { "type": "text", "id": "heading", "label": "Überschrift", "info": "Leer lassen: Dann wird übersetzt." },
+    { "type": "textarea", "id": "lead", "label": "Einleitung", "info": "Leer lassen: Dann wird übersetzt." },
+    { "type": "image_picker", "id": "bild", "label": "Foto im Kopf", "info": "Leer lassen: Das Foto vom Archiv-Kopf. Es wird abgedunkelt." },
+    { "type": "header", "content": "Disclaimer" },
+    { "type": "textarea", "id": "disclaimer", "label": "Text", "info": "Leer lassen: Dann wird übersetzt. Ein eigener Text erscheint in beiden Sprachen gleich." },
+    { "type": "header", "content": "Kapitel 1: Bedingungen" },
+    { "type": "text", "id": "bedingungen_titel", "label": "Titel", "info": "Leer lassen: Dann wird übersetzt." },
+    { "type": "textarea", "id": "bedingungen_lead", "label": "Einleitung", "info": "Leer lassen: Dann wird übersetzt." },
+    { "type": "header", "content": "Kapitel 2: Pflege nach Stadium" },
+    { "type": "text", "id": "stadien_titel", "label": "Titel", "info": "Leer lassen: Dann wird übersetzt." },
+    { "type": "textarea", "id": "stadien_lead", "label": "Einleitung", "info": "Leer lassen: Dann wird übersetzt." },
+    { "type": "header", "content": "Kapitel 3: Nährstoffe und Zusätze" },
+    { "type": "text", "id": "naehrstoffe_titel", "label": "Titel", "info": "Leer lassen: Dann wird übersetzt." },
+    { "type": "textarea", "id": "naehrstoffe_lead", "label": "Einleitung", "info": "Leer lassen: Dann wird übersetzt." },
+    { "type": "header", "content": "Kapitel 4: Gießwasser" },
+    { "type": "text", "id": "wasser_titel", "label": "Titel", "info": "Leer lassen: Dann wird übersetzt." },
+    { "type": "textarea", "id": "wasser_lead", "label": "Einleitung", "info": "Leer lassen: Dann wird übersetzt." },
+    { "type": "text", "id": "ph_ziel", "label": "Kachel pH: Zielwert", "info": "Nur die Zahl, zum Beispiel 5,8. Leer lassen: Die Kachel fehlt." },
+    { "type": "text", "id": "ec_ziel", "label": "Kachel EC: Zielwert", "info": "Nur die Zahl in mS/cm, zum Beispiel 0,8. Leer lassen: Die Kachel fehlt." },
+    { "type": "header", "content": "Farben und Abstand" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Farbschema", "default": "scheme-1" },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Abstand unten", "default": 80 }
+  ],
+  "blocks": [
+    {
+      "type": "bedingung",
+      "name": "Bedingung",
+      "settings": [
+        { "type": "paragraph", "content": "Eine Zeile in Kapitel 1, zum Beispiel Aufstellung, Temperatur oder Substrat." },
+        { "type": "text", "id": "name", "label": "Name", "info": "Zum Beispiel: Substrat" },
+        { "type": "text", "id": "wert", "label": "Wert" }
+      ]
+    },
+    {
+      "type": "stadium",
+      "name": "Stadium",
+      "settings": [
+        { "type": "paragraph", "content": "Aufklappbarer Kasten für ein Stadium. Die Reihenfolge der Kästen bestimmst du durch Ziehen. Leere Felder werden ausgeblendet. Die Einheiten setzt die Seite, du tippst nur die Zahlen." },
+        {
+          "type": "select",
+          "id": "stadium",
+          "label": "Stadium",
+          "options": [
+            { "value": "steckling", "label": "Steckling/Klon" },
+            { "value": "etabliert", "label": "Etabliert" },
+            { "value": "jungpflanze", "label": "Jungpflanze" },
+            { "value": "saemling", "label": "Sämling" },
+            { "value": "samen", "label": "Gekeimter Samen" },
+            { "value": "mutterpflanze", "label": "Mutterpflanze" }
+          ],
+          "default": "steckling"
+        },
+        { "type": "text", "id": "kurz", "label": "Ein Satz: Worauf es ankommt" },
+        { "type": "text", "id": "vpd", "label": "Luftfeuchtigkeit: VPD in kPa", "info": "Nur die Zahl oder ein Bereich, zum Beispiel 0,8–1,0." },
+        { "type": "text", "id": "ppfd", "label": "Licht: PPFD in µmol/m²/s", "info": "Nur die Zahl oder ein Bereich, zum Beispiel 150–250." },
+        { "type": "text", "id": "temperatur", "label": "Temperatur in °C", "info": "Nur die Zahl oder ein Bereich, zum Beispiel 22–26." },
+        { "type": "text", "id": "ec", "label": "Dünger: EC in mS/cm", "info": "Nur die Zahl oder ein Bereich, zum Beispiel 0,6–0,8." },
+        { "type": "richtext", "id": "text", "label": "Ausführlicher Text" }
+      ]
+    },
+    {
+      "type": "naehrstoff",
+      "name": "Dünger oder Zusatz",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name" },
+        {
+          "type": "select",
+          "id": "art",
+          "label": "Art",
+          "options": [
+            { "value": "basis", "label": "Basis" },
+            { "value": "zusatz", "label": "Zusatz" }
+          ],
+          "default": "basis"
+        },
+        { "type": "text", "id": "zweck", "label": "Wofür" },
+        { "type": "text", "id": "dosierung", "label": "Dosierung und wann" }
+      ]
+    },
+    {
+      "type": "wasser",
+      "name": "Wasser je Stadium",
+      "settings": [
+        { "type": "paragraph", "content": "Eine Zeile der Tabelle in Kapitel 4." },
+        {
+          "type": "select",
+          "id": "stadium",
+          "label": "Stadium",
+          "options": [
+            { "value": "steckling", "label": "Steckling/Klon" },
+            { "value": "etabliert", "label": "Etabliert" },
+            { "value": "jungpflanze", "label": "Jungpflanze" },
+            { "value": "saemling", "label": "Sämling" },
+            { "value": "samen", "label": "Gekeimter Samen" },
+            { "value": "mutterpflanze", "label": "Mutterpflanze" }
+          ],
+          "default": "steckling"
+        },
+        { "type": "text", "id": "ph", "label": "pH", "info": "Nur die Zahl oder ein Bereich, zum Beispiel 5,8." },
+        { "type": "text", "id": "ec", "label": "EC in mS/cm", "info": "Nur die Zahl oder ein Bereich." }
+      ]
+    }
+  ]
+}
+{% endschema %}
