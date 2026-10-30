@@ -74,6 +74,17 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('Disclaimer steht immer', /care-guide__disclaimer/.test(leer) && /Das sind meine eigenen Erfahrungen unter meinen Bedingungen/.test(leer) && /von Empfehlungen aus Studien abweichen/.test(leer), true);
   pruefe('Kopf mit Ueberschrift und Foto-Variable', /So pflege ich meine Anthurien\./.test(leer) && /--guide-bild: url\('\/assets\/tungacea-archiv-kopf\.jpg'\)/.test(leer), true);
 
+  // Die Vorlage, wie sie ausgeliefert wird: Stadien plus leere Zeilen fuer
+  // Bedingungen, Naehrstoffe und Wasser. Leer duerfen sie kein Kapitel zeigen.
+  const gv = JSON.parse(strip(fs.readFileSync(path.join(THEME, "templates/page.pflegeguide.json"), "utf8"))).sections.main;
+  const vorlageBloecke = gv.block_order.map((k) => block(gv.blocks[k].type, gv.blocks[k].settings));
+  pruefe('Vorlage bringt leere Zeilen fuer alle Kapitel mit', ['bedingung', 'naehrstoff', 'wasser'].every((t) => vorlageBloecke.some((b) => b.type === t)), true);
+  pruefe('Vorlage: Wasser fuer alle sechs Stadien', vorlageBloecke.filter((b) => b.type === 'wasser').map((b) => b.settings.stadium).join(','), 'steckling,etabliert,jungpflanze,saemling,samen,mutterpflanze');
+  const ausVorlage = await rendere(vorlageBloecke);
+  pruefe('leere Zeilen der Vorlage: keine leeren Kapitel', /id="bedingungen"|id="naehrstoffe"|id="wasser"|care-guide__nav"/.test(ausVorlage), false);
+  const eineZeile = await rendere(vorlageBloecke.map((b) => b.type === 'bedingung' && b.settings.name === 'Substrat' ? block('bedingung', { name: 'Substrat', wert: 'meine Mischung' }) : b));
+  pruefe('ein ausgefuellter Wert zeigt das Kapitel mit genau dieser Zeile', /id="bedingungen"/.test(eineZeile) && zaehle(eineZeile, /class="care-guide__fact"/g) === 1 && /meine Mischung/.test(eineZeile), true);
+
   // Voller Inhalt.
   const voll = await rendere([
     block('bedingung', { name: 'Substrat', wert: 'meine Mischung' }),
@@ -128,7 +139,7 @@ const zaehle = (h, re) => (h.match(re) || []).length;
 
   // Vorlage.
   const vorlage = JSON.parse(strip(fs.readFileSync(path.join(THEME, 'templates/page.pflegeguide.json'), 'utf8')));
-  pruefe('Seitenvorlage page.pflegeguide hat den Abschnitt und sechs Stadien', vorlage.sections.main.type === 'main-care-guide' && vorlage.sections.main.block_order.length === 6, true);
+  pruefe('Seitenvorlage page.pflegeguide hat den Abschnitt und sechs Stadien', vorlage.sections.main.type === 'main-care-guide' && vorlage.sections.main.block_order.filter((k) => vorlage.sections.main.blocks[k].type === 'stadium').length === 6, true);
 
   console.log(fehler + ' Fehler in ' + geprueft + ' Pruefungen');
   process.exit(fehler ? 1 : 0);

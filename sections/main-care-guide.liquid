@@ -58,16 +58,28 @@
   assign hat_stadien = false
   assign hat_naehrstoffe = false
   assign hat_wasser = false
+  comment
+    Ein Kapitel erscheint erst, wenn mindestens eine Zeile ausgefuellt ist.
+    Die Vorlage bringt leere Zeilen mit (Aufstellung, Substrat, Wasser je
+    Stadium und so weiter), damit im Editor nur noch Werte einzutragen sind;
+    leer duerfen sie keine Ueberschrift ohne Inhalt erzeugen.
+  endcomment
   for block in section.blocks
     case block.type
       when 'bedingung'
-        assign hat_bedingungen = true
+        if block.settings.name != blank and block.settings.wert != blank
+          assign hat_bedingungen = true
+        endif
       when 'stadium'
         assign hat_stadien = true
       when 'naehrstoff'
-        assign hat_naehrstoffe = true
+        if block.settings.name != blank
+          assign hat_naehrstoffe = true
+        endif
       when 'wasser'
-        assign hat_wasser = true
+        if block.settings.ph != blank or block.settings.ec != blank
+          assign hat_wasser = true
+        endif
     endcase
   endfor
   assign ph_ziel = section.settings.ph_ziel | default: '' | strip
