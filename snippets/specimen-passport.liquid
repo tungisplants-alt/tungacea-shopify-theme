@@ -344,9 +344,9 @@
         Etiketten tragen die Bedeutung, auch ohne Bildschirm.
       {%- endcomment -%}
       <div class="specimen-passport__cross" data-testid="specimen-cross">
-        {%- render 'specimen-parent', eintrag: mutter, rolle: 'mutter', thing_word: thing_word, max_fotos: 1 -%}
+        {%- render 'specimen-parent', eintrag: mutter, rolle: 'mutter', thing_word: thing_word, max_fotos: 1, kurz: true -%}
         <span class="specimen-passport__cross-sign" aria-hidden="true">&times;</span>
-        {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word, max_fotos: 1 -%}
+        {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word, max_fotos: 1, kurz: true -%}
       </div>
     {%- else -%}
       {%- if mutter != blank -%}

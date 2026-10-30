@@ -112,9 +112,11 @@ const faelle = [
              vaterpflanze: mutter('Anthurium dressleri', null, null, FOTOS, undefined, '/pages/pflanzen/dressleri',
                                   { generation: 'F1', zuechter: grower }) }),
     erwartet: ['Mutterpflanze', 'Vaterpflanze', 'Anthurium papillilaminum', 'Anthurium dressleri',
-               'Sämling aus der unten gezeigten Kreuzung',
-               'Mutterpflanze im Archiv ansehen', 'Vaterpflanze im Archiv ansehen'],
-    verboten: ['Generation F2', 'Generation F1', 'Ree Gardens', 'Tropical Grower'] },
+               'Sämling aus der unten gezeigten Kreuzung', 'Im Archiv ansehen'],
+    // In der Kreuzung steht die Rolle schon ueber jeder Spalte; der kurze
+    // Knopftext passt in eine Zeile.
+    verboten: ['Generation F2', 'Generation F1', 'Ree Gardens', 'Tropical Grower',
+               'Mutterpflanze im Archiv ansehen', 'Vaterpflanze im Archiv ansehen'] },
 
   // In der Kreuzung bleiben Exemplar-ID und Herkunftszeile der Eltern weg.
   // Zwei Bloecke nebeneinander in einer 409px schmalen Spalte vertragen keine
