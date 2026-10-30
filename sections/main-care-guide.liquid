@@ -114,7 +114,6 @@
     assign bild_vorhanden = true
   endif
 
-  assign nr = 0
   capture wa_link
     render 'whatsapp-option', css_laden: false, ohne_zusatz: true, klasse: 'care-guide__button'
   endcapture
@@ -142,59 +141,60 @@
       <p>{{ disclaimer | escape }}</p>
     </aside>
 
-    <nav class="care-guide__nav" aria-label="{{ 'care_guide.nav_label' | t }}" data-testid="care-guide-nav">
-      {%- if hat_bedingungen -%}
-        <a class="care-guide__nav-link" href="#bedingungen">{{ 'care_guide.nav_conditions' | t }}</a>
-      {%- endif -%}
-      {%- if hat_stadien -%}
-        <a class="care-guide__nav-link" href="#stadien">{{ 'care_guide.nav_stages' | t }}</a>
-      {%- endif -%}
-      {%- if hat_naehrstoffe -%}
-        <a class="care-guide__nav-link" href="#naehrstoffe">{{ 'care_guide.nav_nutrients' | t }}</a>
-      {%- endif -%}
-      {%- if hat_wasser -%}
-        <a class="care-guide__nav-link" href="#wasser">{{ 'care_guide.nav_water' | t }}</a>
-      {%- endif -%}
-      {%- if wa_link != blank -%}
-        <a class="care-guide__nav-link" href="#fragen">{{ 'care_guide.nav_questions' | t }}</a>
-      {%- endif -%}
-    </nav>
-
-    {%- if hat_bedingungen -%}
-      <section class="care-guide__chapter" id="bedingungen" data-testid="care-guide-conditions">
-        {%- assign nr = nr | plus: 1 -%}
-        <p class="care-guide__number">0{{ nr }}</p>
-        <h2 class="care-guide__title">{{ kapitel_bedingungen | escape }}</h2>
-        <p class="care-guide__chapter-lead">{{ lead_bedingungen | escape }}</p>
-        <dl class="care-guide__facts">
+    {%- if hat_stadien -%}
+      <div class="care-guide__picker" data-testid="care-guide-picker">
+        <p class="care-guide__picker-title">{{ 'care_guide.picker_title' | t }}</p>
+        <div class="care-guide__chips">
           {%- for block in section.blocks -%}
-            {%- if block.type == 'bedingung' -%}
-              {%- assign wert = block.settings.wert | default: '' | strip -%}
-              {%- if block.settings.name != blank and wert != blank -%}
-                <div class="care-guide__fact" {{ block.shopify_attributes }}>
-                  <dt>{{ block.settings.name | escape }}</dt>
-                  <dd>{{ wert | escape }}</dd>
-                </div>
-              {%- endif -%}
+            {%- if block.type == 'stadium' -%}
+              {%- liquid
+                assign c_label = ''
+                case block.settings.stadium
+                  when 'steckling'
+                    assign c_label = 'products.product.specimen.stage_cutting' | t
+                  when 'etabliert'
+                    assign c_label = 'products.product.specimen.stage_established' | t
+                  when 'jungpflanze'
+                    assign c_label = 'products.product.specimen.stage_young' | t
+                  when 'saemling'
+                    assign c_label = 'products.product.specimen.stage_seedling' | t
+                  when 'samen'
+                    assign c_label = 'products.product.specimen.stage_seeds' | t
+                  when 'mutterpflanze'
+                    assign c_label = 'products.product.specimen.stage_mother' | t
+                endcase
+              -%}
+              <a class="care-guide__chip-link" href="#stadium-{{ block.settings.stadium }}">{{ c_label | escape }}</a>
             {%- endif -%}
           {%- endfor -%}
-        </dl>
-      </section>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if hat_bedingungen or hat_naehrstoffe or hat_wasser -%}
+      <nav class="care-guide__nav" aria-label="{{ 'care_guide.nav_label' | t }}" data-testid="care-guide-nav">
+        <span class="care-guide__nav-label">{{ 'care_guide.more_label' | t }}</span>
+        {%- if hat_bedingungen -%}
+          <a class="care-guide__nav-link" href="#bedingungen">{{ 'care_guide.nav_conditions' | t }}</a>
+        {%- endif -%}
+        {%- if hat_naehrstoffe -%}
+          <a class="care-guide__nav-link" href="#naehrstoffe">{{ 'care_guide.nav_nutrients' | t }}</a>
+        {%- endif -%}
+        {%- if hat_wasser -%}
+          <a class="care-guide__nav-link" href="#wasser">{{ 'care_guide.nav_water' | t }}</a>
+        {%- endif -%}
+      </nav>
     {%- endif -%}
 
     {%- if hat_stadien -%}
       <section class="care-guide__chapter" id="stadien" data-testid="care-guide-stages">
-        {%- assign nr = nr | plus: 1 -%}
-        <p class="care-guide__number">0{{ nr }}</p>
         <h2 class="care-guide__title">{{ kapitel_stadien | escape }}</h2>
         <p class="care-guide__chapter-lead">{{ lead_stadien | escape }}</p>
-        {%- assign stufe = 0 -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'stadium' -%}
             {%- liquid
               assign s = block.settings.stadium
               assign s_label = ''
-              assign s_klein = ''
               case s
                 when 'steckling'
                   assign s_label = 'products.product.specimen.stage_cutting' | t
@@ -209,17 +209,36 @@
                 when 'mutterpflanze'
                   assign s_label = 'products.product.specimen.stage_mother' | t
               endcase
-              if s == 'mutterpflanze'
-                assign s_klein = 'care_guide.stage_breeding' | t
-              else
-                assign stufe = stufe | plus: 1
-                assign s_klein = 'care_guide.stage_step' | t: nummer: stufe
-              endif
               assign kurz = block.settings.kurz | default: '' | strip
               assign vpd = block.settings.vpd | default: '' | strip
               assign ppfd = block.settings.ppfd | default: '' | strip
               assign temperatur = block.settings.temperatur | default: '' | strip
               assign ec = block.settings.ec | default: '' | strip
+              assign peek = ''
+              if vpd != blank
+                assign peek = 'care_guide.value_vpd' | t: wert: vpd
+              endif
+              if ppfd != blank
+                if peek != blank
+                  assign peek = peek | append: ' · '
+                endif
+                assign peek_teil = 'care_guide.value_ppfd' | t: wert: ppfd
+                assign peek = peek | append: peek_teil
+              endif
+              if temperatur != blank
+                if peek != blank
+                  assign peek = peek | append: ' · '
+                endif
+                assign peek_teil = 'care_guide.value_temperature' | t: wert: temperatur
+                assign peek = peek | append: peek_teil
+              endif
+              if ec != blank
+                if peek != blank
+                  assign peek = peek | append: ' · '
+                endif
+                assign peek_teil = 'care_guide.value_ec' | t: wert: ec
+                assign peek = peek | append: peek_teil
+              endif
               assign hat_inhalt = false
               if kurz != blank or vpd != blank or ppfd != blank or temperatur != blank or ec != blank or block.settings.text != blank
                 assign hat_inhalt = true
@@ -229,7 +248,9 @@
               <summary class="care-guide__stage-toggle">
                 <span class="care-guide__stage-name">
                   <span class="care-guide__stage-title">{{ s_label | escape }}</span>
-                  <span class="care-guide__stage-step">{{ s_klein | escape }}</span>
+                  {%- if peek != blank -%}
+                    <span class="care-guide__stage-peek">{{ peek | escape }}</span>
+                  {%- endif -%}
                 </span>
                 <span class="care-guide__indicator" aria-hidden="true"></span>
               </summary>
@@ -267,10 +288,28 @@
       </section>
     {%- endif -%}
 
+    {%- if hat_bedingungen -%}
+      <section class="care-guide__chapter" id="bedingungen" data-testid="care-guide-conditions">
+        <h2 class="care-guide__title">{{ kapitel_bedingungen | escape }}</h2>
+        <p class="care-guide__chapter-lead">{{ lead_bedingungen | escape }}</p>
+        <dl class="care-guide__facts">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'bedingung' -%}
+              {%- assign wert = block.settings.wert | default: '' | strip -%}
+              {%- if block.settings.name != blank and wert != blank -%}
+                <div class="care-guide__fact" {{ block.shopify_attributes }}>
+                  <dt>{{ block.settings.name | escape }}</dt>
+                  <dd>{{ wert | escape }}</dd>
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </dl>
+      </section>
+    {%- endif -%}
+
     {%- if hat_naehrstoffe -%}
       <section class="care-guide__chapter" id="naehrstoffe" data-testid="care-guide-nutrients">
-        {%- assign nr = nr | plus: 1 -%}
-        <p class="care-guide__number">0{{ nr }}</p>
         <h2 class="care-guide__title">{{ kapitel_naehrstoffe | escape }}</h2>
         <p class="care-guide__chapter-lead">{{ lead_naehrstoffe | escape }}</p>
         <ul class="care-guide__list" role="list">
@@ -302,8 +341,6 @@
 
     {%- if hat_wasser -%}
       <section class="care-guide__chapter" id="wasser" data-testid="care-guide-water">
-        {%- assign nr = nr | plus: 1 -%}
-        <p class="care-guide__number">0{{ nr }}</p>
         <h2 class="care-guide__title">{{ kapitel_wasser | escape }}</h2>
         <p class="care-guide__chapter-lead">{{ lead_wasser | escape }}</p>
         {%- if ph_ziel != blank or ec_ziel != blank -%}

@@ -84,87 +84,104 @@
   }
 }
 
-/* ---------- Disclaimer ---------- */
+/* ---------- Disclaimer ----------
+   Eine leise Notiz mit roter Linie, wie der Hinweis am Produkt: sichtbar, aber
+   nicht der Einstieg. */
 .care-guide__disclaimer {
-  position: relative;
   margin: 0;
-  padding: 1.6rem 1.6rem 1.8rem;
-  border: 1px solid var(--cg-line);
-  background: var(--cg-panel);
+  padding: 0.2rem 0 0.2rem 1.6rem;
+  border-left: 2px solid var(--cg-ox);
 }
 
 @media screen and (min-width: 750px) {
   .care-guide__disclaimer {
-    max-width: 78rem;
-    padding: 2rem 2.4rem 2.2rem;
+    max-width: 62rem;
   }
 }
 
 .care-guide__disclaimer strong {
   display: block;
-  margin-bottom: 0.8rem;
-  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+  font-size: 1.05rem;
   font-weight: 400;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--cg-accent);
+  color: var(--cg-muted);
 }
 
 .care-guide__disclaimer p {
   margin: 0;
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   line-height: 1.6;
   color: var(--cg-muted);
 }
 
-/* ---------- Kapitel-Leiste ---------- */
-.care-guide__nav {
-  display: flex;
-  gap: 2.2rem;
-  margin: 3.2rem 0 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  border-top: 1px solid var(--cg-line-soft);
-  background: linear-gradient(var(--cg-line-soft), var(--cg-line-soft)) left bottom / 100% 1px no-repeat;
-  scroll-behavior: smooth;
+/* ---------- Stadium-Einstieg ---------- */
+.care-guide__picker {
+  margin-top: 4rem;
 }
 
-.care-guide__nav::-webkit-scrollbar {
-  display: none;
+.care-guide__picker-title {
+  margin: 0 0 1.6rem;
+  font-family: var(--font-heading-family);
+  font-size: 2.4rem;
+  line-height: 1.2;
+}
+
+.care-guide__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.care-guide__chip-link {
+  padding: 1rem 1.6rem;
+  border: 1px solid var(--cg-line);
+  border-radius: 0;
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #f2eee8;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.care-guide__chip-link:hover,
+.care-guide__chip-link:focus-visible {
+  border-color: rgba(242, 238, 232, 0.5);
+  background: rgba(242, 238, 232, 0.06);
+}
+
+/* ---------- Weitere Kapitel: eine leise Textzeile ---------- */
+.care-guide__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem 2.2rem;
+  margin: 3.2rem 0 0;
+}
+
+.care-guide__nav-label {
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cg-muted);
+  opacity: 0.8;
 }
 
 .care-guide__nav-link {
-  flex: none;
-  padding: 1.2rem 0;
-  font-size: 1.2rem;
-  letter-spacing: 0.2em;
+  padding: 0.4rem 0;
+  font-size: 1.25rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--cg-muted);
+  color: #f2eee8;
   border-bottom: 1px solid transparent;
 }
 
 .care-guide__nav-link:hover,
 .care-guide__nav-link:focus-visible {
-  color: #f2eee8;
   border-bottom-color: var(--cg-accent);
-}
-
-.care-guide__nav[data-mehr-rechts] {
-  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 5.6rem), transparent);
-  mask-image: linear-gradient(to right, #000 calc(100% - 5.6rem), transparent);
-}
-
-.care-guide__nav[data-mehr-links] {
-  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 5.6rem), transparent);
-  mask-image: linear-gradient(to left, #000 calc(100% - 5.6rem), transparent);
-}
-
-.care-guide__nav[data-mehr-links][data-mehr-rechts] {
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 5.6rem, #000 calc(100% - 5.6rem), transparent);
-  mask-image: linear-gradient(to right, transparent, #000 5.6rem, #000 calc(100% - 5.6rem), transparent);
 }
 
 /* ---------- Kapitel ---------- */
@@ -173,16 +190,8 @@
   scroll-margin-top: 9rem;
 }
 
-.care-guide__number {
-  margin: 0;
-  font-size: 1.1rem;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--cg-accent);
-}
-
 .care-guide__title {
-  margin: 0.8rem 0 1.4rem;
+  margin: 0 0 1.2rem;
   font-weight: 400;
   font-size: clamp(2.8rem, 6vw, 3.6rem);
   line-height: 1.15;
@@ -229,11 +238,14 @@
   }
 }
 
-/* Stadien (aufklappbar) */
+/* Stadien (aufklappbar): Zeilen mit Haarlinie, wie "Versand & Lieferung" am
+   Produkt; kein Kasten. */
 .care-guide__stage {
-  margin: 0 0 1.2rem;
-  border: 1px solid var(--cg-line-soft);
-  background: var(--cg-panel);
+  border-bottom: 1px solid var(--cg-line-soft);
+}
+
+.care-guide__stage:first-of-type {
+  border-top: 1px solid var(--cg-line-soft);
 }
 
 @media screen and (min-width: 750px) {
@@ -242,16 +254,12 @@
   }
 }
 
-.care-guide__stage[open] {
-  border-color: var(--cg-line);
-}
-
 .care-guide__stage-toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.6rem;
-  padding: 1.6rem;
+  padding: 1.8rem 0;
   list-style: none;
   cursor: pointer;
 }
@@ -262,22 +270,32 @@
 
 .care-guide__stage-name {
   display: block;
+  min-width: 0;
 }
 
 .care-guide__stage-title {
   display: block;
   font-family: var(--font-heading-family);
-  font-size: 2.1rem;
+  font-size: 2.2rem;
   line-height: 1.2;
 }
 
-.care-guide__stage-step {
+/* Kennzahlen in der zugeklappten Zeile, damit man das Wichtigste sieht, ohne
+   aufzuklappen. Aufgeklappt stehen sie darunter in groß. */
+.care-guide__stage-peek {
   display: block;
-  margin-top: 0.2rem;
-  font-size: 1.05rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  margin-top: 0.4rem;
+  font-size: 1.2rem;
+  line-height: 1.5;
   color: var(--cg-muted);
+}
+
+.care-guide__stage[open] .care-guide__stage-peek {
+  display: none;
+}
+
+.care-guide__indicator {
+  flex: none;
 }
 
 .care-guide__indicator::after {
@@ -297,19 +315,18 @@
 }
 
 .care-guide__stage-body {
-  padding: 0 1.6rem 1.8rem;
-  border-top: 1px solid var(--cg-line-soft);
+  padding: 0 0 2.4rem;
 }
 
 .care-guide__short {
-  margin: 1.6rem 0 1.4rem;
+  margin: 0 0 2rem;
   font-family: var(--font-heading-family);
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   line-height: 1.4;
 }
 
 .care-guide__empty {
-  margin: 1.6rem 0 0;
+  margin: 0;
   font-size: 1.35rem;
   color: var(--cg-muted);
 }
@@ -317,19 +334,13 @@
 .care-guide__figures {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  margin: 1.6rem 0;
-  background: var(--cg-line-soft);
-  border: 1px solid var(--cg-line-soft);
-}
-
-.care-guide__short + .care-guide__figures {
-  margin-top: 0;
+  gap: 1.8rem 1.6rem;
+  margin: 0 0 2rem;
 }
 
 .care-guide__figures > div {
-  background: rgb(10, 10, 10);
-  padding: 1.2rem 1.2rem 1.3rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--cg-line-soft);
 }
 
 .care-guide__figures dt {
@@ -340,8 +351,9 @@
 }
 
 .care-guide__figures dd {
-  margin: 0.2rem 0 0;
-  font-size: 1.5rem;
+  margin: 0.3rem 0 0;
+  font-size: 1.6rem;
+  line-height: 1.35;
 }
 
 .care-guide__text {
@@ -423,9 +435,8 @@
 }
 
 .care-guide__tile {
-  padding: 1.8rem 1.4rem;
-  border: 1px solid var(--cg-line);
-  background: var(--cg-panel);
+  padding: 1.4rem 0 0;
+  border-top: 1px solid var(--cg-line);
 }
 
 .care-guide__tile small {

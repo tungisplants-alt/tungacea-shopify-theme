@@ -800,7 +800,7 @@
   "care_guide": {
     "eyebrow": "Pflegeguide",
     "heading": "So pflege ich meine Anthurien.",
-    "lead": "Meine Bedingungen, meine Erfahrung – Stufe für Stufe, vom Steckling bis zur Mutterpflanze.",
+    "lead": "Meine Bedingungen, meine Erfahrung – vom Steckling bis zur Mutterpflanze.",
     "disclaimer_title": "Disclaimer",
     "disclaimer": "Das sind meine eigenen Erfahrungen unter meinen Bedingungen. Sie können von Empfehlungen aus Studien abweichen. Sieh sie als Orientierung, nicht als festes Rezept.",
     "nav_label": "Kapitel",
@@ -810,9 +810,9 @@
     "nav_water": "Gießwasser",
     "nav_questions": "Fragen",
     "conditions_title": "Meine Bedingungen",
-    "conditions_lead": "Wo und wie meine Pflanzen wachsen. Dein Platz ist anders – deshalb steht das zuerst.",
+    "conditions_lead": "Wo und wie meine Pflanzen wachsen. Bei dir kann es anders sein.",
     "stages_title": "Pflege nach Stadium",
-    "stages_lead": "In der Reihenfolge wie im Shop. Tipp ein Stadium an, dann klappt es auf.",
+    "stages_lead": "Tipp ein Stadium an, dann klappt es auf.",
     "nutrients_title": "Nährstoffe & Zusätze",
     "nutrients_lead": "Was ich verwende, wie viel und wann.",
     "water_title": "Mein Gießwasser",
@@ -833,6 +833,8 @@
     "type_basis": "Basis",
     "type_addition": "Zusatz",
     "water_target": "Zielwert",
-    "water_unit": "mS/cm"
+    "water_unit": "mS/cm",
+    "picker_title": "Welches Stadium hast du?",
+    "more_label": "Außerdem"
   }
 }

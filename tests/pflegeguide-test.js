@@ -65,9 +65,12 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('alle Kaesten zu (kein open)', /<details[^>]*\sopen/.test(leer), false);
   pruefe('leeres Stadium zeigt "Inhalt folgt."', zaehle(leer, /Inhalt folgt\./g), 6);
   pruefe('ohne Bedingungen, Naehrstoffe, Wasser: keine solchen Kapitel', /id="bedingungen"|id="naehrstoffe"|id="wasser"/.test(leer), false);
-  pruefe('Kapitel-Leiste nennt nur Stadien (und Fragen)', zaehle(leer, /care-guide__nav-link/g), 2);
-  pruefe('Stadienkapitel ist Nummer 01', /0 *1<\/p>\s*<h2[^>]*>Pflege nach Stadium/.test(leer) || /care-guide__number">01<\/p>/.test(leer), true);
-  pruefe('Stufen 1 bis 5, Mutterpflanze heisst Zucht', ['Stufe 1', 'Stufe 2', 'Stufe 3', 'Stufe 4', 'Stufe 5', 'Zucht'].every((w) => leer.includes('>' + w + '<')), true);
+  pruefe('ohne weitere Kapitel: keine Zeile "Außerdem"', /care-guide__nav"/.test(leer), false);
+  pruefe('Einstieg "Welches Stadium hast du?" mit sechs Feldern', /Welches Stadium hast du\?/.test(leer) && zaehle(leer, /care-guide__chip-link/g) === 6, true);
+  pruefe('Felder fuehren zu den Stadien (Anker)', ['steckling', 'etabliert', 'jungpflanze', 'saemling', 'samen', 'mutterpflanze'].every((st) => leer.includes('href="#stadium-' + st + '"') && leer.includes('id="stadium-' + st + '"')), true);
+  pruefe('Felder stehen in der Reihenfolge der Bloecke', ['#stadium-steckling', '#stadium-etabliert', '#stadium-jungpflanze', '#stadium-saemling', '#stadium-samen', '#stadium-mutterpflanze'].map((w) => leer.indexOf('href="' + w + '"')).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
+  pruefe('keine Kapitelnummern und keine Stufenzaehlung mehr', /care-guide__number|Stufe \d|Zucht/.test(leer), false);
+  pruefe('Disclaimer ist eine leise Notiz, kein Kasten', /<aside class="care-guide__disclaimer" role="note"/.test(leer), true);
   pruefe('Disclaimer steht immer', /care-guide__disclaimer/.test(leer) && /Das sind meine eigenen Erfahrungen unter meinen Bedingungen/.test(leer) && /von Empfehlungen aus Studien abweichen/.test(leer), true);
   pruefe('Kopf mit Ueberschrift und Foto-Variable', /So pflege ich meine Anthurien\./.test(leer) && /--guide-bild: url\('\/assets\/tungacea-archiv-kopf\.jpg'\)/.test(leer), true);
 
@@ -82,8 +85,11 @@ const zaehle = (h, re) => (h.match(re) || []).length;
     block('wasser', { stadium: 'steckling', ph: '5,8', ec: '0,6' }),
     block('wasser', { stadium: 'etabliert', ph: '', ec: '' }),
   ], { ph_ziel: '5,8', ec_ziel: '', disclaimer: '' });
-  pruefe('Kapitel in Reihenfolge 01 bis 04', ['id="bedingungen"', 'id="stadien"', 'id="naehrstoffe"', 'id="wasser"'].map((w) => voll.indexOf(w)).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
-  pruefe('Nummern 01 02 03 04', ['01', '02', '03', '04'].every((n) => voll.includes('care-guide__number">' + n + '<')), true);
+  pruefe('Kapitel in Reihenfolge: Stadien zuerst, dann Bedingungen, Naehrstoffe, Wasser', ['id="stadien"', 'id="bedingungen"', 'id="naehrstoffe"', 'id="wasser"'].map((w) => voll.indexOf(w)).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
+  pruefe('Zeile "Außerdem" nennt Bedingungen, Naehrstoffe, Gießwasser', /Außerdem/.test(voll) && ['#bedingungen', '#naehrstoffe', '#wasser'].every((a) => voll.includes('href="' + a + '"')) && !/href="#stadien"/.test(voll), true);
+  pruefe('Kennzahlen stehen schon in der zugeklappten Zeile (peek)', /care-guide__stage-peek">VPD 0,8–1,0 kPa · PPFD 150–250 µmol\/m²\/s · 22–26 °C · EC 0,6–0,8 mS\/cm</.test(voll), true);
+  pruefe('Stadium nur mit einem Wert: Peek nur mit diesem Wert', /care-guide__stage-peek">VPD 0,6 kPa</.test(voll), true);
+  pruefe('Stadium ohne Kennzahlen: keine Peek-Zeile', zaehle(leer, /care-guide__stage-peek/g), 0);
   pruefe('Bedingung mit Wert steht da, leere nicht', /Substrat/.test(voll) && /meine Mischung/.test(voll) && !/>Leer</.test(voll), true);
   pruefe('Einheit VPD in kPa', /VPD 0,8–1,0 kPa/.test(voll), true);
   pruefe('Einheit PPFD in µmol/m²/s', /PPFD 150–250 µmol\/m²\/s/.test(voll), true);
@@ -95,14 +101,14 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('Naehrstoff ohne Zweck und Dosierung zeigt nur den Namen', /Zusatz B/.test(voll) && zaehle(voll, /care-guide__dose/g) === 1, true);
   pruefe('pH-Kachel da, EC-Kachel fehlt (leer)', /<small>pH<\/small><b>5,8<\/b>/.test(voll) && !/<small>EC<\/small>/.test(voll), true);
   pruefe('Wasserzeile mit Werten, leere Zeile nicht', /pH 5,8 · EC 0,6/.test(voll) && zaehle(voll, /class="care-guide__fact"/g) === 2, true);
-  pruefe('Kapitel-Leiste: vier Kapitel plus Fragen', zaehle(voll, /care-guide__nav-link/g), 5);
+  pruefe('Zeile "Außerdem": drei Links', zaehle(voll, /care-guide__nav-link/g), 3);
   pruefe('Fragen-Knopf ist der WhatsApp-Link', /care-guide__button/.test(voll) && /wa\.me\/491791627287/.test(voll), true);
-  pruefe('ohne gueltige Nummer: kein Fragen-Block, kein Fragen-Reiter', /care-guide__questions|href="#fragen"/.test(await rendere([block('stadium', { stadium: 'steckling' })], {}, 'de', '')), false);
+  pruefe('ohne gueltige Nummer: kein Fragen-Block', /care-guide__questions/.test(await rendere([block('stadium', { stadium: 'steckling' })], {}, 'de', '')), false);
 
   // Englisch und eigener Disclaimer.
   const en = await rendere([block('stadium', { stadium: 'samen', vpd: '0,6' }), block('stadium', { stadium: 'saemling' })], {}, 'en');
   pruefe('Englisch: Titel, Disclaimer, Stadien', /How I care for my Anthuriums\./.test(en) && /These are my own experiences under my own conditions/.test(en) && />Sprouted seed</.test(en) && />Seedling</.test(en), true);
-  pruefe('Englisch: Stufe und Einheit', />Stage 1</.test(en) && /VPD 0,6 kPa/.test(en) && />Content coming soon\.</.test(en), true);
+  pruefe('Englisch: Einstieg, Einheit und leeres Stadium', /Which stage do you have\?/.test(en) && /VPD 0,6 kPa/.test(en) && />Content coming soon\.</.test(en), true);
   pruefe('Englisch: kein deutsches Wort in Beschriftungen', /Stufe|Inhalt folgt|Pflege nach|Gekeimter|Sämling/.test(en), false);
   pruefe('eigener Disclaimer ersetzt den Standard', /Mein Text/.test(await rendere([], { disclaimer: 'Mein Text' })) && !/Das sind meine eigenen Erfahrungen/.test(await rendere([], { disclaimer: 'Mein Text' })), true);
 

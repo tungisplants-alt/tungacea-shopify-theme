@@ -800,7 +800,7 @@
   "care_guide": {
     "eyebrow": "Care guide",
     "heading": "How I care for my Anthuriums.",
-    "lead": "My conditions, my experience – stage by stage, from cutting to mother plant.",
+    "lead": "My conditions, my experience – from cutting to mother plant.",
     "disclaimer_title": "Disclaimer",
     "disclaimer": "These are my own experiences under my own conditions. They may differ from recommendations in studies. Treat them as guidance, not as a fixed recipe.",
     "nav_label": "Chapters",
@@ -810,9 +810,9 @@
     "nav_water": "Water",
     "nav_questions": "Questions",
     "conditions_title": "My conditions",
-    "conditions_lead": "Where and how my plants grow. Your space is different – that's why this comes first.",
+    "conditions_lead": "Where and how my plants grow. Yours may be different.",
     "stages_title": "Care by stage",
-    "stages_lead": "In the same order as in the shop. Tap a stage to open it.",
+    "stages_lead": "Tap a stage to open it.",
     "nutrients_title": "Nutrients & additives",
     "nutrients_lead": "What I use, how much and when.",
     "water_title": "My water",
@@ -833,6 +833,8 @@
     "type_basis": "Base",
     "type_addition": "Additive",
     "water_target": "Target",
-    "water_unit": "mS/cm"
+    "water_unit": "mS/cm",
+    "picker_title": "Which stage do you have?",
+    "more_label": "Also"
   }
 }
