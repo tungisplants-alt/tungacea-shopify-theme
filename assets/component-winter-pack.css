@@ -43,7 +43,7 @@
 
 .winter-pack__sub {
   display: block;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   line-height: 1.5;
   color: var(--tungacea-muted);
   margin-top: 0.3rem;
@@ -63,7 +63,7 @@
   background: transparent;
   color: #f2eee8;
   font-family: var(--font-body-family);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   cursor: pointer;

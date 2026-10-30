@@ -114,7 +114,7 @@
   display: inline-block;
   text-transform: uppercase;
   letter-spacing: 0.32em;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
   margin: 0 0 1.8rem;
 }
@@ -163,7 +163,7 @@
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.22em;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
 }
 

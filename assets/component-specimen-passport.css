@@ -38,7 +38,7 @@
   font-family: var(--font-body-family);
   text-transform: uppercase;
   letter-spacing: 0.3em;
-  font-size: 1.02rem;
+  font-size: 1.2rem;
   line-height: 1;
   color: var(--tungacea-muted);
 }
@@ -67,7 +67,7 @@
   font-family: var(--font-body-family);
   text-transform: uppercase;
   letter-spacing: 0.24em;
-  font-size: 1.12rem;
+  font-size: 1.2rem;
   line-height: 1;
   color: rgb(var(--color-foreground));
   word-break: break-word;
@@ -81,7 +81,7 @@
   font-family: var(--font-body-family);
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  font-size: 1.02rem;
+  font-size: 1.2rem;
   line-height: 1;
   color: var(--tungacea-muted);
   white-space: nowrap;
@@ -99,7 +99,7 @@
   background: rgb(var(--tungacea-accent-bright));
 }
 .specimen-passport__status--reserved {
-  color: rgb(var(--tungacea-accent-text));
+  color: #f2eee8;
 }
 .specimen-passport__status--reserved::before {
   background: rgb(var(--tungacea-accent-bright));
@@ -129,7 +129,7 @@
   font-family: var(--font-body-family);
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   line-height: 1.5;
   color: rgba(185, 178, 169, 0.72);
 }
@@ -156,8 +156,8 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
-  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
-  border-bottom: 1px solid rgba(204, 96, 112, 0.45);
+  color: #f2eee8;
+  border-bottom: 1px solid rgb(var(--tungacea-accent-bright, 168, 52, 66));
 }
 
 .specimen-passport__hint-link:hover {
@@ -319,10 +319,10 @@
   }
   .specimen-passport__cross .specimen-passport__mother-where,
   .specimen-passport__cross .specimen-passport__mother-credit {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
   .specimen-passport__cross .specimen-passport__mother-link {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     padding-left: 1.2rem;
     padding-right: 1.2rem;
   }
@@ -335,7 +335,7 @@
   font-family: var(--font-body-family);
   text-transform: uppercase;
   letter-spacing: 0.22em;
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1;
   color: var(--tungacea-muted);
 }
@@ -456,7 +456,7 @@
 .specimen-passport__credit {
   margin: 1rem 0 0;
   font-family: var(--font-body-family);
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   line-height: 1.5;
   color: rgba(185, 178, 169, 0.72);
 }
@@ -474,7 +474,7 @@
 
 .specimen-passport__mother-credit {
   font-family: var(--font-body-family);
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   line-height: 1.4;
   color: rgba(185, 178, 169, 0.72);
 }
@@ -519,7 +519,7 @@
   font-family: var(--font-body-family);
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-size: 1.08rem;
+  font-size: 1.2rem;
   line-height: 1.5;
   color: var(--tungacea-muted);
 }
@@ -550,7 +550,7 @@
   font-family: var(--font-body-family);
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-size: 1.08rem;
+  font-size: 1.2rem;
   line-height: 1;
   color: var(--tungacea-muted);
 }

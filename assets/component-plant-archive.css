@@ -60,7 +60,7 @@
   margin: 0 0 1.4rem;
   text-transform: uppercase;
   letter-spacing: 0.26em;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: rgba(242, 238, 232, 0.78);
 }
 
@@ -253,10 +253,10 @@
 
 .plant-card__meta {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: var(--pl-muted);
+  color: rgba(242, 238, 232, 0.8);
 }
 
 /* Einzelseite
@@ -277,7 +277,7 @@
 
 .plant-profile__eyebrow {
   margin: 0 0 1.2rem;
-  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  color: rgba(242, 238, 232, 0.78);
 }
 
 .plant-profile__name {
@@ -629,7 +629,7 @@
 
 .plant-profile__credit {
   margin: 0 0 3.2rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--pl-muted);
 }
 
@@ -646,7 +646,7 @@
 }
 
 .plant-profile__figure-credit {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1.4;
   color: var(--pl-muted);
 }
@@ -676,7 +676,7 @@
 
 .plant-profile__fact dt {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   color: var(--pl-muted);
@@ -780,7 +780,7 @@
 }
 
 .plant-profile__offer-state {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   color: var(--pl-muted);
@@ -837,7 +837,7 @@
 .plant-profile__tag {
   padding: 0.25rem 0.8rem;
   border: 1px solid var(--pl-line);
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   line-height: 1.5;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -853,10 +853,10 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  color: rgba(242, 238, 232, 0.92);
 }
 
 .plant-card__offer::before {
@@ -960,10 +960,10 @@
   padding: 0 1.8rem;
   background: rgba(var(--tungacea-wine, 78, 20, 30), 0.55);
   border-left: 1px solid rgba(var(--tungacea-oxblood, 110, 28, 40), 0.55);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
+  color: #f2eee8;
   white-space: nowrap;
   transition: background-color 0.3s var(--pl-ease, ease);
 }
@@ -986,7 +986,7 @@
 .plant-search__count {
   order: 1;
   margin: 0 0 0 auto;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.18em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
@@ -999,7 +999,7 @@
   padding: 0;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
   font-family: inherit;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   cursor: pointer;
@@ -1072,7 +1072,7 @@
   border-bottom: 1px solid transparent;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
   font-family: inherit;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   white-space: nowrap;
@@ -1113,7 +1113,7 @@
   border: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
   color: #f2eee8;
   font-family: inherit;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   cursor: pointer;
@@ -1140,7 +1140,7 @@
   border-radius: 999px;
   background: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
   color: #0a0a0a;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0;
 }
 
@@ -1184,7 +1184,7 @@
   border: 0;
   color: #f2eee8;
   font-family: inherit;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   cursor: pointer;
@@ -1272,7 +1272,7 @@
 
 .plant-search__group-name {
   margin: 0 0 1.2rem;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
@@ -1523,7 +1523,7 @@ html.plant-search-lock {
 
 .plant-archive__more-text {
   margin: 0 0 1.6rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.18em;
   color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
@@ -1567,7 +1567,7 @@ html.plant-search-lock {
   align-items: center;
   gap: 0.8rem;
   margin: 0 0 0.2rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.2em;
   color: var(--pl-muted, rgba(205, 198, 188, 0.88));
 }

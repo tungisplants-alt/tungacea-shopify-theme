@@ -24,7 +24,7 @@
 .tungacea-catalogue .facets__heading {
   text-transform: uppercase;
   letter-spacing: 0.24em;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
   margin-right: 2.4rem;
 }
@@ -32,7 +32,7 @@
 .tungacea-catalogue .facets__summary {
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
   transition: color 0.3s var(--tungacea-ease, ease);
 }
@@ -50,14 +50,14 @@
 .tungacea-catalogue .facet-filters__label {
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
 }
 
 .tungacea-catalogue .facet-filters__sort {
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   color: rgb(var(--color-foreground));
 }
 
@@ -70,7 +70,7 @@
 .tungacea-catalogue .product-count__text {
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
 }
 
@@ -95,7 +95,7 @@
   background: rgba(242, 238, 232, 0.02);
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  font-size: 1rem;
+  font-size: 1.2rem;
   padding: 0.5rem 1.1rem;
   color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
   transition: color 0.3s var(--tungacea-ease, ease),
@@ -119,7 +119,7 @@
 .tungacea-catalogue .active-facets__button-remove {
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
 }
 
@@ -138,7 +138,7 @@
 .tungacea-catalogue .mobile-facets__count {
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
 }
 
@@ -158,7 +158,7 @@
   display: inline-block;
   text-transform: uppercase;
   letter-spacing: 0.28em;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
   margin: 0 0 1.6rem;
 }
@@ -255,7 +255,7 @@
   .tungacea-catalogue .product-card-wrapper .specimen-card__footer .price .unit-price {
     display: block;
     margin-top: 0.2rem;
-    font-size: 1rem;
+    font-size: 1.2rem;
     letter-spacing: 0.05em;
     color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
   }

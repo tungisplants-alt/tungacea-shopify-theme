@@ -169,7 +169,7 @@
   /* Valid Shopify unit price: clearly secondary — smaller, muted, beneath price */
   .tungacea-featured-collection .specimen-card__footer .price .unit-price {
     margin-top: 0.3rem;
-    font-size: 1rem;
+    font-size: 1.2rem;
     letter-spacing: 0.02em;
     color: var(--tungacea-muted);
     opacity: 0.85;

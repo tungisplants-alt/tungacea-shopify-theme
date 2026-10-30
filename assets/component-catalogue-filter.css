@@ -79,7 +79,7 @@
   padding: 1.2rem 0;
   border-bottom: 1px solid transparent;
   color: var(--cf-muted);
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   text-decoration: none;
@@ -113,7 +113,7 @@
   border: 1px solid var(--cf-line);
   color: #f2eee8;
   font-family: inherit;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   cursor: pointer;
@@ -129,13 +129,13 @@
   border-radius: 999px;
   background: var(--cf-accent);
   color: #0a0a0a;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0;
 }
 
 .catalogue-filter__count {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.18em;
   color: var(--cf-muted);
@@ -165,7 +165,7 @@
   padding: 0.45rem 1.1rem;
   background: rgba(110, 28, 40, 0.45);
   color: #f2eee8;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-decoration: none;
@@ -276,7 +276,7 @@
   width: 100%;
   margin: 0 0 1.2rem;
   padding: 0;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   color: var(--cf-muted);
@@ -353,7 +353,7 @@
 .catalogue-filter__price-label {
   display: block;
   margin-bottom: 0.4rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--cf-muted);

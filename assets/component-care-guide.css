@@ -49,7 +49,7 @@
   align-items: center;
   gap: 1.2rem;
   margin: 0 0 1.4rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: rgba(242, 238, 232, 0.78);
@@ -106,7 +106,7 @@
 .care-guide__disclaimer strong {
   display: block;
   margin-bottom: 0.4rem;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   font-weight: 400;
   letter-spacing: 0.26em;
   text-transform: uppercase;
@@ -166,7 +166,7 @@
 }
 
 .care-guide__nav-label {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--cg-muted);
@@ -225,7 +225,7 @@
 }
 
 .care-guide__fact dt {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--cg-muted);
@@ -348,7 +348,7 @@
 }
 
 .care-guide__figures dt {
-  font-size: 1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--cg-muted);
@@ -418,7 +418,7 @@
   flex: none;
   padding: 0.4rem 0.8rem;
   border: 1px solid var(--cg-line);
-  font-size: 1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--cg-muted);
@@ -444,8 +444,9 @@
 }
 
 .care-guide__tile small {
+  color: var(--cg-muted) !important;
   display: block;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--cg-accent);
@@ -483,7 +484,7 @@
   display: inline-block;
   padding: 1.1rem 1.8rem;
   border: 1px solid rgba(242, 238, 232, 0.42);
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   text-decoration: none;

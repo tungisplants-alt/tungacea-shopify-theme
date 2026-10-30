@@ -113,7 +113,7 @@
 }
 
 .tungacea-footer .tungacea-footer__group-heading {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.14rem;
   text-transform: uppercase;
   color: rgba(var(--color-foreground), 0.72);
@@ -233,7 +233,7 @@
 }
 
 .tungacea-footer .tungacea-footer__social-label {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.14rem;
   text-transform: uppercase;
   color: rgba(var(--color-foreground), 0.72);
@@ -324,7 +324,7 @@
 }
 
 .tungacea-footer .tungacea-footer__copyright.copyright__content {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.05rem;
   color: rgba(var(--color-foreground), 0.6);
 }
@@ -349,7 +349,7 @@
   font-family: var(--font-body-family);
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   line-height: 1;
   /* extra right padding: letter-spacing adds a trailing gap after the last glyph */
   padding: 0.7rem 0.75rem 0.65rem 0.95rem;
@@ -368,7 +368,7 @@
 
 @media screen and (max-width: 749px) {
   .tungacea-footer .tungacea-footer__withdrawal--bottom {
-    font-size: 1rem;
+    font-size: 1.2rem;
     letter-spacing: 0.14em;
     padding: 0.65rem 0.6rem 0.6rem 0.8rem;
   }
