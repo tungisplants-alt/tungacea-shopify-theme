@@ -164,7 +164,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding: 1.2rem 1.2rem 0;
+  padding: 1.6rem 1.6rem 0;
   background: #0e0e10;
   border: 1px solid var(--pl-line-soft);
 }
@@ -210,7 +210,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  padding: 1.4rem 0 1.6rem;
+  padding: 1.6rem 0;
 }
 
 .plant-card__name {
@@ -1137,7 +1137,7 @@
   min-width: 1.8rem;
   height: 1.8rem;
   padding: 0 0.5rem;
-  border-radius: 999px;
+  border-radius: 0;
   background: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
   color: #0a0a0a;
   font-size: 1.2rem;
@@ -1316,7 +1316,7 @@ html.plant-search-lock {
     margin: 0;
     background: #121212;
     border-top: 1px solid var(--pl-line, rgba(242, 238, 232, 0.14));
-    border-radius: 1.6rem 1.6rem 0 0;
+    border-radius: 0;
     animation: plant-sheet-up 0.28s var(--pl-ease, ease);
   }
 
@@ -1325,7 +1325,7 @@ html.plant-search-lock {
     width: 4rem;
     height: 0.4rem;
     margin: 1rem auto 0;
-    border-radius: 999px;
+    border-radius: 0;
     background: rgba(242, 238, 232, 0.28);
   }
 

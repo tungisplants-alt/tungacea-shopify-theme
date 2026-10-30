@@ -883,7 +883,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 .tungacea-lang .tungacea-lang__panel {
   background-color: #141416;
   border: 1px solid rgba(242, 238, 232, 0.08);
-  border-radius: 3px;
+  border-radius: 0;
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
   overflow: hidden;
 }
@@ -1026,7 +1026,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   border-right: 1px solid var(--tungacea-hairline-soft);
   border-bottom: 1px solid var(--tungacea-hairline-soft);
   border-left: 1px solid var(--tungacea-hairline-soft);
-  padding: 1.4rem 1.4rem 1.6rem;
+  padding: 1.6rem;
 }
 
 .product-card-wrapper .card--standard > .card__content .card__information {
@@ -1040,7 +1040,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 
 @media screen and (max-width: 749px) {
   .product-card-wrapper .card--standard > .card__content {
-    padding: 1.2rem 1.2rem 1.4rem;
+    padding: 1.6rem;
   }
 }
 

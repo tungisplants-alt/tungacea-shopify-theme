@@ -60,44 +60,15 @@
   color: var(--tungacea-muted);
   white-space: nowrap;
 }
-.product-card-wrapper .specimen-card__flag--rare {
-  background: rgb(var(--tungacea-accent-deep));
-  border-color: rgb(var(--tungacea-accent));
-  color: #f7f3ee;
-}
-.product-card-wrapper .specimen-card__flag--sale {
-  background: rgb(var(--tungacea-accent));
-  border-color: rgb(var(--tungacea-accent));
-  color: #f7f3ee;
-}
-/* Unicorn — die hoechste Stufe. Der einzige Ort im Theme, der sich bewegen darf.
-   Der Puls liegt als box-shadow AUSSERHALB des Feldes: waere es ein Lichtstrich
-   ueber der Schrift, saenke der Kontrast im Durchlauf unter 4,5:1. */
+.product-card-wrapper .specimen-card__flag--rare,
+.product-card-wrapper .specimen-card__flag--sale,
 .product-card-wrapper .specimen-card__flag--unicorn {
-  background: linear-gradient(
-    105deg,
-    rgb(var(--tungacea-accent-deep)) 0%,
-    #6e4f1e 52%,
-    rgb(var(--tungacea-accent-deep)) 100%
-  );
-  border-color: #c9a227;
-  color: #fdfaf4;
-  letter-spacing: 0.16em;
-  animation: tng-unicorn-glow 3.2s ease-in-out infinite;
-}
-@keyframes tng-unicorn-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(201, 162, 39, 0);
-  }
-  50% {
-    box-shadow: 0 0 0.9rem 0 rgba(201, 162, 39, 0.38);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .product-card-wrapper .specimen-card__flag--unicorn {
-    animation: none;
-  }
+  /* Ein Etiketten-Stil fuer alle: Haarlinie, keine Flaeche. Selten, Sale und
+     Unicorn heben sich nur durch die rote Linie und helle Schrift ab, nicht
+     durch Fuellung, Gold oder Bewegung. */
+  background: none;
+  border-color: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  color: #f2eee8;
 }
 
 /* Title — the primary line */
