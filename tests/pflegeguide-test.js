@@ -74,16 +74,24 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('Disclaimer steht immer', /care-guide__disclaimer/.test(leer) && /Das sind meine eigenen Erfahrungen unter meinen Bedingungen/.test(leer) && /von Empfehlungen aus Studien abweichen/.test(leer), true);
   pruefe('Kopf mit Ueberschrift und Foto-Variable', /So pflege ich meine Anthurien\./.test(leer) && /--guide-bild: url\('\/assets\/tungacea-archiv-kopf\.jpg'\)/.test(leer), true);
 
-  // Die Vorlage, wie sie ausgeliefert wird: Stadien plus leere Zeilen fuer
-  // Bedingungen, Naehrstoffe und Wasser. Leer duerfen sie kein Kapitel zeigen.
+  // Die Vorlage bringt Zeilen fuer Bedingungen, Naehrstoffe und Wasser mit
+  // (zurzeit mit Beispielwerten). Geleert duerfen sie kein Kapitel zeigen.
   const gv = JSON.parse(strip(fs.readFileSync(path.join(THEME, "templates/page.pflegeguide.json"), "utf8"))).sections.main;
   const vorlageBloecke = gv.block_order.map((k) => block(gv.blocks[k].type, gv.blocks[k].settings));
-  pruefe('Vorlage bringt leere Zeilen fuer alle Kapitel mit', ['bedingung', 'naehrstoff', 'wasser'].every((t) => vorlageBloecke.some((b) => b.type === t)), true);
+  pruefe('Vorlage bringt Zeilen fuer alle Kapitel mit', ['bedingung', 'naehrstoff', 'wasser'].every((t) => vorlageBloecke.some((b) => b.type === t)), true);
   pruefe('Vorlage: Wasser fuer alle sechs Stadien', vorlageBloecke.filter((b) => b.type === 'wasser').map((b) => b.settings.stadium).join(','), 'steckling,etabliert,jungpflanze,saemling,samen,mutterpflanze');
-  const ausVorlage = await rendere(vorlageBloecke);
-  pruefe('leere Zeilen der Vorlage: keine leeren Kapitel', /id="bedingungen"|id="naehrstoffe"|id="wasser"|care-guide__nav"/.test(ausVorlage), false);
-  const eineZeile = await rendere(vorlageBloecke.map((b) => b.type === 'bedingung' && b.settings.name === 'Substrat' ? block('bedingung', { name: 'Substrat', wert: 'meine Mischung' }) : b));
+  const geleert = vorlageBloecke.map((b) => {
+    if (b.type === 'bedingung') return block('bedingung', { name: b.settings.name, wert: '' });
+    if (b.type === 'naehrstoff') return block('naehrstoff', { name: '', art: b.settings.art, zweck: '', dosierung: '' });
+    if (b.type === 'wasser') return block('wasser', { stadium: b.settings.stadium, ph: '', ec: '' });
+    return block('stadium', { stadium: b.settings.stadium });
+  });
+  const ausLeer = await rendere(geleert);
+  pruefe('leere Zeilen: keine leeren Kapitel', /id="bedingungen"|id="naehrstoffe"|id="wasser"|care-guide__nav"/.test(ausLeer), false);
+  const eineZeile = await rendere(geleert.map((b) => b.type === 'bedingung' && b.settings.name === 'Substrat' ? block('bedingung', { name: 'Substrat', wert: 'meine Mischung' }) : b));
   pruefe('ein ausgefuellter Wert zeigt das Kapitel mit genau dieser Zeile', /id="bedingungen"/.test(eineZeile) && zaehle(eineZeile, /class="care-guide__fact"/g) === 1 && /meine Mischung/.test(eineZeile), true);
+  const ausVorlage = await rendere(vorlageBloecke, gv.settings);
+  pruefe('gefuellte Vorlage zeigt alle Kapitel und die Kacheln', ['id="bedingungen"', 'id="naehrstoffe"', 'id="wasser"', 'care-guide__tile'].every((x) => ausVorlage.includes(x)), true);
 
   // Voller Inhalt.
   const voll = await rendere([
