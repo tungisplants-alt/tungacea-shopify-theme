@@ -86,16 +86,21 @@
 
 /* ---------- Footer: status (left) + price (right) ----------
    Der Preis steht direkt unter Stufe und Generation. Vorher stapelten sich
-   vier Abstände (Lücke im Schild, Rand des Blocks, Dawns Abstand zwischen
-   Geschwistern und der Innenabstand des Fußes) zu gut 3rem. Die leere
-   Beschreibungszeile aus Dawn fällt weg. */
+   mehrere Abstände (Lücke im Schild, Dawns Abstand zwischen Geschwistern,
+   Innenabstand des Fußes). Gemessen an der echten Karte waren es 19px; jetzt
+   bleiben die Lücke im Schild und 2px. Die leere Beschreibungszeile aus Dawn
+   fällt weg. */
 .product-card-wrapper .card-information {
   margin-top: 0;
 }
 .product-card-wrapper .card-information > .caption-large:empty {
   display: none;
 }
-.product-card-wrapper .card-information > .specimen-card__footer {
+/* Dawn setzt über jedes zweite Kind von .card-information 0,7rem mit einer
+   sehr spezifischen Regel (component-card.css); diese Kette ist eine Stufe
+   spezifischer, sonst bliebe der Abstand stehen. */
+.product-card-wrapper .specimen-card .card-information > *:not(.visually-hidden:first-child) + .specimen-card__footer,
+.product-card-wrapper .specimen-card .card-information > .specimen-card__footer {
   margin-top: 0;
 }
 .product-card-wrapper .specimen-card__footer {
@@ -103,7 +108,7 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 1.2rem;
-  padding-top: 0.6rem;
+  padding-top: 0.2rem;
   border-top: 0;
 }
 /* Ohne Status steht der Preis links unter dem Schild */
@@ -232,7 +237,7 @@
     letter-spacing: 0.1em;
   }
   .product-card-wrapper .specimen-card__footer {
-    padding-top: 0.6rem;
+    padding-top: 0.2rem;
     gap: 0.8rem;
   }
   .product-card-wrapper .specimen-card__status {
