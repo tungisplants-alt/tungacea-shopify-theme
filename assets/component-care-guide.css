@@ -291,8 +291,9 @@
   display: none;
 }
 
-/* ---------- Die übrigen Kapitel als kleine Tafel ----------
-   Dasselbe System wie die Stadien; ein Tipp springt zum Kapitel. */
+/* ---------- Die übrigen Kapitel als Tafel ----------
+   Dasselbe System wie die Stadien: ein Tipp zeigt das Kapitel darunter, das
+   Piktogramm wird rot (aria-current, Regeln bei .care-guide__eintrag). */
 .care-guide__tafel--kapitel {
   margin-top: 4rem;
 }
@@ -315,10 +316,10 @@
   color: var(--cg-ox);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  html:has(.care-guide__tafel--kapitel) {
-    scroll-behavior: smooth;
-  }
+/* Mit Skript steht nur das gewählte Kapitel unter der Tafel, wie bei den
+   Stadien; display darf das hidden nicht aushebeln. */
+.care-guide--kapitelwahl .care-guide__chapter[hidden] {
+  display: none;
 }
 
 /* ---------- Kapitel ---------- */

@@ -140,6 +140,11 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('pH-Kachel da, EC-Kachel fehlt (leer)', /<small>pH<\/small><b>5,8<\/b>/.test(voll) && !/<small>EC<\/small>/.test(voll), true);
   pruefe('Wasserzeile mit Werten, leere Zeile nicht', /pH 5,8 · EC 0,6/.test(voll) && zaehle(voll, /class="care-guide__fact"/g) === 2, true);
   pruefe('Inhaltsverzeichnis: drei Links', zaehle(voll, /care-guide__nav-link/g), 3);
+  {
+    const js = fs.readFileSync(path.join(THEME, 'assets/care-guide.js'), 'utf8');
+    const css = fs.readFileSync(path.join(THEME, 'assets/component-care-guide.css'), 'utf8');
+    pruefe('Kapitel schalten um wie die Stadien (Skript und hidden-Regel)', /kapitelWaehlen\(/.test(js) && /aria-current/.test(js) && /\.care-guide--kapitelwahl \.care-guide__chapter\[hidden\]\s*\{\s*display:\s*none/.test(css), true);
+  }
   pruefe('Kapitel als Tafel mit drei Zeichnungen, nicht als Stadien-Auswahl', /care-guide__tafel--kapitel/.test(voll) && zaehle(voll.slice(voll.indexOf('care-guide__tafel--kapitel'), voll.indexOf('id="bedingungen"')), /class="care-guide__zeichnung"/g) === 3 && !/care-guide__tafel--kapitel"[^>]*data-stadien-wahl/.test(voll), true);
   pruefe('Reihenfolge: Stadien, Inhaltsverzeichnis, Kapitel, Disclaimer, Fragen', ['id="stadien"', 'care-guide__tafel--kapitel', 'id="bedingungen"', 'id="wasser"', 'care-guide__disclaimer', 'id="fragen"'].map((w) => voll.indexOf(w)).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
   pruefe('Fragen-Knopf ist der WhatsApp-Link', /care-guide__button/.test(voll) && /wa\.me\/491791627287/.test(voll), true);
