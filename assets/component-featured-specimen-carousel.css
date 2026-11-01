@@ -21,13 +21,14 @@
      Strategy:
        edge (left inset)   1.5rem
        gap between slides   0.75rem
-       slide width          84% of the viewport-wide slider track
-       => visible peek of the next card ≈ 10–11% of the viewport
+       slide width          64% of the viewport-wide slider track
+       => die nächste Karte ist gut zur Hälfte zu sehen; kleiner als vorher,
+          damit eine Karte nicht den ganzen Bildschirm füllt
   ------------------------------------------------------------------------- */
   .tungacea-featured-collection {
     --tfc-edge: 1.5rem;
     --tfc-gap: 0.75rem;
-    --tfc-slide-width: 84%;
+    --tfc-slide-width: 64%;
   }
 
   .tungacea-featured-collection .slider.slider--tablet {
@@ -185,4 +186,17 @@
     align-items: center;
     margin-top: 1.6rem;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Fotos ganz zeigen, nicht beschneiden (Handy und Laptop). Das Foto sitzt im
+   Hochformat-Feld wie in einem Passepartout; schmale Ränder bleiben dunkel.
+--------------------------------------------------------------------------- */
+.tungacea-featured-collection .card__media .media img {
+  object-fit: contain;
+}
+
+.tungacea-featured-collection .card__media .media,
+.tungacea-featured-collection .card__inner {
+  background-color: #0e0e10;
 }
