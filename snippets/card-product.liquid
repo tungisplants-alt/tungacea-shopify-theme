@@ -48,7 +48,6 @@
   {%- liquid
     assign specimen_parts = specimen_fields | split: '||'
     assign specimen_id = specimen_parts[0] | strip
-    assign specimen_parentage = specimen_parts[1] | strip
     assign specimen_traits = specimen_parts[2] | strip
     assign specimen_status_state = specimen_parts[3] | strip
     assign specimen_status_label = specimen_parts[4] | strip
@@ -195,11 +194,11 @@
                 {{ card_product.title | escape }}
               </a>
             </h3>
-            {%- if specimen_parentage != blank -%}
-              <div class="specimen-card__parentage" data-testid="specimen-card-parentage">
-                {{- specimen_parentage | escape -}}
-              </div>
-            {%- endif -%}
+            {%- comment -%}
+              Keine Abstammungszeile auf der Karte: der Name nennt die Kreuzung
+              meist schon, oft wortgleich. Die Abstammung steht auf der
+              Produktseite im botanischen Pass.
+            {%- endcomment -%}
             {%- if specimen_traits != blank -%}
               <div class="specimen-card__traits" data-testid="specimen-card-traits">
                 {{- specimen_traits | escape -}}
