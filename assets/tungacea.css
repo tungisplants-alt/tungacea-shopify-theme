@@ -73,11 +73,20 @@ h1, h2, h3, h4, h5,
    over two lines, reads harder and claims more weight than it deserves —
    right next to the price, where calm matters most. */
 .product__tax.caption,
-.product__tax .caption {
+.product__tax .caption,
+.tax-note.caption-large {
   text-transform: none;
   letter-spacing: 0.01em;
   font-size: 1.2rem;
   line-height: 1.5;
+}
+
+/* Im Warenkorb dieselbe leise Zeile; der Link "Versand" nur fein unterstrichen. */
+.tax-note.caption-large a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(242, 238, 232, 0.35);
+  text-underline-offset: 0.25em;
 }
 
 .caption-with-letter-spacing,
@@ -661,9 +670,10 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 /* Scroll reveal easing */
 .scroll-trigger.animate--fade-in { transition-duration: 1.1s; }
 
-/* Cart drawer dark refinement */
+/* Cart drawer dark refinement. Über der Summe steht nur eine Haarlinie: die
+   von .drawer__footer (Dawn), in der Farbe der übrigen Linien. */
 .drawer__inner { background: #0a0a0a; }
-.cart-drawer__footer { border-top: 1px solid var(--tungacea-hairline); }
+.drawer__footer { border-top-color: var(--tungacea-hairline); }
 
 /* ---------- Mobile refinements ---------- */
 @media screen and (max-width: 749px) {
