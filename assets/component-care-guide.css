@@ -4,8 +4,9 @@
  * aufklappbare Kästen. Farben stehen als feste Werte, weil Dawn
  * --color-foreground nur innerhalb der Farbschema-Klassen setzt.
  *
- * Aufgeklappt wird mit <details>; das Attribut hidden wird nirgends benutzt,
- * weil display es aushebeln würde.
+ * Aufgeklappt wird mit <details>. Das Attribut hidden setzt nur das Skript der
+ * Stadien-Tafel; dafür steht unten eine eigene Regel, damit display es nicht
+ * aushebelt.
  */
 .care-guide {
   --cg-line: var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
@@ -120,57 +121,194 @@
   color: var(--cg-muted);
 }
 
-/* ---------- Stadium-Einstieg ---------- */
-.care-guide__picker {
-  margin-top: 4rem;
-}
-
-.care-guide__picker-title {
-  margin: 0 0 1.6rem;
-  font-family: var(--font-heading-family);
-  font-size: 2.8rem;
-  line-height: 1.2;
-}
-
-.care-guide__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.care-guide__chip-link {
-  padding: 1rem 1.6rem;
-  border: 1px solid var(--cg-line);
-  border-radius: 0;
+/* ---------- Stadien als Herbar-Tafel ----------
+   Feine Strichzeichnungen wie botanische Illustrationen, darunter rote Linie,
+   Stufe und Name in der Serifenschrift. Keine Rahmen: Haarlinien oben, unten
+   und zwischen den Feldern wie bei einer Tafel. Die gewählte Zeichnung wird
+   rot. Auf dem Handy drei mal zwei Felder, auf dem Laptop eine Reihe. */
+.care-guide__chapter-eyebrow {
+  margin: 0 0 0.8rem;
   font-size: 1.2rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  color: var(--cg-muted);
+}
+
+.care-guide__tafel {
+  --cg-grund: #0a0a0a;
+  margin: 2.4rem 0 3.2rem;
+  border-top: 1px solid var(--cg-line-soft);
+  border-bottom: 1px solid var(--cg-line-soft);
+}
+
+.care-guide__tafel-liste {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.care-guide__tafel-liste > li {
+  min-width: 0;
+}
+
+.care-guide__tafel-liste > li + li {
+  border-left: 1px solid var(--cg-line-soft);
+}
+
+@media screen and (max-width: 749px) {
+  .care-guide__tafel-liste > li:nth-child(3n + 1) {
+    border-left: 0;
+  }
+
+  .care-guide__tafel-liste > li:nth-child(n + 4) {
+    border-top: 1px solid var(--cg-line-soft);
+  }
+}
+
+.care-guide__eintrag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 1.6rem 0.6rem 1.8rem;
+  text-align: center;
   text-decoration: none;
+  color: rgba(242, 238, 232, 0.55);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.care-guide__zeichnung {
+  width: 100%;
+  max-width: 10rem;
+  height: auto;
+  aspect-ratio: 64 / 80;
+  transition: color 0.4s ease;
+}
+
+.care-guide__zeichnung * {
+  vector-effect: non-scaling-stroke;
+}
+
+/* Blätter liegen vor den Stielen: Füllung in der Farbe des Hintergrunds */
+.care-guide__zeichnung .b {
+  fill: var(--cg-grund);
+}
+
+.care-guide__eintrag-stufe {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cg-muted);
+}
+
+.care-guide__eintrag-stufe::before {
+  content: '';
+  flex: none;
+  width: 1.2rem;
+  height: 1px;
+  background: var(--cg-ox);
+}
+
+.care-guide__eintrag-zusatz {
+  margin-top: 0.3rem;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  color: var(--cg-muted);
+}
+
+.care-guide__eintrag-name {
+  margin-top: 0.4rem;
+  font-family: var(--font-heading-family);
+  font-size: 1.6rem;
+  line-height: 1.2;
+  color: rgba(242, 238, 232, 0.75);
+  transition: color 0.4s ease;
+}
+
+@media (hover: hover) {
+  .care-guide__eintrag:hover {
+    color: rgba(242, 238, 232, 0.9);
+  }
+
+  .care-guide__eintrag:hover .care-guide__eintrag-name {
+    color: #f2eee8;
+  }
+}
+
+.care-guide__eintrag[aria-current='step'] {
+  color: var(--cg-accent);
+}
+
+.care-guide__eintrag[aria-current='step'] .care-guide__eintrag-name {
   color: #f2eee8;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.care-guide__chip-link:hover,
-.care-guide__chip-link:focus-visible {
-  border-color: rgba(242, 238, 232, 0.5);
-  background: rgba(242, 238, 232, 0.06);
+.care-guide__eintrag:focus-visible {
+  outline: 2px solid var(--cg-accent);
+  outline-offset: -2px;
 }
 
-/* ---------- Weitere Kapitel: eine leise Textzeile ---------- */
+@media screen and (min-width: 750px) {
+  .care-guide__tafel-liste {
+    grid-template-columns: repeat(var(--eintraege), minmax(0, 1fr));
+  }
+
+  .care-guide__eintrag {
+    padding: 2.4rem 1rem 2.4rem;
+  }
+
+  .care-guide__zeichnung {
+    max-width: 14rem;
+  }
+
+  .care-guide__eintrag-name {
+    font-size: 1.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .care-guide__zeichnung,
+  .care-guide__eintrag-name {
+    transition: none;
+  }
+}
+
+/* Mit Skript: nur das gewählte Stadium steht unter der Tafel, offen, ohne
+   eigene Klappe; die Tafel ist die Auswahl. */
+.care-guide--wahl .care-guide__stage[hidden] {
+  display: none;
+}
+
+.care-guide--wahl .care-guide__stage,
+.care-guide--wahl .care-guide__stage:first-of-type {
+  border-top: 0;
+}
+
+.care-guide--wahl .care-guide__stage-toggle {
+  cursor: default;
+}
+
+.care-guide--wahl .care-guide__indicator,
+.care-guide--wahl .care-guide__stage-peek {
+  display: none;
+}
+
+/* ---------- Inhaltsverzeichnis der übrigen Kapitel: eine leise Textzeile ---------- */
 .care-guide__nav {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.6rem 2.2rem;
   margin: 3.2rem 0 0;
-}
-
-.care-guide__nav-label {
-  font-size: 1.2rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--cg-muted);
-  opacity: 0.8;
 }
 
 .care-guide__nav-link {

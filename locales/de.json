@@ -825,7 +825,7 @@
     "conditions_title": "Meine Bedingungen",
     "conditions_lead": "Wo und wie meine Pflanzen wachsen. Bei dir kann es anders sein.",
     "stages_title": "Pflege nach Stadium",
-    "stages_lead": "Tipp ein Stadium an, dann klappt es auf.",
+    "stages_lead": "Tipp dein Stadium an.",
     "nutrients_title": "Nährstoffe & Zusätze",
     "nutrients_lead": "Was ich verwende, wie viel und wann.",
     "water_title": "Mein Gießwasser",
@@ -848,6 +848,6 @@
     "water_target": "Zielwert",
     "water_unit": "mS/cm",
     "picker_title": "Welches Stadium hast du?",
-    "more_label": "Außerdem"
+    "branch_note": "aus der Mutter"
   }
 }

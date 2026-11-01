@@ -825,7 +825,7 @@
     "conditions_title": "My conditions",
     "conditions_lead": "Where and how my plants grow. Yours may be different.",
     "stages_title": "Care by stage",
-    "stages_lead": "Tap a stage to open it.",
+    "stages_lead": "Tap your stage.",
     "nutrients_title": "Nutrients & additives",
     "nutrients_lead": "What I use, how much and when.",
     "water_title": "My water",
@@ -848,6 +848,6 @@
     "water_target": "Target",
     "water_unit": "mS/cm",
     "picker_title": "Which stage do you have?",
-    "more_label": "Also"
+    "branch_note": "from the mother"
   }
 }

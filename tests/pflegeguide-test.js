@@ -61,14 +61,20 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   // Nur Stadien, ohne Inhalt: so liefert die Vorlage aus.
   const leer = await rendere(['steckling', 'etabliert', 'jungpflanze', 'saemling', 'samen', 'mutterpflanze'].map((s) => block('stadium', { stadium: s })));
   pruefe('sechs Stadien als aufklappbare Kaesten', zaehle(leer, /<details class="care-guide__stage"/g), 6);
-  pruefe('Reihenfolge wie im Shop', ['Steckling/Klon', 'Etabliert', 'Jungpflanze', 'Sämling', 'Gekeimter Samen', 'Mutterpflanze'].map((w) => leer.indexOf('>' + w + '<')).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
+  pruefe('Kaesten in der Reihenfolge der Bloecke', ['steckling', 'etabliert', 'jungpflanze', 'saemling', 'samen', 'mutterpflanze'].map((w) => leer.indexOf('<details class="care-guide__stage" id="stadium-' + w + '"')).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
   pruefe('alle Kaesten zu (kein open)', /<details[^>]*\sopen/.test(leer), false);
   pruefe('leeres Stadium zeigt "Inhalt folgt."', zaehle(leer, /Inhalt folgt\./g), 6);
   pruefe('ohne Bedingungen, Naehrstoffe, Wasser: keine solchen Kapitel', /id="bedingungen"|id="naehrstoffe"|id="wasser"/.test(leer), false);
-  pruefe('ohne weitere Kapitel: keine Zeile "Außerdem"', /care-guide__nav"/.test(leer), false);
-  pruefe('Einstieg "Welches Stadium hast du?" mit sechs Feldern', /Welches Stadium hast du\?/.test(leer) && zaehle(leer, /care-guide__chip-link/g) === 6, true);
+  pruefe('ohne weitere Kapitel: kein Inhaltsverzeichnis', /care-guide__nav"/.test(leer), false);
+  // Stadien als Herbar-Tafel: sechs Strichzeichnungen in der Reihenfolge der Pflanze.
+  pruefe('Einstieg "Welches Stadium hast du?" mit Tafel und sechs Zeichnungen', /Welches Stadium hast du\?/.test(leer) && /care-guide-tafel/.test(leer) && zaehle(leer, /data-testid="care-guide-knoten"/g) === 6 && zaehle(leer, /class="care-guide__zeichnung"/g) === 6, true);
+  pruefe('Steckling steht am Ende mit "aus der Mutter"', leer.indexOf('href="#stadium-steckling"') > leer.indexOf('href="#stadium-mutterpflanze"') && /care-guide__eintrag-zusatz">aus der Mutter</.test(leer), true);
+  pruefe('Stufen 01 bis 05 auf der Tafel, der Steckling ohne Nummer', ['01', '02', '03', '04', '05'].every((n) => leer.includes('care-guide__eintrag-stufe">' + n)) && !/care-guide__eintrag-stufe">06/.test(leer), true);
+  pruefe('keine Fotos und keine Karten', /<img|care-guide__karte/.test(leer), false);
   pruefe('Felder fuehren zu den Stadien (Anker)', ['steckling', 'etabliert', 'jungpflanze', 'saemling', 'samen', 'mutterpflanze'].every((st) => leer.includes('href="#stadium-' + st + '"') && leer.includes('id="stadium-' + st + '"')), true);
-  pruefe('Felder stehen in der Reihenfolge der Bloecke', ['#stadium-steckling', '#stadium-etabliert', '#stadium-jungpflanze', '#stadium-saemling', '#stadium-samen', '#stadium-mutterpflanze'].map((w) => leer.indexOf('href="' + w + '"')).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
+  pruefe('Tafel folgt der Pflanze: Samen, Saemling, Jungpflanze, Etabliert, Mutterpflanze', ['#stadium-samen', '#stadium-saemling', '#stadium-jungpflanze', '#stadium-etabliert', '#stadium-mutterpflanze'].map((w) => leer.indexOf('href="' + w + '"')).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
+  const ohneSteckling = await rendere(['etabliert', 'mutterpflanze'].map((st) => block('stadium', { stadium: st })));
+  pruefe('nur Karten fuer vorhandene Stadien', !/stadium-steckling"/.test(ohneSteckling) && zaehle(ohneSteckling, /data-testid="care-guide-knoten"/g) === 2, true);
   pruefe('keine Kapitelnummern und keine Stufenzaehlung mehr', /care-guide__number|Stufe \d|Zucht/.test(leer), false);
   pruefe('Disclaimer ist eine leise Notiz, kein Kasten', /<aside class="care-guide__disclaimer" role="note"/.test(leer), true);
   pruefe('Disclaimer steht immer', /care-guide__disclaimer/.test(leer) && /Das sind meine eigenen Erfahrungen unter meinen Bedingungen/.test(leer) && /von Empfehlungen aus Studien abweichen/.test(leer), true);
@@ -105,7 +111,7 @@ const zaehle = (h, re) => (h.match(re) || []).length;
     block('wasser', { stadium: 'etabliert', ph: '', ec: '' }),
   ], { ph_ziel: '5,8', ec_ziel: '', disclaimer: '' });
   pruefe('Kapitel in Reihenfolge: Stadien zuerst, dann Bedingungen, Naehrstoffe, Wasser', ['id="stadien"', 'id="bedingungen"', 'id="naehrstoffe"', 'id="wasser"'].map((w) => voll.indexOf(w)).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
-  pruefe('Zeile "Außerdem" nennt Bedingungen, Naehrstoffe, Gießwasser', /Außerdem/.test(voll) && ['#bedingungen', '#naehrstoffe', '#wasser'].every((a) => voll.includes('href="' + a + '"')) && !/href="#stadien"/.test(voll), true);
+  pruefe('Inhaltsverzeichnis nennt Bedingungen, Naehrstoffe, Gießwasser, ohne "Außerdem"', !/Außerdem/.test(voll) && ['#bedingungen', '#naehrstoffe', '#wasser'].every((a) => voll.includes('href="' + a + '"')) && !/href="#stadien"/.test(voll), true);
   pruefe('Kennzahlen stehen schon in der zugeklappten Zeile (peek)', /care-guide__stage-peek">VPD 0,8–1,0 kPa · PPFD 150–250 µmol\/m²\/s · 22–26 °C · EC 0,6–0,8 mS\/cm</.test(voll), true);
   pruefe('Stadium nur mit einem Wert: Peek nur mit diesem Wert', /care-guide__stage-peek">VPD 0,6 kPa</.test(voll), true);
   pruefe('Stadium ohne Kennzahlen: keine Peek-Zeile', zaehle(leer, /care-guide__stage-peek/g), 0);
@@ -120,7 +126,7 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('Naehrstoff ohne Zweck und Dosierung zeigt nur den Namen', /Zusatz B/.test(voll) && zaehle(voll, /care-guide__dose/g) === 1, true);
   pruefe('pH-Kachel da, EC-Kachel fehlt (leer)', /<small>pH<\/small><b>5,8<\/b>/.test(voll) && !/<small>EC<\/small>/.test(voll), true);
   pruefe('Wasserzeile mit Werten, leere Zeile nicht', /pH 5,8 · EC 0,6/.test(voll) && zaehle(voll, /class="care-guide__fact"/g) === 2, true);
-  pruefe('Zeile "Außerdem": drei Links', zaehle(voll, /care-guide__nav-link/g), 3);
+  pruefe('Inhaltsverzeichnis: drei Links', zaehle(voll, /care-guide__nav-link/g), 3);
   pruefe('Fragen-Knopf ist der WhatsApp-Link', /care-guide__button/.test(voll) && /wa\.me\/491791627287/.test(voll), true);
   pruefe('ohne gueltige Nummer: kein Fragen-Block', /care-guide__questions/.test(await rendere([block('stadium', { stadium: 'steckling' })], {}, 'de', '')), false);
 
