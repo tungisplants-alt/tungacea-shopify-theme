@@ -12,8 +12,8 @@
   Die Blätter tragen die Farbe des Hintergrunds als Füllung (Klasse b), damit
   sie vor den Stielen liegen wie in einer Gravur.
 
-  Die Reihenfolge ist die der Pflanze. Der Steckling folgt am Ende mit dem
-  Vermerk "aus der Mutter", weil er von ihr abzweigt. Jede Zeichnung
+  Die Reihenfolge ist die der Pflanze. Der Steckling folgt am Ende ohne
+  Stufe, weil er von der Mutterpflanze abzweigt. Jede Zeichnung
   ist ein Link auf ihr Stadium (#stadium-…). Ohne Skript springt er dorthin;
   mit Skript (assets/care-guide.js) steht das Stadium direkt unter der Tafel.
 
@@ -47,7 +47,7 @@
         {%- endif -%}
         <li>
           <a class="care-guide__eintrag" href="#stadium-{{ st }}" data-stadium="{{ st }}" data-testid="care-guide-knoten">
-            <svg class="care-guide__zeichnung" viewBox="0 0 64 80" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="care-guide__zeichnung" viewBox="0 18 64 62" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
               {%- case st -%}
                 {%- when 'samen' -%}
                   <path d="M14 70H50"/><path d="M19 73H45" opacity=".45"/><path d="M32 66.6c0-5 .8-9 3.2-12"/><path d="M35.2 54.6c2.4-2 5.6-2.4 7.4-1.6-.8 2.6-3.4 4.4-6.6 4.2"/><path d="M35.2 54.6c-1.8-1.6-4.4-1.8-5.8-1 .8 2 2.8 3.2 5.2 3"/><ellipse class="b" cx="32" cy="70" rx="5.5" ry="3.6"/><path d="M30 73.4c-.8 1.8-2.4 3-4 3.4M33.4 73.5c.6 1.6 1.8 2.6 3.2 3"/>
@@ -68,9 +68,6 @@
               {%- unless st == 'steckling' -%}{{ stufe | prepend: '0' | slice: -2, 2 }}{%- endunless -%}
             </span>
             <span class="care-guide__eintrag-name">{%- render 'care-guide-stadium-name', stadium: st -%}</span>
-            {%- if st == 'steckling' -%}
-              <small class="care-guide__eintrag-zusatz">{{ 'care_guide.branch_note' | t }}</small>
-            {%- endif -%}
           </a>
         </li>
       {%- endif -%}

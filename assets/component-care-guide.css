@@ -19,10 +19,11 @@
   color: #f2eee8;
 }
 
-/* ---------- Kopf ---------- */
+/* ---------- Kopf ----------
+   Kompakt, damit "Welches Stadium hast du?" gleich darunter im Blick ist. */
 .care-guide__hero {
   position: relative;
-  padding: 6rem 0 5.2rem;
+  padding: 3.2rem 0 2.4rem;
   background:
     linear-gradient(to bottom, rgba(10, 10, 10, 0) 62%, rgb(10, 10, 10) 100%),
     linear-gradient(rgba(10, 10, 10, 0.42), rgba(10, 10, 10, 0.42)),
@@ -32,7 +33,7 @@
 
 @media screen and (min-width: 750px) {
   .care-guide__hero {
-    padding: 8rem 0 7rem;
+    padding: 4.8rem 0 3.2rem;
     background:
       linear-gradient(to bottom, rgba(10, 10, 10, 0) 62%, rgb(10, 10, 10) 100%),
       linear-gradient(to right, rgba(10, 10, 10, 0.74) 0%, rgba(10, 10, 10, 0.4) 50%, rgba(10, 10, 10, 0.12) 100%),
@@ -70,13 +71,13 @@
 .care-guide__heading {
   margin: 0;
   font-weight: 400;
-  font-size: clamp(4rem, 10vw, 5.6rem);
+  font-size: clamp(3.2rem, 8vw, 4.8rem);
   line-height: 1.08;
   text-shadow: 0 0.2rem 2.4rem rgba(0, 0, 0, 0.5);
 }
 
 .care-guide__lead {
-  margin: 2rem 0 0;
+  margin: 1.2rem 0 0;
   max-width: 54rem;
   font-size: 1.5rem;
   line-height: 1.6;
@@ -90,10 +91,9 @@
 }
 
 /* ---------- Disclaimer ----------
-   Eine leise Notiz mit roter Linie, wie der Hinweis am Produkt: sichtbar, aber
-   nicht der Einstieg. */
+   Eine leise Notiz mit roter Linie am Ende der Seite, vor den Fragen. */
 .care-guide__disclaimer {
-  margin: 0;
+  margin: 5.6rem 0 0;
   padding: 0.2rem 0 0.2rem 1.6rem;
   border-left: 2px solid var(--cg-ox);
 }
@@ -126,12 +126,8 @@
    Stufe und Name in der Serifenschrift. Keine Rahmen: Haarlinien oben, unten
    und zwischen den Feldern wie bei einer Tafel. Die gewählte Zeichnung wird
    rot. Auf dem Handy drei mal zwei Felder, auf dem Laptop eine Reihe. */
-.care-guide__chapter-eyebrow {
-  margin: 0 0 0.8rem;
-  font-size: 1.2rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--cg-muted);
+.care-guide__chapter.care-guide__chapter--stadien {
+  padding-top: 1.6rem;
 }
 
 .care-guide__tafel {
@@ -183,7 +179,7 @@
   width: 100%;
   max-width: 10rem;
   height: auto;
-  aspect-ratio: 64 / 80;
+  aspect-ratio: 64 / 62; /* oberer Leerraum der Zeichnungen abgeschnitten */
   transition: color 0.4s ease;
 }
 
@@ -215,14 +211,6 @@
   width: 1.2rem;
   height: 1px;
   background: var(--cg-ox);
-}
-
-.care-guide__eintrag-zusatz {
-  margin-top: 0.3rem;
-  font-size: 1.2rem;
-  line-height: 1.3;
-  letter-spacing: 0.02em;
-  color: var(--cg-muted);
 }
 
 .care-guide__eintrag-name {
@@ -605,6 +593,10 @@
 }
 
 /* Fragen am Ende */
+.care-guide__disclaimer + .care-guide__questions {
+  margin-top: 3.2rem;
+}
+
 .care-guide__questions {
   margin-top: 5.2rem;
   padding-top: 2.4rem;

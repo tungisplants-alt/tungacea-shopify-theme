@@ -815,7 +815,7 @@
     "heading": "How I care for my Anthuriums.",
     "lead": "My conditions, my experience – from cutting to mother plant.",
     "disclaimer_title": "Disclaimer",
-    "disclaimer": "These are my own experiences under my own conditions. They may differ from recommendations in studies. Treat them as guidance, not as a fixed recipe.",
+    "disclaimer": "These are my own values from experience. This is how I care for my Anthuriums, and it has worked well for me so far. Your light, air and water may be different. Take it as a starting point, not a fixed recipe.",
     "nav_label": "Chapters",
     "nav_conditions": "Conditions",
     "nav_stages": "Stages",
@@ -847,7 +847,6 @@
     "type_addition": "Additive",
     "water_target": "Target",
     "water_unit": "mS/cm",
-    "picker_title": "Which stage do you have?",
-    "branch_note": "from the mother"
+    "picker_title": "Which stage do you have?"
   }
 }

@@ -815,7 +815,7 @@
     "heading": "So pflege ich meine Anthurien.",
     "lead": "Meine Bedingungen, meine Erfahrung – vom Steckling bis zur Mutterpflanze.",
     "disclaimer_title": "Disclaimer",
-    "disclaimer": "Das sind meine eigenen Erfahrungen unter meinen Bedingungen. Sie können von Empfehlungen aus Studien abweichen. Sieh sie als Orientierung, nicht als festes Rezept.",
+    "disclaimer": "Das sind meine eigenen Erfahrungswerte. So pflege ich meine Anthurien, und damit bin ich bis heute gut gefahren. Bei dir können Licht, Luft und Wasser anders sein. Nimm es als Anhaltspunkt, nicht als festes Rezept.",
     "nav_label": "Kapitel",
     "nav_conditions": "Bedingungen",
     "nav_stages": "Stadien",
@@ -847,7 +847,6 @@
     "type_addition": "Zusatz",
     "water_target": "Zielwert",
     "water_unit": "mS/cm",
-    "picker_title": "Welches Stadium hast du?",
-    "branch_note": "aus der Mutter"
+    "picker_title": "Welches Stadium hast du?"
   }
 }

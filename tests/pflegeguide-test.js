@@ -68,7 +68,9 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('ohne weitere Kapitel: kein Inhaltsverzeichnis', /care-guide__nav"/.test(leer), false);
   // Stadien als Herbar-Tafel: sechs Strichzeichnungen in der Reihenfolge der Pflanze.
   pruefe('Einstieg "Welches Stadium hast du?" mit Tafel und sechs Zeichnungen', /Welches Stadium hast du\?/.test(leer) && /care-guide-tafel/.test(leer) && zaehle(leer, /data-testid="care-guide-knoten"/g) === 6 && zaehle(leer, /class="care-guide__zeichnung"/g) === 6, true);
-  pruefe('Steckling steht am Ende mit "aus der Mutter"', leer.indexOf('href="#stadium-steckling"') > leer.indexOf('href="#stadium-mutterpflanze"') && /care-guide__eintrag-zusatz">aus der Mutter</.test(leer), true);
+  pruefe('Steckling steht am Ende, ohne Zusatz', leer.indexOf('href="#stadium-steckling"') > leer.indexOf('href="#stadium-mutterpflanze"') && !/aus der Mutter/.test(leer), true);
+  // Oben zuerst die Frage nach dem Stadium: vor Inhaltsverzeichnis, Kapiteln und Disclaimer.
+  pruefe('"Welches Stadium hast du?" steht vor allem anderen Inhalt', leer.indexOf('Welches Stadium hast du?') > 0 && leer.indexOf('Welches Stadium hast du?') < leer.indexOf('care-guide__disclaimer') && !/care-guide__chapter-eyebrow/.test(leer), true);
   pruefe('Stufen 01 bis 05 auf der Tafel, der Steckling ohne Nummer', ['01', '02', '03', '04', '05'].every((n) => leer.includes('care-guide__eintrag-stufe">' + n)) && !/care-guide__eintrag-stufe">06/.test(leer), true);
   pruefe('keine Fotos und keine Karten', /<img|care-guide__karte/.test(leer), false);
   pruefe('Felder fuehren zu den Stadien (Anker)', ['steckling', 'etabliert', 'jungpflanze', 'saemling', 'samen', 'mutterpflanze'].every((st) => leer.includes('href="#stadium-' + st + '"') && leer.includes('id="stadium-' + st + '"')), true);
@@ -77,7 +79,7 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('nur Karten fuer vorhandene Stadien', !/stadium-steckling"/.test(ohneSteckling) && zaehle(ohneSteckling, /data-testid="care-guide-knoten"/g) === 2, true);
   pruefe('keine Kapitelnummern und keine Stufenzaehlung mehr', /care-guide__number|Stufe \d|Zucht/.test(leer), false);
   pruefe('Disclaimer ist eine leise Notiz, kein Kasten', /<aside class="care-guide__disclaimer" role="note"/.test(leer), true);
-  pruefe('Disclaimer steht immer', /care-guide__disclaimer/.test(leer) && /Das sind meine eigenen Erfahrungen unter meinen Bedingungen/.test(leer) && /von Empfehlungen aus Studien abweichen/.test(leer), true);
+  pruefe('Disclaimer steht immer, persoenlich und ohne Studien', /care-guide__disclaimer/.test(leer) && /Das sind meine eigenen Erfahrungswerte/.test(leer) && /bis heute gut gefahren/.test(leer) && !/Studien/.test(leer), true);
   pruefe('Kopf mit Ueberschrift und Foto-Variable', /So pflege ich meine Anthurien\./.test(leer) && /--guide-bild: url\('\/assets\/tungacea-archiv-kopf\.jpg'\)/.test(leer), true);
 
   // Die Vorlage bringt Zeilen fuer Bedingungen, Naehrstoffe und Wasser mit
@@ -127,12 +129,13 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('pH-Kachel da, EC-Kachel fehlt (leer)', /<small>pH<\/small><b>5,8<\/b>/.test(voll) && !/<small>EC<\/small>/.test(voll), true);
   pruefe('Wasserzeile mit Werten, leere Zeile nicht', /pH 5,8 · EC 0,6/.test(voll) && zaehle(voll, /class="care-guide__fact"/g) === 2, true);
   pruefe('Inhaltsverzeichnis: drei Links', zaehle(voll, /care-guide__nav-link/g), 3);
+  pruefe('Reihenfolge: Stadien, Inhaltsverzeichnis, Kapitel, Disclaimer, Fragen', ['id="stadien"', 'care-guide__nav"', 'id="bedingungen"', 'id="wasser"', 'care-guide__disclaimer', 'id="fragen"'].map((w) => voll.indexOf(w)).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
   pruefe('Fragen-Knopf ist der WhatsApp-Link', /care-guide__button/.test(voll) && /wa\.me\/491791627287/.test(voll), true);
   pruefe('ohne gueltige Nummer: kein Fragen-Block', /care-guide__questions/.test(await rendere([block('stadium', { stadium: 'steckling' })], {}, 'de', '')), false);
 
   // Englisch und eigener Disclaimer.
   const en = await rendere([block('stadium', { stadium: 'samen', vpd: '0,6' }), block('stadium', { stadium: 'saemling' })], {}, 'en');
-  pruefe('Englisch: Titel, Disclaimer, Stadien', /How I care for my Anthuriums\./.test(en) && /These are my own experiences under my own conditions/.test(en) && />Sprouted seed</.test(en) && />Seedling</.test(en), true);
+  pruefe('Englisch: Titel, Disclaimer, Stadien', /How I care for my Anthuriums\./.test(en) && /These are my own values from experience/.test(en) && />Sprouted seed</.test(en) && />Seedling</.test(en), true);
   pruefe('Englisch: Einstieg, Einheit und leeres Stadium', /Which stage do you have\?/.test(en) && /VPD 0,6 kPa/.test(en) && />Content coming soon\.</.test(en), true);
   pruefe('Englisch: kein deutsches Wort in Beschriftungen', /Stufe|Inhalt folgt|Pflege nach|Gekeimter|Sämling/.test(en), false);
   pruefe('eigener Disclaimer ersetzt den Standard', /Mein Text/.test(await rendere([], { disclaimer: 'Mein Text' })) && !/Das sind meine eigenen Erfahrungen/.test(await rendere([], { disclaimer: 'Mein Text' })), true);
