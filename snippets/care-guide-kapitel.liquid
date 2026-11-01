@@ -4,8 +4,8 @@
   Dasselbe System wie die Stadien (snippets/care-guide-tafel.liquid): eine
   feine Strichzeichnung, darunter die rote Linie und der Name. Ein Tipp
   springt zum Kapitel. Bedingungen zeigt eine Lampe über einer Pflanze,
-  Nährstoffe eine Tropfflasche, Gießwasser eine Gießkanne. Es erscheinen nur
-  Kapitel, die Inhalt haben.
+  Nährstoffe eine Apothekerflasche mit Blatt-Etikett neben einem Messzylinder,
+  Gießwasser eine Gießkanne. Es erscheinen nur Kapitel, die Inhalt haben.
 
   Annahmen:
   - bedingungen: {Boolean} Kapitel Bedingungen hat Inhalt
@@ -36,7 +36,7 @@
                 {%- when 'bedingungen' -%}
                   <path d="M14 70H50"/><path d="M19 73H45" opacity=".45"/><path d="M18 28h28"/><path d="M20 28v2.6h24V28"/><path d="M32 22v6"/><path d="M24 34l-3 7M32 34v8M40 34l3 7" stroke-dasharray="1.6 2.4" opacity=".7"/><path d="M26.4 60h11.2l-1.6 10h-8Z"/><path d="M32 60c0-4 .6-7 2-9.6"/><g class="b" transform="translate(34 50.6) rotate(-40) scale(0.42) translate(-12 -8)"><path d="M12 33C5.5 26.5 1.5 18.5 2.2 11.2 2.7 6 6.6 4.3 9.8 6.4L12 8l2.2-1.6c3.2-2.1 7.1-.4 7.6 4.8.7 7.3-3.3 15.3-9.8 21.8Z"/><path d="M12 8.5v23"/></g><path d="M31.6 60c-.8-2.4-2.2-4-4.2-5"/><g class="b" transform="translate(27.4 55) rotate(44) scale(0.3) translate(-12 -8)"><path d="M12 33C5.5 26.5 1.5 18.5 2.2 11.2 2.7 6 6.6 4.3 9.8 6.4L12 8l2.2-1.6c3.2-2.1 7.1-.4 7.6 4.8.7 7.3-3.3 15.3-9.8 21.8Z"/><path d="M12 8.5v23"/></g>
                 {%- when 'naehrstoffe' -%}
-                  <path d="M14 70H50"/><path d="M19 73H45" opacity=".45"/><path class="b" d="M24 44h12v24a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2Z"/><path d="M26 44v-4h8v4"/><path d="M28 40v-3.6h4V40"/><path d="M30 36.4v-4"/><path d="M24 52h12" opacity=".45"/><path d="M42.6 56.4c1.4 2 2.2 3.4 2.2 4.4a2.2 2.2 0 0 1-4.4 0c0-1 .8-2.4 2.2-4.4Z"/><path d="M42.6 66.6v1.6" opacity=".6"/>
+                  <path d="M12 70H52"/><path d="M17 73H47" opacity=".45"/><path class="b" d="M17.4 50c0-2 1.4-3.4 3.4-3.6V42h7.4v4.4c2 .2 3.4 1.6 3.4 3.6V68a2 2 0 0 1-2 2H19.4a2 2 0 0 1-2-2Z"/><path d="M20 40h9v2h-9Z"/><path d="M19.4 53.6h10.2M19.4 65.4h10.2" opacity=".45"/><g class="b" transform="translate(24.5 55.6) rotate(0) scale(0.28) translate(-12 -8)"><path d="M12 33C5.5 26.5 1.5 18.5 2.2 11.2 2.7 6 6.6 4.3 9.8 6.4L12 8l2.2-1.6c3.2-2.1 7.1-.4 7.6 4.8.7 7.3-3.3 15.3-9.8 21.8Z"/><path d="M12 8.5v23"/></g><path d="M37 36h9"/><path d="M38.2 36v32.6a1.4 1.4 0 0 0 1.4 1.4h3.8a1.4 1.4 0 0 0 1.4-1.4V36"/><path d="M38.2 54c1.4-.8 3-.8 4.4 0s2.2.6 2.2 0"/><path d="M42.6 41h2.2M43.6 45h1.2M42.6 49h2.2M43.6 57h1.2M42.6 61h2.2M43.6 65h1.2" opacity=".75"/>
                 {%- when 'wasser' -%}
                   <path d="M14 70H50"/><path d="M19 73H45" opacity=".45"/><path class="b" d="M18 50h18l-1.6 18h-14.8Z"/><path d="M36 54.6l9-8.4"/><path d="M45 46.2l2.6-1.2-1 2.8"/><path d="M21 50c0-6 3-9 6-9s6 3 6 9"/><path d="M18.6 56h16.6" opacity=".45"/><path d="M49.4 50.2c.8 1.2 1.2 2 1.2 2.6a1.2 1.2 0 0 1-2.4 0c0-.6.4-1.4 1.2-2.6ZM51.4 57.4c.8 1.2 1.2 2 1.2 2.6a1.2 1.2 0 0 1-2.4 0c0-.6.4-1.4 1.2-2.6ZM48.4 63.2c.8 1.2 1.2 2 1.2 2.6a1.2 1.2 0 0 1-2.4 0c0-.6.4-1.4 1.2-2.6Z"/>
               {%- endcase -%}
