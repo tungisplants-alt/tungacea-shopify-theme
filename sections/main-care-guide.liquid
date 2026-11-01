@@ -257,23 +257,11 @@
       </section>
     {%- endif -%}
 
-    {%- if hat_bedingungen or hat_naehrstoffe or hat_wasser -%}
-      {%- comment -%}
-        Kurzes Inhaltsverzeichnis der übrigen Kapitel, ohne Beschriftung. Es steht
-        unter den Stadien, damit oben zuerst die Frage nach dem Stadium kommt.
-      {%- endcomment -%}
-      <nav class="care-guide__nav" aria-label="{{ 'care_guide.nav_label' | t }}" data-testid="care-guide-nav">
-        {%- if hat_bedingungen -%}
-          <a class="care-guide__nav-link" href="#bedingungen">{{ 'care_guide.nav_conditions' | t }}</a>
-        {%- endif -%}
-        {%- if hat_naehrstoffe -%}
-          <a class="care-guide__nav-link" href="#naehrstoffe">{{ 'care_guide.nav_nutrients' | t }}</a>
-        {%- endif -%}
-        {%- if hat_wasser -%}
-          <a class="care-guide__nav-link" href="#wasser">{{ 'care_guide.nav_water' | t }}</a>
-        {%- endif -%}
-      </nav>
-    {%- endif -%}
+    {%- comment -%}
+      Die übrigen Kapitel als kleine Tafel im System der Stadien, unter den
+      Stadien, damit oben zuerst die Frage nach dem Stadium kommt.
+    {%- endcomment -%}
+    {%- render 'care-guide-kapitel', bedingungen: hat_bedingungen, naehrstoffe: hat_naehrstoffe, wasser: hat_wasser -%}
 
     {%- if hat_bedingungen -%}
       <section class="care-guide__chapter" id="bedingungen" data-testid="care-guide-conditions">

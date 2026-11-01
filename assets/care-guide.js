@@ -6,26 +6,12 @@
  *   Links auf die Kästen, und alle Kästen stehen untereinander.
  * - Ein Link wie /pages/pflegeguide#stadium-steckling wählt das Stadium, auf
  *   das er zeigt.
- * - Die Kapitel-Leiste läuft am Rand weich aus, wo man noch wischen kann
- *   (Attribute data-mehr-links / data-mehr-rechts, das CSS blendet die Kante aus).
  */
 class CareGuide extends HTMLElement {
   connectedCallback() {
-    this.leiste = this.querySelector('.care-guide__nav');
     this.wahlStarten();
     this.hashOeffnen();
     window.addEventListener('hashchange', () => this.hashOeffnen());
-
-    if (this.leiste) {
-      const pruefen = () => {
-        const max = this.leiste.scrollWidth - this.leiste.clientWidth;
-        this.leiste.toggleAttribute('data-mehr-links', this.leiste.scrollLeft > 2);
-        this.leiste.toggleAttribute('data-mehr-rechts', max > 2 && this.leiste.scrollLeft < max - 2);
-      };
-      this.leiste.addEventListener('scroll', pruefen, { passive: true });
-      window.addEventListener('resize', pruefen);
-      pruefen();
-    }
   }
 
   wahlStarten() {

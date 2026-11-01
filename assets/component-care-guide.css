@@ -279,6 +279,7 @@
 .care-guide--wahl .care-guide__stage,
 .care-guide--wahl .care-guide__stage:first-of-type {
   border-top: 0;
+  border-bottom: 0; /* darunter folgt die Kapitel-Tafel mit eigener Linie */
 }
 
 .care-guide--wahl .care-guide__stage-toggle {
@@ -290,28 +291,22 @@
   display: none;
 }
 
-/* ---------- Inhaltsverzeichnis der übrigen Kapitel: eine leise Textzeile ---------- */
-.care-guide__nav {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.6rem 2.2rem;
-  margin: 3.2rem 0 0;
+/* ---------- Die übrigen Kapitel als kleine Tafel ----------
+   Dasselbe System wie die Stadien; ein Tipp springt zum Kapitel. */
+.care-guide__tafel--kapitel {
+  margin-top: 4rem;
 }
 
-.care-guide__nav-link {
-  padding: 0.4rem 0;
-  font-size: 1.2rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: #f2eee8;
-  border-bottom: 1px solid transparent;
+@media screen and (min-width: 750px) {
+  .care-guide__tafel--kapitel {
+    max-width: 66rem;
+  }
 }
 
-.care-guide__nav-link:hover,
-.care-guide__nav-link:focus-visible {
-  border-bottom-color: var(--cg-accent);
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.care-guide__tafel--kapitel) {
+    scroll-behavior: smooth;
+  }
 }
 
 /* ---------- Kapitel ---------- */

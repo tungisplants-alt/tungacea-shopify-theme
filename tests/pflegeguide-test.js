@@ -65,7 +65,7 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('alle Kaesten zu (kein open)', /<details[^>]*\sopen/.test(leer), false);
   pruefe('leeres Stadium zeigt "Inhalt folgt."', zaehle(leer, /Inhalt folgt\./g), 6);
   pruefe('ohne Bedingungen, Naehrstoffe, Wasser: keine solchen Kapitel', /id="bedingungen"|id="naehrstoffe"|id="wasser"/.test(leer), false);
-  pruefe('ohne weitere Kapitel: kein Inhaltsverzeichnis', /care-guide__nav"/.test(leer), false);
+  pruefe('ohne weitere Kapitel: kein Inhaltsverzeichnis', /care-guide__tafel--kapitel/.test(leer), false);
   // Stadien als Herbar-Tafel: sechs Strichzeichnungen in der Reihenfolge der Pflanze.
   pruefe('Einstieg "Welches Stadium hast du?" mit Tafel und sechs Zeichnungen', /Welches Stadium hast du\?/.test(leer) && /care-guide-tafel/.test(leer) && zaehle(leer, /data-testid="care-guide-knoten"/g) === 6 && zaehle(leer, /class="care-guide__zeichnung"/g) === 6, true);
   pruefe('Steckling steht am Ende, ohne Zusatz', leer.indexOf('href="#stadium-steckling"') > leer.indexOf('href="#stadium-mutterpflanze"') && !/aus der Mutter/.test(leer), true);
@@ -95,7 +95,7 @@ const zaehle = (h, re) => (h.match(re) || []).length;
     return block('stadium', { stadium: b.settings.stadium });
   });
   const ausLeer = await rendere(geleert);
-  pruefe('leere Zeilen: keine leeren Kapitel', /id="bedingungen"|id="naehrstoffe"|id="wasser"|care-guide__nav"/.test(ausLeer), false);
+  pruefe('leere Zeilen: keine leeren Kapitel', /id="bedingungen"|id="naehrstoffe"|id="wasser"|care-guide__tafel--kapitel/.test(ausLeer), false);
   const eineZeile = await rendere(geleert.map((b) => b.type === 'bedingung' && b.settings.name === 'Substrat' ? block('bedingung', { name: 'Substrat', wert: 'meine Mischung' }) : b));
   pruefe('ein ausgefuellter Wert zeigt das Kapitel mit genau dieser Zeile', /id="bedingungen"/.test(eineZeile) && zaehle(eineZeile, /class="care-guide__fact"/g) === 1 && /meine Mischung/.test(eineZeile), true);
   const ausVorlage = await rendere(vorlageBloecke, gv.settings);
@@ -129,7 +129,8 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('pH-Kachel da, EC-Kachel fehlt (leer)', /<small>pH<\/small><b>5,8<\/b>/.test(voll) && !/<small>EC<\/small>/.test(voll), true);
   pruefe('Wasserzeile mit Werten, leere Zeile nicht', /pH 5,8 · EC 0,6/.test(voll) && zaehle(voll, /class="care-guide__fact"/g) === 2, true);
   pruefe('Inhaltsverzeichnis: drei Links', zaehle(voll, /care-guide__nav-link/g), 3);
-  pruefe('Reihenfolge: Stadien, Inhaltsverzeichnis, Kapitel, Disclaimer, Fragen', ['id="stadien"', 'care-guide__nav"', 'id="bedingungen"', 'id="wasser"', 'care-guide__disclaimer', 'id="fragen"'].map((w) => voll.indexOf(w)).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
+  pruefe('Kapitel als Tafel mit drei Zeichnungen, nicht als Stadien-Auswahl', /care-guide__tafel--kapitel/.test(voll) && zaehle(voll.slice(voll.indexOf('care-guide__tafel--kapitel'), voll.indexOf('id="bedingungen"')), /class="care-guide__zeichnung"/g) === 3 && !/care-guide__tafel--kapitel"[^>]*data-stadien-wahl/.test(voll), true);
+  pruefe('Reihenfolge: Stadien, Inhaltsverzeichnis, Kapitel, Disclaimer, Fragen', ['id="stadien"', 'care-guide__tafel--kapitel', 'id="bedingungen"', 'id="wasser"', 'care-guide__disclaimer', 'id="fragen"'].map((w) => voll.indexOf(w)).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
   pruefe('Fragen-Knopf ist der WhatsApp-Link', /care-guide__button/.test(voll) && /wa\.me\/491791627287/.test(voll), true);
   pruefe('ohne gueltige Nummer: kein Fragen-Block', /care-guide__questions/.test(await rendere([block('stadium', { stadium: 'steckling' })], {}, 'de', '')), false);
 
