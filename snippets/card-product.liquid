@@ -47,7 +47,6 @@
   {%- capture specimen_fields -%}{%- render 'specimen-card-fields', product: card_product -%}{%- endcapture -%}
   {%- liquid
     assign specimen_parts = specimen_fields | split: '||'
-    assign specimen_id = specimen_parts[0] | strip
     assign specimen_traits = specimen_parts[2] | strip
     assign specimen_status_state = specimen_parts[3] | strip
     assign specimen_status_label = specimen_parts[4] | strip
@@ -167,15 +166,12 @@
         <div class="card__content">
           <div class="card__information specimen-card">
             {%- comment -%}
-              Nummer und Etikett stehen in einer Zeile ueber dem Namen: links
-              die rote Linie mit der Nummer, rechts hoechstens ein Etikett.
+              Ueber dem Namen steht hoechstens ein Etikett. Die Exemplar-Nummer
+              steht nicht auf der Karte, sondern auf der Produktseite im Pass.
             {%- endcomment -%}
             {%- capture specimen_flags -%}{%- render 'specimen-card-flags', product: card_product -%}{%- endcapture -%}
-            {%- if specimen_id != blank or specimen_flags != blank -%}
+            {%- if specimen_flags != blank -%}
               <div class="specimen-card__kopf">
-                {%- if specimen_id != blank -%}
-                  <div class="specimen-card__id" data-testid="specimen-card-id">{{ specimen_id | escape }}</div>
-                {%- endif -%}
                 {{- specimen_flags -}}
               </div>
             {%- endif -%}

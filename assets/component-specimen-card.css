@@ -20,38 +20,14 @@
   text-align: left;
 }
 
-/* Nummer und Etikett in einer Zeile: links die rote Linie mit der Nummer,
-   rechts hoechstens ein Etikett. */
+/* Zeile ueber dem Namen: hoechstens ein Etikett, links ausgerichtet. Die
+   Exemplar-Nummer steht nicht auf der Karte. */
 .product-card-wrapper .specimen-card__kopf {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   gap: 0.6rem 0.8rem;
   min-width: 0;
-}
-.product-card-wrapper .specimen-card__id {
-  white-space: nowrap;
-}
-
-/* Specimen ID — a quiet collection reference, not a SKU */
-.product-card-wrapper .specimen-card__id {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-  font-family: var(--font-body-family);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 1.2rem;
-  line-height: 1;
-  color: var(--tungacea-muted);
-}
-.product-card-wrapper .specimen-card__id::before {
-  content: '';
-  flex: none;
-  width: 1.6rem;
-  height: 1px;
-  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
 }
 
 /* ---------- Etikett: Neu / Selten / Unicorn / Sale ----------
@@ -60,7 +36,6 @@
 .product-card-wrapper .specimen-card__flags {
   display: flex;
   align-items: center;
-  margin-left: auto;
 }
 .product-card-wrapper .specimen-card__flag {
   display: inline-flex;
@@ -90,17 +65,6 @@
 .product-card-wrapper .card__heading.specimen-card__title a {
   font-size: 2rem;
   letter-spacing: -0.005em;
-}
-
-/* Abstammung kursiv in der Serifenschrift, wie die Beschriftung im Herbar */
-.product-card-wrapper .specimen-card__parentage {
-  margin-top: -0.1rem;
-  font-family: var(--font-heading-family);
-  font-style: italic;
-  font-size: 1.5rem;
-  line-height: 1.35;
-  letter-spacing: 0;
-  color: var(--tungacea-muted);
 }
 
 /* Trait · Growth stage — small editorial metadata */
@@ -248,17 +212,6 @@
   }
   .product-card-wrapper .card__heading.specimen-card__title a {
     font-size: 1.6rem;
-  }
-  .product-card-wrapper .specimen-card__id {
-    font-size: 1.2rem;
-    letter-spacing: 0.1em;
-    gap: 0.6rem;
-  }
-  .product-card-wrapper .specimen-card__id::before {
-    width: 1.2rem;
-  }
-  .product-card-wrapper .specimen-card__parentage {
-    font-size: 1.3rem;
   }
   .product-card-wrapper .specimen-card__traits {
     font-size: 1.2rem;
