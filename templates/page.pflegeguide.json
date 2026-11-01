@@ -24,7 +24,10 @@
         "wasser_jungpflanze": {"type": "wasser", "settings": {"stadium": "jungpflanze", "ph": "5,8", "ec": "0,6"}},
         "wasser_saemling": {"type": "wasser", "settings": {"stadium": "saemling", "ph": "5,8", "ec": "0,4"}},
         "wasser_samen": {"type": "wasser", "settings": {"stadium": "samen", "ph": "6,0", "ec": "0,2"}},
-        "wasser_mutterpflanze": {"type": "wasser", "settings": {"stadium": "mutterpflanze", "ph": "6,0", "ec": "1,0"}}
+        "wasser_mutterpflanze": {"type": "wasser", "settings": {"stadium": "mutterpflanze", "ph": "6,0", "ec": "1,0"}},
+        "kapitel_ankunft": {"type": "kapitel", "settings": {"thema": "ankunft", "titel": "", "einleitung": "", "text": "<p>Pack die Pflanze am besten gleich aus, auch wenn es spät ist. Ich verpacke so, dass sie zwei, drei Tage im Karton gut übersteht, länger nicht.</p><ul><li>Nicht sofort umtopfen. Lass sie eine Woche in ihrem Substrat ankommen.</li><li>Die ersten Tage etwas höhere Luftfeuchte und kein direktes Licht.</li><li>Stell sie eine Woche getrennt von deinen anderen Pflanzen auf.</li><li>Bei Kälte liegt ein Heatpack bei. Nimm es direkt nach dem Auspacken heraus.</li></ul>"}},
+        "kapitel_substrat": {"type": "kapitel", "settings": {"thema": "substrat", "titel": "", "einleitung": "", "text": "<p>Ich mische grob: Pinienrinde, Perlite, Bims und etwas Sphagnum. Die Wurzeln sollen Luft bekommen und nie im Nassen stehen.</p><ul><li>Umtopfen, wenn die Wurzeln den Topf ausfüllen, meist einmal im Jahr.</li><li>Der neue Topf nur eine Nummer größer.</li><li>In durchsichtigen Töpfen siehst du, wie es den Wurzeln geht.</li></ul>"}},
+        "kapitel_probleme": {"type": "kapitel", "settings": {"thema": "probleme", "titel": "", "einleitung": "", "text": "<ul><li><strong>Gelbe Blätter unten:</strong> meist normal, ältere Blätter gehen. Werden viele gelb, steht die Pflanze eher zu nass.</li><li><strong>Braune Ränder:</strong> zu trockene Luft oder zu viel Dünger.</li><li><strong>Silbrige Flecken:</strong> oft Thripse. Blattunterseiten prüfen und die Pflanze getrennt stellen.</li><li><strong>Feine Gespinste:</strong> Spinnmilben. Luftfeuchte erhöhen und behandeln.</li></ul><p>Wenn du unsicher bist, schreib mir, am besten mit einem Foto.</p>"}}
       },
       "block_order": [
         "stadium_steckling",
@@ -48,7 +51,10 @@
         "wasser_jungpflanze",
         "wasser_saemling",
         "wasser_samen",
-        "wasser_mutterpflanze"
+        "wasser_mutterpflanze",
+        "kapitel_ankunft",
+        "kapitel_substrat",
+        "kapitel_probleme"
       ],
       "settings": {"color_scheme": "scheme-1", "padding_bottom": 80, "ph_ziel": "5,8–6,2", "ec_ziel": "0,4–1,0"}
     }

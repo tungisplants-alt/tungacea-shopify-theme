@@ -58,6 +58,9 @@
   assign hat_stadien = false
   assign hat_naehrstoffe = false
   assign hat_wasser = false
+  assign hat_ankunft = false
+  assign hat_substrat = false
+  assign hat_probleme = false
   comment
     Ein Kapitel erscheint erst, wenn mindestens eine Zeile ausgefuellt ist.
     Die Vorlage bringt leere Zeilen mit (Aufstellung, Substrat, Wasser je
@@ -79,6 +82,17 @@
       when 'wasser'
         if block.settings.ph != blank or block.settings.ec != blank
           assign hat_wasser = true
+        endif
+      when 'kapitel'
+        if block.settings.text != blank
+          case block.settings.thema
+            when 'ankunft'
+              assign hat_ankunft = true
+            when 'substrat'
+              assign hat_substrat = true
+            when 'probleme'
+              assign hat_probleme = true
+          endcase
         endif
     endcase
   endfor
@@ -261,7 +275,20 @@
       Die übrigen Kapitel als kleine Tafel im System der Stadien, unter den
       Stadien, damit oben zuerst die Frage nach dem Stadium kommt.
     {%- endcomment -%}
-    {%- render 'care-guide-kapitel', bedingungen: hat_bedingungen, naehrstoffe: hat_naehrstoffe, wasser: hat_wasser -%}
+    {%- render 'care-guide-kapitel',
+      ankunft: hat_ankunft,
+      bedingungen: hat_bedingungen,
+      substrat: hat_substrat,
+      naehrstoffe: hat_naehrstoffe,
+      wasser: hat_wasser,
+      probleme: hat_probleme
+    -%}
+
+    {%- comment -%}
+      Die Kapitel stehen in der Reihenfolge der Tafel: Ankunft, Bedingungen,
+      Substrat, Nährstoffe, Gießwasser, Probleme.
+    {%- endcomment -%}
+    {%- render 'care-guide-freies-kapitel', bloecke: section.blocks, thema: 'ankunft' -%}
 
     {%- if hat_bedingungen -%}
       <section class="care-guide__chapter" id="bedingungen" data-testid="care-guide-conditions">
@@ -282,6 +309,8 @@
         </dl>
       </section>
     {%- endif -%}
+
+    {%- render 'care-guide-freies-kapitel', bloecke: section.blocks, thema: 'substrat' -%}
 
     {%- if hat_naehrstoffe -%}
       <section class="care-guide__chapter" id="naehrstoffe" data-testid="care-guide-nutrients">
@@ -371,6 +400,8 @@
         </dl>
       </section>
     {%- endif -%}
+
+    {%- render 'care-guide-freies-kapitel', bloecke: section.blocks, thema: 'probleme' -%}
 
     {%- comment -%}
       Der Disclaimer steht am Ende: erst die Pflege, dann der Hinweis, dass es
@@ -477,6 +508,27 @@
         },
         { "type": "text", "id": "zweck", "label": "Wofür" },
         { "type": "text", "id": "dosierung", "label": "Dosierung und wann" }
+      ]
+    },
+    {
+      "type": "kapitel",
+      "name": "Weiteres Kapitel",
+      "settings": [
+        { "type": "paragraph", "content": "Ein frei geschriebenes Kapitel mit eigenem Feld auf der Tafel: Ankunft, Substrat und Umtopfen oder Probleme. Ohne Text erscheint es nicht." },
+        {
+          "type": "select",
+          "id": "thema",
+          "label": "Thema",
+          "options": [
+            { "value": "ankunft", "label": "Ankunft" },
+            { "value": "substrat", "label": "Substrat und Umtopfen" },
+            { "value": "probleme", "label": "Probleme" }
+          ],
+          "default": "ankunft"
+        },
+        { "type": "text", "id": "titel", "label": "Überschrift", "info": "Leer lassen: Dann wird übersetzt." },
+        { "type": "text", "id": "einleitung", "label": "Einleitung", "info": "Leer lassen: Dann wird übersetzt." },
+        { "type": "richtext", "id": "text", "label": "Text" }
       ]
     },
     {

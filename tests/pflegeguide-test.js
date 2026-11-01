@@ -100,6 +100,17 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('ein ausgefuellter Wert zeigt das Kapitel mit genau dieser Zeile', /id="bedingungen"/.test(eineZeile) && zaehle(eineZeile, /class="care-guide__fact"/g) === 1 && /meine Mischung/.test(eineZeile), true);
   const ausVorlage = await rendere(vorlageBloecke, gv.settings);
   pruefe('gefuellte Vorlage zeigt alle Kapitel und die Kacheln', ['id="bedingungen"', 'id="naehrstoffe"', 'id="wasser"', 'care-guide__tile'].every((x) => ausVorlage.includes(x)), true);
+  // Sechs Felder auf der Kapitel-Tafel, in der Reihenfolge, in der man liest;
+  // die Kapitel stehen auf der Seite in derselben Reihenfolge.
+  const reihe6 = ['ankunft', 'bedingungen', 'substrat', 'naehrstoffe', 'wasser', 'probleme'];
+  const tafel6 = ausVorlage.slice(ausVorlage.indexOf('care-guide__tafel--kapitel'), ausVorlage.indexOf('</nav>', ausVorlage.indexOf('care-guide__tafel--kapitel')));
+  pruefe('Kapitel-Tafel: sechs Felder in der Lesereihenfolge', zaehle(tafel6, /class="care-guide__zeichnung"/g) === 6 && reihe6.map((k) => tafel6.indexOf('href="#' + k + '"')).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
+  pruefe('Kapitel auf der Seite in derselben Reihenfolge', reihe6.map((k) => ausVorlage.indexOf('id="' + k + '"')).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
+  pruefe('freie Kapitel mit uebersetzter Ueberschrift', /Wenn die Pflanze ankommt/.test(ausVorlage) && /Substrat und Umtopfen/.test(ausVorlage) && /Wenn etwas nicht stimmt/.test(ausVorlage), true);
+  const ohneText = await rendere([block('stadium', { stadium: 'steckling' }), block('kapitel', { thema: 'probleme', titel: 'Leer', einleitung: '', text: '' })]);
+  pruefe('freies Kapitel ohne Text: kein Kapitel, kein Feld', /id="probleme"|href="#probleme"/.test(ohneText), false);
+  const eigenTitel = await rendere([block('stadium', { stadium: 'steckling' }), block('kapitel', { thema: 'ankunft', titel: 'Auspacken', einleitung: '', text: '<p>Text.</p>' })]);
+  pruefe('eigene Ueberschrift ersetzt die Vorgabe', /<h2 class="care-guide__title">Auspacken<\/h2>/.test(eigenTitel) && !/Wenn die Pflanze ankommt/.test(eigenTitel), true);
 
   // Voller Inhalt.
   const voll = await rendere([

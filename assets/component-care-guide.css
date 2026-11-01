@@ -297,10 +297,22 @@
   margin-top: 4rem;
 }
 
-@media screen and (min-width: 750px) {
-  .care-guide__tafel--kapitel {
-    max-width: 66rem;
-  }
+/* Frei geschriebene Kapitel: Fließtext mit Listen, wie der Text im Stadium */
+.care-guide__text--kapitel {
+  max-width: 62rem;
+}
+
+.care-guide__text--kapitel ul {
+  margin: 1.2rem 0 0;
+  padding-left: 1.8rem;
+}
+
+.care-guide__text--kapitel li + li {
+  margin-top: 0.6rem;
+}
+
+.care-guide__text--kapitel li::marker {
+  color: var(--cg-ox);
 }
 
 @media (prefers-reduced-motion: no-preference) {
