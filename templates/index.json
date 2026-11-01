@@ -67,7 +67,7 @@
         "description": "<p>Eine limitierte Auswahl neu verfügbarer Exemplare.</p>",
         "show_description": true,
         "description_style": "uppercase",
-        "columns_desktop": 4,
+        "columns_desktop": 3,
         "enable_desktop_slider": true,
         "full_width": false,
         "show_view_all": true,
