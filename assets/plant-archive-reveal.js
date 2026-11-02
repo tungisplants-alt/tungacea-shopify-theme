@@ -14,7 +14,7 @@
   if (!archiv || !('IntersectionObserver' in window)) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const stuecke = Array.from(archiv.querySelectorAll('.plant-card, .plant-focus'));
+  const stuecke = Array.from(archiv.querySelectorAll('.plant-card'));
   if (stuecke.length === 0) return;
 
   const beobachter = new IntersectionObserver(
