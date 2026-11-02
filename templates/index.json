@@ -67,7 +67,7 @@
         "description": "<p>Eine limitierte Auswahl neu verfügbarer Exemplare.</p>",
         "show_description": true,
         "description_style": "uppercase",
-        "columns_desktop": 4,
+        "columns_desktop": 3,
         "enable_desktop_slider": true,
         "full_width": false,
         "show_view_all": true,
@@ -231,7 +231,7 @@
     "collector_access": {
       "type": "collector-access",
       "settings": {
-        "eyebrow": "SAMMLERZUGANG / 01",
+        "eyebrow": "SAMMLERZUGANG",
         "heading": "Erfahre zuerst, was als Nächstes wächst.",
         "heading_size": "h1",
         "body": "<p>Ich informiere dich frühzeitig über neue Verkaufsstarts, ausgewählte Sämlinge und Ergänzungen im Archiv.</p>",

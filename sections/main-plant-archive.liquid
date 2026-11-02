@@ -87,7 +87,6 @@
           {%- continue -%}
         {%- endif -%}
         {%- assign eigene = eigene | plus: 1 -%}
-
         {%- if e.mutter_id.value != blank -%}
           {%- assign id_roh = id_roh | append: e.mutter_id.value | append: '|' -%}
         {%- endif -%}

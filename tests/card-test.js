@@ -55,7 +55,7 @@ const faelle = [
   { name: 'Verkauft, nur Groesse', available: false,
     titel: 'Anthurium Regale',
     mf: mf({ specimen_id: 'TNG-0104', blattlaenge_cm: 34 }),
-    erwartet: ['TNG-0104', '', '34 cm', 'sold', 'Verkauft'] },
+    erwartet: ['TNG-0104', '', '34 cm', 'sold', 'Vergeben'] },
 
   { name: 'Species — reine Art, keine Hybride', available: true,
     titel: 'Anthurium Ralph Lynam OG Clone',
@@ -121,7 +121,7 @@ const faelle = [
         if (process.env.ZEIGE) console.log(f.name.padEnd(48) + ' -> ' + JSON.stringify(parts));
       } else {
         checks++;
-        if (/Verfügbar|Verkauft|Sämling|Steckling|Jungpflanze|Unbekannt/.test(payload)) {
+        if (/Verfügbar|Verkauft|Vergeben|Sämling|Steckling|Jungpflanze|Unbekannt/.test(payload)) {
           fails++; console.log('FEHLER [en] ' + f.name + ': deutscher Text -> ' + payload);
         }
       }

@@ -1,0 +1,13 @@
+{%- comment -%}
+  Tungacea — übersetzter Name eines Stadiums im Pflegeguide. Dieselben Wörter
+  wie am Produkt, damit Guide und Laden gleich sprechen.
+  Annahmen: stadium: {String} steckling | etabliert | jungpflanze | saemling | samen | mutterpflanze
+{%- endcomment -%}
+{%- case stadium -%}
+  {%- when 'steckling' -%}{{ 'products.product.specimen.stage_cutting' | t }}
+  {%- when 'etabliert' -%}{{ 'products.product.specimen.stage_established' | t }}
+  {%- when 'jungpflanze' -%}{{ 'products.product.specimen.stage_young' | t }}
+  {%- when 'saemling' -%}{{ 'products.product.specimen.stage_seedling' | t }}
+  {%- when 'samen' -%}{{ 'products.product.specimen.stage_seeds' | t }}
+  {%- when 'mutterpflanze' -%}{{ 'products.product.specimen.stage_mother' | t }}
+{%- endcase -%}

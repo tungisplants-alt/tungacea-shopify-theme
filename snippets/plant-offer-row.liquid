@@ -33,6 +33,7 @@
     </span>
   </a>
   {%- if produkt.available -%}
-    <span class="plant-profile__offer-price">{{ produkt.price | money }}</span>
+    {%- comment -%} Wie auf Karten und Produktseite: ganze Euro ohne ",00", Leerzeichen vor dem €. {%- endcomment -%}
+    <span class="plant-profile__offer-price">{{ produkt.price | money_without_trailing_zeros | replace: '€', ' €' }}</span>
   {%- endif -%}
 </li>

@@ -1,0 +1,81 @@
+{% comment %}
+  Tungacea — die übrigen Kapitel des Pflegeguides als Tafel.
+
+  Dasselbe System wie die Stadien (snippets/care-guide-tafel.liquid): eine
+  feine Strichzeichnung, darunter die rote Linie und der Name. Ein Tipp
+  springt zum Kapitel. Bis zu sechs Felder in der Reihenfolge, in der man
+  liest: Ankunft (geschlossener Karton mit Blatt), Bedingungen (Thermometer
+  und Tropfen), Substrat (Topf im Schnitt mit grober Mischung), Nährstoffe
+  (Apothekerflasche mit Blatt-Etikett neben einem Messzylinder), Gießwasser
+  (Gießkanne), Probleme (Blatt unter der Lupe). Es erscheinen nur Kapitel,
+  die Inhalt haben.
+
+  Annahmen:
+  - ankunft, bedingungen, substrat, naehrstoffe, wasser, probleme:
+    {Boolean} das Kapitel hat Inhalt
+{% endcomment %}
+{%- liquid
+  assign kapitel = ''
+  if ankunft
+    assign kapitel = kapitel | append: 'ankunft,'
+  endif
+  if bedingungen
+    assign kapitel = kapitel | append: 'bedingungen,'
+  endif
+  if substrat
+    assign kapitel = kapitel | append: 'substrat,'
+  endif
+  if naehrstoffe
+    assign kapitel = kapitel | append: 'naehrstoffe,'
+  endif
+  if wasser
+    assign kapitel = kapitel | append: 'wasser,'
+  endif
+  if probleme
+    assign kapitel = kapitel | append: 'probleme,'
+  endif
+  assign kapitel = kapitel | split: ','
+-%}
+{%- if kapitel.size > 0 -%}
+  <div class="care-guide__themen" data-testid="care-guide-themen">
+  <h2 class="care-guide__title">{{ 'care_guide.topics_title' | t }}</h2>
+  <p class="care-guide__chapter-lead">{{ 'care_guide.topics_lead' | t }}</p>
+  <nav class="care-guide__tafel care-guide__tafel--kapitel" aria-label="{{ 'care_guide.nav_label' | t }}" data-testid="care-guide-nav" style="--eintraege: {{ kapitel.size }};">
+    <ol class="care-guide__tafel-liste" role="list">
+      {%- for k in kapitel -%}
+        <li>
+          <a class="care-guide__eintrag care-guide__nav-link" href="#{{ k }}">
+            <svg class="care-guide__zeichnung" viewBox="0 18 64 62" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+              {%- case k -%}
+                {%- when 'ankunft' -%}
+                  <path d="M14 70H50"/><path d="M19 73H45" opacity=".45"/><path class="b" d="M16 50h32v20H16Z"/><path d="M16 50l4-5h24l4 5"/><path d="M32 45v25" opacity=".6"/><g class="b" transform="translate(32 55) rotate(0) scale(0.32) translate(-12 -8)"><path d="M12 33C5.5 26.5 1.5 18.5 2.2 11.2 2.7 6 6.6 4.3 9.8 6.4L12 8l2.2-1.6c3.2-2.1 7.1-.4 7.6 4.8.7 7.3-3.3 15.3-9.8 21.8Z"/><path d="M12 8.5v23"/></g><path d="M26.6 64.6h10.8" opacity=".45"/>
+                {%- when 'bedingungen' -%}
+                  <path d="M14 70H50"/><path d="M19 73H45" opacity=".45"/><path d="M22 40a2 2 0 0 1 4 0v18.4a4 4 0 1 1-4 0Z"/><circle cx="24" cy="62" r="2"/><path d="M24 60v-14" /><path d="M38 46c1.7600000000000002 2.64 2.64 4.4 2.64 5.720000000000001a2.64 2.64 0 0 1-5.28 0c0-1.32 0.8800000000000001-3.08 2.64-5.720000000000001Z"/><path d="M32.6 58h11.6" opacity=".45"/><path d="M34 62.4h8.8M35.4 66.6h6" opacity=".7"/>
+                {%- when 'substrat' -%}
+                  <path d="M14 70H50"/><path d="M19 73H45" opacity=".45"/><path d="M32 50c0-4 .6-7.4 2.2-10.4"/><g class="b" transform="translate(34.2 39.6) rotate(-42) scale(0.48) translate(-12 -8)"><path d="M12 33C5.5 26.5 1.5 18.5 2.2 11.2 2.7 6 6.6 4.3 9.8 6.4L12 8l2.2-1.6c3.2-2.1 7.1-.4 7.6 4.8.7 7.3-3.3 15.3-9.8 21.8Z"/><path d="M12 8.5v23"/></g><path d="M31.4 50c-1-3-2.6-5.2-4.8-6.4"/><g class="b" transform="translate(26.6 43.6) rotate(46) scale(0.32) translate(-12 -8)"><path d="M12 33C5.5 26.5 1.5 18.5 2.2 11.2 2.7 6 6.6 4.3 9.8 6.4L12 8l2.2-1.6c3.2-2.1 7.1-.4 7.6 4.8.7 7.3-3.3 15.3-9.8 21.8Z"/><path d="M12 8.5v23"/></g><path class="b" d="M20 50h24l-2.6 20H22.6Z"/><path d="M23.6 55.4l2.4-1.2 1.6 1.8-2 1.4ZM30 54.6l2.2.4.4 2-2.4.2ZM37 55.2l2.4-.4.6 2.2-2.6.4Z" /><path d="M25 61.6l2-1 2 1.2-1.6 1.6ZM33.4 60.8l2.6.2-.2 2.4-2.4-.4ZM28.6 66l2.4-.6 1 2-2.6.4ZM36.6 65.6l2 .8-.6 2-2-.4Z"/><circle cx="30.4" cy="59.4" r=".7"/><circle cx="38.8" cy="60.4" r=".7"/><circle cx="25.6" cy="66.6" r=".7"/><circle cx="34" cy="67.4" r=".7"/>
+                {%- when 'naehrstoffe' -%}
+                  <path d="M12 70H52"/><path d="M17 73H47" opacity=".45"/><path class="b" d="M17.4 50c0-2 1.4-3.4 3.4-3.6V42h7.4v4.4c2 .2 3.4 1.6 3.4 3.6V68a2 2 0 0 1-2 2H19.4a2 2 0 0 1-2-2Z"/><path d="M20 40h9v2h-9Z"/><path d="M19.4 53.6h10.2M19.4 65.4h10.2" opacity=".45"/><g class="b" transform="translate(24.5 55.6) rotate(0) scale(0.28) translate(-12 -8)"><path d="M12 33C5.5 26.5 1.5 18.5 2.2 11.2 2.7 6 6.6 4.3 9.8 6.4L12 8l2.2-1.6c3.2-2.1 7.1-.4 7.6 4.8.7 7.3-3.3 15.3-9.8 21.8Z"/><path d="M12 8.5v23"/></g><path d="M37 36h9"/><path d="M38.2 36v32.6a1.4 1.4 0 0 0 1.4 1.4h3.8a1.4 1.4 0 0 0 1.4-1.4V36"/><path d="M38.2 54c1.4-.8 3-.8 4.4 0s2.2.6 2.2 0"/><path d="M42.6 41h2.2M43.6 45h1.2M42.6 49h2.2M43.6 57h1.2M42.6 61h2.2M43.6 65h1.2" opacity=".75"/>
+                {%- when 'wasser' -%}
+                  <path d="M14 70H50"/><path d="M19 73H45" opacity=".45"/><path class="b" d="M18 50h18l-1.6 18h-14.8Z"/><path d="M36 54.6l9-8.4"/><path d="M45 46.2l2.6-1.2-1 2.8"/><path d="M21 50c0-6 3-9 6-9s6 3 6 9"/><path d="M18.6 56h16.6" opacity=".45"/><path d="M49.4 50.2c.8 1.2 1.2 2 1.2 2.6a1.2 1.2 0 0 1-2.4 0c0-.6.4-1.4 1.2-2.6ZM51.4 57.4c.8 1.2 1.2 2 1.2 2.6a1.2 1.2 0 0 1-2.4 0c0-.6.4-1.4 1.2-2.6ZM48.4 63.2c.8 1.2 1.2 2 1.2 2.6a1.2 1.2 0 0 1-2.4 0c0-.6.4-1.4 1.2-2.6Z"/>
+                {%- when 'probleme' -%}
+                  <path d="M14 70H50"/><path d="M19 73H45" opacity=".45"/><path d="M27 70c0-6 .8-11 2.6-15.6"/><g class="b" transform="translate(29.6 54.4) rotate(-26) scale(0.62) translate(-12 -8)"><path d="M12 33C5.5 26.5 1.5 18.5 2.2 11.2 2.7 6 6.6 4.3 9.8 6.4L12 8l2.2-1.6c3.2-2.1 7.1-.4 7.6 4.8.7 7.3-3.3 15.3-9.8 21.8Z"/><path d="M12 8.5v23"/></g><circle class="b" cx="41" cy="44" r="6.4"/><circle cx="41" cy="44" r="4.8" opacity=".35"/><path d="M45.6 48.6l5 5"/><path d="M45.2 49.6l1.8-1.8 4.6 4.6-1.8 1.8Z"/><circle cx="39.6" cy="43" r=".6"/><circle cx="42.4" cy="45.4" r=".6"/>
+              {%- endcase -%}
+            </svg>
+            <span class="care-guide__eintrag-stufe"></span>
+            <span class="care-guide__eintrag-name">
+              {%- case k -%}
+                {%- when 'ankunft' -%}{{ 'care_guide.nav_arrival' | t }}
+                {%- when 'bedingungen' -%}{{ 'care_guide.nav_conditions' | t }}
+                {%- when 'substrat' -%}{{ 'care_guide.nav_substrate' | t }}
+                {%- when 'naehrstoffe' -%}{{ 'care_guide.nav_nutrients' | t }}
+                {%- when 'wasser' -%}{{ 'care_guide.nav_water' | t }}
+                {%- when 'probleme' -%}{{ 'care_guide.nav_problems' | t }}
+              {%- endcase -%}
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </nav>
+  </div>
+{%- endif -%}

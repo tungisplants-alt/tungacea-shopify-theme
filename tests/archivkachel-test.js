@@ -91,8 +91,10 @@ const faelle = [
     eintrag: pflanze('k-zwei', {
       bilder: { value: [bild('fremdes.jpg', fremd, true), bild('eigenes.jpg', null, null)] },
     }),
-    erwartet: ['cdn://fremdes.jpg'],
-    verboten: ['cdn://eigenes.jpg', 'plant-card__image--placeholder'],
+    // Das eigene Bild dahinter ist jetzt das zweite Foto zum Überblenden.
+    erwartet: ['cdn://fremdes.jpg', 'class="plant-card__image plant-card__image--zweites"'],
+    verboten: ['plant-card__image--placeholder'],
+    reihenfolge: ['cdn://fremdes.jpg', 'cdn://eigenes.jpg'],
   },
   {
     name: 'Alle Bilder ungeklaert — Platzhalter statt Bild',
@@ -112,6 +114,45 @@ const faelle = [
     }),
     erwartet: ['cdn://fremdes.jpg'],
     verboten: ['Foto:', '@yolanda_picklesauce'],
+  },
+
+  // --- Zweites Foto zum Überblenden ---
+  {
+    name: 'Zweites Foto: das naechste erlaubte, ein gesperrtes dazwischen wird uebersprungen',
+    eintrag: pflanze('k-zweit-a', {
+      bilder: { value: [bild('eins.jpg'), bild('gesperrt.jpg', fremd, false), bild('zwei.jpg')] },
+    }),
+    erwartet: ['cdn://eins.jpg', 'cdn://zwei.jpg', 'plant-card__image--zweites'],
+    verboten: ['cdn://gesperrt.jpg'],
+    reihenfolge: ['cdn://eins.jpg', 'cdn://zwei.jpg'],
+  },
+  {
+    name: 'Nur ein Foto: kein zweites Bild',
+    eintrag: pflanze('k-zweit-b', { bilder: { value: [bild('eins.jpg')] } }),
+    erwartet: ['cdn://eins.jpg'],
+    verboten: ['plant-card__image--zweites'],
+  },
+  {
+    name: 'Alter Weg mit drei Fotos: genau zwei Bilder',
+    eintrag: pflanze('k-zweit-c', { fotos: { value: ['cdn://a.jpg', 'cdn://b.jpg', 'cdn://c.jpg'] } }),
+    erwartet: ['cdn://a.jpg', 'cdn://b.jpg', 'plant-card__image--zweites'],
+    verboten: ['cdn://c.jpg'],
+  },
+  {
+    name: 'Alter Weg, fremdes Foto ohne Freigabe: auch kein zweites',
+    eintrag: pflanze('k-zweit-d', {
+      fotos: { value: ['cdn://a.jpg', 'cdn://b.jpg'] }, fotograf: feld(fremd), bildfreigabe: feld(false),
+    }),
+    erwartet: ['plant-card__image--placeholder'],
+    verboten: ['cdn://a.jpg', 'cdn://b.jpg'],
+  },
+
+  // --- Keine Abstammungszeile: der Name nennt die Kreuzung meist schon ---
+  {
+    name: 'Abstammung steht nicht auf der Kachel, auch wenn sie eingetragen ist',
+    eintrag: pflanze('k-abst-a', { kreuzung: feld("'King of Spades' × 'Michelle'"), generation: feld('F1') }),
+    erwartet: ['plant-card-meta'],
+    verboten: ['plant-card-cross', 'King of Spades'],
   },
 
   // --- Der alte Weg bleibt unveraendert ---
@@ -227,6 +268,13 @@ const faelle = [
         for (const v of f.verboten) {
           checks++;
           if (html.includes(v)) { fails++; console.log('FEHLER ' + f.name + ': enthaelt "' + v + '"'); }
+        }
+        if (f.reihenfolge) {
+          checks++;
+          const pos = f.reihenfolge.map(r => html.indexOf(r));
+          if (pos.some((p, i) => p < 0 || (i > 0 && p < pos[i - 1]))) {
+            fails++; console.log('FEHLER ' + f.name + ': Reihenfolge stimmt nicht ' + JSON.stringify(f.reihenfolge));
+          }
         }
       } else {
         checks++;

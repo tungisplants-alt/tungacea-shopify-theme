@@ -344,9 +344,9 @@
         Etiketten tragen die Bedeutung, auch ohne Bildschirm.
       {%- endcomment -%}
       <div class="specimen-passport__cross" data-testid="specimen-cross">
-        {%- render 'specimen-parent', eintrag: mutter, rolle: 'mutter', thing_word: thing_word, max_fotos: 1 -%}
+        {%- render 'specimen-parent', eintrag: mutter, rolle: 'mutter', thing_word: thing_word, max_fotos: 1, kurz: true -%}
         <span class="specimen-passport__cross-sign" aria-hidden="true">&times;</span>
-        {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word, max_fotos: 1 -%}
+        {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word, max_fotos: 1, kurz: true -%}
       </div>
     {%- else -%}
       {%- if mutter != blank -%}
@@ -392,6 +392,11 @@
       belongs after the case it qualifies, not in front of it.
     {%- endcomment -%}
     {%- if hint_title != blank -%}
+      {%- comment -%}
+        Kein eigener Link zum Pflegeguide: die Zeile "Pflegeanleitung" steht
+        direkt darunter und fuehrt dorthin. Zwei Links nacheinander zum selben
+        Ziel waren doppelt.
+      {%- endcomment -%}
       <p class="specimen-passport__hint" role="note" data-testid="specimen-hint">
         <strong>{{ hint_title }}</strong> {{ hint_body }}
       </p>

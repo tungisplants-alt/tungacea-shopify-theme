@@ -26,13 +26,25 @@
   assign price_min = product.price_min
   assign price_max = product.price_max
   assign available = target.available | default: false
-  assign money_price = price | money
-  assign money_price_min = price_min | money
-  assign money_price_max = price_max | money
+  comment
+    Ganze Euro ohne ",00": 230 € liest sich ruhiger und kürzer als 230,00 €.
+    Gilt für Karten und Produktseite, mit und ohne Währungscode. Vor dem
+    Eurozeichen steht ein Leerzeichen, wie im Deutschen üblich; steht im
+    Shopformat schon eines, fasst der Browser beide zu einem zusammen.
+    Preise mit Cent behalten ihre Cent (34,99 bleibt 34,99). Warenkorb und
+    Kasse zeigen weiter das volle Format des Shops.
+  endcomment
+  assign money_price = price | money_without_trailing_zeros | replace: '€', ' €'
+  assign money_price_min = price_min | money_without_trailing_zeros | replace: '€', ' €'
+  assign money_price_max = price_max | money_without_trailing_zeros | replace: '€', ' €'
   if settings.currency_code_enabled
-    assign money_price = price | money_with_currency
-    assign money_price_min = price_min | money_with_currency
-    assign money_price_max = price_max | money_with_currency
+    comment
+      Fuer das Format mit Waehrung gibt es keinen eigenen Filter ohne Nullen.
+      Der Shop schreibt Cent mit Komma, also faellt ",00" einfach weg.
+    endcomment
+    assign money_price = price | money_with_currency | remove: ',00' | replace: '€', ' €'
+    assign money_price_min = price_min | money_with_currency | remove: ',00' | replace: '€', ' €'
+    assign money_price_max = price_max | money_with_currency | remove: ',00' | replace: '€', ' €'
   endif
 
   if target == product and product.price_varies
@@ -68,9 +80,9 @@
               <span>
                 <s class="price-item price-item--regular variant-item__old-price">
                   {% if settings.currency_code_enabled %}
-                    {{ compare_at_price | money_with_currency }}
+                    {{ compare_at_price | money_with_currency | remove: ',00' | replace: '€', ' €' }}
                   {% else %}
-                    {{ compare_at_price | money }}
+                    {{ compare_at_price | money_without_trailing_zeros | replace: '€', ' €' }}
                   {% endif %}
                 </s>
               </span>
@@ -96,9 +108,9 @@
           <span>
             <s class="price-item price-item--regular">
               {% if settings.currency_code_enabled %}
-                {{ compare_at_price | money_with_currency }}
+                {{ compare_at_price | money_with_currency | remove: ',00' | replace: '€', ' €' }}
               {% else %}
-                {{ compare_at_price | money }}
+                {{ compare_at_price | money_without_trailing_zeros | replace: '€', ' €' }}
               {% endif %}
             </s>
           </span>

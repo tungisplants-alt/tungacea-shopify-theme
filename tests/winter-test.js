@@ -25,6 +25,8 @@ engine.registerFilter('money', (v) => {
   const n = Number(v) / 100;
   return n.toFixed(2).replace('.', ',') + ' €';
 });
+// Shopformat "{{amount_with_comma_separator}}€": ohne Leerzeichen; das Snippet setzt es selbst.
+engine.registerFilter('money_without_trailing_zeros', (v) => (Number(v) / 100).toFixed(2).replace('.', ',').replace(',00', '') + '€');
 engine.registerFilter('t', function (key) {
   const hit = String(key).split('.').reduce((o, k) => (o == null ? undefined : o[k]), LOC[locale]);
   if (hit === undefined) throw new Error('FEHLENDER Schluessel [' + locale + ']: ' + key);

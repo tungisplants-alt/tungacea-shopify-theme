@@ -1,0 +1,39 @@
+{% comment %}
+  Tungacea — Zeile "Pflegeanleitung" auf der Produktseite.
+
+  Zugeklappte Zeile vor "Versand & Lieferung": aufgeklappt ein kurzer Satz und
+  der Knopf zum Pflegeguide. Der Link führt zum Anfang des Guides, nicht zu
+  einem Stadium. Gibt es die Seite /pages/pflegeguide nicht (oder ist sie nicht
+  veröffentlicht), erscheint die Zeile nicht, statt in eine 404 zu führen.
+
+  Das Aussehen steht in component-produkt-klappe.css und wird einmal im Kopf von
+  main-product.liquid geladen (siehe dort).
+
+  Accepts:
+  - block: {Object} main-product `pflege` block (required)
+{% endcomment %}
+{%- liquid
+  assign guide = pages['pflegeguide']
+  assign titel = block.settings.titel | default: '' | strip
+  if titel == blank
+    assign titel = 'products.product.pflege.titel' | t
+  endif
+  assign satz = block.settings.text | default: '' | strip
+  if satz == blank
+    assign satz = 'products.product.pflege.text' | t
+  endif
+-%}
+{%- if guide != blank and guide.url != blank -%}
+  <details class="produkt-klappe" {{ block.shopify_attributes }} data-testid="pflege-zeile">
+    <summary class="produkt-klappe__toggle">
+      <span class="produkt-klappe__titel">{{ titel | escape }}</span>
+      <span class="produkt-klappe__indikator" aria-hidden="true"></span>
+    </summary>
+    <div class="produkt-klappe__inhalt">
+      <p class="produkt-klappe__satz">{{ satz | escape }}</p>
+      <a class="produkt-klappe__link link" href="{{ guide.url | escape }}">
+        {{- 'products.product.pflege.link' | t -}}
+      </a>
+    </div>
+  </details>
+{%- endif -%}

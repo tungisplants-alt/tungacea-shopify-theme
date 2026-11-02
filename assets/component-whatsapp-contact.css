@@ -7,7 +7,20 @@
  * Am Telefon nur das Symbol (48 px, die Mindestgroesse fuer einen Finger), ab
  * Tablet mit Text. Aufgeklappt wird mit <details>; die Karte sitzt ueber dem
  * Knopf und waechst nach oben. */
+.whatsapp-contact.ist-weg {
+  transform: translateY(calc(100% + 2.4rem));
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-contact {
+    transition: none !important;
+  }
+}
+
 .whatsapp-contact {
+  transition: transform 0.3s var(--tungacea-ease, ease), opacity 0.3s var(--tungacea-ease, ease);
   position: fixed;
   right: 1.6rem;
   bottom: calc(1.6rem + env(safe-area-inset-bottom, 0px));
@@ -31,7 +44,7 @@
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   transition: border-color 0.25s var(--tungacea-ease, ease), color 0.25s var(--tungacea-ease, ease);
 }
@@ -87,7 +100,7 @@
   color: rgba(var(--color-foreground, 242, 238, 232), 0.92);
   background: rgba(10, 10, 10, 0.97);
   border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   line-height: 1.5;
   letter-spacing: normal;
   text-transform: none;
@@ -114,7 +127,7 @@
   border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
   font: inherit;
   font-size: 1.2rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   text-decoration: none;
   transition: border-color 0.25s var(--tungacea-ease, ease);
@@ -155,7 +168,7 @@
 .whatsapp-contact__option--mail::after {
   content: '+';
   color: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   line-height: 1;
   letter-spacing: 0;
 }
@@ -172,8 +185,8 @@
   display: block;
   margin: 1.2rem 0 0.5rem;
   color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
-  font-size: 1.1rem;
-  letter-spacing: 0.12em;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 

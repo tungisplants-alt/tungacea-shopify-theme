@@ -22,6 +22,8 @@ require('./shopify-tags')(engine);
 engine.registerFilter('asset_url', v => '/assets/' + v);
 engine.registerFilter('stylesheet_tag', v => '<link rel="stylesheet" href="' + v + '">');
 engine.registerFilter('money', v => (Number(v) / 100).toFixed(2).replace('.', ',') + ' €');
+// Shopformat "{{amount_with_comma_separator}}€": ohne Leerzeichen, ganze Euro ohne ",00".
+engine.registerFilter('money_without_trailing_zeros', v => (Number(v) / 100).toFixed(2).replace('.', ',').replace(',00', '') + '€');
 engine.registerFilter('image_url', function (v, ...rest) {
   const w = (rest.find(r => Array.isArray(r) && r[0] === 'width') || [])[1] || 100;
   return String(v) + '?width=' + w;
@@ -97,7 +99,7 @@ const faelle = [
   {
     name: 'Findet die eigenen Produkte selbst',
     eintrag: pflanze('mutter-eins'),
-    erwartet: ['plant-profile-offers', 'Cutting A', '299,00 €', 'Cutting B', 'Verkauft'],
+    erwartet: ['plant-profile-offers', 'Cutting A', '299 €', 'Cutting B', 'Vergeben'],
     verboten: ['Fremdes Cutting', 'Produkt ohne Mutter'],
     // 'Saemling aus Kreuzung' steht hier bewusst in keiner der beiden Listen —
     // der eigene Fall unten prueft ihn, und zwar auf Anwesenheit.
@@ -198,7 +200,7 @@ const faelle = [
     // eine Pflanze ihre Cuttings und ihre Saemlinge an zwei Stellen.
     name: 'Findet auch den Saemling, an dem sie Vater ist',
     eintrag: pflanze('mutter-eins'),
-    erwartet: ['Saemling aus Kreuzung', '159,00 €', 'Cutting A'],
+    erwartet: ['Saemling aus Kreuzung', '159 €', 'Cutting A'],
     verboten: ['Fremdes Cutting'],
   },
   {
@@ -206,7 +208,7 @@ const faelle = [
     eintrag: pflanze('mutter-eins', {
       angebote: { value: [produkt('Handverlesen', 'mutter-neun', true, 5000)] },
     }),
-    erwartet: ['Handverlesen', '50,00 €'],
+    erwartet: ['Handverlesen', '50 €'],
     verboten: ['Cutting A', 'Cutting B'],
   },
   {
@@ -370,7 +372,7 @@ const faelle = [
         // englischen Seite. Sie kannte "Komplexhybrid" und "Reine Art" nicht,
         // und genau dort stand der Fehler. Wer hier ein Feld ergaenzt, dessen
         // Werte Tung auf Deutsch eintraegt, traegt das Wort hier mit ein.
-        const deutsch = /Verkauft|Angebote von dieser Pflanze|Diese Pflanze steht bei|Komplexhybrid|Reine Art|\(Niederlande\)|\(Deutschland\)|\(Schweiz\)/;
+        const deutsch = /Verkauft|Vergeben|Angebote von dieser Pflanze|Diese Pflanze steht bei|Komplexhybrid|Reine Art|\(Niederlande\)|\(Deutschland\)|\(Schweiz\)/;
         if (deutsch.test(html)) {
           fails++; console.log('FEHLER [en] ' + f.name + ': deutscher Text im englischen Lauf');
         }

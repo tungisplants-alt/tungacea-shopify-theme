@@ -26,7 +26,7 @@
 
   .tungacea-header .header__inline-menu .header__menu-item {
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.16em;
     font-size: 1.2rem;
     font-weight: 500;
     color: var(--tung-ink);
@@ -151,17 +151,19 @@
 /* drawer grid balance — eyebrow keeps its natural height, navigation fills the
    flexible middle row, utility area settles at the bottom. Fixes the large
    artificial blank block caused by Dawn's default two-row grid stretching the
-   eyebrow. Vertical scrolling is preserved by the container's own overflow. */
+   eyebrow. The middle row never gets smaller than its menu items: on short
+   phones the drawer scrolls instead of letting the utility area slide over the
+   last entries. Scrolling comes from the container's own overflow. */
 .tungacea-header .menu-drawer__navigation-container {
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(max-content, 1fr) auto;
   align-content: stretch;
 }
 
 /* editorial eyebrow header */
 .tungacea-header .tungacea-drawer__eyebrow {
   margin: 0;
-  font-size: 1.1rem;
-  letter-spacing: 0.28em;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--tung-muted);
   padding: 2.4rem 3rem 2.8rem;
@@ -187,7 +189,7 @@
   display: flex;
   align-items: baseline;
   font-family: var(--font-heading-family);
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   line-height: 1.2;
   letter-spacing: 0.01em;
   color: var(--tung-ink);
@@ -280,7 +282,7 @@
 
 .tungacea-header .menu-drawer__submenu .menu-drawer__menu-item {
   font-family: var(--font-body-family);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   letter-spacing: 0.06em;
   padding: 1.6rem 3rem;
   color: var(--tung-muted);
@@ -292,8 +294,8 @@
 }
 
 .tungacea-header .menu-drawer__close-button {
-  font-size: 1.3rem;
-  letter-spacing: 0.14em;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--tung-muted);
   padding: 2rem 3rem;

@@ -1,0 +1,109 @@
+{% comment %}
+  Tungacea — Fotos einer Archivpflanze für Kachel und Fokus.
+
+  Gibt das erste Foto aus, das gezeigt werden DARF, und auf Wunsch das zweite
+  dahinter. Das zweite liegt unsichtbar über dem ersten und wird beim
+  Überfahren mit der Maus eingeblendet. Ohne erlaubtes Foto steht der
+  Platzhalter da.
+
+  Die Sperre ist dieselbe wie auf der Produktseite: ein fremder Fotograf ohne
+  Freigabe bedeutet kein Bild, ein leerer Fotograf heisst eigenes Bild. Liegen
+  Bildnachweise vor, wird jedes Bild einzeln geprüft; sonst gilt Fotograf und
+  Freigabe des Eintrags für alle Fotos.
+
+  Die Fotos werden erlaufen, nicht indiziert. Shopify liefert bei fotos[0] auf
+  einer Dateiliste nichts zurück, und image_url bricht dann mit invalid url
+  input ab.
+
+  Annahmen:
+  - eintrag: {Object} Metaobjekt vom Typ mutterpflanze (Pflicht)
+  - name: {String} Alternativtext des ersten Fotos (Pflicht)
+  - klasse: {String} Grundklasse der Bilder (Pflicht)
+  - sizes: {String} sizes-Angabe der Bilder (Pflicht)
+  - zweites: {Boolean} auch das zweite erlaubte Foto ausgeben (optional)
+  - laden: {String} 'lazy' oder 'eager', Vorgabe lazy (optional)
+{% endcomment %}
+{%- liquid
+  assign foto_eins = nil
+  assign foto_zwei = nil
+  assign gefunden = 0
+  assign wie_laden = laden | default: 'lazy'
+
+  assign bilder = eintrag.bilder.value
+  if bilder.size > 0
+    for bn in bilder
+      if gefunden < 2
+        assign bn_foto = bn.bild.value
+        assign bn_fotograf = bn.fotograf.value
+        assign bn_freigabe = bn.bildfreigabe.value
+        assign darf = false
+        if bn_foto
+          if bn_fotograf == blank
+            assign darf = true
+          elsif bn_freigabe == true or bn_freigabe == 'true'
+            assign darf = true
+          endif
+        endif
+        if darf
+          if gefunden == 0
+            assign foto_eins = bn_foto
+          else
+            assign foto_zwei = bn_foto
+          endif
+          assign gefunden = gefunden | plus: 1
+        endif
+      endif
+    endfor
+  else
+    assign fotograf = eintrag.fotograf.value
+    assign freigabe = eintrag.bildfreigabe.value
+    assign darf = false
+    if fotograf == blank
+      assign darf = true
+    elsif freigabe == true or freigabe == 'true'
+      assign darf = true
+    endif
+    if darf
+      for f in eintrag.fotos.value limit: 2
+        if forloop.first
+          assign foto_eins = f
+        else
+          assign foto_zwei = f
+        endif
+        assign gefunden = gefunden | plus: 1
+      endfor
+    endif
+  endif
+
+  if zweites != true
+    assign foto_zwei = nil
+  endif
+-%}
+{%- if foto_eins -%}
+  {{
+    foto_eins
+    | image_url: width: 1200
+    | image_tag:
+      loading: wie_laden,
+      alt: name,
+      sizes: sizes,
+      widths: '300, 400, 600, 800, 1000, 1200',
+      class: klasse
+  }}
+  {%- if foto_zwei -%}
+    {%- assign klasse_zwei = klasse | append: ' ' | append: klasse | append: '--zweites' -%}
+    {{
+      foto_zwei
+      | image_url: width: 1200
+      | image_tag:
+        loading: 'lazy',
+        alt: '',
+        sizes: sizes,
+        widths: '300, 400, 600, 800, 1000, 1200',
+        class: klasse_zwei
+    }}
+  {%- endif -%}
+{%- else -%}
+  {%- assign klasse_platz = klasse | append: ' ' | append: klasse | append: '--placeholder' -%}
+  {{ 'image' | placeholder_svg_tag: klasse_platz }}
+{%- endif -%}

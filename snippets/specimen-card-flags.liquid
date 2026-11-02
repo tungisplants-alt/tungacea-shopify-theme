@@ -6,7 +6,9 @@
   within Theme Check's Liquid complexity budget, and so the markup can be
   rendered and checked on its own.
 
-  Emits nothing at all when no flag applies.
+  Emits nothing at all when no flag applies. Shows one flag at most: several
+  side by side read like discount stickers. Rank: Unicorn, Selten, Neu, Sale.
+  Sale is last because the struck-through price already says it.
 
   Accepts:
   - product: {Object} Product Liquid object (required)
@@ -76,6 +78,17 @@
         endif
       endif
     endif
+  endif
+
+  comment
+    Ein Etikett pro Karte. Selten und Unicorn sagen mehr ueber die Pflanze als
+    Neu; Sale zeigt der durchgestrichene Preis ohnehin.
+  endcomment
+  if flag_unicorn or flag_rare
+    assign flag_new = false
+    assign flag_sale = false
+  elsif flag_new
+    assign flag_sale = false
   endif
 -%}
 {%- if flag_new or flag_unicorn or flag_rare or flag_sale -%}

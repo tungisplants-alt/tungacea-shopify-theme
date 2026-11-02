@@ -47,8 +47,6 @@
   {%- capture specimen_fields -%}{%- render 'specimen-card-fields', product: card_product -%}{%- endcapture -%}
   {%- liquid
     assign specimen_parts = specimen_fields | split: '||'
-    assign specimen_id = specimen_parts[0] | strip
-    assign specimen_parentage = specimen_parts[1] | strip
     assign specimen_traits = specimen_parts[2] | strip
     assign specimen_status_state = specimen_parts[3] | strip
     assign specimen_status_label = specimen_parts[4] | strip
@@ -167,10 +165,16 @@
         </div>
         <div class="card__content">
           <div class="card__information specimen-card">
-            {%- if specimen_id != blank -%}
-              <div class="specimen-card__id" data-testid="specimen-card-id">{{ specimen_id | escape }}</div>
+            {%- comment -%}
+              Ueber dem Namen steht hoechstens ein Etikett. Die Exemplar-Nummer
+              steht nicht auf der Karte, sondern auf der Produktseite im Pass.
+            {%- endcomment -%}
+            {%- capture specimen_flags -%}{%- render 'specimen-card-flags', product: card_product -%}{%- endcapture -%}
+            {%- if specimen_flags != blank -%}
+              <div class="specimen-card__kopf">
+                {{- specimen_flags -}}
+              </div>
             {%- endif -%}
-            {%- render 'specimen-card-flags', product: card_product -%}
             <h3
               class="card__heading specimen-card__title{% if card_product.featured_media or settings.card_style == 'standard' %} h5{% endif %}"
               {% if card_product.featured_media or settings.card_style == 'card' %}
@@ -186,11 +190,11 @@
                 {{ card_product.title | escape }}
               </a>
             </h3>
-            {%- if specimen_parentage != blank -%}
-              <div class="specimen-card__parentage" data-testid="specimen-card-parentage">
-                {{- specimen_parentage | escape -}}
-              </div>
-            {%- endif -%}
+            {%- comment -%}
+              Keine Abstammungszeile auf der Karte: der Name nennt die Kreuzung
+              meist schon, oft wortgleich. Die Abstammung steht auf der
+              Produktseite im botanischen Pass.
+            {%- endcomment -%}
             {%- if specimen_traits != blank -%}
               <div class="specimen-card__traits" data-testid="specimen-card-traits">
                 {{- specimen_traits | escape -}}
@@ -241,14 +245,32 @@
               {%- endif -%}
 
               <div class="specimen-card__footer">
-                <span
-                  class="specimen-card__status specimen-card__status--{{ specimen_status_state }}"
-                  data-testid="specimen-card-status"
-                >
-                  {{ specimen_status_label | escape }}
-                </span>
+                {%- comment -%}
+                  Was in der Kollektion steht, ist zu haben. "Verfügbar" sagt
+                  nichts Neues; die Karte nennt nur Reserviert, Verkauft oder
+                  Demnächst.
+                {%- endcomment -%}
+                {%- if specimen_status_state != 'available' -%}
+                  <span
+                    class="specimen-card__status specimen-card__status--{{ specimen_status_state }}"
+                    data-testid="specimen-card-status"
+                  >
+                    {{ specimen_status_label | escape }}
+                  </span>
+                {%- endif -%}
                 {% render 'price', product: card_product, price_class: 'specimen-card__price', show_compare_at_price: true %}
               </div>
+              {%- comment -%}
+                Vergeben ist keine Sackgasse: auf der Produktseite kann man die
+                naechste Nachzucht vormerken. Die Karte sagt es leise, die ganze
+                Karte fuehrt dorthin. Nur mit Mutterpflanze, sonst gaebe es
+                nichts, worauf man warten koennte.
+              {%- endcomment -%}
+              {%- if specimen_status_state == 'sold' and card_product.metafields.custom.mutterpflanze.value != blank -%}
+                <p class="specimen-card__vormerken" data-testid="specimen-card-vormerken">
+                  {{- 'products.product.nachzucht.card' | t -}}
+                </p>
+              {%- endif -%}
               {%- if card_product.quantity_price_breaks_configured? -%}
                 {% if card_product.variants_count == 1 and quick_add == 'bulk' %}
                   {% liquid
