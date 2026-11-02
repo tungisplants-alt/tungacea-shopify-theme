@@ -27,24 +27,29 @@
 {%- endcapture -%}
 
 {%- if wa_knopf != blank -%}
+  {%- comment -%}
+    Übersetzte Texte kommen von Shopify schon maskiert (ein Apostroph wird zu
+    &#39;), deshalb nicht noch einmal maskieren. Ein eigener Text aus dem
+    Theme-Editor wird dagegen hier maskiert.
+  {%- endcomment -%}
   {%- liquid
-    assign titel = block.settings.titel | default: '' | strip
+    assign titel = block.settings.titel | default: '' | strip | escape
     if titel == blank
       assign titel = 'products.product.eu_bestellung.titel' | t
     endif
 
-    assign text = block.settings.text | default: '' | strip
+    assign text = block.settings.text | default: '' | strip | escape
     if text == blank
       assign text = 'products.product.eu_bestellung.text' | t
     endif
   -%}
   <details class="produkt-klappe produkt-klappe--eu" {{ block.shopify_attributes }}>
     <summary class="produkt-klappe__toggle">
-      <span class="produkt-klappe__titel">{{ titel | escape }}</span>
+      <span class="produkt-klappe__titel">{{ titel }}</span>
       <span class="produkt-klappe__indikator" aria-hidden="true"></span>
     </summary>
     <div class="produkt-klappe__inhalt">
-      <p class="produkt-klappe__text">{{ text | escape }}</p>
+      <p class="produkt-klappe__text">{{ text }}</p>
       {{ wa_knopf }}
     </div>
   </details>

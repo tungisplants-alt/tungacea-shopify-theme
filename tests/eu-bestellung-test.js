@@ -73,10 +73,12 @@ function pruefe(name, ist, soll) {
   }
   {
     const html = await render({}, { sprache: 'en' });
+    pruefe('Apostroph im Text wird nicht doppelt maskiert', !/&amp;#39;/.test(html), true);
+    pruefe('neue englische Texte ohne Apostroph (Shopify maskiert sie in t, auch im WhatsApp-Satz)', ['eu_bestellung.titel', 'eu_bestellung.text'].every((k) => !/'/.test(LOC.en.products.product[k.split('.')[0]][k.split('.')[1]])) && !/'/.test(LOC.en.whatsapp_contact.message_eu) && !/'/.test(LOC.en.whatsapp_contact.message_eu_product), true);
     pruefe('Titel Englisch', />Ordering from the EU<\/span>/.test(html), true);
     pruefe('Text Englisch', /My standard shipping only covers Germany\. If you live somewhere else in the EU/.test(html), true);
     const satz = dec((html.match(/\?text=([^"]*)"/) || [])[1] || '').replace(/&amp;/g, '&').replace(/&#39;/g, "'");
-    pruefe('Satz Englisch', /^Hi Tung, I live in the EU, but not in Germany, and I'd like to order Anthurium Test\. My country:$/.test(satz), true);
+    pruefe('Satz Englisch', /^Hi Tung, I live in the EU, but not in Germany, and I would like to order Anthurium Test\. My country:$/.test(satz), true);
   }
   {
     locale = 'de';

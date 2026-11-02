@@ -143,7 +143,7 @@
       },
       "eu_bestellung": {
         "titel": "Ordering from the EU",
-        "text": "My standard shipping only covers Germany. If you live somewhere else in the EU, send me a quick message on WhatsApp and we'll work out together how your plant gets to you safely."
+        "text": "My standard shipping only covers Germany. If you live somewhere else in the EU, send me a quick message on WhatsApp and we will work out together how your plant gets to you safely."
       },
       "fragen": {
         "titel": "Any questions?",
@@ -811,8 +811,8 @@
     "mail_privacy_link": "privacy policy",
     "message": "Hi Tung, I have a question about…",
     "message_product": "Hi Tung, I have a question about {{ name }}.",
-    "message_eu": "Hi Tung, I live in the EU, but not in Germany, and I'd like to order. My country:",
-    "message_eu_product": "Hi Tung, I live in the EU, but not in Germany, and I'd like to order {{ name }}. My country:"
+    "message_eu": "Hi Tung, I live in the EU, but not in Germany, and I would like to order. My country:",
+    "message_eu_product": "Hi Tung, I live in the EU, but not in Germany, and I would like to order {{ name }}. My country:"
   },
   "care_guide": {
     "eyebrow": "Care guide",
