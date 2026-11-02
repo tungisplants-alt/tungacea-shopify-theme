@@ -42,11 +42,11 @@
 
 <div class="plant-archive" data-testid="plant-archive">
   {%- comment -%}
-    Die Einleitung steht auf einem Foto (assets/tungacea-archiv-kopf.jpg), das
-    ueber die ganze Breite geht. Eine dunkle Schicht liegt darueber, damit die
-    Schrift lesbar bleibt. Alles Weitere steht darunter in der gewohnten Breite.
+    Die Einleitung steht auf dunklem Grund, dazu ein Studiofoto mit einer
+    einzelnen Pflanze (assets/tungacea-archiv-kopf-pflanze.jpg): am Handy unter
+    dem Text, am Laptop rechts daneben. Das Foto laeuft an den Raendern aus. Alles Weitere steht darunter in der gewohnten Breite.
   {%- endcomment -%}
-  <div class="plant-archive__hero" style="--archiv-bild: url('{{ 'tungacea-archiv-kopf.jpg' | asset_url }}');" data-testid="plant-archive-hero">
+  <div class="plant-archive__hero" style="--archiv-bild: url('{{ 'tungacea-archiv-kopf-pflanze.jpg' | asset_url }}');" data-testid="plant-archive-hero">
     <div class="page-width">
     <header class="plant-archive__intro">
       {%- if oberzeile != blank -%}
