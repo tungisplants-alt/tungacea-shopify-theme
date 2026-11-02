@@ -132,6 +132,10 @@
         "rare": "Selten",
         "sale": "Sale"
       },
+      "eu_bestellung": {
+        "titel": "Bestellung aus der EU",
+        "text": "Mein Standardversand geht nur innerhalb Deutschlands. Wenn du woanders in der EU wohnst, schreib mir kurz bei WhatsApp. Dann finden wir zusammen einen Weg, wie deine Pflanze sicher bei dir ankommt."
+      },
       "fragen": {
         "titel": "Hast du Fragen?",
         "text": "Schreib mir gern persönlich über WhatsApp – da antworte ich für gewöhnlich schneller."
@@ -806,7 +810,9 @@
     "mail_privacy": "Mit dem Absenden schickst du mir deinen Namen, deine E-Mail-Adresse und deine Nachricht. Mehr dazu in der",
     "mail_privacy_link": "Datenschutzerklärung",
     "message": "Hallo Tung, ich habe eine Frage zu…",
-    "message_product": "Hallo Tung, ich habe eine Frage zu {{ name }}."
+    "message_product": "Hallo Tung, ich habe eine Frage zu {{ name }}.",
+    "message_eu": "Hallo Tung, ich wohne in der EU, aber nicht in Deutschland, und möchte gern bestellen. Mein Land:",
+    "message_eu_product": "Hallo Tung, ich wohne in der EU, aber nicht in Deutschland, und möchte gern {{ name }} bestellen. Mein Land:"
   },
   "care_guide": {
     "eyebrow": "Pflegeguide",

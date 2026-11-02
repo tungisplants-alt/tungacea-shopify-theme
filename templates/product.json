@@ -93,6 +93,13 @@
             "text": ""
           }
         },
+        "eu_bestellung": {
+          "type": "eu_bestellung",
+          "settings": {
+            "titel": "",
+            "text": ""
+          }
+        },
         "share": {
           "type": "share",
           "settings": {
@@ -119,6 +126,7 @@
         "pflege",
         "versandinfo",
         "fragen",
+        "eu_bestellung",
         "share"
       ],
       "settings": {

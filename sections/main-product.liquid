@@ -210,6 +210,8 @@
                   {% render 'versandinfo', block: block %}
                 {%- when 'fragen' -%}
                   {% render 'produkt-fragen', block: block %}
+                {%- when 'eu_bestellung' -%}
+                  {% render 'eu-bestellung', block: block %}
                 {%- when 'specimen' -%}
                   {% render 'specimen-passport', product: product, block: block %}
                 {%- when 'sku' -%}
@@ -1051,6 +1053,29 @@
         {
           "type": "paragraph",
           "content": "Zugeklappte Zeile mit einem kurzen Satz und dem Weg per WhatsApp. Nummer und Satz im Knopf kommen aus Theme-Einstellungen, Kontakt-Knopf: Ist dort keine gültige Nummer eingetragen, erscheint die Zeile nicht. Unten in der Produktspalte einordnen, vor „Teilen“, direkt unter der Zeile Versand."
+        },
+        {
+          "type": "text",
+          "id": "titel",
+          "label": "Titel",
+          "info": "Leer lassen: Dann wird übersetzt. Ein eigener Text erscheint in beiden Sprachen gleich."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Satz darin",
+          "info": "Leer lassen: Dann wird übersetzt."
+        }
+      ]
+    },
+    {
+      "type": "eu_bestellung",
+      "name": "Bestellung aus der EU",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Zugeklappte Zeile für Käufer außerhalb von Deutschland, die in der EU bestellen möchten. Sie schreiben dir per WhatsApp, und ihr findet zusammen eine Lösung. Die Nummer kommt aus den Theme-Einstellungen, Kontakt-Knopf: Ist dort keine gültige Nummer eingetragen, erscheint die Zeile nicht."
         },
         {
           "type": "text",

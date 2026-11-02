@@ -17,6 +17,8 @@
   - css_laden:  {Boolean} false, wenn das Stylesheet schon geladen ist (optional)
   - ohne_zusatz: {Boolean} true laesst "schnellere Antwort" weg, wenn der Satz
                  daneben es schon sagt (optional)
+  - art:        {String} 'eu' nimmt den Satz der Zeile "Bestellung aus der EU"
+                 (optional)
   - symbol:     {Boolean} true gibt nur das WhatsApp-Symbol als Link aus
                  (Fusszeile), mit Beschriftung fuer Screenreader (optional)
 
@@ -44,7 +46,7 @@
   if gueltig
     assign nachricht = ''
     capture nachricht
-      render 'whatsapp-message'
+      render 'whatsapp-message', art: art
     endcapture
     assign kodiert = nachricht | url_encode | replace: '+', '%20'
     assign adresse = 'https://wa.me/' | append: nummer | append: '?text=' | append: kodiert

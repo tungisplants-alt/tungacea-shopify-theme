@@ -141,6 +141,10 @@
         "rare": "Rare",
         "sale": "Sale"
       },
+      "eu_bestellung": {
+        "titel": "Ordering from the EU",
+        "text": "My standard shipping only covers Germany. If you live somewhere else in the EU, send me a quick message on WhatsApp and we'll work out together how your plant gets to you safely."
+      },
       "fragen": {
         "titel": "Any questions?",
         "text": "Feel free to message me personally on WhatsApp – I usually reply faster there."
@@ -806,7 +810,9 @@
     "mail_privacy": "By sending, you share your name, email address and message with me. More in the",
     "mail_privacy_link": "privacy policy",
     "message": "Hi Tung, I have a question about…",
-    "message_product": "Hi Tung, I have a question about {{ name }}."
+    "message_product": "Hi Tung, I have a question about {{ name }}.",
+    "message_eu": "Hi Tung, I live in the EU, but not in Germany, and I'd like to order. My country:",
+    "message_eu_product": "Hi Tung, I live in the EU, but not in Germany, and I'd like to order {{ name }}. My country:"
   },
   "care_guide": {
     "eyebrow": "Care guide",
