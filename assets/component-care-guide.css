@@ -299,22 +299,12 @@
 }
 
 /* Zweiter Abschnitt unter den Stadien: eigene Frage, eigene Tafel, durch
-   eine Linie mit rotem Strich vom Stadium-Text darüber getrennt. */
+   eine feine Linie vom Stadium-Text darüber getrennt. */
 .care-guide__themen {
   position: relative;
   margin-top: 6.4rem;
   padding-top: 4.8rem;
   border-top: 1px solid var(--cg-line-soft);
-}
-
-.care-guide__themen::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: 0;
-  width: 4.8rem;
-  height: 1px;
-  background: var(--cg-ox);
 }
 
 /* Frei geschriebene Kapitel: Fließtext mit Listen, wie der Text im Stadium */
