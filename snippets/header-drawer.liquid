@@ -240,6 +240,21 @@
                   </a>
                 </li>
               {%- endif -%}
+              {%- comment -%}
+                WhatsApp als Symbol neben Instagram, derselbe Weg wie in der
+                Fußzeile. Ohne gültige Nummer oder bei ausgeschaltetem
+                WhatsApp erscheint nichts.
+              {%- endcomment -%}
+              {%- if settings.whatsapp_aktiv != false -%}
+                {%- capture wa_symbol -%}
+                  {%- render 'whatsapp-option', symbol: true, css_laden: false, klasse: 'list-social__link link' -%}
+                {%- endcapture -%}
+                {%- if wa_symbol != blank -%}
+                  <li class="list-social__item" data-testid="drawer-whatsapp">
+                    {{ wa_symbol }}
+                  </li>
+                {%- endif -%}
+              {%- endif -%}
               {%- if settings.social_tiktok_link != blank -%}
                 <li class="list-social__item">
                   <a href="{{ settings.social_tiktok_link }}" class="list-social__link link">

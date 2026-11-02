@@ -56,6 +56,10 @@ async function rendere(nummer, sprache = 'de') {
   const footer = fs.readFileSync(path.join(THEME, 'sections/footer.liquid'), 'utf8');
   pruefe('Fusszeile bindet das Symbol neben Instagram ein', /render 'whatsapp-option', symbol: true/.test(footer) && /icon-instagram\.svg/.test(footer), true);
   pruefe('Fusszeile respektiert den Schalter whatsapp_aktiv', /settings\.whatsapp_aktiv != false/.test(footer), true);
+  const drawer = fs.readFileSync(path.join(THEME, 'snippets/header-drawer.liquid'), 'utf8');
+  pruefe('Menue bindet das Symbol neben Instagram ein', /render 'whatsapp-option', symbol: true/.test(drawer) && drawer.indexOf('icon-instagram.svg') < drawer.indexOf("render 'whatsapp-option'"), true);
+  pruefe('Menue respektiert den Schalter whatsapp_aktiv', /settings\.whatsapp_aktiv != false/.test(drawer), true);
+  pruefe('Menue-Symbol ist ein Listenpunkt der Social-Liste', /list-social__item" data-testid="drawer-whatsapp"/.test(drawer) && /klasse: 'list-social__link link'/.test(drawer), true);
   pruefe('Icon-Datei liegt im Theme', fs.existsSync(path.join(THEME, 'assets/icon-whatsapp.svg')), true);
 
   console.log(fehler + ' Fehler in ' + geprueft + ' Pruefungen');
