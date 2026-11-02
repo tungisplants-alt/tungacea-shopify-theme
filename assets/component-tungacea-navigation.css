@@ -151,9 +151,11 @@
 /* drawer grid balance — eyebrow keeps its natural height, navigation fills the
    flexible middle row, utility area settles at the bottom. Fixes the large
    artificial blank block caused by Dawn's default two-row grid stretching the
-   eyebrow. Vertical scrolling is preserved by the container's own overflow. */
+   eyebrow. The middle row never gets smaller than its menu items: on short
+   phones the drawer scrolls instead of letting the utility area slide over the
+   last entries. Scrolling comes from the container's own overflow. */
 .tungacea-header .menu-drawer__navigation-container {
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(max-content, 1fr) auto;
   align-content: stretch;
 }
 
