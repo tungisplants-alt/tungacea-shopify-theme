@@ -149,7 +149,7 @@
   {%- if bild_vorhanden -%}
     {%- capture bild_url -%}{{ section.settings.bild | image_url: width: 1600 }}{%- endcapture -%}
   {%- else -%}
-    {%- capture bild_url -%}{{ 'tungacea-archiv-kopf.jpg' | asset_url }}{%- endcapture -%}
+    {%- capture bild_url -%}{{ 'tungacea-pflegeguide-kopf.jpg' | asset_url }}{%- endcapture -%}
   {%- endif -%}
   <div class="care-guide__hero" style="--guide-bild: url('{{ bild_url }}');">
     <div class="page-width">
@@ -433,7 +433,7 @@
     { "type": "text", "id": "eyebrow", "label": "Kleine Zeile", "info": "Leer lassen: Dann wird übersetzt." },
     { "type": "text", "id": "heading", "label": "Überschrift", "info": "Leer lassen: Dann wird übersetzt." },
     { "type": "textarea", "id": "lead", "label": "Einleitung", "info": "Leer lassen: Dann wird übersetzt." },
-    { "type": "image_picker", "id": "bild", "label": "Foto im Kopf", "info": "Leer lassen: Das Foto vom Archiv-Kopf. Es wird abgedunkelt." },
+    { "type": "image_picker", "id": "bild", "label": "Foto im Kopf", "info": "Leer lassen: Das Blatt mit den roten Adern. Es wird abgedunkelt." },
     { "type": "header", "content": "Disclaimer (am Ende der Seite)" },
     { "type": "textarea", "id": "disclaimer", "label": "Text", "info": "Leer lassen: Dann wird übersetzt. Ein eigener Text erscheint in beiden Sprachen gleich." },
     { "type": "header", "content": "Kapitel 1: Bedingungen" },

@@ -80,7 +80,7 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('keine Kapitelnummern und keine Stufenzaehlung mehr', /care-guide__number|Stufe \d|Zucht/.test(leer), false);
   pruefe('Disclaimer ist eine leise Notiz, kein Kasten', /<aside class="care-guide__disclaimer" role="note"/.test(leer), true);
   pruefe('Disclaimer steht immer, persoenlich und ohne Studien', /care-guide__disclaimer/.test(leer) && /Das sind meine eigenen Erfahrungswerte/.test(leer) && /bis heute gut gefahren/.test(leer) && !/Studien/.test(leer), true);
-  pruefe('Kopf mit Ueberschrift und Foto-Variable', /So pflege ich meine Anthurien\./.test(leer) && /--guide-bild: url\('\/assets\/tungacea-archiv-kopf\.jpg'\)/.test(leer), true);
+  pruefe('Kopf mit Ueberschrift und Foto-Variable', /So pflege ich meine Anthurien\./.test(leer) && /--guide-bild: url\('\/assets\/tungacea-pflegeguide-kopf\.jpg'\)/.test(leer), true);
 
   // Die Vorlage bringt Zeilen fuer Bedingungen, Naehrstoffe und Wasser mit
   // (zurzeit mit Beispielwerten). Geleert duerfen sie kein Kapitel zeigen.

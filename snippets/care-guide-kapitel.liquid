@@ -37,6 +37,9 @@
   assign kapitel = kapitel | split: ','
 -%}
 {%- if kapitel.size > 0 -%}
+  <div class="care-guide__themen" data-testid="care-guide-themen">
+  <h2 class="care-guide__title">{{ 'care_guide.topics_title' | t }}</h2>
+  <p class="care-guide__chapter-lead">{{ 'care_guide.topics_lead' | t }}</p>
   <nav class="care-guide__tafel care-guide__tafel--kapitel" aria-label="{{ 'care_guide.nav_label' | t }}" data-testid="care-guide-nav" style="--eintraege: {{ kapitel.size }};">
     <ol class="care-guide__tafel-liste" role="list">
       {%- for k in kapitel -%}
@@ -74,4 +77,5 @@
       {%- endfor -%}
     </ol>
   </nav>
+  </div>
 {%- endif -%}
