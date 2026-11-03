@@ -6,11 +6,21 @@
   als Klartext aus, ohne Maskierung; wer ihn in HTML oder eine Adresse setzt,
   maskiert oder kodiert ihn selbst.
 
+  Mit art: 'eu' (Zeile "Bestellung aus der EU") steht ein anderer Satz da: Die
+  Person wohnt außerhalb von Deutschland und fragt nach dem Versand.
+
   Aufruf:
   {%- capture nachricht -%}{% render 'whatsapp-message' %}{%- endcapture -%}
+  {%- capture nachricht -%}{% render 'whatsapp-message', art: 'eu' %}{%- endcapture -%}
 {% endcomment %}
 {%- liquid
-  if template.name == 'product' and product.title != blank
+  if art == 'eu'
+    if template.name == 'product' and product.title != blank
+      echo 'whatsapp_contact.message_eu_product' | t: name: product.title
+    else
+      echo 'whatsapp_contact.message_eu' | t
+    endif
+  elsif template.name == 'product' and product.title != blank
     echo 'whatsapp_contact.message_product' | t: name: product.title
   else
     echo 'whatsapp_contact.message' | t

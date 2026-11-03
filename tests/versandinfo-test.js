@@ -154,7 +154,7 @@ function pruefe(name, ist, soll) {
     pruefe('Reihenfolge: nach der Dokumentation (Exemplar-Archiv) kommt die Pflegeanleitung, dann Versand', o.indexOf('specimen') + 1 === o.indexOf('pflege') && o.indexOf('pflege') + 1 === o.indexOf('versandinfo'), true);
     pruefe('Block "pflege" ist im Schema angeboten (limit 1) und wird im Abschnitt ausgegeben', typen.includes('pflege') && (schema.blocks.find((b) => b.type === 'pflege') || {}).limit === 1 && /\{%-?\s*when 'pflege'\s*-?%\}\s*\{%\s*render 'pflege-zeile', block: block\s*%\}/.test(abschnitt), true);
     pruefe('Reihenfolge: Dokumentation steht direkt unter der Beschreibung', o.indexOf('description') + 1 === o.indexOf('specimen'), true);
-    pruefe('Reihenfolge: danach "Hast du Fragen?", direkt vor "Teilen"', o.indexOf('versandinfo') + 1 === o.indexOf('fragen') && o.indexOf('fragen') + 1 === o.indexOf('share'), true);
+    pruefe('Reihenfolge: danach "Hast du Fragen?", "Bestellung aus der EU", dann "Teilen"', o.indexOf('versandinfo') + 1 === o.indexOf('fragen') && o.indexOf('fragen') + 1 === o.indexOf('eu_bestellung') && o.indexOf('eu_bestellung') + 1 === o.indexOf('share'), true);
     pruefe('Stylesheet laedt einmal im Kopf des Abschnitts', /'component-produkt-klappe\.css' \| asset_url \| stylesheet_tag/.test(abschnitt), true);
     pruefe('Reihenfolge: "Teilen" bleibt der letzte Block der Spalte', o[o.length - 1], 'share');
     pruefe('Reihenfolge: nach Kaufknopf und Exemplar-Archiv',
