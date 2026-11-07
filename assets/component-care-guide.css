@@ -270,8 +270,8 @@
   }
 }
 
-/* Mit Skript: nur das gewählte Stadium steht unter der Tafel, offen, ohne
-   eigene Klappe; die Tafel ist die Auswahl. */
+/* Mit Skript: zu Beginn ist nichts offen. Nur das gewählte Stadium steht unter
+   der Tafel; ein Tipp auf die Tafel oder auf seine Überschrift schließt es. */
 .care-guide--wahl .care-guide__stage[hidden] {
   display: none;
 }
@@ -283,10 +283,9 @@
 }
 
 .care-guide--wahl .care-guide__stage-toggle {
-  cursor: default;
+  cursor: pointer; /* ein Tipp auf die Überschrift schließt das Stadium wieder */
 }
 
-.care-guide--wahl .care-guide__indicator,
 .care-guide--wahl .care-guide__stage-peek {
   display: none;
 }

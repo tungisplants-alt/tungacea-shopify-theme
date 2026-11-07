@@ -1,12 +1,16 @@
 /*
  * Pflegeguide (sections/main-care-guide.liquid).
  *
+ * Zu Beginn ist nichts aufgeklappt: Man sieht nur die beiden Tafeln, den Rest
+ * der Seite hält das kompakt.
  * - Stadien-Tafel: Ein Tipp auf eine Zeichnung zeigt das Stadium direkt unter
- *   der Tafel, die anderen treten zurück. Ohne Skript sind die Zeichnungen
+ *   der Tafel, die anderen treten zurück. Ein zweiter Tipp auf dieselbe
+ *   Zeichnung, oder ein Tipp auf die Überschrift des Stadiums, schließt es
+ *   wieder, und der Bereich verschwindet. Ohne Skript sind die Zeichnungen
  *   Links auf die Kästen, und alle Kästen stehen untereinander.
  * - Kapitel-Tafel: genauso. Ein Tipp zeigt nur das gewählte Kapitel unter der
- *   Tafel, das Piktogramm wird rot; man muss nicht zwischen langen Kapiteln
- *   hin und her scrollen. Ohne Skript stehen alle Kapitel untereinander.
+ *   Tafel, das Piktogramm wird rot, ein zweiter Tipp schließt es. Ohne Skript
+ *   stehen alle Kapitel untereinander.
  * - Ein Link wie /pages/pflegeguide#stadium-steckling oder #wasser wählt das
  *   Stadium oder Kapitel, auf das er zeigt.
  */
@@ -28,20 +32,29 @@ class CareGuide extends HTMLElement {
     this.knoten.forEach((k) => {
       k.addEventListener('click', (e) => {
         e.preventDefault();
-        this.waehlen(k.dataset.stadium, true);
-        history.replaceState(null, '', '#stadium-' + k.dataset.stadium);
+        const schliessen = k.getAttribute('aria-current') === 'step';
+        this.waehlen(schliessen ? null : k.dataset.stadium, !schliessen);
+        this.hashSetzen(schliessen ? '' : '#stadium-' + k.dataset.stadium);
       });
     });
-    // Die Klappe des gewählten Kastens schließt ihn nicht: gewählt wird an der Tafel.
+    // Die Überschrift des offenen Stadiums schließt es wieder.
     this.stufen.forEach((d) => {
       const klappe = d.querySelector('summary');
-      if (klappe) klappe.addEventListener('click', (e) => e.preventDefault());
+      if (klappe) {
+        klappe.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.waehlen(null, false);
+          this.hashSetzen('');
+        });
+      }
     });
 
-    // Vorauswahl: der Steckling, weil die meisten Pflanzen als Steckling kommen;
-    // sonst die erste Zeichnung.
-    const vorhanden = (s) => this.knoten.some((k) => k.dataset.stadium === s);
-    this.waehlen(vorhanden('steckling') ? 'steckling' : this.knoten[0].dataset.stadium, false);
+    // Zu Beginn ist kein Stadium offen.
+    this.waehlen(null, false);
+  }
+
+  hashSetzen(hash) {
+    history.replaceState(null, '', window.location.pathname + window.location.search + hash);
   }
 
   kapitelStarten() {
@@ -57,11 +70,13 @@ class CareGuide extends HTMLElement {
       a.addEventListener('click', (e) => {
         e.preventDefault();
         const id = a.getAttribute('href').slice(1);
-        this.kapitelWaehlen(id, true);
-        history.replaceState(null, '', '#' + id);
+        const schliessen = a.getAttribute('aria-current') === 'step';
+        this.kapitelWaehlen(schliessen ? null : id, !schliessen);
+        this.hashSetzen(schliessen ? '' : '#' + id);
       });
     });
-    this.kapitelWaehlen(this.kapitel[0].id, false);
+    // Zu Beginn ist kein Kapitel offen.
+    this.kapitelWaehlen(null, false);
   }
 
   kapitelWaehlen(id, vomTipp) {

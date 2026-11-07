@@ -205,6 +205,12 @@ const zaehle = (h, re) => (h.match(re) || []).length;
     const eig = await rendere([block('stadium', { stadium: 'steckling' }), block('naehrstoff', { name: 'Dünger', art: 'basis', zweck: 'x' })], { naehrstoffe_titel: 'A & B <b>' });
     pruefe('eigener Titel aus dem Editor wird maskiert', /A &amp; B &lt;b&gt;/.test(eig), true);
   }
+  {
+    const js = fs.readFileSync(path.join(THEME, 'assets/care-guide.js'), 'utf8');
+    pruefe('Start kompakt: kein Stadium und kein Kapitel vorgewählt', /this\.waehlen\(null, false\)/.test(js) && /this\.kapitelWaehlen\(null, false\)/.test(js) && !/vorhanden\('steckling'\)/.test(js), true);
+    pruefe('Zweiter Tipp auf dasselbe Stadium oder Kapitel schließt es', (js.match(/schliessen \? null/g) || []).length === 2, true);
+    pruefe('Überschrift des offenen Stadiums schließt es', /klappe\.addEventListener\('click'[\s\S]*?this\.waehlen\(null, false\)/.test(js), true);
+  }
   console.log(fehler + ' Fehler in ' + geprueft + ' Pruefungen');
   process.exit(fehler ? 1 : 0);
 })().catch((e) => { console.log('ABBRUCH: ' + e.message); process.exit(1); });
