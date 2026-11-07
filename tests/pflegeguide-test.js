@@ -30,7 +30,8 @@ engine.registerFilter('t', function (key, ...rest) {
   let hit = String(key).split('.').reduce((o, k) => (o == null ? undefined : o[k]), LOC[locale]);
   if (hit === undefined) throw new Error('FEHLENDER Schluessel [' + locale + ']: ' + key);
   for (const [k, v] of Object.entries(opts)) hit = hit.split('{{ ' + k + ' }}').join(String(v));
-  return hit;
+  // Shopify maskiert uebersetzte Texte selbst (& wird &amp;, ' wird &#39;).
+  return String(key).endsWith('_html') ? hit : hit.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 });
 
 let geprueft = 0;
@@ -120,7 +121,7 @@ const zaehle = (h, re) => (h.match(re) || []).length;
     block('stadium', { stadium: 'steckling', kurz: 'Ein Satz.', vpd: '0,8–1,0', ppfd: '150–250', temperatur: '22–26', ec: '0,6–0,8', text: '<p>Ausfuehrlich.</p>' }),
     block('stadium', { stadium: 'samen', vpd: '0,6' }),
     block('naehrstoff', { name: 'Dünger A', art: 'basis', zweck: 'Wachstum', dosierung: '1 ml/l' }),
-    block('naehrstoff', { name: 'Zusatz B', art: 'zusatz' }),
+    block('naehrstoff', { name: 'Zusatz B', art: 'zusatz', zweck: 'Wurzeln' }),
     block('wasser', { stadium: 'steckling', ph: '5,8', ec: '0,6' }),
     block('wasser', { stadium: 'etabliert', ph: '', ec: '' }),
   ], { ph_ziel: '5,8', ec_ziel: '', disclaimer: '' });
@@ -176,6 +177,34 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   const vorlage = JSON.parse(strip(fs.readFileSync(path.join(THEME, 'templates/page.pflegeguide.json'), 'utf8')));
   pruefe('Seitenvorlage page.pflegeguide hat den Abschnitt und sechs Stadien', vorlage.sections.main.type === 'main-care-guide' && vorlage.sections.main.block_order.filter((k) => vorlage.sections.main.blocks[k].type === 'stadium').length === 6, true);
 
+  {
+    // Aufklappbare Punkte und Nährstoffe
+    const mitPunkten = await rendere([
+      block('stadium', { stadium: 'steckling' }),
+      block('naehrstoff', { name: 'Dünger A', art: 'basis', zweck: 'Wachstum', dosierung: '1 ml/l' }),
+      block('naehrstoff', { name: 'Nur Name', art: 'zusatz' }),
+      block('kapitel', { thema: 'probleme', titel: '', einleitung: '', text: '' }),
+      block('punkt', { thema: 'probleme', titel: 'Gelbe Blätter', text: '<p>Meist zu nass.</p>' }),
+      block('punkt', { thema: 'probleme', titel: 'Leerer Punkt', text: '' }),
+      block('punkt', { thema: 'ankunft', titel: 'Auspacken', text: '<p>Genau ansehen.</p>' }),
+    ]);
+    const kopfA = (mitPunkten.slice(mitPunkten.indexOf('id="naehrstoffe"')).match(/<summary class="care-guide__klappe-kopf">([\s\S]*?)<\/summary>/) || [])[1] || '';
+    pruefe('Nährstoffe: aufklappbar, zu Beginn nur der Name in der Zeile', /Dünger A/.test(kopfA) && !/Wachstum|1 ml/.test(kopfA), true);
+    pruefe('Nährstoffe: Zweck und Dosierung stehen im aufklappbaren Teil', /care-guide__klappe-inhalt">\s*<p>Wachstum<\/p>\s*<p class="care-guide__dose">1 ml\/l<\/p>/.test(mitPunkten), true);
+    pruefe('Nährstoffe: ein Eintrag nur mit Namen bleibt eine einfache Zeile', /care-guide__klappe--einfach">\s*<span class="care-guide__klappe-titel">Nur Name/.test(mitPunkten), true);
+    pruefe('Probleme: Kapitel erscheint nur mit Punkten, ohne eigenen Text', /id="probleme"/.test(mitPunkten) && !/care-guide__text--kapitel/.test(mitPunkten.slice(mitPunkten.indexOf('id="probleme"'), mitPunkten.indexOf('id="probleme"') + 400)), true);
+    pruefe('Probleme: Punkt aufklappbar, Überschrift in der Zeile, Text darin', /<span class="care-guide__klappe-titel">Gelbe Blätter<\/span>/.test(mitPunkten) && /care-guide__klappe-inhalt care-guide__text rte"><p>Meist zu nass\.<\/p>/.test(mitPunkten), true);
+    pruefe('Punkt ohne Text erscheint nicht', /Leerer Punkt/.test(mitPunkten), false);
+    pruefe('Ankunft: auch nur mit einem Punkt ein Kapitel, und es steht in der Kapitel-Leiste', /id="ankunft"/.test(mitPunkten) && /href="#ankunft"/.test(mitPunkten), true);
+    pruefe('Punkte sind echte details-Elemente, zugeklappt', zaehle(mitPunkten, /<details class="care-guide__klappe"/g) === 3 && !/<details class="care-guide__klappe"[^>]* open/.test(mitPunkten), true);
+    const ohnePunkte = await rendere([block('stadium', { stadium: 'steckling' }), block('punkt', { thema: 'probleme', titel: '', text: '<p>x</p>' })]);
+    pruefe('Punkt ohne Überschrift erzeugt kein Kapitel', /id="probleme"/.test(ohnePunkte), false);
+    // Maskierung: Shopify maskiert übersetzte Titel selbst, die Vorlage darf es nicht noch einmal tun
+    const nm = await rendere([block('stadium', { stadium: 'steckling' }), block('naehrstoff', { name: 'Dünger', art: 'basis', zweck: 'x' })]);
+    pruefe('Titel mit & wird nicht doppelt maskiert (Nährstoffe & Zusätze)', /Nährstoffe &amp; Zusätze/.test(nm) && !/&amp;amp;/.test(nm), true);
+    const eig = await rendere([block('stadium', { stadium: 'steckling' }), block('naehrstoff', { name: 'Dünger', art: 'basis', zweck: 'x' })], { naehrstoffe_titel: 'A & B <b>' });
+    pruefe('eigener Titel aus dem Editor wird maskiert', /A &amp; B &lt;b&gt;/.test(eig), true);
+  }
   console.log(fehler + ' Fehler in ' + geprueft + ' Pruefungen');
   process.exit(fehler ? 1 : 0);
 })().catch((e) => { console.log('ABBRUCH: ' + e.message); process.exit(1); });

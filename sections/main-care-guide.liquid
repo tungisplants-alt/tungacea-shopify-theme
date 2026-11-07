@@ -11,7 +11,9 @@
   - stadium:    Pflege eines Stadiums (aufklappbar), mit vier Kennzahlen:
                 VPD in kPa, PPFD in µmol/m²/s, Temperatur in °C, EC in mS/cm.
                 Die Einheiten setzt die Vorlage, es werden nur Zahlen getippt.
-  - naehrstoff: Dünger oder Zusatz (Name, Art, Zweck, Dosierung)
+  - naehrstoff: Dünger oder Zusatz (Name, Art, Zweck, Dosierung), aufklappbar:
+                zu Beginn nur der Name
+  - punkt:      aufklappbarer Punkt unter Ankunft, Substrat oder Probleme
   - wasser:     Zeile der Tabelle pH und EC je Stadium
 
   Der Disclaimer steht fest oben unter dem Kopf. Ohne eigenen Text kommt er aus
@@ -36,19 +38,19 @@
 <script src="{{ 'care-guide.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
-  assign titel = section.settings.heading | default: '' | strip
+  assign titel = section.settings.heading | default: '' | strip | escape
   if titel == blank
     assign titel = 'care_guide.heading' | t
   endif
-  assign eyebrow = section.settings.eyebrow | default: '' | strip
+  assign eyebrow = section.settings.eyebrow | default: '' | strip | escape
   if eyebrow == blank
     assign eyebrow = 'care_guide.eyebrow' | t
   endif
-  assign lead = section.settings.lead | default: '' | strip
+  assign lead = section.settings.lead | default: '' | strip | escape
   if lead == blank
     assign lead = 'care_guide.lead' | t
   endif
-  assign disclaimer = section.settings.disclaimer | default: '' | strip
+  assign disclaimer = section.settings.disclaimer | default: '' | strip | escape
   if disclaimer == blank
     assign disclaimer = 'care_guide.disclaimer' | t
   endif
@@ -83,6 +85,17 @@
         if block.settings.ph != blank or block.settings.ec != blank
           assign hat_wasser = true
         endif
+      when 'punkt'
+        if block.settings.titel != blank and block.settings.text != blank
+          case block.settings.thema
+            when 'ankunft'
+              assign hat_ankunft = true
+            when 'substrat'
+              assign hat_substrat = true
+            when 'probleme'
+              assign hat_probleme = true
+          endcase
+        endif
       when 'kapitel'
         if block.settings.text != blank
           case block.settings.thema
@@ -102,35 +115,35 @@
     assign hat_wasser = true
   endif
 
-  assign kapitel_bedingungen = section.settings.bedingungen_titel | default: '' | strip
+  assign kapitel_bedingungen = section.settings.bedingungen_titel | default: '' | strip | escape
   if kapitel_bedingungen == blank
     assign kapitel_bedingungen = 'care_guide.conditions_title' | t
   endif
-  assign lead_bedingungen = section.settings.bedingungen_lead | default: '' | strip
+  assign lead_bedingungen = section.settings.bedingungen_lead | default: '' | strip | escape
   if lead_bedingungen == blank
     assign lead_bedingungen = 'care_guide.conditions_lead' | t
   endif
-  assign kapitel_stadien = section.settings.stadien_titel | default: '' | strip
+  assign kapitel_stadien = section.settings.stadien_titel | default: '' | strip | escape
   if kapitel_stadien == blank
     assign kapitel_stadien = 'care_guide.picker_title' | t
   endif
-  assign lead_stadien = section.settings.stadien_lead | default: '' | strip
+  assign lead_stadien = section.settings.stadien_lead | default: '' | strip | escape
   if lead_stadien == blank
     assign lead_stadien = 'care_guide.stages_lead' | t
   endif
-  assign kapitel_naehrstoffe = section.settings.naehrstoffe_titel | default: '' | strip
+  assign kapitel_naehrstoffe = section.settings.naehrstoffe_titel | default: '' | strip | escape
   if kapitel_naehrstoffe == blank
     assign kapitel_naehrstoffe = 'care_guide.nutrients_title' | t
   endif
-  assign lead_naehrstoffe = section.settings.naehrstoffe_lead | default: '' | strip
+  assign lead_naehrstoffe = section.settings.naehrstoffe_lead | default: '' | strip | escape
   if lead_naehrstoffe == blank
     assign lead_naehrstoffe = 'care_guide.nutrients_lead' | t
   endif
-  assign kapitel_wasser = section.settings.wasser_titel | default: '' | strip
+  assign kapitel_wasser = section.settings.wasser_titel | default: '' | strip | escape
   if kapitel_wasser == blank
     assign kapitel_wasser = 'care_guide.water_title' | t
   endif
-  assign lead_wasser = section.settings.wasser_lead | default: '' | strip
+  assign lead_wasser = section.settings.wasser_lead | default: '' | strip | escape
   if lead_wasser == blank
     assign lead_wasser = 'care_guide.water_lead' | t
   endif
@@ -154,9 +167,9 @@
   <div class="care-guide__hero" style="--guide-bild: url('{{ bild_url }}');">
     <div class="page-width">
       <header class="care-guide__intro">
-        <p class="care-guide__eyebrow">{{ eyebrow | escape }}</p>
-        <h1 class="care-guide__heading">{{ titel | escape }}</h1>
-        <p class="care-guide__lead">{{ lead | escape }}</p>
+        <p class="care-guide__eyebrow">{{ eyebrow }}</p>
+        <h1 class="care-guide__heading">{{ titel }}</h1>
+        <p class="care-guide__lead">{{ lead }}</p>
       </header>
     </div>
   </div>
@@ -170,8 +183,8 @@
         direkt darunter. Ohne Skript sind alle Stadien als Kästen da.
       {%- endcomment -%}
       <section class="care-guide__chapter care-guide__chapter--stadien" id="stadien" data-testid="care-guide-stages">
-        <h2 class="care-guide__title">{{ kapitel_stadien | escape }}</h2>
-        <p class="care-guide__chapter-lead">{{ lead_stadien | escape }}</p>
+        <h2 class="care-guide__title">{{ kapitel_stadien }}</h2>
+        <p class="care-guide__chapter-lead">{{ lead_stadien }}</p>
         {%- render 'care-guide-tafel', bloecke: section.blocks -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'stadium' -%}
@@ -292,8 +305,8 @@
 
     {%- if hat_bedingungen -%}
       <section class="care-guide__chapter" id="bedingungen" data-testid="care-guide-conditions">
-        <h2 class="care-guide__title">{{ kapitel_bedingungen | escape }}</h2>
-        <p class="care-guide__chapter-lead">{{ lead_bedingungen | escape }}</p>
+        <h2 class="care-guide__title">{{ kapitel_bedingungen }}</h2>
+        <p class="care-guide__chapter-lead">{{ lead_bedingungen }}</p>
         <dl class="care-guide__facts">
           {%- for block in section.blocks -%}
             {%- if block.type == 'bedingung' -%}
@@ -314,28 +327,39 @@
 
     {%- if hat_naehrstoffe -%}
       <section class="care-guide__chapter" id="naehrstoffe" data-testid="care-guide-nutrients">
-        <h2 class="care-guide__title">{{ kapitel_naehrstoffe | escape }}</h2>
-        <p class="care-guide__chapter-lead">{{ lead_naehrstoffe | escape }}</p>
-        <ul class="care-guide__list" role="list">
+        <h2 class="care-guide__title">{{ kapitel_naehrstoffe }}</h2>
+        <p class="care-guide__chapter-lead">{{ lead_naehrstoffe }}</p>
+        <ul class="care-guide__klappen" role="list">
           {%- for block in section.blocks -%}
             {%- if block.type == 'naehrstoff' and block.settings.name != blank -%}
-              <li class="care-guide__item" {{ block.shopify_attributes }}>
-                <div class="care-guide__item-main">
-                  <h3 class="care-guide__item-name">{{ block.settings.name | escape }}</h3>
-                  {%- if block.settings.zweck != blank -%}
-                    <p>{{ block.settings.zweck | escape }}</p>
-                  {%- endif -%}
-                  {%- if block.settings.dosierung != blank -%}
-                    <p class="care-guide__dose">{{ block.settings.dosierung | escape }}</p>
-                  {%- endif -%}
-                </div>
-                <span class="care-guide__chip">
-                  {%- if block.settings.art == 'zusatz' -%}
-                    {{ 'care_guide.type_addition' | t }}
-                  {%- else -%}
-                    {{ 'care_guide.type_basis' | t }}
-                  {%- endif -%}
-                </span>
+              <li {{ block.shopify_attributes }}>
+                {%- if block.settings.zweck != blank or block.settings.dosierung != blank -%}
+                  <details class="care-guide__klappe">
+                    <summary class="care-guide__klappe-kopf">
+                      <span class="care-guide__klappe-titel">{{ block.settings.name | escape }}</span>
+                      <span class="care-guide__klappe-zeichen" aria-hidden="true"></span>
+                    </summary>
+                    <div class="care-guide__klappe-inhalt">
+                      {%- if block.settings.zweck != blank -%}
+                        <p>{{ block.settings.zweck | escape }}</p>
+                      {%- endif -%}
+                      {%- if block.settings.dosierung != blank -%}
+                        <p class="care-guide__dose">{{ block.settings.dosierung | escape }}</p>
+                      {%- endif -%}
+                      <span class="care-guide__chip">
+                        {%- if block.settings.art == 'zusatz' -%}
+                          {{ 'care_guide.type_addition' | t }}
+                        {%- else -%}
+                          {{ 'care_guide.type_basis' | t }}
+                        {%- endif -%}
+                      </span>
+                    </div>
+                  </details>
+                {%- else -%}
+                  <div class="care-guide__klappe care-guide__klappe--einfach">
+                    <span class="care-guide__klappe-titel">{{ block.settings.name | escape }}</span>
+                  </div>
+                {%- endif -%}
               </li>
             {%- endif -%}
           {%- endfor -%}
@@ -345,8 +369,8 @@
 
     {%- if hat_wasser -%}
       <section class="care-guide__chapter" id="wasser" data-testid="care-guide-water">
-        <h2 class="care-guide__title">{{ kapitel_wasser | escape }}</h2>
-        <p class="care-guide__chapter-lead">{{ lead_wasser | escape }}</p>
+        <h2 class="care-guide__title">{{ kapitel_wasser }}</h2>
+        <p class="care-guide__chapter-lead">{{ lead_wasser }}</p>
         {%- if ph_ziel != blank or ec_ziel != blank -%}
           <div class="care-guide__tiles">
             {%- if ph_ziel != blank -%}
@@ -408,8 +432,8 @@
       Tungs eigene Erfahrungswerte sind.
     {%- endcomment -%}
     <aside class="care-guide__disclaimer" role="note" data-testid="care-guide-disclaimer">
-      <strong>{{ disclaimer_titel | escape }}</strong>
-      <p>{{ disclaimer | escape }}</p>
+      <strong>{{ disclaimer_titel }}</strong>
+      <p>{{ disclaimer }}</p>
     </aside>
 
     {%- if wa_link != blank -%}
@@ -514,7 +538,7 @@
       "type": "kapitel",
       "name": "Weiteres Kapitel",
       "settings": [
-        { "type": "paragraph", "content": "Ein frei geschriebenes Kapitel mit eigenem Feld auf der Tafel: Ankunft, Substrat und Umtopfen oder Probleme. Ohne Text erscheint es nicht." },
+        { "type": "paragraph", "content": "Ein frei geschriebenes Kapitel mit eigenem Feld auf der Tafel: Ankunft, Substrat und Umtopfen oder Probleme. Es erscheint, sobald es Text hat oder aufklappbare Punkte dazu gibt." },
         {
           "type": "select",
           "id": "thema",
@@ -528,6 +552,26 @@
         },
         { "type": "text", "id": "titel", "label": "Überschrift", "info": "Leer lassen: Dann wird übersetzt." },
         { "type": "text", "id": "einleitung", "label": "Einleitung", "info": "Leer lassen: Dann wird übersetzt." },
+        { "type": "richtext", "id": "text", "label": "Text" }
+      ]
+    },
+    {
+      "type": "punkt",
+      "name": "Aufklappbarer Punkt",
+      "settings": [
+        { "type": "paragraph", "content": "Ein Punkt unter einem Kapitel (Ankunft, Substrat oder Probleme). Zu Beginn steht nur die Überschrift, beim Aufklappen der Text." },
+        {
+          "type": "select",
+          "id": "thema",
+          "label": "Gehört zu Kapitel",
+          "options": [
+            { "value": "ankunft", "label": "Ankunft" },
+            { "value": "substrat", "label": "Substrat und Umtopfen" },
+            { "value": "probleme", "label": "Probleme" }
+          ],
+          "default": "probleme"
+        },
+        { "type": "text", "id": "titel", "label": "Überschrift" },
         { "type": "richtext", "id": "text", "label": "Text" }
       ]
     },

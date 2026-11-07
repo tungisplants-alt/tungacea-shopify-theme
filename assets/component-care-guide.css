@@ -641,3 +641,81 @@
 .care-guide__button:hover {
   background: rgba(242, 238, 232, 0.09);
 }
+
+/* ---------- Aufklappbare Punkte ----------
+   Nährstoffe, Probleme, Ankunft und Substrat: zu Beginn nur die Überschrift,
+   beim Aufklappen der Text. Plus zu, Minus auf, wie bei den Zeilen auf der
+   Produktseite. Ohne Skript, es ist ein <details>. */
+.care-guide__klappen {
+  margin: 2.4rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--cg-line-soft);
+}
+
+.care-guide__klappen > li {
+  margin: 0;
+  padding: 0;
+}
+
+.care-guide__klappe {
+  border-bottom: 1px solid var(--cg-line-soft);
+}
+
+.care-guide__klappe-kopf {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  padding: 1.8rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.care-guide__klappe-kopf::-webkit-details-marker {
+  display: none;
+}
+
+.care-guide__klappe-kopf:focus-visible {
+  outline: 0.2rem solid var(--cg-ox);
+  outline-offset: 0.2rem;
+}
+
+.care-guide__klappe-titel {
+  font-size: 1.7rem;
+  line-height: 1.35;
+  color: #f2eee8;
+}
+
+.care-guide__klappe-zeichen::after {
+  content: '+';
+  color: var(--cg-accent);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.care-guide__klappe[open] .care-guide__klappe-zeichen::after {
+  content: '\2013';
+}
+
+.care-guide__klappe-inhalt {
+  max-width: 62rem;
+  padding: 0 0 2.4rem;
+}
+
+.care-guide__klappe-inhalt p {
+  margin: 0 0 1.2rem;
+}
+
+.care-guide__klappe-inhalt > :last-child {
+  margin-bottom: 0;
+}
+
+.care-guide__klappe--einfach {
+  padding: 1.8rem 0;
+}
+
+.care-guide__klappe-inhalt .care-guide__chip {
+  display: inline-block;
+  margin-top: 0.4rem;
+}
