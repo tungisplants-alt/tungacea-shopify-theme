@@ -847,6 +847,7 @@
     "water_lead": "pH- und EC-Wert, so wie ich sie einstelle.",
     "questions_title": "Fragen",
     "questions_text": "Etwas unklar oder bei dir anders? Schreib mir direkt.",
+    "stand_label": "Stand",
     "stage_step": "Stufe {{ nummer }}",
     "stage_breeding": "Zucht",
     "empty": "Inhalt folgt.",

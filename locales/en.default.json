@@ -847,6 +847,7 @@
     "water_lead": "pH and EC, the way I set them.",
     "questions_title": "Questions",
     "questions_text": "Something unclear, or different on your end? Message me directly.",
+    "stand_label": "Last updated",
     "stage_step": "Stage {{ nummer }}",
     "stage_breeding": "Breeding",
     "empty": "Content coming soon.",
