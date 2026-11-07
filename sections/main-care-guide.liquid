@@ -11,8 +11,8 @@
   - stadium:    Pflege eines Stadiums (aufklappbar), mit vier Kennzahlen:
                 VPD in kPa, PPFD in µmol/m²/s, Temperatur in °C, EC in mS/cm.
                 Die Einheiten setzt die Vorlage, es werden nur Zahlen getippt.
-  - naehrstoff: Dünger oder Zusatz (Name, Art, Zweck, Dosierung), aufklappbar:
-                zu Beginn nur der Name
+  - naehrstoff: Dünger oder Zusatz (Name, Art, Funktion, Grund, Dosierung),
+                aufklappbar: zu Beginn nur der Name
   - punkt:      aufklappbarer Punkt unter Ankunft, Substrat oder Probleme
   - wasser:     Zeile der Tabelle pH und EC je Stadium
 
@@ -333,7 +333,7 @@
           {%- for block in section.blocks -%}
             {%- if block.type == 'naehrstoff' and block.settings.name != blank -%}
               <li {{ block.shopify_attributes }}>
-                {%- if block.settings.zweck != blank or block.settings.dosierung != blank -%}
+                {%- if block.settings.zweck != blank or block.settings.grund != blank or block.settings.dosierung != blank -%}
                   <details class="care-guide__klappe">
                     <summary class="care-guide__klappe-kopf">
                       <span class="care-guide__klappe-titel">{{ block.settings.name | escape }}</span>
@@ -341,9 +341,15 @@
                     </summary>
                     <div class="care-guide__klappe-inhalt">
                       {%- if block.settings.zweck != blank -%}
+                        <p class="care-guide__etikett">{{ 'care_guide.label_function' | t }}</p>
                         <p>{{ block.settings.zweck | escape }}</p>
                       {%- endif -%}
+                      {%- if block.settings.grund != blank -%}
+                        <p class="care-guide__etikett">{{ 'care_guide.label_reason' | t }}</p>
+                        <p>{{ block.settings.grund | escape }}</p>
+                      {%- endif -%}
                       {%- if block.settings.dosierung != blank -%}
+                        <p class="care-guide__etikett">{{ 'care_guide.label_dose' | t }}</p>
                         <p class="care-guide__dose">{{ block.settings.dosierung | escape }}</p>
                       {%- endif -%}
                       <span class="care-guide__chip">
@@ -530,8 +536,9 @@
           ],
           "default": "basis"
         },
-        { "type": "text", "id": "zweck", "label": "Wofür" },
-        { "type": "text", "id": "dosierung", "label": "Dosierung und wann" }
+        { "type": "textarea", "id": "zweck", "label": "Funktion", "info": "Was macht das Mittel? Steht beim Aufklappen unter „Funktion“." },
+        { "type": "textarea", "id": "grund", "label": "Warum ich es nutze", "info": "Dein Grund. Steht beim Aufklappen unter „Warum ich es nutze“. Leer lassen: Dann fehlt die Zeile." },
+        { "type": "textarea", "id": "dosierung", "label": "Dosierung und wann" }
       ]
     },
     {

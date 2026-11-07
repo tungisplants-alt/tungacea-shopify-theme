@@ -704,6 +704,13 @@
 
 .care-guide__klappe-inhalt p {
   margin: 0 0 1.2rem;
+  font-size: 1.5rem;
+  line-height: 1.65;
+  color: var(--cg-muted);
+}
+
+.care-guide__klappe-inhalt p.care-guide__dose {
+  color: rgba(242, 238, 232, 0.9);
 }
 
 .care-guide__klappe-inhalt > :last-child {
@@ -717,4 +724,17 @@
 .care-guide__klappe-inhalt .care-guide__chip {
   display: inline-block;
   margin-top: 0.4rem;
+}
+
+/* Beschriftung über den Angaben in einem aufgeklappten Nährstoff */
+.care-guide__etikett {
+  margin: 1.6rem 0 0.4rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cg-muted);
+}
+
+.care-guide__klappe-inhalt > .care-guide__etikett:first-child {
+  margin-top: 0;
 }
