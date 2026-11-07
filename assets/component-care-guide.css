@@ -92,6 +92,18 @@
 
 /* ---------- Disclaimer ----------
    Eine leise Notiz mit roter Linie am Ende der Seite, vor den Fragen. */
+.care-guide__stand {
+  margin: 5.6rem 0 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cg-muted, rgba(244, 240, 234, 0.5));
+}
+
+.care-guide__stand + .care-guide__disclaimer {
+  margin-top: 1.6rem;
+}
+
 .care-guide__disclaimer {
   margin: 5.6rem 0 0;
   padding: 0.2rem 0 0.2rem 1.6rem;
