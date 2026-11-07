@@ -3,9 +3,12 @@
   Kapitel"): Ankunft, Substrat und Umtopfen oder Probleme.
 
   Überschrift und Einleitung kommen aus dem Block; leer stehen die
-  übersetzten Vorgaben. Der Text ist frei, mit Absätzen und Listen. Gibt es
-  für das Thema keinen Block mit Text, erscheint nichts. Mehrere Blöcke zum
-  selben Thema: es zählt der erste.
+  übersetzten Vorgaben. Der Text ist frei, mit Absätzen und Listen. Dazu
+  können beliebig viele aufklappbare Punkte kommen (Block "Aufklappbarer
+  Punkt"): zu Beginn steht nur die Überschrift, beim Aufklappen der Text.
+  Das Kapitel erscheint, sobald es Text oder mindestens einen Punkt hat.
+  Mehrere Blöcke zum selben Thema: es zählt der erste mit Text, sonst der
+  erste.
 
   Annahmen:
   - bloecke: {Array} section.blocks (Pflicht)
@@ -13,14 +16,36 @@
 {% endcomment %}
 {%- liquid
   assign kapitel_block = nil
+  assign erster_block = nil
   for b in bloecke
-    if b.type == 'kapitel' and b.settings.thema == thema and b.settings.text != blank
-      assign kapitel_block = b
+    if b.type == 'kapitel' and b.settings.thema == thema
+      if erster_block == nil
+        assign erster_block = b
+      endif
+      if b.settings.text != blank
+        assign kapitel_block = b
+        break
+      endif
+    endif
+  endfor
+  if kapitel_block == nil
+    assign kapitel_block = erster_block
+  endif
+
+  assign hat_text = false
+  if kapitel_block and kapitel_block.settings.text != blank
+    assign hat_text = true
+  endif
+
+  assign hat_punkte = false
+  for b in bloecke
+    if b.type == 'punkt' and b.settings.thema == thema and b.settings.titel != blank and b.settings.text != blank
+      assign hat_punkte = true
       break
     endif
   endfor
 -%}
-{%- if kapitel_block -%}
+{%- if hat_text or hat_punkte -%}
   {%- liquid
     case thema
       when 'ankunft'
@@ -33,18 +58,39 @@
         assign vorgabe_titel = 'care_guide.problems_title' | t
         assign vorgabe_lead = 'care_guide.problems_lead' | t
     endcase
-    assign k_titel = kapitel_block.settings.titel | default: '' | strip
+    assign k_titel = ''
+    assign k_lead = ''
+    if kapitel_block
+      assign k_titel = kapitel_block.settings.titel | default: '' | strip | escape
+      assign k_lead = kapitel_block.settings.einleitung | default: '' | strip | escape
+    endif
     if k_titel == blank
       assign k_titel = vorgabe_titel
     endif
-    assign k_lead = kapitel_block.settings.einleitung | default: '' | strip
     if k_lead == blank
       assign k_lead = vorgabe_lead
     endif
   -%}
-  <section class="care-guide__chapter" id="{{ thema }}" data-testid="care-guide-{{ thema }}" {{ kapitel_block.shopify_attributes }}>
-    <h2 class="care-guide__title">{{ k_titel | escape }}</h2>
-    <p class="care-guide__chapter-lead">{{ k_lead | escape }}</p>
-    <div class="care-guide__text care-guide__text--kapitel rte">{{ kapitel_block.settings.text }}</div>
+  <section class="care-guide__chapter" id="{{ thema }}" data-testid="care-guide-{{ thema }}" {% if kapitel_block %}{{ kapitel_block.shopify_attributes }}{% endif %}>
+    <h2 class="care-guide__title">{{ k_titel }}</h2>
+    <p class="care-guide__chapter-lead">{{ k_lead }}</p>
+    {%- if hat_text -%}
+      <div class="care-guide__text care-guide__text--kapitel rte">{{ kapitel_block.settings.text }}</div>
+    {%- endif -%}
+    {%- if hat_punkte -%}
+      <div class="care-guide__klappen" data-testid="care-guide-punkte-{{ thema }}">
+        {%- for b in bloecke -%}
+          {%- if b.type == 'punkt' and b.settings.thema == thema and b.settings.titel != blank and b.settings.text != blank -%}
+            <details class="care-guide__klappe" {{ b.shopify_attributes }}>
+              <summary class="care-guide__klappe-kopf">
+                <span class="care-guide__klappe-titel">{{ b.settings.titel | escape }}</span>
+                <span class="care-guide__klappe-zeichen" aria-hidden="true"></span>
+              </summary>
+              <div class="care-guide__klappe-inhalt care-guide__text rte">{{ b.settings.text }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
   </section>
 {%- endif -%}
