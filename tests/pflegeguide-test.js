@@ -181,7 +181,7 @@ const zaehle = (h, re) => (h.match(re) || []).length;
     // Aufklappbare Punkte und Nährstoffe
     const mitPunkten = await rendere([
       block('stadium', { stadium: 'steckling' }),
-      block('naehrstoff', { name: 'Dünger A', art: 'basis', zweck: 'Wachstum', dosierung: '1 ml/l' }),
+      block('naehrstoff', { name: 'Dünger A', art: 'basis', zweck: 'Wachstum', grund: 'Weil dunkle Blätter', dosierung: '1 ml/l' }),
       block('naehrstoff', { name: 'Nur Name', art: 'zusatz' }),
       block('kapitel', { thema: 'probleme', titel: '', einleitung: '', text: '' }),
       block('punkt', { thema: 'probleme', titel: 'Gelbe Blätter', text: '<p>Meist zu nass.</p>' }),
@@ -190,7 +190,11 @@ const zaehle = (h, re) => (h.match(re) || []).length;
     ]);
     const kopfA = (mitPunkten.slice(mitPunkten.indexOf('id="naehrstoffe"')).match(/<summary class="care-guide__klappe-kopf">([\s\S]*?)<\/summary>/) || [])[1] || '';
     pruefe('Nährstoffe: aufklappbar, zu Beginn nur der Name in der Zeile', /Dünger A/.test(kopfA) && !/Wachstum|1 ml/.test(kopfA), true);
-    pruefe('Nährstoffe: Zweck und Dosierung stehen im aufklappbaren Teil', /care-guide__klappe-inhalt">\s*<p>Wachstum<\/p>\s*<p class="care-guide__dose">1 ml\/l<\/p>/.test(mitPunkten), true);
+    pruefe('Nährstoffe: Funktion, Grund und Dosierung stehen im aufklappbaren Teil, mit Beschriftung', /care-guide__klappe-inhalt">\s*<p class="care-guide__etikett">Funktion<\/p>\s*<p>Wachstum<\/p>\s*<p class="care-guide__etikett">Warum ich es nutze<\/p>\s*<p>Weil dunkle Blätter<\/p>\s*<p class="care-guide__etikett">Dosierung<\/p>\s*<p class="care-guide__dose">1 ml\/l<\/p>/.test(mitPunkten), true);
+    const ohneGrund = await rendere([block('stadium', { stadium: 'steckling' }), block('naehrstoff', { name: 'Dünger', art: 'basis', zweck: 'Wachstum' })]);
+    pruefe('Ohne Grund fehlt die Zeile "Warum ich es nutze"', /Warum ich es nutze/.test(ohneGrund), false);
+    const nurGrund = await rendere([block('stadium', { stadium: 'steckling' }), block('naehrstoff', { name: 'Dünger', art: 'basis', grund: 'Nur ein Grund' })]);
+    pruefe('Nur mit Grund ist der Eintrag aufklappbar', /<details class="care-guide__klappe"/.test(nurGrund) && /Nur ein Grund/.test(nurGrund), true);
     pruefe('Nährstoffe: ein Eintrag nur mit Namen bleibt eine einfache Zeile', /care-guide__klappe--einfach">\s*<span class="care-guide__klappe-titel">Nur Name/.test(mitPunkten), true);
     pruefe('Probleme: Kapitel erscheint nur mit Punkten, ohne eigenen Text', /id="probleme"/.test(mitPunkten) && !/care-guide__text--kapitel/.test(mitPunkten.slice(mitPunkten.indexOf('id="probleme"'), mitPunkten.indexOf('id="probleme"') + 400)), true);
     pruefe('Probleme: Punkt aufklappbar, Überschrift in der Zeile, Text darin', /<span class="care-guide__klappe-titel">Gelbe Blätter<\/span>/.test(mitPunkten) && /care-guide__klappe-inhalt care-guide__text rte"><p>Meist zu nass\.<\/p>/.test(mitPunkten), true);
