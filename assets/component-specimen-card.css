@@ -76,9 +76,9 @@
   font-family: var(--font-body-family);
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  font-size: 1.2rem;
+  font-size: 1.05rem; /* leiser als der Titel (2rem), die Zeile steht nur als Beschriftung darunter */
   line-height: 1.5;
-  color: rgba(210, 198, 173, 0.78); /* Kleine Versalien wie ein Museumsschild, Kontrast ueber 7:1 */
+  color: rgba(210, 198, 173, 0.66); /* Kontrast zum Schwarz etwa 5:1, gemessen mit dem Mischwert ueber #0a0a0a */
 }
 .product-card-wrapper .specimen-card__sep {
   color: rgba(191, 179, 155, 0.4);
@@ -229,8 +229,8 @@
     font-size: 1.6rem;
   }
   .product-card-wrapper .specimen-card__traits {
-    font-size: 1.2rem;
-    letter-spacing: 0.08em;
+    font-size: 1.05rem;
+    letter-spacing: 0.1em;
   }
   .product-card-wrapper .specimen-card__flag {
     font-size: 1.2rem;
