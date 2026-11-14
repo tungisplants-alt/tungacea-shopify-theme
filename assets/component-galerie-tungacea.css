@@ -102,7 +102,7 @@
     padding: 0;
     width: 0.6rem;
     height: 0.3rem;
-    background: rgba(242, 238, 232, 0.42);
+    background: rgba(236, 226, 204, 0.42);
     cursor: pointer;
     transition: width 0.22s ease, background-color 0.22s ease;
   }

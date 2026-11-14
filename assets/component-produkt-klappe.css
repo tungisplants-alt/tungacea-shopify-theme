@@ -40,7 +40,7 @@
   cursor: pointer;
   font-size: 1.5rem;
   letter-spacing: 0.02em;
-  color: rgba(242, 238, 232, 0.92);
+  color: rgba(236, 226, 204, 0.92);
 }
 
 .produkt-klappe__toggle::-webkit-details-marker {
@@ -48,7 +48,7 @@
 }
 
 .produkt-klappe__toggle:hover .produkt-klappe__titel {
-  color: rgba(242, 238, 232, 1);
+  color: rgba(236, 226, 204, 1);
 }
 
 /* Plus zu, Minus auf: dasselbe Zeichen wie beim E-Mail-Weg in der Karte. */
@@ -94,7 +94,7 @@
 }
 
 .produkt-klappe__link:hover {
-  color: rgba(242, 238, 232, 1);
+  color: rgba(236, 226, 204, 1);
 }
 
 .produkt-klappe__toggle:focus-visible {

@@ -92,23 +92,23 @@
   height: 5px;
   border-radius: 50%;
   flex: 0 0 auto;
-  background: rgba(185, 178, 169, 0.5);
+  background: rgba(191, 179, 155, 0.5);
 }
 .specimen-passport__status--available::before,
 .specimen-passport__status--coming::before {
   background: rgb(var(--tungacea-accent-bright));
 }
 .specimen-passport__status--reserved {
-  color: #f2eee8;
+  color: #ece2cc;
 }
 .specimen-passport__status--reserved::before {
   background: rgb(var(--tungacea-accent-bright));
 }
 .specimen-passport__status--sold {
-  color: rgba(185, 178, 169, 0.68);
+  color: rgba(191, 179, 155, 0.68);
 }
 .specimen-passport__status--sold::before {
-  background: rgba(185, 178, 169, 0.32);
+  background: rgba(191, 179, 155, 0.32);
 }
 
 /* ---------- Lead, specs and the derived experience hint ----------
@@ -131,7 +131,7 @@
   letter-spacing: 0.16em;
   font-size: 1.2rem;
   line-height: 1.5;
-  color: rgba(185, 178, 169, 0.72);
+  color: rgba(191, 179, 155, 0.72);
 }
 
 .specimen-passport__hint {
@@ -441,7 +441,7 @@
   font-family: var(--font-body-family);
   font-size: 1.2rem;
   line-height: 1.5;
-  color: rgba(185, 178, 169, 0.72);
+  color: rgba(191, 179, 155, 0.72);
 }
 
 /* Nachweis am einzelnen Mutterfoto. Die Kacheln sind hier klein und stehen zu
@@ -459,7 +459,7 @@
   font-family: var(--font-body-family);
   font-size: 1.2rem;
   line-height: 1.4;
-  color: rgba(185, 178, 169, 0.72);
+  color: rgba(191, 179, 155, 0.72);
 }
 
 @media screen and (max-width: 749px) {
@@ -604,7 +604,7 @@
   gap: 0.6rem;
   margin-top: 1.2rem;
   padding: 0.8rem 1.4rem;
-  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  border: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
   color: inherit;
   text-decoration: none;
   font-size: 1.2rem;
@@ -643,13 +643,13 @@
 /* Das Land steht neben dem Namen, aber leiser. Es ordnet ein, es ist nicht
    die Aussage. */
 .specimen-passport__country {
-  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
 }
 
 /* Die Nummer der Mutterpflanze steht neben ihrem Namen, leiser. Sie sagt dem
    Käufer, woher sein Exemplar stammt. */
 .specimen-passport__mother-id {
-  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
   opacity: 0.8;
   letter-spacing: 0.08em;
 }

@@ -7,9 +7,9 @@
 :root {
   --tungacea-accent: 150, 45, 58;        /* restrained oxblood for accents */
   --tungacea-accent-deep: 91, 22, 33;
-  --tungacea-hairline: rgba(242, 238, 232, 0.14);
-  --tungacea-hairline-soft: rgba(242, 238, 232, 0.08);
-  --tungacea-muted: rgba(205, 198, 188, 0.88);
+  --tungacea-hairline: rgba(236, 226, 204, 0.14);
+  --tungacea-hairline-soft: rgba(236, 226, 204, 0.08);
+  --tungacea-muted: rgba(210, 198, 173, 0.88);
   --tungacea-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
@@ -21,7 +21,7 @@ body {
 
 ::selection {
   background: rgba(var(--tungacea-accent), 0.9);
-  color: #f2eee8;
+  color: #ece2cc;
 }
 
 /* Subtle film grain over the whole site — quiet, not neon */
@@ -85,7 +85,7 @@ h1, h2, h3, h4, h5,
 .tax-note.caption-large a {
   color: inherit;
   text-decoration: underline;
-  text-decoration-color: rgba(242, 238, 232, 0.35);
+  text-decoration-color: rgba(236, 226, 204, 0.35);
   text-underline-offset: 0.25em;
 }
 
@@ -254,7 +254,7 @@ h1, h2, h3, h4, h5,
 /* Cart bubble in restrained oxblood */
 .cart-count-bubble {
   background: rgb(var(--tungacea-accent));
-  color: #f2eee8;
+  color: #ece2cc;
 }
 
 /* ---------- Announcement bar ---------- */
@@ -362,7 +362,7 @@ h1, h2, h3, h4, h5,
   font-size: clamp(4.4rem, 7.4vw, 8.4rem);
 }
 .banner__text {
-  color: rgba(242, 238, 232, 0.82);
+  color: rgba(236, 226, 204, 0.82);
   font-size: 1.5rem;
   letter-spacing: 0.02em;
 }
@@ -718,8 +718,8 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 .color-scheme-4 {
   background-image: linear-gradient(
     180deg,
-    rgba(242, 238, 232, 0.022) 0%,
-    rgba(242, 238, 232, 0) 260px
+    rgba(236, 226, 204, 0.022) 0%,
+    rgba(236, 226, 204, 0) 260px
   );
 }
 
@@ -790,7 +790,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 /* ---------- Sale badge stays a toned oxblood chip ---------- */
 .card__badge .badge {
   background: rgb(var(--tungacea-oxblood));
-  color: #f5f1eb;
+  color: #ece2cc;
 }
 .badge.color-scheme-4 { /* sold-out chip: graphite, muted */
   color: var(--tungacea-muted);
@@ -892,7 +892,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 /* ---------- Panel (dark, graphite surface) ---------- */
 .tungacea-lang .tungacea-lang__panel {
   background-color: #141416;
-  border: 1px solid rgba(242, 238, 232, 0.08);
+  border: 1px solid rgba(236, 226, 204, 0.08);
   border-radius: 0;
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
   overflow: hidden;
@@ -911,14 +911,14 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   gap: 0.9rem;
   padding: 1rem 1.6rem;
   text-decoration: none;
-  color: rgba(242, 238, 232, 0.7);
+  color: rgba(236, 226, 204, 0.7);
   letter-spacing: 0.02em;
   transition: color 0.25s var(--tungacea-ease), background-color 0.25s var(--tungacea-ease);
 }
 .tungacea-lang .tungacea-lang__link:hover,
 .tungacea-lang .tungacea-lang__link:focus-visible {
-  color: #f2eee8;
-  background-color: rgba(242, 238, 232, 0.045);
+  color: #ece2cc;
+  background-color: rgba(236, 226, 204, 0.045);
   text-decoration: none;
 }
 .tungacea-lang__name {
@@ -941,7 +941,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 
 /* Active language — restrained oxblood indicator + off-white text */
 .tungacea-lang .tungacea-lang__link[aria-current='true'] {
-  color: #f2eee8;
+  color: #ece2cc;
   box-shadow: inset 2px 0 0 rgb(var(--tungacea-accent-bright, 168, 52, 66));
 }
 
@@ -1112,7 +1112,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 [class*='jdgm-'] [class*='btn'],
 [class*='jdgm-'] button[class*='jdgm'] {
   background: rgba(var(--tungacea-oxblood, 110, 28, 40), 1);
-  color: #f5f1eb;
+  color: #ece2cc;
   border: 1px solid rgba(var(--tungacea-accent-bright, 177, 61, 76), 0.55);
   border-radius: 0;
   font-family: var(--font-body-family);
@@ -1132,7 +1132,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
    Dunkel oder schneiden zu hart; auf die Haarlinie der Seite gesetzt. */
 [class*='jdgm-'][class*='widget'],
 [class*='jdgm-'][class*='rev'] {
-  border-color: var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  border-color: var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
 }
 
 /* Shopify-Einwilligungsbanner — Angleichung an die Seite
@@ -1156,14 +1156,14 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 #shopify-pc__banner.shopify-pc__banner__dialog,
 #shopify-pc__prefs__dialog {
   background: #151517;
-  color: rgba(242, 238, 232, 0.88);
+  color: rgba(236, 226, 204, 0.88);
   border-radius: 0;
-  border-top: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  border-top: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
   box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.55);
 }
 
 #shopify-pc__prefs__dialog {
-  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  border: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
 }
 
 #shopify-pc__prefs__overlay {
@@ -1172,7 +1172,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 
 #shopify-pc__banner__body-title,
 #shopify-pc__prefs__header-title {
-  color: #f2eee8;
+  color: #ece2cc;
   font-weight: 400;
   letter-spacing: 0.01em;
 }
@@ -1183,7 +1183,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 #shopify-pc__prefs__dialog label,
 #shopify-pc__banner h3,
 #shopify-pc__banner label {
-  color: #f2eee8;
+  color: #ece2cc;
 }
 
 #shopify-pc__prefs__dialog p,
@@ -1191,7 +1191,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 #shopify-pc__prefs__dialog span,
 #shopify-pc__banner p,
 #shopify-pc__banner span {
-  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
 }
 
 #shopify-pc__prefs__dialog a,
@@ -1208,8 +1208,8 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 #shopify-pc__prefs__header-decline,
 #shopify-pc__prefs__header-save {
   background: rgba(var(--tungacea-oxblood, 110, 28, 40), 1);
-  color: #f5f1eb;
-  border: 1px solid rgba(242, 238, 232, 0.28);
+  color: #ece2cc;
+  border: 1px solid rgba(236, 226, 204, 0.28);
   border-radius: 0;
   font-family: var(--font-body-family);
   font-size: 1.2rem;
@@ -1231,8 +1231,8 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
    deshalb zuruecktreten. */
 #shopify-pc__banner__btn-manage-prefs {
   background: transparent;
-  color: rgba(242, 238, 232, 0.88);
-  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  color: rgba(236, 226, 204, 0.88);
+  border: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
   border-radius: 0;
   font-family: var(--font-body-family);
   font-size: 1.2rem;
@@ -1242,7 +1242,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 }
 
 #shopify-pc__prefs__header-close {
-  color: rgba(242, 238, 232, 0.88);
+  color: rgba(236, 226, 204, 0.88);
 }
 
 #shopify-pc__prefs__dialog input[type='checkbox'] {
@@ -1252,7 +1252,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 }
 
 .shopify-pc__prefs__option + .shopify-pc__prefs__option {
-  border-top: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  border-top: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
 }
 
 /* ---------- Ein Stil fuer alle zweiten Wege ----------
@@ -1275,7 +1275,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   border-radius: 0;
   background: none !important;
   box-shadow: none !important;
-  color: #f2eee8 !important;
+  color: #ece2cc !important;
   font-family: var(--font-body-family);
   font-size: 1.2rem;
   letter-spacing: 0.16em;
@@ -1334,7 +1334,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 .nachzucht {
   margin: 2.4rem 0 0;
   padding: 2rem 0 0;
-  border-top: 1px solid var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.08));
+  border-top: 1px solid var(--tungacea-hairline-soft, rgba(236, 226, 204, 0.08));
 }
 
 .nachzucht__kopf {
@@ -1342,20 +1342,20 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   font-size: 1.2rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #f2eee8;
+  color: #ece2cc;
 }
 
 .nachzucht__text {
   margin: 0 0 1.6rem;
   font-size: 1.5rem;
   line-height: 1.6;
-  color: rgba(242, 238, 232, 0.85);
+  color: rgba(236, 226, 204, 0.85);
 }
 
 .nachzucht__feld {
   display: flex;
   gap: 0;
-  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  border: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
 }
 
 .nachzucht__eingabe {
@@ -1364,14 +1364,14 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   padding: 1.3rem 1.4rem;
   border: 0;
   background: transparent;
-  color: #f2eee8;
+  color: #ece2cc;
   font: inherit;
   font-size: 1.6rem;
   border-radius: 0;
 }
 
 .nachzucht__eingabe::placeholder {
-  color: rgba(205, 198, 188, 0.6);
+  color: rgba(210, 198, 173, 0.6);
 }
 
 .nachzucht__eingabe:focus-visible {
@@ -1385,7 +1385,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   border: 0;
   border-radius: 0;
   background: rgb(var(--tungacea-accent, 110, 28, 40));
-  color: #f2eee8;
+  color: #ece2cc;
   font: inherit;
   font-size: 1.2rem;
   letter-spacing: 0.16em;
@@ -1399,7 +1399,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 }
 
 .nachzucht__knopf:focus-visible {
-  outline: 2px solid #f2eee8;
+  outline: 2px solid #ece2cc;
   outline-offset: 2px;
 }
 
@@ -1408,7 +1408,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   margin: 1rem 0 0;
   font-size: 1.2rem;
   line-height: 1.5;
-  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
 }
 
 .nachzucht__fehler {
@@ -1420,5 +1420,5 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   padding: 1.2rem 0 0;
   font-size: 1.5rem;
   line-height: 1.6;
-  color: #f2eee8;
+  color: #ece2cc;
 }

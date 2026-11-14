@@ -6,9 +6,9 @@
 */
 
 .private-archive {
-  --pa-line: var(--tungacea-hairline, rgba(242, 238, 232, 0.1));
-  --pa-line-soft: var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.055));
-  --pa-muted: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  --pa-line: var(--tungacea-hairline, rgba(236, 226, 204, 0.1));
+  --pa-line-soft: var(--tungacea-hairline-soft, rgba(236, 226, 204, 0.055));
+  --pa-muted: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
   --pa-accent: var(--tungacea-accent, 150, 45, 58);
   --pa-ease: var(--tungacea-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
 }
@@ -121,7 +121,7 @@
   position: relative;
   display: block;
   overflow: hidden;
-  background: rgba(242, 238, 232, 0.03);
+  background: rgba(236, 226, 204, 0.03);
 }
 
 .private-archive__image {

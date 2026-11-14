@@ -213,10 +213,10 @@
             "arrows_visibility": "always_shown",
             "transition_speed": 5,
             "corner_styling": "inherit",
-            "text_color": "#f2eee8",
+            "text_color": "#ece2cc",
             "card_color": "#1f1e22",
             "stars_color": "#cc6070",
-            "arrows_color": "#f2eee8",
+            "arrows_color": "#ece2cc",
             "arrows_background_color": "#1f1e22"
           }
         }

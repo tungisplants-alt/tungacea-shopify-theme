@@ -9,14 +9,14 @@
  * aushebelt.
  */
 .care-guide {
-  --cg-line: var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
-  --cg-line-soft: var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.08));
-  --cg-muted: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  --cg-line: var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
+  --cg-line-soft: var(--tungacea-hairline-soft, rgba(236, 226, 204, 0.08));
+  --cg-muted: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
   --cg-accent: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
   --cg-ox: rgb(var(--tungacea-accent-bright, 168, 52, 66));
   --cg-panel: #0e0e10;
   display: block;
-  color: #f2eee8;
+  color: #ece2cc;
 }
 
 /* ---------- Kopf ----------
@@ -54,7 +54,7 @@
   font-size: 1.2rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(242, 238, 232, 0.78);
+  color: rgba(236, 226, 204, 0.78);
 }
 
 .care-guide__questions .care-guide__eyebrow::before {
@@ -81,7 +81,7 @@
   max-width: 54rem;
   font-size: 1.5rem;
   line-height: 1.6;
-  color: rgba(242, 238, 232, 0.86);
+  color: rgba(236, 226, 204, 0.86);
 }
 
 @media screen and (min-width: 750px) {
@@ -183,7 +183,7 @@
   padding: 1.6rem 0.6rem 1.8rem;
   text-align: center;
   text-decoration: none;
-  color: rgba(242, 238, 232, 0.55);
+  color: rgba(236, 226, 204, 0.55);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -230,17 +230,17 @@
   font-family: var(--font-heading-family);
   font-size: 1.6rem;
   line-height: 1.2;
-  color: rgba(242, 238, 232, 0.75);
+  color: rgba(236, 226, 204, 0.75);
   transition: color 0.4s ease;
 }
 
 @media (hover: hover) {
   .care-guide__eintrag:hover {
-    color: rgba(242, 238, 232, 0.9);
+    color: rgba(236, 226, 204, 0.9);
   }
 
   .care-guide__eintrag:hover .care-guide__eintrag-name {
-    color: #f2eee8;
+    color: #ece2cc;
   }
 }
 
@@ -249,7 +249,7 @@
 }
 
 .care-guide__eintrag[aria-current='step'] .care-guide__eintrag-name {
-  color: #f2eee8;
+  color: #ece2cc;
 }
 
 .care-guide__eintrag:focus-visible {
@@ -517,7 +517,7 @@
 .care-guide__text {
   font-size: 1.5rem;
   line-height: 1.7;
-  color: rgba(242, 238, 232, 0.9);
+  color: rgba(236, 226, 204, 0.9);
 }
 
 .care-guide__text > :first-child {
@@ -565,7 +565,7 @@
 }
 
 .care-guide__item-main .care-guide__dose {
-  color: rgba(242, 238, 232, 0.9);
+  color: rgba(236, 226, 204, 0.9);
 }
 
 .care-guide__chip {
@@ -641,16 +641,16 @@
 .care-guide__button {
   display: inline-block;
   padding: 1.1rem 1.8rem;
-  border: 1px solid rgba(242, 238, 232, 0.42);
+  border: 1px solid rgba(236, 226, 204, 0.42);
   font-size: 1.2rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   text-decoration: none;
-  color: #f2eee8;
+  color: #ece2cc;
 }
 
 .care-guide__button:hover {
-  background: rgba(242, 238, 232, 0.09);
+  background: rgba(236, 226, 204, 0.09);
 }
 
 /* ---------- Aufklappbare Punkte ----------
@@ -695,7 +695,7 @@
 .care-guide__klappe-titel {
   font-size: 1.7rem;
   line-height: 1.35;
-  color: #f2eee8;
+  color: #ece2cc;
 }
 
 .care-guide__klappe-zeichen::after {
@@ -722,7 +722,7 @@
 }
 
 .care-guide__klappe-inhalt p.care-guide__dose {
-  color: rgba(242, 238, 232, 0.9);
+  color: rgba(236, 226, 204, 0.9);
 }
 
 .care-guide__klappe-inhalt > :last-child {
