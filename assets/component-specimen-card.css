@@ -78,10 +78,10 @@
   letter-spacing: 0.14em;
   font-size: 1.2rem;
   line-height: 1.5;
-  color: rgba(205, 198, 188, 0.78); /* Kleine Versalien wie ein Museumsschild, Kontrast ueber 7:1 */
+  color: rgba(210, 198, 173, 0.78); /* Kleine Versalien wie ein Museumsschild, Kontrast ueber 7:1 */
 }
 .product-card-wrapper .specimen-card__sep {
-  color: rgba(185, 178, 169, 0.4);
+  color: rgba(191, 179, 155, 0.4);
 }
 
 /* ---------- Footer: status (left) + price (right) ----------
@@ -128,7 +128,7 @@
   letter-spacing: 0.01em;
   font-size: 1.2rem;
   line-height: 1;
-  color: rgba(242, 238, 232, 0.9);
+  color: rgba(236, 226, 204, 0.9);
   white-space: nowrap;
 }
 .product-card-wrapper .specimen-card__status::before {
@@ -137,7 +137,7 @@
   height: 5px;
   border-radius: 50%;
   flex: 0 0 auto;
-  background: rgba(185, 178, 169, 0.5);
+  background: rgba(191, 179, 155, 0.5);
 }
 
 /* Restrained oxblood only for live / reserved / coming states */
@@ -146,7 +146,7 @@
   background: rgb(var(--tungacea-accent-bright));
 }
 .product-card-wrapper .specimen-card__status--reserved {
-  color: #f2eee8;
+  color: #ece2cc;
 }
 .product-card-wrapper .specimen-card__status--reserved::before {
   background: rgb(var(--tungacea-accent-bright));
@@ -154,10 +154,10 @@
 /* Sold reads as a faint, retired line */
 /* Verkauft bleibt sichtbar zurueckgenommen, aber lesbar: 0.5 ergab 3,3:1. */
 .product-card-wrapper .specimen-card__status--sold {
-  color: rgba(185, 178, 169, 0.68);
+  color: rgba(191, 179, 155, 0.68);
 }
 .product-card-wrapper .specimen-card__status--sold::before {
-  background: rgba(185, 178, 169, 0.32);
+  background: rgba(191, 179, 155, 0.32);
 }
 
 /* Price — clear but understated, aligned right */
@@ -173,7 +173,7 @@
   font-size: 1.5rem;
   font-weight: 400;
   letter-spacing: 0.04em;
-  color: rgba(242, 238, 232, 0.82);
+  color: rgba(236, 226, 204, 0.82);
 }
 
 /* ---------- Hide Dawn's overlay badge chip (status now lives in the footer).
@@ -256,7 +256,7 @@
   line-height: 1.4;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #f2eee8;
+  color: #ece2cc;
 }
 .product-card-wrapper .specimen-card__vormerken::after {
   content: ' ›';
@@ -280,8 +280,8 @@
   flex-direction: column;
   flex: 1 1 auto;
   min-width: 0;
-  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
-  background: rgba(242, 238, 232, 0.018);
+  border: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
+  background: rgba(236, 226, 204, 0.018);
 }
 .related-products .product-card-wrapper .card {
   display: flex;

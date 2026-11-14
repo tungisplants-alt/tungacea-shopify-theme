@@ -59,9 +59,9 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.85rem 1.4rem;
-  border: 1px solid rgba(242, 238, 232, 0.42);
+  border: 1px solid rgba(236, 226, 204, 0.42);
   background: transparent;
-  color: #f2eee8;
+  color: #ece2cc;
   font-family: var(--font-body-family);
   font-size: 1.2rem;
   letter-spacing: 0.16em;
@@ -71,8 +71,8 @@
 }
 
 .winter-pack__knopf:hover {
-  background: rgba(242, 238, 232, 0.09);
-  border-color: rgba(242, 238, 232, 0.68);
+  background: rgba(236, 226, 204, 0.09);
+  border-color: rgba(236, 226, 204, 0.68);
 }
 
 .winter-pack__knopf:focus-visible {
@@ -98,7 +98,7 @@
 .winter-pack__knopf.ist-fertig {
   background: #6e1c28;
   border-color: #6e1c28;
-  color: #f2eee8;
+  color: #ece2cc;
 }
 
 .winter-pack__knopf.ist-fertig .winter-pack__plus {

@@ -103,7 +103,7 @@
   Layered over Dawn's collection-hero without altering its base structure.
 */
 .collection-hero--catalogue {
-  border-bottom: 1px solid var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.055));
+  border-bottom: 1px solid var(--tungacea-hairline-soft, rgba(236, 226, 204, 0.055));
 }
 
 .collection-hero--catalogue .collection-hero__inner {
@@ -115,7 +115,7 @@
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 1.2rem;
-  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  color: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
   margin: 0 0 1.8rem;
 }
 
@@ -139,7 +139,7 @@
   margin-top: 2.2rem;
   margin-bottom: 0;
   max-width: 58ch;
-  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  color: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
   font-size: 1.5rem;
   line-height: 1.6;
 }
@@ -164,7 +164,7 @@
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 1.2rem;
-  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  color: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
 }
 
 /* When a collection image is present, keep the text column balanced */
@@ -233,7 +233,7 @@
 
 .collection-hero--catalogue .collection-hero__description {
   margin-top: 2rem;
-  color: rgba(242, 238, 232, 0.86);
+  color: rgba(236, 226, 204, 0.86);
 }
 
 .collection-hero--catalogue .collection-hero__description > p {
@@ -241,7 +241,7 @@
 }
 
 .collection-hero--catalogue .collection-hero__eyebrow {
-  color: rgba(242, 238, 232, 0.78);
+  color: rgba(236, 226, 204, 0.78);
 }
 
 .collection-hero--catalogue .collection-hero__meta {
@@ -249,7 +249,7 @@
 }
 
 .collection-hero--catalogue .collection-hero__count {
-  color: #f2eee8;
+  color: #ece2cc;
 }
 
 @media screen and (max-width: 749px) {

@@ -43,7 +43,7 @@
   background: rgba(10, 10, 10, 0.82);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  border: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
   letter-spacing: 0.16em;
   text-transform: uppercase;
   transition: border-color 0.25s var(--tungacea-ease, ease), color 0.25s var(--tungacea-ease, ease);
@@ -72,7 +72,7 @@
 
 .whatsapp-contact__text {
   display: none;
-  color: rgba(var(--color-foreground, 242, 238, 232), 0.86);
+  color: rgba(var(--color-foreground, 236, 226, 204), 0.86);
   line-height: 1;
 }
 
@@ -81,7 +81,7 @@
 }
 
 .whatsapp-contact__toggle:hover .whatsapp-contact__text {
-  color: rgba(var(--color-foreground, 242, 238, 232), 1);
+  color: rgba(var(--color-foreground, 236, 226, 204), 1);
 }
 
 /* Die Karte. Nach oben, damit der Knopf an seinem Platz bleibt. Auf kleinen
@@ -97,9 +97,9 @@
   max-height: calc(100dvh - 12rem);
   overflow-y: auto;
   padding: 1.8rem;
-  color: rgba(var(--color-foreground, 242, 238, 232), 0.92);
+  color: rgba(var(--color-foreground, 236, 226, 204), 0.92);
   background: rgba(10, 10, 10, 0.97);
-  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  border: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
   font-size: 1.5rem;
   line-height: 1.5;
   letter-spacing: normal;
@@ -108,7 +108,7 @@
 
 .whatsapp-contact__intro {
   margin: 0 0 1.4rem;
-  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
 }
 
 /* Die beiden Wege und der Senden-Knopf sehen gleich aus. */
@@ -122,9 +122,9 @@
   padding: 1.2rem 1.4rem;
   list-style: none;
   cursor: pointer;
-  color: rgba(var(--color-foreground, 242, 238, 232), 0.92);
+  color: rgba(var(--color-foreground, 236, 226, 204), 0.92);
   background: transparent;
-  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  border: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
   font: inherit;
   font-size: 1.2rem;
   letter-spacing: 0.16em;
@@ -155,7 +155,7 @@
   display: inline-block;
   margin-left: 0.8rem;
   white-space: nowrap;
-  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
   font-size: 1.2rem;
   letter-spacing: 0.04em;
   text-transform: none;
@@ -184,7 +184,7 @@
 .whatsapp-contact__label {
   display: block;
   margin: 1.2rem 0 0.5rem;
-  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
   font-size: 1.2rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -201,9 +201,9 @@
   width: 100%;
   margin: 0;
   padding: 1rem 1.2rem;
-  color: rgba(var(--color-foreground, 242, 238, 232), 1);
-  background: rgba(242, 238, 232, 0.04);
-  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  color: rgba(var(--color-foreground, 236, 226, 204), 1);
+  background: rgba(236, 226, 204, 0.04);
+  border: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
   border-radius: 0;
   font: inherit;
   font-size: 1.6rem;
@@ -230,7 +230,7 @@
 .whatsapp-contact__status {
   margin: 0 0 1.2rem;
   padding: 1.2rem 1.4rem;
-  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.14));
+  border: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
 }
 
 .whatsapp-contact__status--fehler {
@@ -239,7 +239,7 @@
 
 .whatsapp-contact__privacy {
   margin: 1.2rem 0 0;
-  color: var(--tungacea-muted, rgba(205, 198, 188, 0.88));
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
   font-size: 1.2rem;
   line-height: 1.5;
 }

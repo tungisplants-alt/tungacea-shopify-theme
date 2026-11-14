@@ -7,8 +7,8 @@
 
 /* ---------- Toolbar frame ---------- */
 .tungacea-catalogue .facets.small-hide {
-  border-top: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.1));
-  border-bottom: 1px solid var(--tungacea-hairline-soft, rgba(242, 238, 232, 0.055));
+  border-top: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.1));
+  border-bottom: 1px solid var(--tungacea-hairline-soft, rgba(236, 226, 204, 0.055));
   padding-top: 2.4rem;
   padding-bottom: 1.2rem;
   margin-bottom: 3.6rem;
@@ -25,7 +25,7 @@
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 1.2rem;
-  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  color: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
   margin-right: 2.4rem;
 }
 
@@ -33,7 +33,7 @@
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 1.2rem;
-  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  color: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
   transition: color 0.3s var(--tungacea-ease, ease);
 }
 
@@ -51,7 +51,7 @@
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 1.2rem;
-  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  color: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
 }
 
 .tungacea-catalogue .facet-filters__sort {
@@ -64,14 +64,14 @@
 /* ---------- Product count: visually separated from controls ---------- */
 .tungacea-catalogue .facets__form .product-count {
   padding-left: 4rem;
-  border-left: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.1));
+  border-left: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.1));
 }
 
 .tungacea-catalogue .product-count__text {
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 1.2rem;
-  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  color: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
 }
 
 @media screen and (max-width: 989px) {
@@ -91,13 +91,13 @@
 .tungacea-catalogue .active-facets__button--light .active-facets__button-inner {
   border-radius: 0;
   box-shadow: none;
-  border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.1));
-  background: rgba(242, 238, 232, 0.02);
+  border: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.1));
+  background: rgba(236, 226, 204, 0.02);
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 1.2rem;
   padding: 0.5rem 1.1rem;
-  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  color: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
   transition: color 0.3s var(--tungacea-ease, ease),
     border-color 0.3s var(--tungacea-ease, ease),
     background-color 0.3s var(--tungacea-ease, ease);
@@ -120,7 +120,7 @@
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 1.2rem;
-  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  color: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
 }
 
 /* ---------- Mobile filter trigger: comfortable tap target ---------- */
@@ -139,7 +139,7 @@
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 1.2rem;
-  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  color: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
 }
 
 /* ---------- Empty & filtered no-result states ---------- */
@@ -159,7 +159,7 @@
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 1.2rem;
-  color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+  color: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
   margin: 0 0 1.6rem;
 }
 
@@ -209,7 +209,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    border: 1px solid var(--tungacea-hairline, rgba(242, 238, 232, 0.1));
+    border: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.1));
     border-radius: 0;
     box-shadow: none;
     background: rgba(0, 0, 0, 0.12);
@@ -257,7 +257,7 @@
     margin-top: 0.2rem;
     font-size: 1.2rem;
     letter-spacing: 0.05em;
-    color: var(--tungacea-muted, rgba(185, 178, 169, 0.78));
+    color: var(--tungacea-muted, rgba(191, 179, 155, 0.78));
   }
 
   /* 7 — larger row gap so one product row is clearly separated from the next */
