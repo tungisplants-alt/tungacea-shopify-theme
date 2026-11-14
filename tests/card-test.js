@@ -28,19 +28,22 @@ engine.registerFilter('t', function (key, ...rest) {
 const mf = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, { value: v }]));
 const mutter = (b, gen) => ({ bezeichnung: { value: b }, generation: { value: gen || null } });
 
+// Auf der Karte steht nur noch das Stadium. Generation und Blattlaenge stehen
+// auf der Produktseite; auf der Karte kaempften sie mit dem Titel.
 const faelle = [
-  { name: 'Die drei Hauptpunkte', available: true,
+  { name: 'Stadium bleibt, Generation und Groesse entfallen', available: true,
     titel: 'Anthurium Papillilaminum Marie',
     mf: mf({ specimen_id: 'TNG-0147', mutterpflanze: mutter('Anthurium papillilaminum × forgetii'),
              stadium: 'Steckling', generation: 'F2', blattlaenge_cm: 12 }),
-    erwartet: ['TNG-0147', 'Anthurium papillilaminum × forgetii', 'Steckling/Klon · Generation F2 · 12 cm', 'available', 'Verfügbar'] },
+    erwartet: ['TNG-0147', 'Anthurium papillilaminum × forgetii', 'Steckling/Klon', 'available', 'Verfügbar'],
+    verboten: ['Generation', 'F2', '12 cm'] },
 
   // Der Doppelname, den Tung gemeldet hat.
   { name: 'Mutterpflanze heisst wie das Produkt — Zeile muss wegfallen', available: true,
     titel: 'Anthurium Ralph Lynam x Fort Sherman F2 #4',
     mf: mf({ specimen_id: 'TNG-0147', mutterpflanze: mutter('Anthurium Ralph Lynam × Fort Sherman F2'),
              stadium: 'Steckling', generation: 'F2' }),
-    erwartet: ['TNG-0147', '', 'Steckling/Klon · Generation F2', 'available', 'Verfügbar'] },
+    erwartet: ['TNG-0147', '', 'Steckling/Klon', 'available', 'Verfügbar'] },
 
   { name: 'Apostrophe und Nummer duerfen die Erkennung nicht stoeren', available: true,
     titel: "Anthurium Black Widow '13' x '43' #2",
@@ -52,43 +55,47 @@ const faelle = [
     mf: mf({ mutterpflanze: mutter('Anthurium luxurians × dressleri'), stadium: 'Jungpflanze' }),
     erwartet: ['', 'Anthurium luxurians × dressleri', 'Jungpflanze', 'available', 'Verfügbar'] },
 
-  { name: 'Verkauft, nur Groesse', available: false,
+  { name: 'Gekeimter Samen', available: true,
+    titel: 'Anthurium Testpflanze',
+    mf: mf({ stadium: 'Samen', generation: 'F1' }),
+    erwartet: ['', '', 'Gekeimter Samen', 'available', 'Verfügbar'],
+    verboten: ['Generation'] },
+
+  { name: 'Verkauft, ohne Stadium bleibt die Zeile leer', available: false,
     titel: 'Anthurium Regale',
     mf: mf({ specimen_id: 'TNG-0104', blattlaenge_cm: 34 }),
-    erwartet: ['TNG-0104', '', '34 cm', 'sold', 'Vergeben'] },
+    erwartet: ['TNG-0104', '', '', 'sold', 'Vergeben'],
+    verboten: ['34 cm'] },
 
-  { name: 'Species — reine Art, keine Hybride', available: true,
+  { name: 'Species steht nicht mehr auf der Karte', available: true,
     titel: 'Anthurium Ralph Lynam OG Clone',
     mf: mf({ generation: 'Species', stadium: 'Etabliert' }),
-    erwartet: ['', '', 'Etabliert · Species', 'available', 'Verfügbar'],
-    verboten: ['Generation Species'] },
+    erwartet: ['', '', 'Etabliert', 'available', 'Verfügbar'],
+    verboten: ['Species'] },
 
-  { name: 'Selbstungsgeneration', available: true,
+  { name: 'Selbstungsgeneration steht nicht mehr auf der Karte', available: true,
     titel: 'Anthurium Testpflanze',
     mf: mf({ generation: 'S2' }),
-    erwartet: ['', '', 'Generation S2', 'available', 'Verfügbar'] },
+    erwartet: ['', '', '', 'available', 'Verfügbar'],
+    verboten: ['S2'] },
 
-  { name: 'Unbekannt wird uebersetzt', available: true,
+  { name: 'Generation unbekannt steht nicht mehr auf der Karte', available: true,
     titel: 'Anthurium Testpflanze',
     mf: mf({ generation: 'Unbekannt' }),
-    erwartet: ['', '', 'Generation unbekannt', 'available', 'Verfügbar'] },
+    erwartet: ['', '', '', 'available', 'Verfügbar'],
+    verboten: ['unbekannt'] },
 
-  { name: 'Karte erbt Generation von der Mutter', available: true,
+  { name: 'Vererbte Generation erscheint nicht', available: true,
     titel: 'Anthurium Schwarze Perle',
     mf: mf({ mutterpflanze: mutter('Anthurium luxurians × dressleri', 'F3'), stadium: 'Steckling' }),
-    erwartet: ['', 'Anthurium luxurians × dressleri', 'Steckling/Klon · Generation F3', 'available', 'Verfügbar'] },
+    erwartet: ['', 'Anthurium luxurians × dressleri', 'Steckling/Klon', 'available', 'Verfügbar'],
+    verboten: ['F3', 'Generation'] },
 
-  { name: 'Eigene Generation schlaegt die geerbte', available: true,
-    titel: 'Anthurium Schwarze Perle',
-    mf: mf({ mutterpflanze: mutter('Anthurium luxurians × dressleri', 'F3'), generation: 'S2' }),
-    erwartet: ['', 'Anthurium luxurians × dressleri', 'Generation S2', 'available', 'Verfügbar'],
-    verboten: ['Generation F3'] },
-
-  { name: 'Spanne auf der Karte', available: true,
+  { name: 'Blattlaenge und Spanne erscheinen nicht', available: true,
     titel: 'Anthurium Testpflanze',
     mf: mf({ blattlaenge_cm: 10, blattlaenge_bis_cm: 14 }),
-    erwartet: ['', '', '10–14 cm', 'available', 'Verfügbar'],
-    verboten: ['· 10 cm'] },
+    erwartet: ['', '', '', 'available', 'Verfügbar'],
+    verboten: ['10', '14', 'cm'] },
 
   { name: 'Alles leer', available: true,
     titel: 'Anthurium Testpflanze',
