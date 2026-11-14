@@ -10,9 +10,9 @@
 .tungacea-header {
   --tung-oxblood: #7a2531;
   --tung-surface: #0c0c0d;
-  --tung-hairline: rgba(240, 236, 230, 0.14);
-  --tung-ink: rgba(244, 240, 234, 0.92);
-  --tung-muted: rgba(244, 240, 234, 0.5);
+  --tung-hairline: rgba(236, 226, 204, 0.14);
+  --tung-ink: rgba(236, 226, 204, 0.92);
+  --tung-muted: rgba(236, 226, 204, 0.5);
 }
 
 /* ============================================================
@@ -129,7 +129,7 @@
 
   .tungacea-header .header__submenu .header__menu-item:hover {
     color: var(--tung-ink);
-    background-color: rgba(240, 236, 230, 0.04);
+    background-color: rgba(236, 226, 204, 0.04);
     text-decoration: none;
   }
 
