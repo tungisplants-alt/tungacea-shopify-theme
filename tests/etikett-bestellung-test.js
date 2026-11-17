@@ -32,7 +32,7 @@ engine.registerFilter('t', function (key, ...rest) {
 });
 
 const produkt = { selected_or_first_available_variant: { price: 250 } };
-const block = (settings) => ({ id: 'b1', shopify_attributes: '', settings: Object.assign({ gattung: 'Anthurium', ab_1: 10, preis_1: 2.25, ab_2: 25, preis_2: 2 }, settings || {}) });
+const block = (settings) => ({ id: 'b1', shopify_attributes: '', settings: Object.assign({ gattung: 'Anthurium', ab_1: 10, preis_1: 225, ab_2: 25, preis_2: 200 }, settings || {}) });
 const ctx = (extra) => Object.assign({
   product: produkt, block: block(), form_id: 'product-form-main', section_id: 'main',
   cart: { currency: { iso_code: 'EUR' } }, request: { locale: { iso_code: locale } },
@@ -48,8 +48,8 @@ const faelle = [
     },
     verboten: ['<form'] },
   { name: 'Staffeln: Anzeige und Daten fuer die Summe', erwartet: { de: ['data-stufen="10:225,25:200"', 'ab 10 Stück 2,25 €', 'ab 25 Stück 2,00 €'], en: ['data-stufen="10:225,25:200"', 'from 10 pieces 2,25 €'] } },
-  { name: 'Stufe ohne echten Rabatt (Preis nicht niedriger) erscheint nicht', ctx: { block: block({ preis_1: 3, ab_2: 0 }) }, erwartet: ['data-stufen=""'], verboten: ['ab 10 Stück', 'ab 25 Stück'] },
-  { name: 'Eine Stufe ab 1 Stueck ist keine Staffel', ctx: { block: block({ ab_1: 1, ab_2: 25, preis_2: 2 }) }, erwartet: ['data-stufen="25:200"'] },
+  { name: 'Stufe ohne echten Rabatt (Preis nicht niedriger) erscheint nicht', ctx: { block: block({ preis_1: 300, ab_2: 0 }) }, erwartet: ['data-stufen=""'], verboten: ['ab 10 Stück', 'ab 25 Stück'] },
+  { name: 'Eine Stufe ab 1 Stueck ist keine Staffel', ctx: { block: block({ ab_1: 1, ab_2: 25, preis_2: 200 }) }, erwartet: ['data-stufen="25:200"'] },
   { name: 'Gattung ist aenderbar vorbelegt', ctx: { block: block({ gattung: 'Philodendron' }) }, erwartet: ['value="Philodendron"'] },
   { name: 'Logo-Weg: WhatsApp-Link mit vorausgefuelltem Satz', erwartet: { de: ['wa.me/491512345678', 'eigenen%20Logo', 'etikett-bestellung__logo', 'Du möchtest dein eigenes Logo'], en: ['wa.me/491512345678', 'own%20logo', 'Want your own logo'] } },
   { name: 'Namen spaeter: eigener WhatsApp-Satz', erwartet: { de: ['Bestellnummer'], en: ['order%20number'] } },

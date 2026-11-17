@@ -22,7 +22,8 @@
   der Zweig, der gerade gilt, ist aktiv: Eingaben, die nicht gelten, sind
   "disabled" und gehen deshalb nicht mit (sonst stuenden zwei Mengen im Formular).
 
-  Staffelpreise kommen aus dem Block, nicht aus Shopify (Liquid kennt die
+  Staffelpreise stehen im Block in Cent (Shopify erlaubt bei Zahlenfeldern nur eine
+  Dezimalstelle, 2,25 waere abgelehnt worden) und kommen nicht aus Shopify (Liquid kennt die
   automatischen Rabatte nicht). Sie muessen zu den Rabatten im Admin passen. Sie
   dienen hier nur der Anzeige der Summe; abgerechnet wird im Warenkorb.
 
@@ -41,9 +42,9 @@
   assign stufen = ''
   assign hinweis = ''
   assign ab1 = block.settings.ab_1 | default: 0 | round
-  assign p1 = block.settings.preis_1 | default: 0 | times: 100 | round
+  assign p1 = block.settings.preis_1 | default: 0 | round
   assign ab2 = block.settings.ab_2 | default: 0 | round
-  assign p2 = block.settings.preis_2 | default: 0 | times: 100 | round
+  assign p2 = block.settings.preis_2 | default: 0 | round
 
   if ab1 > 1 and p1 > 0 and p1 < preis
     assign stufen = ab1 | append: ':' | append: p1
