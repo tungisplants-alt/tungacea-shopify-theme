@@ -1,157 +1,357 @@
 /*
  * Etiketten bestellen (Seite des Zusatzprodukts).
  *
- * Haarlinien und Schrift wie die Winterverpackung und die Etikett-Zeile, keine
- * Kaesten. Felder sind unten und seitlich offen wie Zeilen eines Formulars auf
- * Papier: eine feine Linie, die beim Fokus den Akzent bekommt. Farben stehen als
- * feste Werte, weil Dawns Farbvariablen nur in den Farbschema-Klassen gelten.
+ * Ein System aus drei Teilen mit gleicher Kopfzeile: Liste, Preis, Logo.
+ * Reihen sind einheitlich 4,8 rem hoch (ein Finger trifft sie sicher), durch
+ * Haarlinien getrennt, ohne Kaesten. Abstaende laufen in Vielfachen von
+ * 0,8 rem. Aktionen heissen immer Plus + Wort. Der Akzent (#cc6070) erscheint
+ * nur dort, wo gerade etwas bearbeitet wird oder ein Fehler steht.
+ *
+ * Farben stehen als feste Werte: Dawns Farbvariablen gelten nur innerhalb der
+ * Farbschema-Klassen.
  */
-.etikett-bestellung {
-  margin: 0 0 2rem;
-  padding: 1.6rem 0 0;
-  border-top: 1px solid var(--tungacea-hairline);
-}
-
-/* Auswahl zwischen den zwei Wegen: zwei Woerter, das gewaehlte unterstrichen. */
-.etikett-bestellung__modus {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 2.4rem;
-  margin-bottom: 2rem;
-}
-
-.etikett-bestellung__modus-knopf {
-  padding: 0.5rem 0;
-  border: 0;
-  border-bottom: 1px solid transparent;
-  background: none;
-  color: var(--tungacea-muted);
+.eb {
+  --eb-linie: var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
+  --eb-text: #ece2cc;
+  --eb-leise: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
+  --eb-akzent: #cc6070;
+  --eb-zeile: 4.8rem;
+  margin: 0 0 2.4rem;
+  color: var(--eb-text);
   font-family: var(--font-body-family);
-  font-size: 1.2rem;
+}
+
+.eb__teil {
+  margin: 0 0 3.2rem;
+}
+
+.eb__kopf {
+  margin: 0 0 0.8rem;
+  font-family: var(--font-body-family);
+  font-size: 1.1rem;
+  font-weight: 400;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  color: var(--eb-leise);
+}
+
+/* ------------------------------------------------------------ Gruppen */
+.eb__gruppe {
+  margin: 0 0 1.6rem;
+}
+
+.eb__gruppe-kopf {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: var(--eb-zeile);
+  border-top: 1px solid var(--eb-linie);
+  border-bottom: 1px solid var(--eb-linie);
+}
+
+.eb__gattung {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--eb-text);
+  font-family: var(--font-body-family);
+  font-size: 1.8rem;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+
+.eb__gattung::placeholder {
+  color: rgba(210, 198, 173, 0.5);
+}
+
+.eb__gruppe-zahl {
+  flex: 0 0 auto;
+  min-width: 2.4rem;
+  text-align: right;
+  font-size: 1.3rem;
+  color: var(--eb-leise);
+  font-variant-numeric: tabular-nums;
+}
+
+.eb__gruppe.hat-fehler .eb__gruppe-kopf {
+  border-bottom-color: #e08a96;
+}
+
+.eb__namen {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.eb__zeile {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: var(--eb-zeile);
+  border-bottom: 1px solid var(--eb-linie);
+  transition: border-color 0.18s ease;
+}
+
+.eb__zeile:focus-within,
+.eb__gruppe-kopf:focus-within {
+  border-bottom-color: var(--eb-akzent);
+}
+
+.eb__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--eb-text);
+  font-family: var(--font-body-family);
+  font-size: 1.6rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.eb__name::placeholder {
+  color: rgba(210, 198, 173, 0.45);
+  text-transform: none;
+}
+
+.eb__gattung:focus,
+.eb__name:focus {
+  outline: none;
+}
+
+.eb__gattung:focus-visible,
+.eb__name:focus-visible {
+  outline: none;
+}
+
+/* Entfernen: ein ruhiges Kreuz mit voller Fingergroesse. */
+.eb__weg {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  margin-right: -1.2rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(210, 198, 173, 0.55);
+  font-size: 2.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+
+.eb__weg:hover {
+  color: var(--eb-text);
+}
+
+.eb__weg[hidden] {
+  display: none;
+}
+
+.eb__weg:focus-visible {
+  outline: 2px solid var(--eb-akzent);
+  outline-offset: -2px;
+}
+
+/* Reihen-Aktionen: Plus + Wort, immer gleich. */
+.eb__zeile-knopf {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  width: 100%;
+  min-height: var(--eb-zeile);
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--eb-linie);
+  background: transparent;
+  color: var(--eb-leise);
+  font-family: var(--font-body-family);
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  text-align: left;
+  text-decoration: none;
   cursor: pointer;
   transition: color 0.18s ease, border-color 0.18s ease;
 }
 
-.etikett-bestellung__modus-knopf:hover {
-  color: #ece2cc;
+.eb__zeile-knopf:hover {
+  color: var(--eb-text);
 }
 
-.etikett-bestellung__modus-knopf[aria-pressed='true'] {
-  color: #ece2cc;
-  border-bottom-color: rgba(236, 226, 204, 0.7);
+.eb__zeile-knopf:focus-visible {
+  outline: 2px solid var(--eb-akzent);
+  outline-offset: -2px;
 }
 
-.etikett-bestellung__modus-knopf:focus-visible {
-  outline: 2px solid #cc6070;
-  outline-offset: 3px;
-}
-
-.etikett-bestellung__feld {
-  margin-bottom: 1.8rem;
-}
-
-.etikett-bestellung__label {
-  display: block;
-  margin-bottom: 0.6rem;
-  font-family: var(--font-body-family);
-  font-size: 1.1rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--tungacea-muted);
-}
-
-.etikett-bestellung__eingabe {
-  display: block;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0.9rem 1.1rem;
-  border: 1px solid var(--tungacea-hairline);
-  border-radius: 0;
-  background: transparent;
-  color: #ece2cc;
-  font-family: var(--font-body-family);
+.eb__plus {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
   font-size: 1.5rem;
-  line-height: 1.5;
-  transition: border-color 0.18s ease;
+  line-height: 1;
+  padding-bottom: 0.1rem;
+  box-sizing: border-box;
 }
 
-.etikett-bestellung__eingabe::placeholder {
-  color: rgba(210, 198, 173, 0.45);
+.eb__zeile-knopf--gattung {
+  border-top: 1px solid var(--eb-linie);
 }
 
-.etikett-bestellung__eingabe:hover {
-  border-color: rgba(236, 226, 204, 0.32);
-}
-
-.etikett-bestellung__eingabe:focus,
-.etikett-bestellung__eingabe:focus-visible {
-  outline: none;
-  border-color: #cc6070;
-}
-
-.etikett-bestellung__namen {
-  min-height: 15rem;
-  resize: vertical;
-  /* Namen stehen auf dem Etikett in Grossbuchstaben. Hier zeigt das Feld es
-     schon so; gespeichert wird, was getippt wurde, der Generator setzt gross. */
-  text-transform: uppercase;
-}
-
-.etikett-bestellung__namen::placeholder {
-  text-transform: none;
-}
-
-.etikett-bestellung__menge {
-  max-width: 12rem;
-}
-
-.etikett-bestellung__hinweis {
-  margin: 0.6rem 0 0;
+.eb__tipp {
+  margin: 1.2rem 0 0;
   font-size: 1.2rem;
   line-height: 1.5;
-  color: var(--tungacea-muted);
+  color: var(--eb-leise);
 }
 
-.etikett-bestellung__fehler {
-  margin: 0.6rem 0 0;
+.eb__tipp[hidden] {
+  display: none;
+}
+
+.eb__fehler {
+  margin: 1.2rem 0 0;
   font-size: 1.3rem;
+  line-height: 1.5;
   color: #e08a96;
 }
 
-.etikett-bestellung__weg {
-  margin: 1rem 0 0;
+.eb__fehler.ist-ok {
+  color: #b9d6b0;
 }
 
-/* Summe: ruhig, zwischen den Feldern und dem Kaufknopf. */
-.etikett-bestellung__summe {
+.eb__fehler[hidden] {
+  display: none;
+}
+
+/* -------------------------------------------------------------- Preis */
+.eb__summe-zeile {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.2rem 0.8rem;
   align-items: baseline;
+  justify-content: space-between;
+  gap: 1.6rem;
+  padding: 1.2rem 0 0.4rem;
+  border-top: 1px solid var(--eb-linie);
+}
+
+.eb__zaehler {
+  font-size: 1.8rem;
+  letter-spacing: 0.02em;
+}
+
+.eb__betrag {
+  font-size: 2.4rem;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.eb__stueck {
+  margin: 0 0 1.6rem;
+  min-height: 1.9rem;
+  font-size: 1.3rem;
+  color: var(--eb-leise);
+  text-align: right;
+}
+
+/* Die drei Stufen als eine Reihe: Menge oben, Preis unten, die geltende
+   Stufe hell und unterstrichen. Alle Stufen sind immer sichtbar, damit man die
+   Staffel auf einen Blick versteht. */
+.eb__stufen {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  list-style: none;
   margin: 0;
-  min-height: 2.4rem;
+  padding: 0;
+  border-top: 1px solid var(--eb-linie);
+  border-bottom: 1px solid var(--eb-linie);
+}
+
+.eb__stufe {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: center;
+  padding: 1.2rem 0.4rem 1.1rem;
+  color: var(--eb-leise);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+
+.eb__stufe + .eb__stufe {
+  border-left: 1px solid var(--eb-linie);
+}
+
+.eb__stufe-menge {
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.eb__stufe-preis {
   font-size: 1.6rem;
-  color: #ece2cc;
+  font-variant-numeric: tabular-nums;
 }
 
-.etikett-bestellung__betrag {
-  color: var(--tungacea-muted);
+.eb__stufe.ist-aktiv {
+  color: var(--eb-text);
+  border-bottom-color: var(--eb-text);
 }
 
-.etikett-bestellung__stufen {
-  margin-top: 0.4rem;
+.eb__tipp--staffel {
+  margin-top: 1.2rem;
 }
 
-.etikett-bestellung__logo {
-  margin: 2rem 0 0;
-  padding-top: 1.4rem;
-  border-top: 1px solid var(--tungacea-hairline);
+/* --------------------------------------------------------------- Logo */
+.eb__zeile-knopf--link {
+  justify-content: space-between;
+  border-top: 1px solid var(--eb-linie);
+  color: var(--eb-text);
 }
 
-@media screen and (max-width: 749px) {
-  .etikett-bestellung__namen {
-    min-height: 13rem;
+.eb__link-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1.2rem 0;
+}
+
+.eb__link-titel {
+  font-size: 1.6rem;
+}
+
+.eb__link-sub {
+  font-size: 1.2rem;
+  color: var(--eb-leise);
+}
+
+.eb__pfeil {
+  flex: 0 0 auto;
+  padding-right: 0.4rem;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: rgba(210, 198, 173, 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eb *,
+  .eb *::before,
+  .eb *::after {
+    transition: none !important;
   }
+}
+
+/* Die Vorschlagsliste der Gattungen erscheint beim Tippen. Den Pfeil, den der
+   Browser sonst in das Feld setzt, braucht es dafuer nicht. */
+.eb__gattung::-webkit-calendar-picker-indicator {
+  display: none !important;
 }

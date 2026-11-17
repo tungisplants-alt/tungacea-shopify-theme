@@ -1,8 +1,7 @@
 // Prueft das Snippet etikett-bestellung.liquid gegen die echten Sprachdateien.
 //
-// Zwei Dinge duerfen nie auseinanderlaufen: die Menge und die Namen. Deshalb gilt
-// hier, dass genau ein Zweig im Formular aktiv ist (der andere ist "disabled")
-// und dass die Menge im Namen-Zweig ein verstecktes Feld ist, kein Tippfeld.
+// Menge und Namen duerfen nie auseinanderlaufen. Deshalb ist die Menge ein
+// verstecktes Feld, kein Tippfeld: Sie ergibt sich aus der Liste.
 const fs = require('fs');
 const path = require('path');
 const { Liquid } = require('liquidjs');
@@ -41,19 +40,32 @@ const ctx = (extra) => Object.assign({
 const globale = (settings) => ({ settings: settings || { whatsapp_nummer: '+49 151 2345678' }, template: { name: 'product' }, product: produkt });
 
 const faelle = [
-  { name: 'Grundaufbau: Felder haengen am Kaufformular, Namen-Zweig aktiv, Mengenfeld des spaeteren Zweigs aus',
+  { name: 'Aufbau: drei Teile mit Kopfzeile, Liste, Preis, Logo',
     erwartet: {
-      de: ['data-form="product-form-main"', 'name="properties[Namen]"', 'name="properties[Zeile 1]"', 'form="product-form-main"', 'name="properties[_namen_anzahl]"', 'data-eb-menge-namen', 'type="hidden" name="quantity"', 'data-eb-menge-spaeter', 'disabled', 'value="Anthurium"', 'Namen eintragen', 'Namen später nennen', 'Namen auf den Etiketten'],
-      en: ['name="properties[Names]"', 'name="properties[Line 1]"', 'Enter names', 'Send names later', 'Names on the labels'],
+      de: ['Deine Etiketten', '>Preis<', 'Eigenes Logo', 'data-eb-gruppen', 'data-eb-gruppe-neu', 'Weitere Gattung', 'Füge eine ganze Liste ein'],
+      en: ['Your labels', '>Price<', 'Your own logo', 'Another genus', 'Paste a whole list'],
+    } },
+  { name: 'Eine Position: Felder haengen am Kaufformular, Eigenschaft "Etiketten", versteckte Anzahl',
+    erwartet: {
+      de: ['data-form="product-form-main"', 'name="properties[Etiketten]"', 'form="product-form-main"', 'name="properties[_namen_anzahl]"', 'type="hidden" name="quantity"'],
+      en: ['name="properties[Labels]"'],
     },
-    verboten: ['<form'] },
-  { name: 'Staffeln: Anzeige und Daten fuer die Summe', erwartet: { de: ['data-stufen="10:225,25:200"', 'ab 10 Stück 2,25 €', 'ab 25 Stück 2,00 €'], en: ['data-stufen="10:225,25:200"', 'from 10 pieces 2,25 €'] } },
-  { name: 'Stufe ohne echten Rabatt (Preis nicht niedriger) erscheint nicht', ctx: { block: block({ preis_1: 300, ab_2: 0 }) }, erwartet: ['data-stufen=""'], verboten: ['ab 10 Stück', 'ab 25 Stück'] },
+    verboten: ['<form', 'type="number"', '<textarea'] },
+  { name: 'Die Variante des Etiketts steht fuer den Warenkorb-Abgleich am Block', erwartet: ['data-variante="'] },
+  { name: 'Staffel: drei Stufen immer sichtbar, Daten fuer die Summe',
+    erwartet: { de: ['data-stufen="10:225,25:200"', '1–9', 'ab 10', 'ab 25', '2,50 €', '2,25 €', '2,00 €', 'data-ab="1"', 'data-ab="10"', 'data-ab="25"'], en: ['data-stufen="10:225,25:200"', '1–9', '10+', '25+'] } },
+  { name: 'Stufe ohne echten Rabatt (Preis nicht niedriger) erscheint nicht', ctx: { block: block({ preis_1: 300, ab_2: 0 }) }, erwartet: ['data-stufen=""'], verboten: ['eb__stufen', 'data-ab="10"'] },
+  { name: 'Nur Stufe 2 gueltig: erste Stufe reicht bis ab_2 minus 1', ctx: { block: block({ ab_1: 0, preis_1: 0, ab_2: 25, preis_2: 200 }) }, erwartet: { de: ['data-stufen="25:200"', '1–24', 'ab 25'], en: ['data-stufen="25:200"', '1–24', '25+'] }, verboten: ['data-ab="10"'] },
+  { name: 'Stufe 2 teurer als Stufe 1 ist keine Staffel', ctx: { block: block({ preis_2: 240 }) }, erwartet: ['data-stufen="10:225"'], verboten: ['data-ab="25"'] },
   { name: 'Eine Stufe ab 1 Stueck ist keine Staffel', ctx: { block: block({ ab_1: 1, ab_2: 25, preis_2: 200 }) }, erwartet: ['data-stufen="25:200"'] },
-  { name: 'Gattung ist aenderbar vorbelegt', ctx: { block: block({ gattung: 'Philodendron' }) }, erwartet: ['value="Philodendron"'] },
-  { name: 'Logo-Weg: WhatsApp-Link mit vorausgefuelltem Satz', erwartet: { de: ['wa.me/491512345678', 'eigenen%20Logo', 'etikett-bestellung__logo', 'Du möchtest dein eigenes Logo'], en: ['wa.me/491512345678', 'own%20logo', 'Want your own logo'] } },
-  { name: 'Namen spaeter: eigener WhatsApp-Satz', erwartet: { de: ['Bestellnummer'], en: ['order%20number'] } },
-  { name: 'Ohne gueltige Nummer: kein Link und kein Logo-Block', settings: { whatsapp_nummer: '' }, verboten: ['wa.me', 'etikett-bestellung__logo', 'Du möchtest dein eigenes Logo'] },
+  { name: 'Gattung ist vorbelegt (fuer die erste Gruppe)', ctx: { block: block({ gattung: 'Philodendron' }) }, erwartet: ['data-gattung="Philodendron"'] },
+  { name: 'Logo-Zeile ist ein Link auf WhatsApp mit vorausgefuelltem Satz',
+    erwartet: { de: ['href="https://wa.me/491512345678?text=', 'eigenen%20Logo', 'Auf Anfrage per WhatsApp', 'eb__pfeil'], en: ['wa.me/491512345678', 'own%20logo', 'On request via WhatsApp'] },
+    verboten: ['etikett-bestellung__whatsapp'] },
+  { name: 'Ohne gueltige Nummer: keine Logo-Zeile', settings: { whatsapp_nummer: '' }, verboten: ['wa.me', 'Eigenes Logo', 'eb__zeile-knopf--link'] },
+  { name: 'Alle Texte, die das Skript braucht, stehen als Daten am Block (uebersetzt)',
+    erwartet: { de: ['data-t-name-neu="Name hinzufügen"', 'data-t-fehler-namen="Trag mindestens einen Namen ein."', 'data-t-fehler-gattung=', 'data-t-pro="pro Etikett"', 'data-t-fertig="In den Warenkorb gelegt."'], en: ['data-t-name-neu="Add name"', 'data-t-fehler-namen="Enter at least one name."', 'data-t-pro="each"'] } },
+  { name: 'Vorschlagsliste fuer Gattungen', erwartet: ['<datalist', 'Anthurium', 'Philodendron'] },
   { name: 'Skript und Stil werden geladen', erwartet: ['etikett-bestellung.js', 'component-etikett-bestellung.css'] },
 ];
 

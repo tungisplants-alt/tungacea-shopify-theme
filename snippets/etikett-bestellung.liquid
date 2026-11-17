@@ -1,31 +1,29 @@
 {% comment %}
   Tungacea — Etiketten bestellen (Seite des Zusatzprodukts "Archiv-Etikett").
 
-  Ein Kunde, der mehrere Etiketten kauft, muss sagen koennen, was draufstehen
-  soll. Zwei Wege, der erste ist der Standard:
+  Aufbau, von oben nach unten, jeder Teil mit derselben Kopfzeile:
 
-  1. Namen eintragen. Ein Name pro Zeile, pro Zeile ein Etikett. Die MENGE
-     ergibt sich aus den Zeilen, es gibt kein zweites Feld, das nicht zu den
-     Namen passen koennte. Zeile 1 (die Gattung) steht vorbelegt und laesst sich
-     aendern.
-  2. Namen spaeter nennen. Dann gibt es ein Mengenfeld, und die Namen kommen per
-     WhatsApp nach der Bestellung.
+  1. Deine Etiketten. Eine Liste, nach Gattungen gruppiert: ueber jeder Gruppe
+     steht die Gattung, darunter die Namen, eine Zeile pro Etikett. Weitere
+     Gattung = weitere Gruppe. Eine ganze Liste laesst sich in ein Namensfeld
+     einfuegen, jede Zeile wird ein Etikett.
+  2. Preis. Die Summe, die drei Stufen der Staffel (die aktuelle ist markiert)
+     und ein Hinweis, wie viele Etiketten bis zur naechsten Stufe fehlen. Die
+     Seite zaehlt Etiketten, die schon im Warenkorb liegen, mit, denn der
+     Rabatt gilt fuer ALLE Etiketten im Warenkorb, nicht je Position.
+  3. Eigenes Logo. Eine Zeile mit Pfeil, die zu WhatsApp fuehrt.
 
-  Darunter ein ruhiger Weg fuer ein eigenes Logo: eine Anfrage per WhatsApp, kein
-  Upload. Das Logo kommt erst, wenn klar ist, dass es machbar ist.
+  Alles geht als EINE Position in den Warenkorb: Menge = Zahl der Namen, die
+  Eigenschaft "Etiketten" hat je Zeile "Gattung | Name". "_namen_anzahl" (mit
+  Unterstrich, im Warenkorb verborgen) hat die Zahl der Zeilen: Stimmt die Menge
+  spaeter nicht mehr, sieht man es.
 
-  Namen und Gattung wandern als Eigenschaften der Position in den Warenkorb und
-  in die Bestellung. "_namen_anzahl" (mit Unterstrich, im Warenkorb verborgen) hat
-  die Zahl der Zeilen: Stimmt die Menge spaeter nicht mehr, sieht man es.
+  Die Eingaben haengen per form-Attribut am Kaufformular der Produktseite.
 
-  Die Eingaben haengen per form-Attribut am Kaufformular der Produktseite. Nur
-  der Zweig, der gerade gilt, ist aktiv: Eingaben, die nicht gelten, sind
-  "disabled" und gehen deshalb nicht mit (sonst stuenden zwei Mengen im Formular).
-
-  Staffelpreise stehen im Block in Cent (Shopify erlaubt bei Zahlenfeldern nur eine
-  Dezimalstelle, 2,25 waere abgelehnt worden) und kommen nicht aus Shopify (Liquid kennt die
-  automatischen Rabatte nicht). Sie muessen zu den Rabatten im Admin passen. Sie
-  dienen hier nur der Anzeige der Summe; abgerechnet wird im Warenkorb.
+  Staffelpreise stehen im Block in Cent (Shopify erlaubt bei Zahlenfeldern nur
+  eine Dezimalstelle) und kommen nicht aus Shopify, denn Liquid kennt die
+  automatischen Rabatte nicht. Sie muessen zu den Rabatten im Admin passen. Sie
+  dienen der Anzeige; abgerechnet wird im Warenkorb.
 
   Accepts:
   - product:    {Object} Product Liquid object (required)
@@ -36,45 +34,53 @@
 
 {%- liquid
   assign preis = product.selected_or_first_available_variant.price
+  assign variante_id = product.selected_or_first_available_variant.id
 
   assign gattung = block.settings.gattung | default: '' | strip
 
-  assign stufen = ''
-  assign hinweis = ''
   assign ab1 = block.settings.ab_1 | default: 0 | round
   assign p1 = block.settings.preis_1 | default: 0 | round
   assign ab2 = block.settings.ab_2 | default: 0 | round
   assign p2 = block.settings.preis_2 | default: 0 | round
 
+  assign gueltig1 = false
   if ab1 > 1 and p1 > 0 and p1 < preis
-    assign stufen = ab1 | append: ':' | append: p1
-    assign geld = p1 | money | replace: '€', ' €'
-    capture t1
-      echo 'products.product.etikett_bestellung.tier' | t: menge: ab1, preis: geld
-    endcapture
-    assign hinweis = t1
+    assign gueltig1 = true
   endif
-  if ab2 > 1 and p2 > 0 and p2 < preis
+  assign gueltig2 = false
+  if ab2 > 1 and p2 > 0
+    if gueltig1 and ab2 > ab1 and p2 < p1
+      assign gueltig2 = true
+    elsif gueltig1 == false and p2 < preis
+      assign gueltig2 = true
+    endif
+  endif
+
+  assign stufen = ''
+  if gueltig1
+    assign stufen = ab1 | append: ':' | append: p1
+  endif
+  if gueltig2
     if stufen != ''
       assign stufen = stufen | append: ','
     endif
     assign stufen = stufen | append: ab2 | append: ':' | append: p2
-    assign geld = p2 | money | replace: '€', ' €'
-    capture t2
-      echo 'products.product.etikett_bestellung.tier' | t: menge: ab2, preis: geld
-    endcapture
-    if hinweis != ''
-      assign hinweis = hinweis | append: ' · '
-    endif
-    assign hinweis = hinweis | append: t2
+  endif
+
+  assign bis_erste = 0
+  if gueltig1
+    assign bis_erste = ab1 | minus: 1
+  elsif gueltig2
+    assign bis_erste = ab2 | minus: 1
   endif
 
   capture wa_logo
     render 'whatsapp-option', klasse: 'etikett-bestellung__whatsapp', art: 'logo', ohne_zusatz: true
   endcapture
-  capture wa_spaeter
-    render 'whatsapp-option', klasse: 'etikett-bestellung__whatsapp', art: 'namen', ohne_zusatz: true, css_laden: false
-  endcapture
+  assign wa_href = ''
+  if wa_logo != blank
+    assign wa_href = wa_logo | split: 'href="' | last | split: '"' | first
+  endif
 
   assign id = 'eb-' | append: section_id
 -%}
@@ -82,95 +88,102 @@
 {{ 'component-etikett-bestellung.css' | asset_url | stylesheet_tag }}
 
 <div
-  class="etikett-bestellung quick-add-hidden"
+  class="eb quick-add-hidden"
   data-etikett-bestellung
   data-form="{{ form_id | escape }}"
+  data-variante="{{ variante_id }}"
   data-preis="{{ preis }}"
   data-stufen="{{ stufen }}"
   data-waehrung="{{ cart.currency.iso_code | default: 'EUR' }}"
   data-sprache="{{ request.locale.iso_code | default: 'de' }}"
+  data-gattung="{{ gattung | escape }}"
   data-wort-eins="{{ 'products.product.etikett_bestellung.word_one' | t | escape }}"
   data-wort-mehr="{{ 'products.product.etikett_bestellung.word_other' | t | escape }}"
+  data-gattung-platzhalter="{{ 'products.product.etikett_bestellung.genus_placeholder' | t | escape }}"
+  data-t-name-neu="{{ 'products.product.etikett_bestellung.add_name' | t | escape }}"
+  data-t-name="{{ 'products.product.etikett_bestellung.name_placeholder' | t | escape }}"
+  data-t-name-label="{{ 'products.product.etikett_bestellung.name_label' | t | escape }}"
+  data-t-weg="{{ 'products.product.etikett_bestellung.remove' | t | escape }}"
+  data-t-gruppe-weg="{{ 'products.product.etikett_bestellung.remove_group' | t | escape }}"
+  data-t-naechste="{{ 'products.product.etikett_bestellung.next_tier' | t | escape }}"
+  data-t-im-korb="{{ 'products.product.etikett_bestellung.in_cart' | t | escape }}"
+  data-t-pro="{{ 'products.product.etikett_bestellung.each' | t | escape }}"
+  data-t-fehler-namen="{{ 'products.product.etikett_bestellung.error_names' | t | escape }}"
+  data-t-fehler-gattung="{{ 'products.product.etikett_bestellung.error_genus' | t | escape }}"
+  data-t-fertig="{{ 'products.product.etikett_bestellung.added' | t | escape }}"
   {{ block.shopify_attributes }}
 >
-  <div class="etikett-bestellung__modus" role="group" aria-label="{{ 'products.product.etikett_bestellung.mode_label' | t | escape }}">
-    <button type="button" class="etikett-bestellung__modus-knopf" data-eb-modus="namen" aria-pressed="true">{{ 'products.product.etikett_bestellung.mode_names' | t }}</button>
-    <button type="button" class="etikett-bestellung__modus-knopf" data-eb-modus="spaeter" aria-pressed="false">{{ 'products.product.etikett_bestellung.mode_later' | t }}</button>
-  </div>
+  {%- comment -%} 1. Etiketten {%- endcomment -%}
+  <section class="eb__teil">
+    <h3 class="eb__kopf">{{ 'products.product.etikett_bestellung.list_title' | t }}</h3>
+    <div class="eb__gruppen" data-eb-gruppen></div>
+    <button type="button" class="eb__zeile-knopf eb__zeile-knopf--gattung" data-eb-gruppe-neu>
+      <span class="eb__plus" aria-hidden="true">+</span>{{ 'products.product.etikett_bestellung.add_group' | t }}
+    </button>
+    <p class="eb__tipp">{{ 'products.product.etikett_bestellung.paste_hint' | t }}</p>
+    <p class="eb__fehler" data-eb-fehler role="alert" hidden></p>
+  </section>
 
-  <div class="etikett-bestellung__feld">
-    <label class="etikett-bestellung__label" for="{{ id }}-gattung">{{ 'products.product.etikett_bestellung.genus_label' | t }}</label>
-    <input
-      class="etikett-bestellung__eingabe"
-      type="text"
-      id="{{ id }}-gattung"
-      name="properties[{{ 'products.product.etikett_bestellung.property_genus' | t | escape }}]"
-      form="{{ form_id | escape }}"
-      value="{{ gattung | escape }}"
-      autocomplete="off"
-      maxlength="40"
-    >
-    <p class="etikett-bestellung__hinweis">{{ 'products.product.etikett_bestellung.genus_hint' | t }}</p>
-  </div>
-
-  <div data-eb-zweig="namen">
-    <div class="etikett-bestellung__feld">
-      <label class="etikett-bestellung__label" for="{{ id }}-namen">{{ 'products.product.etikett_bestellung.names_label' | t }}</label>
-      <textarea
-        class="etikett-bestellung__eingabe etikett-bestellung__namen"
-        id="{{ id }}-namen"
-        name="properties[{{ 'products.product.etikett_bestellung.property_names' | t | escape }}]"
-        form="{{ form_id | escape }}"
-        rows="6"
-        spellcheck="false"
-        autocapitalize="characters"
-        placeholder="{{ 'products.product.etikett_bestellung.names_placeholder' | t | escape }}"
-        data-eb-namen
-      ></textarea>
-      <p class="etikett-bestellung__hinweis">{{ 'products.product.etikett_bestellung.names_hint' | t }}</p>
-      <p class="etikett-bestellung__fehler" data-eb-fehler role="alert" hidden>{{ 'products.product.etikett_bestellung.error_names' | t }}</p>
+  {%- comment -%} 2. Preis {%- endcomment -%}
+  <section class="eb__teil eb__summe" aria-live="polite">
+    <h3 class="eb__kopf">{{ 'products.product.etikett_bestellung.price_title' | t }}</h3>
+    <div class="eb__summe-zeile">
+      <span class="eb__zaehler" data-eb-zaehler></span>
+      <span class="eb__betrag" data-eb-betrag></span>
     </div>
-    <input type="hidden" name="quantity" form="{{ form_id | escape }}" value="1" data-eb-menge-namen>
-    <input type="hidden" name="properties[_namen_anzahl]" form="{{ form_id | escape }}" value="0" data-eb-anzahl>
-  </div>
+    <p class="eb__stueck" data-eb-stueck></p>
+    {%- if stufen != '' -%}
+      <ol class="eb__stufen">
+        <li class="eb__stufe" data-eb-stufe data-ab="1">
+          <span class="eb__stufe-menge">{{ 'products.product.etikett_bestellung.tier_first' | t: bis: bis_erste }}</span>
+          <span class="eb__stufe-preis">{{ preis | money | replace: '€', ' €' }}</span>
+        </li>
+        {%- if gueltig1 -%}
+          <li class="eb__stufe" data-eb-stufe data-ab="{{ ab1 }}">
+            <span class="eb__stufe-menge">{{ 'products.product.etikett_bestellung.tier_from' | t: menge: ab1 }}</span>
+            <span class="eb__stufe-preis">{{ p1 | money | replace: '€', ' €' }}</span>
+          </li>
+        {%- endif -%}
+        {%- if gueltig2 -%}
+          <li class="eb__stufe" data-eb-stufe data-ab="{{ ab2 }}">
+            <span class="eb__stufe-menge">{{ 'products.product.etikett_bestellung.tier_from' | t: menge: ab2 }}</span>
+            <span class="eb__stufe-preis">{{ p2 | money | replace: '€', ' €' }}</span>
+          </li>
+        {%- endif -%}
+      </ol>
+    {%- endif -%}
+    <p class="eb__tipp eb__tipp--staffel" data-eb-tipp></p>
+  </section>
 
-  <div data-eb-zweig="spaeter" hidden>
-    <div class="etikett-bestellung__feld">
-      <label class="etikett-bestellung__label" for="{{ id }}-menge">{{ 'products.product.etikett_bestellung.quantity_label' | t }}</label>
-      <input
-        class="etikett-bestellung__eingabe etikett-bestellung__menge"
-        type="number"
-        inputmode="numeric"
-        id="{{ id }}-menge"
-        name="quantity"
-        form="{{ form_id | escape }}"
-        min="1"
-        step="1"
-        value="1"
-        disabled
-        data-eb-menge-spaeter
-      >
-      <p class="etikett-bestellung__hinweis">{{ 'products.product.etikett_bestellung.later_hint' | t }}</p>
-      {%- if wa_spaeter != blank -%}
-        <p class="etikett-bestellung__weg">{{ wa_spaeter }}</p>
-      {%- endif -%}
-    </div>
-  </div>
-
-  <p class="etikett-bestellung__summe" aria-live="polite">
-    <span class="etikett-bestellung__zaehler" data-eb-zaehler></span>
-    <span class="etikett-bestellung__betrag" data-eb-betrag></span>
-  </p>
-  {%- if hinweis != blank -%}
-    <p class="etikett-bestellung__hinweis etikett-bestellung__stufen">{{ hinweis | escape }}</p>
+  {%- comment -%} 3. Logo {%- endcomment -%}
+  {%- if wa_href != '' -%}
+    <section class="eb__teil">
+      <h3 class="eb__kopf">{{ 'products.product.etikett_bestellung.logo_title' | t }}</h3>
+      <a class="eb__zeile-knopf eb__zeile-knopf--link" href="{{ wa_href }}" target="_blank" rel="noopener noreferrer" aria-describedby="a11y-new-window-message">
+        <span class="eb__link-text">
+          <span class="eb__link-titel">{{ 'products.product.etikett_bestellung.logo_row' | t }}</span>
+          <span class="eb__link-sub">{{ 'products.product.etikett_bestellung.logo_sub' | t }}</span>
+        </span>
+        <span class="eb__pfeil" aria-hidden="true">&rsaquo;</span>
+      </a>
+    </section>
   {%- endif -%}
 
-  {%- if wa_logo != blank -%}
-    <div class="etikett-bestellung__logo">
-      <p class="etikett-bestellung__hinweis">{{ 'products.product.etikett_bestellung.logo_text' | t }}</p>
-      {{ wa_logo }}
-    </div>
-  {%- endif -%}
+  <input type="hidden" name="properties[{{ 'products.product.etikett_bestellung.property_labels' | t | escape }}]" form="{{ form_id | escape }}" value="" data-eb-etiketten>
+  <input type="hidden" name="quantity" form="{{ form_id | escape }}" value="1" data-eb-menge>
+  <input type="hidden" name="properties[_namen_anzahl]" form="{{ form_id | escape }}" value="0" data-eb-anzahl>
+
+  <datalist id="{{ id }}-gattungen">
+    <option value="Anthurium"></option>
+    <option value="Philodendron"></option>
+    <option value="Monstera"></option>
+    <option value="Alocasia"></option>
+    <option value="Hoya"></option>
+    <option value="Syngonium"></option>
+    <option value="Scindapsus"></option>
+    <option value="Epipremnum"></option>
+    <option value="Rhaphidophora"></option>
+  </datalist>
 </div>
 
 <script src="{{ 'etikett-bestellung.js' | asset_url }}" defer="defer"></script>
