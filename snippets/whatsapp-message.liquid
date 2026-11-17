@@ -9,12 +9,19 @@
   Mit art: 'eu' (Zeile "Bestellung aus der EU") steht ein anderer Satz da: Die
   Person wohnt außerhalb von Deutschland und fragt nach dem Versand.
 
+  Mit art: 'logo' und art: 'namen' (Seite des Etiketts) geht es um ein Logo auf
+  den Etiketten und um Namen, die nach der Bestellung folgen.
+
   Aufruf:
   {%- capture nachricht -%}{% render 'whatsapp-message' %}{%- endcapture -%}
   {%- capture nachricht -%}{% render 'whatsapp-message', art: 'eu' %}{%- endcapture -%}
 {% endcomment %}
 {%- liquid
-  if art == 'eu'
+  if art == 'logo'
+    echo 'whatsapp_contact.message_logo' | t
+  elsif art == 'namen'
+    echo 'whatsapp_contact.message_names' | t
+  elsif art == 'eu'
     if template.name == 'product' and product.title != blank
       echo 'whatsapp_contact.message_eu_product' | t: name: product.title
     else

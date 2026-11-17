@@ -1,0 +1,157 @@
+/*
+ * Etiketten bestellen (Seite des Zusatzprodukts).
+ *
+ * Haarlinien und Schrift wie die Winterverpackung und die Etikett-Zeile, keine
+ * Kaesten. Felder sind unten und seitlich offen wie Zeilen eines Formulars auf
+ * Papier: eine feine Linie, die beim Fokus den Akzent bekommt. Farben stehen als
+ * feste Werte, weil Dawns Farbvariablen nur in den Farbschema-Klassen gelten.
+ */
+.etikett-bestellung {
+  margin: 0 0 2rem;
+  padding: 1.6rem 0 0;
+  border-top: 1px solid var(--tungacea-hairline);
+}
+
+/* Auswahl zwischen den zwei Wegen: zwei Woerter, das gewaehlte unterstrichen. */
+.etikett-bestellung__modus {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 2.4rem;
+  margin-bottom: 2rem;
+}
+
+.etikett-bestellung__modus-knopf {
+  padding: 0.5rem 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  color: var(--tungacea-muted);
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+
+.etikett-bestellung__modus-knopf:hover {
+  color: #ece2cc;
+}
+
+.etikett-bestellung__modus-knopf[aria-pressed='true'] {
+  color: #ece2cc;
+  border-bottom-color: rgba(236, 226, 204, 0.7);
+}
+
+.etikett-bestellung__modus-knopf:focus-visible {
+  outline: 2px solid #cc6070;
+  outline-offset: 3px;
+}
+
+.etikett-bestellung__feld {
+  margin-bottom: 1.8rem;
+}
+
+.etikett-bestellung__label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-family: var(--font-body-family);
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tungacea-muted);
+}
+
+.etikett-bestellung__eingabe {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--tungacea-hairline);
+  border-radius: 0;
+  background: transparent;
+  color: #ece2cc;
+  font-family: var(--font-body-family);
+  font-size: 1.5rem;
+  line-height: 1.5;
+  transition: border-color 0.18s ease;
+}
+
+.etikett-bestellung__eingabe::placeholder {
+  color: rgba(210, 198, 173, 0.45);
+}
+
+.etikett-bestellung__eingabe:hover {
+  border-color: rgba(236, 226, 204, 0.32);
+}
+
+.etikett-bestellung__eingabe:focus,
+.etikett-bestellung__eingabe:focus-visible {
+  outline: none;
+  border-color: #cc6070;
+}
+
+.etikett-bestellung__namen {
+  min-height: 15rem;
+  resize: vertical;
+  /* Namen stehen auf dem Etikett in Grossbuchstaben. Hier zeigt das Feld es
+     schon so; gespeichert wird, was getippt wurde, der Generator setzt gross. */
+  text-transform: uppercase;
+}
+
+.etikett-bestellung__namen::placeholder {
+  text-transform: none;
+}
+
+.etikett-bestellung__menge {
+  max-width: 12rem;
+}
+
+.etikett-bestellung__hinweis {
+  margin: 0.6rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--tungacea-muted);
+}
+
+.etikett-bestellung__fehler {
+  margin: 0.6rem 0 0;
+  font-size: 1.3rem;
+  color: #e08a96;
+}
+
+.etikett-bestellung__weg {
+  margin: 1rem 0 0;
+}
+
+/* Summe: ruhig, zwischen den Feldern und dem Kaufknopf. */
+.etikett-bestellung__summe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.8rem;
+  align-items: baseline;
+  margin: 0;
+  min-height: 2.4rem;
+  font-size: 1.6rem;
+  color: #ece2cc;
+}
+
+.etikett-bestellung__betrag {
+  color: var(--tungacea-muted);
+}
+
+.etikett-bestellung__stufen {
+  margin-top: 0.4rem;
+}
+
+.etikett-bestellung__logo {
+  margin: 2rem 0 0;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--tungacea-hairline);
+}
+
+@media screen and (max-width: 749px) {
+  .etikett-bestellung__namen {
+    min-height: 13rem;
+  }
+}

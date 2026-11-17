@@ -153,6 +153,25 @@
         "add": "Hinzufügen",
         "added": "Hinzugefügt"
       },
+      "etikett_bestellung": {
+        "mode_label": "Wie nennst du die Namen?",
+        "mode_names": "Namen eintragen",
+        "mode_later": "Namen später nennen",
+        "genus_label": "Zeile 1",
+        "genus_hint": "Steht über jedem Namen.",
+        "names_label": "Namen auf den Etiketten",
+        "names_hint": "Ein Name pro Zeile. Pro Zeile entsteht ein Etikett.",
+        "names_placeholder": "Erster Name\nZweiter Name",
+        "quantity_label": "Menge",
+        "later_hint": "Du schickst mir die Namen nach der Bestellung per WhatsApp.",
+        "error_names": "Trag mindestens einen Namen ein.",
+        "logo_text": "Du möchtest dein eigenes Logo auf den Etiketten? Frag mich vorher.",
+        "tier": "ab {{ menge }} Stück {{ preis }}",
+        "word_one": "Etikett",
+        "word_other": "Etiketten",
+        "property_names": "Namen",
+        "property_genus": "Zeile 1"
+      },
       "etikett": {
         "title": "Archiv-Etikett",
         "included": "inklusive",
@@ -821,6 +840,8 @@
     "mail_privacy_link": "Datenschutzerklärung",
     "message": "Hallo Tung, ich habe eine Frage zu…",
     "message_product": "Hallo Tung, ich habe eine Frage zu {{ name }}.",
+    "message_logo": "Hallo Tung, ich möchte meine Etiketten mit meinem eigenen Logo bestellen.",
+    "message_names": "Hallo Tung, ich bestelle Etiketten und schicke dir die Namen hier. Meine Bestellnummer:",
     "message_eu": "Hallo Tung, ich wohne in der EU, aber nicht in Deutschland, und möchte gern bestellen. Mein Land:",
     "message_eu_product": "Hallo Tung, ich wohne in der EU, aber nicht in Deutschland, und möchte gern {{ name }} bestellen. Mein Land:"
   },

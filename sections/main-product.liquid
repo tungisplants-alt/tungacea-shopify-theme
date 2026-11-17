@@ -206,6 +206,8 @@
                   {% render 'winter-pack', block: block %}
                 {%- when 'etikett' -%}
                   {% render 'etikett', product: product, block: block %}
+                {%- when 'etikett_bestellung' -%}
+                  {% render 'etikett-bestellung', product: product, block: block, form_id: product_form_id, section_id: section.id %}
                 {%- when 'pflege' -%}
                   {% render 'pflege-zeile', block: block %}
                 {%- when 'versandinfo' -%}
@@ -966,6 +968,56 @@
       "type": "description",
       "name": "t:sections.main-product.blocks.description.name",
       "limit": 1
+    },
+    {
+      "type": "etikett_bestellung",
+      "name": "Etiketten bestellen",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Für die Seite des Produkts \"Archiv-Etikett\": Namen eintragen (die Menge ergibt sich aus den Zeilen) oder später nennen, dazu ein Weg für ein eigenes Logo per WhatsApp. Vor den Kaufknopf setzen und das Mengenfeld der Vorlage entfernen."
+        },
+        {
+          "type": "text",
+          "id": "gattung",
+          "label": "Zeile 1 vorbelegt mit",
+          "default": "Anthurium",
+          "info": "Der Kunde kann sie ändern."
+        },
+        {
+          "type": "header",
+          "content": "Staffelpreise (nur Anzeige)"
+        },
+        {
+          "type": "paragraph",
+          "content": "Diese Zahlen zeigen nur die Summe an. Berechnet wird sie von den automatischen Rabatten im Shopify-Admin. Beides muss übereinstimmen."
+        },
+        {
+          "type": "number",
+          "id": "ab_1",
+          "label": "Stufe 1 ab Stück",
+          "default": 10
+        },
+        {
+          "type": "number",
+          "id": "preis_1",
+          "label": "Stufe 1 Preis pro Stück in Euro",
+          "default": 2.25
+        },
+        {
+          "type": "number",
+          "id": "ab_2",
+          "label": "Stufe 2 ab Stück",
+          "default": 25
+        },
+        {
+          "type": "number",
+          "id": "preis_2",
+          "label": "Stufe 2 Preis pro Stück in Euro",
+          "default": 2
+        }
+      ]
     },
     {
       "type": "etikett",

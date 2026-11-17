@@ -1,0 +1,175 @@
+{% comment %}
+  Tungacea — Etiketten bestellen (Seite des Zusatzprodukts "Archiv-Etikett").
+
+  Ein Kunde, der mehrere Etiketten kauft, muss sagen koennen, was draufstehen
+  soll. Zwei Wege, der erste ist der Standard:
+
+  1. Namen eintragen. Ein Name pro Zeile, pro Zeile ein Etikett. Die MENGE
+     ergibt sich aus den Zeilen, es gibt kein zweites Feld, das nicht zu den
+     Namen passen koennte. Zeile 1 (die Gattung) steht vorbelegt und laesst sich
+     aendern.
+  2. Namen spaeter nennen. Dann gibt es ein Mengenfeld, und die Namen kommen per
+     WhatsApp nach der Bestellung.
+
+  Darunter ein ruhiger Weg fuer ein eigenes Logo: eine Anfrage per WhatsApp, kein
+  Upload. Das Logo kommt erst, wenn klar ist, dass es machbar ist.
+
+  Namen und Gattung wandern als Eigenschaften der Position in den Warenkorb und
+  in die Bestellung. "_namen_anzahl" (mit Unterstrich, im Warenkorb verborgen) hat
+  die Zahl der Zeilen: Stimmt die Menge spaeter nicht mehr, sieht man es.
+
+  Die Eingaben haengen per form-Attribut am Kaufformular der Produktseite. Nur
+  der Zweig, der gerade gilt, ist aktiv: Eingaben, die nicht gelten, sind
+  "disabled" und gehen deshalb nicht mit (sonst stuenden zwei Mengen im Formular).
+
+  Staffelpreise kommen aus dem Block, nicht aus Shopify (Liquid kennt die
+  automatischen Rabatte nicht). Sie muessen zu den Rabatten im Admin passen. Sie
+  dienen hier nur der Anzeige der Summe; abgerechnet wird im Warenkorb.
+
+  Accepts:
+  - product:    {Object} Product Liquid object (required)
+  - block:      {Object} main-product `etikett_bestellung` block (required)
+  - form_id:    {String} id des Kaufformulars (required)
+  - section_id: {String} id des Abschnitts (required)
+{% endcomment %}
+
+{%- liquid
+  assign preis = product.selected_or_first_available_variant.price
+
+  assign gattung = block.settings.gattung | default: '' | strip
+
+  assign stufen = ''
+  assign hinweis = ''
+  assign ab1 = block.settings.ab_1 | default: 0 | round
+  assign p1 = block.settings.preis_1 | default: 0 | times: 100 | round
+  assign ab2 = block.settings.ab_2 | default: 0 | round
+  assign p2 = block.settings.preis_2 | default: 0 | times: 100 | round
+
+  if ab1 > 1 and p1 > 0 and p1 < preis
+    assign stufen = ab1 | append: ':' | append: p1
+    assign geld = p1 | money | replace: '€', ' €'
+    capture t1
+      echo 'products.product.etikett_bestellung.tier' | t: menge: ab1, preis: geld
+    endcapture
+    assign hinweis = t1
+  endif
+  if ab2 > 1 and p2 > 0 and p2 < preis
+    if stufen != ''
+      assign stufen = stufen | append: ','
+    endif
+    assign stufen = stufen | append: ab2 | append: ':' | append: p2
+    assign geld = p2 | money | replace: '€', ' €'
+    capture t2
+      echo 'products.product.etikett_bestellung.tier' | t: menge: ab2, preis: geld
+    endcapture
+    if hinweis != ''
+      assign hinweis = hinweis | append: ' · '
+    endif
+    assign hinweis = hinweis | append: t2
+  endif
+
+  capture wa_logo
+    render 'whatsapp-option', klasse: 'etikett-bestellung__whatsapp', art: 'logo', ohne_zusatz: true
+  endcapture
+  capture wa_spaeter
+    render 'whatsapp-option', klasse: 'etikett-bestellung__whatsapp', art: 'namen', ohne_zusatz: true, css_laden: false
+  endcapture
+
+  assign id = 'eb-' | append: section_id
+-%}
+
+{{ 'component-etikett-bestellung.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="etikett-bestellung quick-add-hidden"
+  data-etikett-bestellung
+  data-form="{{ form_id | escape }}"
+  data-preis="{{ preis }}"
+  data-stufen="{{ stufen }}"
+  data-waehrung="{{ cart.currency.iso_code | default: 'EUR' }}"
+  data-sprache="{{ request.locale.iso_code | default: 'de' }}"
+  data-wort-eins="{{ 'products.product.etikett_bestellung.word_one' | t | escape }}"
+  data-wort-mehr="{{ 'products.product.etikett_bestellung.word_other' | t | escape }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="etikett-bestellung__modus" role="group" aria-label="{{ 'products.product.etikett_bestellung.mode_label' | t | escape }}">
+    <button type="button" class="etikett-bestellung__modus-knopf" data-eb-modus="namen" aria-pressed="true">{{ 'products.product.etikett_bestellung.mode_names' | t }}</button>
+    <button type="button" class="etikett-bestellung__modus-knopf" data-eb-modus="spaeter" aria-pressed="false">{{ 'products.product.etikett_bestellung.mode_later' | t }}</button>
+  </div>
+
+  <div class="etikett-bestellung__feld">
+    <label class="etikett-bestellung__label" for="{{ id }}-gattung">{{ 'products.product.etikett_bestellung.genus_label' | t }}</label>
+    <input
+      class="etikett-bestellung__eingabe"
+      type="text"
+      id="{{ id }}-gattung"
+      name="properties[{{ 'products.product.etikett_bestellung.property_genus' | t | escape }}]"
+      form="{{ form_id | escape }}"
+      value="{{ gattung | escape }}"
+      autocomplete="off"
+      maxlength="40"
+    >
+    <p class="etikett-bestellung__hinweis">{{ 'products.product.etikett_bestellung.genus_hint' | t }}</p>
+  </div>
+
+  <div data-eb-zweig="namen">
+    <div class="etikett-bestellung__feld">
+      <label class="etikett-bestellung__label" for="{{ id }}-namen">{{ 'products.product.etikett_bestellung.names_label' | t }}</label>
+      <textarea
+        class="etikett-bestellung__eingabe etikett-bestellung__namen"
+        id="{{ id }}-namen"
+        name="properties[{{ 'products.product.etikett_bestellung.property_names' | t | escape }}]"
+        form="{{ form_id | escape }}"
+        rows="6"
+        spellcheck="false"
+        autocapitalize="characters"
+        placeholder="{{ 'products.product.etikett_bestellung.names_placeholder' | t | escape }}"
+        data-eb-namen
+      ></textarea>
+      <p class="etikett-bestellung__hinweis">{{ 'products.product.etikett_bestellung.names_hint' | t }}</p>
+      <p class="etikett-bestellung__fehler" data-eb-fehler role="alert" hidden>{{ 'products.product.etikett_bestellung.error_names' | t }}</p>
+    </div>
+    <input type="hidden" name="quantity" form="{{ form_id | escape }}" value="1" data-eb-menge-namen>
+    <input type="hidden" name="properties[_namen_anzahl]" form="{{ form_id | escape }}" value="0" data-eb-anzahl>
+  </div>
+
+  <div data-eb-zweig="spaeter" hidden>
+    <div class="etikett-bestellung__feld">
+      <label class="etikett-bestellung__label" for="{{ id }}-menge">{{ 'products.product.etikett_bestellung.quantity_label' | t }}</label>
+      <input
+        class="etikett-bestellung__eingabe etikett-bestellung__menge"
+        type="number"
+        inputmode="numeric"
+        id="{{ id }}-menge"
+        name="quantity"
+        form="{{ form_id | escape }}"
+        min="1"
+        step="1"
+        value="1"
+        disabled
+        data-eb-menge-spaeter
+      >
+      <p class="etikett-bestellung__hinweis">{{ 'products.product.etikett_bestellung.later_hint' | t }}</p>
+      {%- if wa_spaeter != blank -%}
+        <p class="etikett-bestellung__weg">{{ wa_spaeter }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <p class="etikett-bestellung__summe" aria-live="polite">
+    <span class="etikett-bestellung__zaehler" data-eb-zaehler></span>
+    <span class="etikett-bestellung__betrag" data-eb-betrag></span>
+  </p>
+  {%- if hinweis != blank -%}
+    <p class="etikett-bestellung__hinweis etikett-bestellung__stufen">{{ hinweis | escape }}</p>
+  {%- endif -%}
+
+  {%- if wa_logo != blank -%}
+    <div class="etikett-bestellung__logo">
+      <p class="etikett-bestellung__hinweis">{{ 'products.product.etikett_bestellung.logo_text' | t }}</p>
+      {{ wa_logo }}
+    </div>
+  {%- endif -%}
+</div>
+
+<script src="{{ 'etikett-bestellung.js' | asset_url }}" defer="defer"></script>

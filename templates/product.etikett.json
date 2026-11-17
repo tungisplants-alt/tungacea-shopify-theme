@@ -59,16 +59,22 @@
             "share_label": "Teilen"
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
+        "etikett_bestellung": {
+          "type": "etikett_bestellung",
+          "settings": {
+            "gattung": "Anthurium",
+            "ab_1": 10,
+            "preis_1": 2.25,
+            "ab_2": 25,
+            "preis_2": 2
+          }
         }
       },
       "block_order": [
         "vendor",
         "title",
         "price",
-        "quantity_selector",
+        "etikett_bestellung",
         "buy_buttons",
         "description",
         "versandinfo",

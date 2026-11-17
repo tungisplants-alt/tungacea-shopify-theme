@@ -162,6 +162,25 @@
         "add": "Add",
         "added": "Added"
       },
+      "etikett_bestellung": {
+        "mode_label": "How do you give me the names?",
+        "mode_names": "Enter names",
+        "mode_later": "Send names later",
+        "genus_label": "Line 1",
+        "genus_hint": "Appears above every name.",
+        "names_label": "Names on the labels",
+        "names_hint": "One name per line. Each line becomes one label.",
+        "names_placeholder": "First name\nSecond name",
+        "quantity_label": "Quantity",
+        "later_hint": "You send me the names on WhatsApp after you order.",
+        "error_names": "Enter at least one name.",
+        "logo_text": "Want your own logo on the labels? Ask me first.",
+        "tier": "from {{ menge }} pieces {{ preis }}",
+        "word_one": "label",
+        "word_other": "labels",
+        "property_names": "Names",
+        "property_genus": "Line 1"
+      },
       "etikett": {
         "title": "Archive label",
         "included": "included",
@@ -821,6 +840,8 @@
     "mail_privacy_link": "privacy policy",
     "message": "Hi Tung, I have a question about…",
     "message_product": "Hi Tung, I have a question about {{ name }}.",
+    "message_logo": "Hi Tung, I would like to order labels with my own logo.",
+    "message_names": "Hi Tung, I am ordering labels and will send you the names here. My order number:",
     "message_eu": "Hi Tung, I live in the EU, but not in Germany, and I would like to order. My country:",
     "message_eu_product": "Hi Tung, I live in the EU, but not in Germany, and I would like to order {{ name }}. My country:"
   },
