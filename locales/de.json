@@ -153,6 +153,15 @@
         "add": "Hinzufügen",
         "added": "Hinzugefügt"
       },
+      "etikett": {
+        "title": "Archiv-Etikett",
+        "included": "inklusive",
+        "hint_included": "Schwarzes Acryl, mit dem Laser graviert: Gattung und Name dieser Pflanze, auf der Rückseite mein Rakkan. Es kommt mit der Pflanze.",
+        "hint_extra": "Schwarzes Acryl, mit dem Laser graviert: Gattung und Name dieser Pflanze, auf der Rückseite mein Rakkan. Für diese Pflanze dazubuchen.",
+        "add": "Hinzufügen",
+        "added": "Hinzugefügt",
+        "property_for": "Für"
+      },
       "specimen": {
         "date_format": "%-d.%-m.%Y",
         "photographed_on": "Fotografiert am {{ date }}.",

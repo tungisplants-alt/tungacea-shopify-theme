@@ -204,6 +204,8 @@
                   {%- endif -%}
                 {%- when 'winterpack' -%}
                   {% render 'winter-pack', block: block %}
+                {%- when 'etikett' -%}
+                  {% render 'etikett', product: product, block: block %}
                 {%- when 'pflege' -%}
                   {% render 'pflege-zeile', block: block %}
                 {%- when 'versandinfo' -%}
@@ -964,6 +966,58 @@
       "type": "description",
       "name": "t:sections.main-product.blocks.description.name",
       "limit": 1
+    },
+    {
+      "type": "etikett",
+      "name": "Archiv-Etikett",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Zeigt das Etikett zur Pflanze: ab dem Preis unten als \"inklusive\", sonst als Knopf zum Zubuchen. Sämlinge und Samen bekommen immer den Knopf. Der Block erscheint nur bei Produkten, bei denen \"Lieferumfang\" ausgewählt ist."
+        },
+        {
+          "type": "product",
+          "id": "produkt",
+          "label": "Produkt zum Zubuchen",
+          "info": "Das eigene Produkt \"Archiv-Etikett\" im Shop. Sein Preis wird hier angezeigt. Ohne Produkt erscheint kein Knopf, nur das \"inklusive\"."
+        },
+        {
+          "type": "range",
+          "id": "schwelle",
+          "min": 20,
+          "max": 300,
+          "step": 5,
+          "unit": "€",
+          "label": "Ab diesem Pflanzenpreis inklusive",
+          "default": 100,
+          "info": "Verglichen wird der Preis der ersten verfügbaren Variante."
+        },
+        {
+          "type": "text",
+          "id": "ueberschrift",
+          "label": "Überschrift",
+          "info": "Leer lassen: Dann wird übersetzt. Ein eigener Text erscheint in beiden Sprachen gleich."
+        },
+        {
+          "type": "text",
+          "id": "hinweis_inklusive",
+          "label": "Hinweis bei \"inklusive\"",
+          "info": "Leer lassen: Dann wird übersetzt."
+        },
+        {
+          "type": "text",
+          "id": "hinweis_zubuchbar",
+          "label": "Hinweis beim Knopf",
+          "info": "Leer lassen: Dann wird übersetzt."
+        },
+        {
+          "type": "image_picker",
+          "id": "bild",
+          "label": "Bild vom Etikett",
+          "info": "Optional. Ohne Bild erscheint nichts."
+        }
+      ]
     },
     {
       "type": "winterpack",

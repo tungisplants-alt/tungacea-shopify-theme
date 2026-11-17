@@ -34,6 +34,15 @@
             "swatch_shape": "circle"
           }
         },
+        "etikett": {
+          "type": "etikett",
+          "settings": {
+            "schwelle": 100,
+            "ueberschrift": "",
+            "hinweis_inklusive": "",
+            "hinweis_zubuchbar": ""
+          }
+        },
         "winterpack": {
           "type": "winterpack",
           "settings": {
@@ -119,6 +128,7 @@
         "title",
         "price",
         "variant_picker",
+        "etikett",
         "winterpack",
         "buy_buttons",
         "description",

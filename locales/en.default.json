@@ -162,6 +162,15 @@
         "add": "Add",
         "added": "Added"
       },
+      "etikett": {
+        "title": "Archive label",
+        "included": "included",
+        "hint_included": "Black acrylic, laser-engraved with the genus and name of this plant. My Rakkan seal is on the back. It ships with your plant.",
+        "hint_extra": "Black acrylic, laser-engraved with the genus and name of this plant. My Rakkan seal is on the back. Add it for this plant.",
+        "add": "Add",
+        "added": "Added",
+        "property_for": "For"
+      },
       "specimen": {
         "date_format": "%b %-d, %Y",
         "photographed_on": "Photographed on {{ date }}.",

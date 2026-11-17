@@ -1,0 +1,128 @@
+/*
+ * Archiv-Etikett auf der Produktseite.
+ *
+ * Gleiche Haarlinien und Schrift wie die Winterverpackung, damit beide Zeilen
+ * wie ein Paar wirken. Farben stehen als feste Werte: --color-foreground setzt
+ * Dawn nur INNERHALB der Farbschema-Klassen.
+ */
+.etikett {
+  margin: 0 0 1.2rem;
+  border-top: 1px solid var(--tungacea-hairline);
+  border-bottom: 1px solid var(--tungacea-hairline);
+  padding: 1.4rem 0;
+}
+
+.etikett__zeile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+}
+
+.etikett__text {
+  display: block;
+  min-width: 0;
+}
+
+.etikett__titel {
+  display: block;
+  font-family: var(--font-body-family);
+  font-size: 1.5rem;
+  letter-spacing: 0.02em;
+}
+
+.etikett__preis {
+  color: var(--tungacea-muted);
+  margin-left: 0.4rem;
+}
+
+/* Der Hinweis ist laenger als bei der Winterverpackung und steht deshalb
+   unter der Zeile, in voller Breite. Neben dem Knopf wuerde er in einer
+   schmalen Spalte umbrechen. */
+.etikett__sub {
+  display: block;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--tungacea-muted);
+  margin: 0.9rem 0 0;
+  max-width: 46rem;
+}
+
+/* Inklusive: ein ruhiges Wort statt eines Knopfes. Es ist keine Handlung,
+   also soll es auch nicht aussehen wie eine. */
+.etikett__inklusive {
+  flex: 0 0 auto;
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ece2cc;
+  padding: 0.85rem 0;
+}
+
+.etikett__knopf {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.4rem;
+  border: 1px solid rgba(236, 226, 204, 0.42);
+  background: transparent;
+  color: #ece2cc;
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.etikett__knopf:hover {
+  background: rgba(236, 226, 204, 0.09);
+  border-color: rgba(236, 226, 204, 0.68);
+}
+
+.etikett__knopf:focus-visible {
+  outline: 2px solid #cc6070;
+  outline-offset: 2px;
+}
+
+.etikett__knopf[disabled] {
+  cursor: default;
+  opacity: 0.72;
+}
+
+.etikett__plus {
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-top: -0.15rem;
+}
+
+/* Bestaetigt: Oxblood als FLAECHE mit hellem Label, nicht als Vordergrund. */
+.etikett__knopf.ist-fertig {
+  background: #6e1c28;
+  border-color: #6e1c28;
+  color: #ece2cc;
+}
+
+.etikett__knopf.ist-fertig .etikett__plus {
+  display: none;
+}
+
+/* Bild: erst da, wenn eines eingestellt ist. Ohne Zuschnitt, damit das Etikett
+   nicht angeschnitten wird. */
+.etikett__bild {
+  margin-top: 1.4rem;
+}
+
+.etikett__bild img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media screen and (max-width: 749px) {
+  .etikett {
+    padding: 1.2rem 0;
+  }
+}

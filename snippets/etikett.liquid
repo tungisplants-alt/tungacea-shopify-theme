@@ -1,0 +1,128 @@
+{% comment %}
+  Tungacea — Archiv-Etikett (Produktseite).
+
+  Zwei Zustaende, je nach Pflanze:
+
+  1. inklusive: Das Etikett gehoert zur Pflanze. Es gibt nichts zu klicken und
+     nichts zu bezahlen, der Preis der Pflanze enthaelt es. Das gilt ab einem
+     Preis, den der Block einstellt, und nur fuer Pflanzen, nicht fuer
+     Saemlinge und gekeimte Samen.
+
+  2. zubuchbar: Alles andere. Ein Knopf legt das Etikett als zweite Position in
+     den Warenkorb, mit dem Namen der Pflanze als sichtbare Zeile. Dahinter
+     liegt ein eigenes Produkt, dessen Preis hier gezeigt wird (derselbe Weg
+     wie bei der Winterverpackung).
+
+  **Nichts ist vorausgewaehlt.** Ein kostenpflichtiger Zusatz, den der Kunde
+  nicht ausdruecklich waehlt, ist nach § 312a Abs. 3 BGB unwirksam. Deshalb ein
+  Knopf und kein Kaestchen, das schon gesetzt waere.
+
+  **Ohne Pflanzendaten erscheint nichts.** Der Block steht in der Vorlage fuer
+  alle Produkte. Das Zusatzprodukt selbst, die Winterverpackung und alles
+  andere ohne Auswahl "Lieferumfang" zeigen ihn nicht.
+
+  Der Text auf dem Etikett wird nicht hier erfasst. Er ergibt sich beim
+  Fertigen aus den Angaben der Pflanze selbst, deshalb gibt es auch bei
+  mehreren Pflanzen im Warenkorb keine Zuordnungsfrage.
+
+  Accepts:
+  - product: {Object} Product Liquid object (required)
+  - block:   {Object} main-product `etikett` block (required)
+{% endcomment %}
+
+{%- liquid
+  assign lieferumfang = product.metafields.custom.lieferumfang.value | default: '' | strip
+
+  assign saemling = false
+  if lieferumfang == 'Sämling aus dieser Kreuzung' or lieferumfang == 'Gekeimter Samen aus dieser Kreuzung'
+    assign saemling = true
+  endif
+
+  assign et = block.settings.produkt
+  assign variante = et.selected_or_first_available_variant
+  assign preis = product.selected_or_first_available_variant.price
+  assign schwelle = block.settings.schwelle | default: 100 | times: 100
+
+  assign modus = ''
+  if lieferumfang != blank
+    if saemling == false and preis >= schwelle
+      assign modus = 'inklusive'
+    elsif et != blank and variante != blank and variante.available
+      assign modus = 'zubuchbar'
+    endif
+  endif
+
+  assign ueberschrift = block.settings.ueberschrift | default: '' | strip
+  if ueberschrift == blank
+    assign ueberschrift = 'products.product.etikett.title' | t
+  endif
+
+  comment
+    Leer heisst uebersetzt, nicht stumm. Ein eigener Text waere sonst in
+    beiden Sprachen derselbe.
+  endcomment
+  assign hinweis = ''
+  if modus == 'inklusive'
+    assign hinweis = block.settings.hinweis_inklusive | default: '' | strip
+    if hinweis == blank
+      assign hinweis = 'products.product.etikett.hint_included' | t
+    endif
+  elsif modus == 'zubuchbar'
+    assign hinweis = block.settings.hinweis_zubuchbar | default: '' | strip
+    if hinweis == blank
+      assign hinweis = 'products.product.etikett.hint_extra' | t
+    endif
+  endif
+-%}
+
+{%- if modus != '' -%}
+  {{ 'component-etikett.css' | asset_url | stylesheet_tag }}
+
+  <div class="etikett etikett--{{ modus }} quick-add-hidden" {{ block.shopify_attributes }}>
+    <div class="etikett__zeile">
+      <span class="etikett__text">
+        <span class="etikett__titel">
+          {{- ueberschrift | escape -}}
+          {%- if modus == 'zubuchbar' -%}
+            <span class="etikett__preis">+ {{ variante.price | money_without_trailing_zeros | replace: '€', ' €' }}</span>
+          {%- endif -%}
+        </span>
+      </span>
+
+      {%- if modus == 'inklusive' -%}
+        <span class="etikett__inklusive">{{ 'products.product.etikett.included' | t }}</span>
+      {%- else -%}
+        <button
+          type="button"
+          class="etikett__knopf"
+          data-etikett
+          data-variante="{{ variante.id }}"
+          data-handle="{{ product.handle | escape }}"
+          data-fuer="{{ product.title | escape }}"
+          data-schluessel-fuer="{{ 'products.product.etikett.property_for' | t | escape }}"
+          data-label-fertig="{{ 'products.product.etikett.added' | t | escape }}"
+          aria-live="polite"
+        >
+          <span class="etikett__plus" aria-hidden="true">+</span>
+          <span class="etikett__knopf-text">{{ 'products.product.etikett.add' | t | escape }}</span>
+        </button>
+      {%- endif -%}
+    </div>
+
+    <p class="etikett__sub">{{ hinweis | escape }}</p>
+
+    {%- if block.settings.bild != blank -%}
+      <div class="etikett__bild">
+        {{
+          block.settings.bild
+          | image_url: width: 720
+          | image_tag: loading: 'lazy', widths: '360, 540, 720', sizes: '(min-width: 750px) 40vw, 90vw', alt: block.settings.bild.alt
+        }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if modus == 'zubuchbar' -%}
+    <script src="{{ 'etikett.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
+{%- endif -%}
