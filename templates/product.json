@@ -37,6 +37,7 @@
         "etikett": {
           "type": "etikett",
           "settings": {
+            "produkt": "archiv-etikett",
             "schwelle": 100,
             "ueberschrift": "",
             "hinweis_inklusive": "",
@@ -87,6 +88,13 @@
             "shipping_info": ""
           }
         },
+        "pflege": {
+          "type": "pflege",
+          "settings": {
+            "titel": "",
+            "text": ""
+          }
+        },
         "versandinfo": {
           "type": "versandinfo",
           "settings": {
@@ -113,13 +121,6 @@
           "type": "share",
           "settings": {
             "share_label": "Teilen"
-          }
-        },
-        "pflege": {
-          "type": "pflege",
-          "settings": {
-            "titel": "",
-            "text": ""
           }
         }
       },
