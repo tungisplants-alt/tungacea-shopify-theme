@@ -66,7 +66,7 @@
   align-items: center;
   gap: 1.2rem;
   min-height: 6.4rem;
-  padding: 0.8rem 0 0.8rem var(--eb-innen);
+  padding: 0.8rem var(--eb-innen) 0.8rem var(--eb-innen);
   background: var(--eb-kopfband);
   border-bottom: 1px solid var(--eb-rand);
 }
@@ -225,6 +225,10 @@
   line-height: 1;
   cursor: pointer;
   transition: color 0.18s ease;
+}
+
+.eb__weg--gruppe {
+  margin-right: calc(var(--eb-innen) * -1);
 }
 
 .eb__weg:hover {
@@ -558,4 +562,86 @@
   .eb *::after {
     transition: none !important;
   }
+}
+
+/* ---------------------------------------------------------- Fakten-Zeile */
+.eb__fakten {
+  margin: 0 0 2rem;
+  font-size: 1.3rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--eb-leise);
+}
+
+/* ------------------------------------------------------------- Vorschau
+   Das Etikett liegt waagerecht in einer Karte, rechts laeuft es aus (die
+   Spitze ist abgeschnitten). Darunter eine Leiste: Pfeile, Nummer, Hinweis. */
+.eb__streifen {
+  padding: var(--eb-innen) var(--eb-innen) 0.8rem;
+}
+
+.eb__streifen-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-mask-image: linear-gradient(90deg, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, #000 90%, transparent);
+}
+
+.eb__streifen-text {
+  font-family: var(--font-body-family);
+  fill: #dcd3be;
+}
+
+.eb__streifen-text--gattung {
+  font-weight: 600;
+}
+
+.eb__streifen-leiste {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: var(--eb-zeile);
+  padding: 0 var(--eb-innen) 0 0.8rem;
+  border-top: 1px solid var(--eb-linie);
+}
+
+.eb__streifen-knopf {
+  display: grid;
+  place-items: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--eb-text);
+  font-size: 2.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: opacity 0.18s ease;
+}
+
+.eb__streifen-knopf[disabled] {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.eb__streifen-knopf:focus-visible {
+  outline: 2px solid var(--eb-akzent);
+  outline-offset: -2px;
+}
+
+.eb__streifen-nr {
+  min-width: 6rem;
+  font-size: 1.3rem;
+  text-align: center;
+  color: var(--eb-leise);
+  font-variant-numeric: tabular-nums;
+}
+
+.eb__streifen-info {
+  flex: 1 1 auto;
+  text-align: right;
+  font-size: 1.2rem;
+  color: var(--eb-leise);
 }

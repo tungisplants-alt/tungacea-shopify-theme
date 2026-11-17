@@ -68,6 +68,10 @@
             "ab_2": 25,
             "preis_2": 200
           }
+        },
+        "etikett_details": {
+          "type": "etikett_details",
+          "settings": {}
         }
       },
       "block_order": [
@@ -77,6 +81,7 @@
         "etikett_bestellung",
         "buy_buttons",
         "description",
+        "etikett_details",
         "versandinfo",
         "fragen",
         "share"

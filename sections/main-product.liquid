@@ -206,6 +206,8 @@
                   {% render 'winter-pack', block: block %}
                 {%- when 'etikett' -%}
                   {% render 'etikett', product: product, block: block %}
+                {%- when 'etikett_details' -%}
+                  {% render 'etikett-details', block: block %}
                 {%- when 'etikett_bestellung' -%}
                   {% render 'etikett-bestellung', product: product, block: block, form_id: product_form_id, section_id: section.id %}
                 {%- when 'pflege' -%}
@@ -968,6 +970,17 @@
       "type": "description",
       "name": "t:sections.main-product.blocks.description.name",
       "limit": 1
+    },
+    {
+      "type": "etikett_details",
+      "name": "Das Etikett (Fakten)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Eine zugeklappte Zeile mit Maßen, Material, Gravur, Namen, Haltbarkeit und Fertigung. Die Texte stehen im Sprach-Editor unter products.product.etikett_details."
+        }
+      ]
     },
     {
       "type": "etikett_bestellung",

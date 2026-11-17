@@ -132,3 +132,15 @@
 .produkt-klappe__satz {
   margin: 0;
 }
+
+/* Das Etikett (Fakten): Beschriftung klein ueber dem Text, damit man die Zeilen
+   scannen kann. */
+.produkt-klappe--etikett .produkt-klappe__liste strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
+}

@@ -1,0 +1,35 @@
+{% comment %}
+  Tungacea — Das Etikett: Fakten (Seite des Zusatzprodukts "Archiv-Etikett").
+
+  Eine zugeklappte Zeile "Das Etikett" im Stil der Zeilen "Versand & Lieferung"
+  und "Hast du Fragen?" (Baustein produkt-klappe). Aufgeklappt stehen die Dinge,
+  die ein Kaeufer vor dem Kauf wissen will: Masse, Material, Gravur, Namen,
+  Haltbarkeit, Fertigung. Die Texte stehen in den Sprachdateien
+  (products.product.etikett_details) und lassen sich im Sprach-Editor aendern.
+
+  Zur Haltbarkeit: Die Angabe "bis zu 20-mal stabiler als Glas" ist eine Angabe
+  des Herstellers des Acrylglases und steht auch so da, nicht als eigene
+  Behauptung.
+
+  Das Aussehen steht in component-produkt-klappe.css, geladen einmal im Kopf von
+  main-product.liquid.
+
+  Accepts:
+  - block: {Object} main-product `etikett_details` block (required)
+{% endcomment %}
+<details class="produkt-klappe produkt-klappe--etikett" {{ block.shopify_attributes }}>
+  <summary class="produkt-klappe__toggle">
+    <span class="produkt-klappe__titel">{{ 'products.product.etikett_details.title' | t }}</span>
+    <span class="produkt-klappe__indikator" aria-hidden="true"></span>
+  </summary>
+  <div class="produkt-klappe__inhalt">
+    <ul class="produkt-klappe__liste list-unstyled" role="list">
+      <li><strong>{{ 'products.product.etikett_details.size_label' | t }}</strong> {{ 'products.product.etikett_details.size_text' | t }}</li>
+      <li><strong>{{ 'products.product.etikett_details.material_label' | t }}</strong> {{ 'products.product.etikett_details.material_text' | t }}</li>
+      <li><strong>{{ 'products.product.etikett_details.engraving_label' | t }}</strong> {{ 'products.product.etikett_details.engraving_text' | t }}</li>
+      <li><strong>{{ 'products.product.etikett_details.names_label' | t }}</strong> {{ 'products.product.etikett_details.names_text' | t }}</li>
+      <li><strong>{{ 'products.product.etikett_details.durability_label' | t }}</strong> {{ 'products.product.etikett_details.durability_text' | t }}</li>
+      <li><strong>{{ 'products.product.etikett_details.production_label' | t }}</strong> {{ 'products.product.etikett_details.production_text' | t }}</li>
+    </ul>
+  </div>
+</details>

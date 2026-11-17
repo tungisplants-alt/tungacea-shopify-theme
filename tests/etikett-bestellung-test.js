@@ -75,6 +75,12 @@ const faelle = [
       en: ['Front', 'Back', 'Back with the Rakkan seal and the Tungacea mark', 'Front without a logo'],
     },
     verboten: ['data-eb-vorschau="tungacea" data-seite="front" src="/assets/etikett-vorschau-tungacea-vorne.svg" alt="Vorderseite mit Tungacea-Logo, Gattung und Name, Beispiel Anthurium Tungacea × Premium Tag" width="22" height="126" loading="lazy" hidden'] },
+  { name: 'Vorschau mit dem eigenen Namen: Karte, Pfeile, Beispieltexte, drei Untergruende',
+    erwartet: {
+      de: ['data-eb-streifen', 'data-eb-streifen-zurueck', 'data-eb-streifen-weiter', 'data-eb-streifen-nr', 'data-eb-streifen-info', 'etikett-streifen-tungacea.svg', 'etikett-streifen-leer.svg', 'etikett-streifen-eigenes.svg', '>Vorschau<', 'Vorheriger Name', 'Nächster Name', 'Die Vorschau ist eine Annäherung', 'data-t-beispiel-name="Dein Name"', 'data-t-beispiel="Beispiel"'],
+      en: ['>Preview<', 'Previous name', 'Next name', 'data-t-beispiel-name="Your name"', 'data-t-beispiel="Example"'],
+    } },
+  { name: 'Fakten-Zeile ueber der Liste', erwartet: { de: ['eb__fakten', 'Acrylglas, schwarz, mattiert · 3 mm · 16 × 120 mm · witterungsfest'], en: ['eb__fakten', 'Acrylic glass, black, frosted · 3 mm · 16 × 120 mm · weatherproof'] } },
   { name: 'Messen wie im Generator: Schriftbreiten werden vor dem Skript geladen',
     erwartet: ['etikett-schrift.js', 'etikett-bestellung.js'],
     verboten: [] },

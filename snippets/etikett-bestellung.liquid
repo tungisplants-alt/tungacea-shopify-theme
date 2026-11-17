@@ -11,6 +11,10 @@
      und ein Hinweis, wie viele Etiketten bis zur naechsten Stufe fehlen. Die
      Seite zaehlt Etiketten, die schon im Warenkorb liegen, mit, denn der
      Rabatt gilt fuer ALLE Etiketten im Warenkorb, nicht je Position.
+  Die Vorschau zeigt das Etikett waagerecht mit dem eingetippten Namen (ein
+  Name nach dem anderen, mit Pfeilen), an der Stelle und in der Zeilenteilung
+  des Generators. Ohne Namen steht ein Beispiel da.
+
   Dazwischen das Logo: Tungacea, ohne Logo oder ein eigenes (das letzte auf
   Anfrage per WhatsApp). Die Wahl geht als Eigenschaft "Logo" mit der Bestellung.
 
@@ -108,6 +112,12 @@
   data-wort-eins="{{ 'products.product.etikett_bestellung.word_one' | t | escape }}"
   data-wort-mehr="{{ 'products.product.etikett_bestellung.word_other' | t | escape }}"
   data-gattung-platzhalter="{{ 'products.product.etikett_bestellung.genus_placeholder' | t | escape }}"
+  data-bild-tungacea="{{ 'etikett-streifen-tungacea.svg' | asset_url }}"
+  data-bild-ohne="{{ 'etikett-streifen-leer.svg' | asset_url }}"
+  data-bild-eigenes="{{ 'etikett-streifen-eigenes.svg' | asset_url }}"
+  data-t-beispiel-gattung="{{ 'products.product.etikett_bestellung.example_genus' | t | escape }}"
+  data-t-beispiel-name="{{ 'products.product.etikett_bestellung.example_name' | t | escape }}"
+  data-t-beispiel="{{ 'products.product.etikett_bestellung.example' | t | escape }}"
   data-t-gattung-label="{{ 'products.product.etikett_bestellung.genus_label' | t | escape }}"
   data-t-name-neu="{{ 'products.product.etikett_bestellung.add_name' | t | escape }}"
   data-t-name="{{ 'products.product.etikett_bestellung.name_placeholder' | t | escape }}"
@@ -138,6 +148,7 @@
 >
   {%- comment -%} 1. Etiketten {%- endcomment -%}
   <section class="eb__teil">
+    <p class="eb__fakten">{{ 'products.product.etikett_bestellung.fact_line' | t }}</p>
     <h3 class="eb__kopf">{{ 'products.product.etikett_bestellung.list_title' | t }}</h3>
     <div class="eb__gruppen" data-eb-gruppen></div>
     <button type="button" class="eb__zeile-knopf eb__zeile-knopf--gattung" data-eb-gruppe-neu>
@@ -189,7 +200,22 @@
     </div>
   </section>
 
-  {%- comment -%} 3. Preis {%- endcomment -%}
+  {%- comment -%} 3. Vorschau {%- endcomment -%}
+  <section class="eb__teil">
+    <h3 class="eb__kopf">{{ 'products.product.etikett_bestellung.preview_title' | t }}</h3>
+    <div class="eb__karte">
+      <div class="eb__streifen" data-eb-streifen></div>
+      <div class="eb__streifen-leiste" data-eb-streifen-leiste>
+        <button type="button" class="eb__streifen-knopf" data-eb-streifen-zurueck aria-label="{{ 'products.product.etikett_bestellung.preview_prev' | t | escape }}" disabled>&lsaquo;</button>
+        <span class="eb__streifen-nr" data-eb-streifen-nr></span>
+        <button type="button" class="eb__streifen-knopf" data-eb-streifen-weiter aria-label="{{ 'products.product.etikett_bestellung.preview_next' | t | escape }}" disabled>&rsaquo;</button>
+        <span class="eb__streifen-info" data-eb-streifen-info></span>
+      </div>
+    </div>
+    <p class="eb__tipp">{{ 'products.product.etikett_bestellung.preview_hint' | t }}</p>
+  </section>
+
+  {%- comment -%} 4. Preis {%- endcomment -%}
   <section class="eb__teil eb__summe" aria-live="polite">
     <h3 class="eb__kopf">{{ 'products.product.etikett_bestellung.price_title' | t }}</h3>
     <div class="eb__karte">

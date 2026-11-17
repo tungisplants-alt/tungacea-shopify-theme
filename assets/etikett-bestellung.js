@@ -81,13 +81,13 @@
 
   function pruefeName(roh) {
     var name = aufbereiten(roh);
-    if (!name) return { leer: true, zeilen: 0, zuLang: false, fehlt: [] };
-    if (!S) return { leer: false, zeilen: 1, zuLang: false, fehlt: [] };
+    if (!name) return { leer: true, zeilen: 0, zuLang: false, fehlt: [], text: [] };
+    if (!S) return { leer: false, zeilen: 1, zuLang: false, fehlt: [], text: [name] };
     var maxw = maxBreite();
     var m = function (t) { return vorschub(t, S.g400, S.em2, S.tr2); };
     var ganz = m(name);
     var fehlt = ganz.fehlt.filter(function (c, i, a) { return a.indexOf(c) === i; });
-    if (ganz.w <= maxw) return { leer: false, zeilen: 1, zuLang: false, fehlt: fehlt };
+    if (ganz.w <= maxw) return { leer: false, zeilen: 1, zuLang: false, fehlt: fehlt, text: [name] };
     var tiefe = 0, schnitte = [], i;
     for (i = 0; i < name.length; i++) {
       var c = name.charAt(i);
@@ -101,10 +101,10 @@
         if (name.charAt(i) === ' ' && m(name.slice(0, i)).w <= maxw) schnitte.push(i + 1);
       }
     }
-    if (!schnitte.length) return { leer: false, zeilen: 1, zuLang: true, fehlt: fehlt };
+    if (!schnitte.length) return { leer: false, zeilen: 1, zuLang: true, fehlt: fehlt, text: [name] };
     var k = schnitte[schnitte.length - 1];
     var zweite = name.slice(k).trim();
-    return { leer: false, zeilen: 2, zuLang: m(zweite).w > maxw, fehlt: fehlt };
+    return { leer: false, zeilen: 2, zuLang: m(zweite).w > maxw, fehlt: fehlt, text: [name.slice(0, k).trim(), zweite] };
   }
 
   function pruefeGattung(roh) {
@@ -115,6 +115,91 @@
   }
 
   function istUngueltig(p) { return p.zuLang || p.fehlt.length > 0; }
+
+
+  /* ------------------------------------------------------------- Vorschau
+     Das Etikett liegt waagerecht (flaches Ende links), damit der Name lesbar
+     ist. Der Text steht dort, wo ihn der Generator graviert: gleiche Grundlinien,
+     gleicher Beginn, gleiche Zeilenteilung. Als Schrift dient Jost, wie
+     gravieren. Die Vorschau ist eine Annaeherung, keine Gravurdatei. */
+  var streifen = wurzel.querySelector('[data-eb-streifen]');
+  var streifenNr = wurzel.querySelector('[data-eb-streifen-nr]');
+  var streifenInfo = wurzel.querySelector('[data-eb-streifen-info]');
+  var streifenLeiste = wurzel.querySelector('[data-eb-streifen-leiste]');
+  var streifenZurueck = wurzel.querySelector('[data-eb-streifen-zurueck]');
+  var streifenWeiter = wurzel.querySelector('[data-eb-streifen-weiter]');
+  var vorschauIdx = 0;
+  var SVGNS = 'http://www.w3.org/2000/svg';
+
+  function vorschauListe() {
+    var l = [];
+    gruppen().forEach(function (g) {
+      var gat = g.querySelector('.eb__gattung').value.trim();
+      namenInput(g).forEach(function (i) { if (i.value.trim()) l.push({ gattung: gat, name: i.value, el: i }); });
+    });
+    return l;
+  }
+
+  function svgEl(tag, attrs) {
+    var e = document.createElementNS(SVGNS, tag);
+    Object.keys(attrs || {}).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+    return e;
+  }
+
+  function vorschauZeichnen() {
+    if (!streifen || !S) return;
+    var liste = vorschauListe();
+    var beispiel = liste.length === 0;
+    var aktiv = document.activeElement;
+    if (aktiv && aktiv.classList && aktiv.classList.contains('eb__name')) {
+      for (var k = 0; k < liste.length; k++) if (liste[k].el === aktiv) vorschauIdx = k;
+    }
+    if (vorschauIdx >= liste.length) vorschauIdx = Math.max(0, liste.length - 1);
+    var eintrag = beispiel ? { gattung: d.tBeispielGattung, name: d.tBeispielName } : liste[vorschauIdx];
+    var p = pruefeName(eintrag.name);
+    var zeilen = p.text.length ? p.text : [''];
+    var gattungText = aufbereiten(eintrag.gattung || '') || aufbereiten(d.tBeispielGattung || '');
+    var start = logoWahl === 'ohne' ? S.utOhne : S.utMit;
+    var gb = zeilen.length === 1 ? S.gb1 + S.sh : S.gb2 + S.sh;
+    var nb = (zeilen.length === 1 ? S.nb1 : S.nb2).map(function (v) { return v + S.sh; });
+
+    var svg = svgEl('svg', { viewBox: '-1.5 -1.5 94 19', class: 'eb__streifen-svg', 'aria-hidden': 'true', focusable: 'false' });
+    svg.appendChild(svgEl('image', { href: d['bild' + logoWahl.charAt(0).toUpperCase() + logoWahl.slice(1)] || d.bildTungacea, x: '-1.5', y: '-1.5', width: '94', height: '19' }));
+    var fuell = beispiel ? { 'fill-opacity': '0.45' } : {};
+    var gt = svgEl('text', Object.assign({ x: start, y: gb, class: 'eb__streifen-text eb__streifen-text--gattung', 'font-size': S.em1, 'letter-spacing': S.tr1 }, fuell));
+    gt.textContent = gattungText;
+    svg.appendChild(gt);
+    zeilen.forEach(function (z, i) {
+      var t = svgEl('text', Object.assign({ x: start, y: nb[i], class: 'eb__streifen-text', 'font-size': S.em2, 'letter-spacing': S.tr2 }, fuell));
+      t.textContent = z;
+      svg.appendChild(t);
+    });
+    streifen.innerHTML = '';
+    streifen.appendChild(svg);
+    streifen.setAttribute('role', 'img');
+    streifen.setAttribute('aria-label', [gattungText].concat(zeilen).join(' '));
+
+    var n = liste.length;
+    streifenNr.textContent = beispiel ? d.tBeispiel : (vorschauIdx + 1) + ' / ' + n;
+    streifenInfo.textContent = (!beispiel && zeilen.length === 2) ? d.tZweiZeilen : '';
+    streifenLeiste.classList.toggle('hat-viele', n > 1);
+    streifenZurueck.disabled = n < 2;
+    streifenWeiter.disabled = n < 2;
+  }
+
+  if (streifenZurueck) {
+    streifenZurueck.addEventListener('click', function () {
+      var n = vorschauListe().length;
+      if (n > 1) { vorschauIdx = (vorschauIdx - 1 + n) % n; vorschauZeichnen(); }
+    });
+    streifenWeiter.addEventListener('click', function () {
+      var n = vorschauListe().length;
+      if (n > 1) { vorschauIdx = (vorschauIdx + 1) % n; vorschauZeichnen(); }
+    });
+  }
+  wurzel.addEventListener('focusin', function (e) {
+    if (e.target.classList && e.target.classList.contains('eb__name')) vorschauZeichnen();
+  });
 
   /* ----------------------------------------------------------- Aufbau */
   function el(tag, klasse, attrs) {
@@ -283,6 +368,7 @@
 
     if (n > 0 && ungueltig === 0 && fehlerBox && !fehlerBox.classList.contains('ist-ok')) fehlerBox.hidden = true;
     anzahlUngueltig = ungueltig;
+    vorschauZeichnen();
     if (speichern !== false) entwurfSichern(z);
   }
 
