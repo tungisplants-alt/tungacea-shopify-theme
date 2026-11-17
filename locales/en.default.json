@@ -164,7 +164,8 @@
       },
       "etikett_bestellung": {
         "list_title": "Your labels",
-        "genus_placeholder": "Genus",
+        "genus_placeholder": "e.g. Anthurium",
+        "genus_label": "Genus",
         "name_label": "Name on the label",
         "name_placeholder": "Name on the label",
         "add_name": "Add name",

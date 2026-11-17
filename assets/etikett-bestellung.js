@@ -145,15 +145,20 @@
   function gruppe(gattung, namen) {
     var g = el('section', 'eb__gruppe');
     var kopf = el('header', 'eb__gruppe-kopf');
+    var feld = el('label', 'eb__gattung-feld');
+    var beschr = el('span', 'eb__gattung-label');
+    beschr.textContent = d.tGattungLabel || '';
     var gat = el('input', 'eb__gattung', {
       type: 'text', list: liste ? liste.id : '', autocomplete: 'off', maxlength: '40',
-      placeholder: wurzel.dataset.gattungPlatzhalter || '', 'aria-label': 'Gattung',
+      placeholder: wurzel.dataset.gattungPlatzhalter || '', 'aria-label': d.tGattungLabel || 'Gattung',
     });
     gat.value = gattung || '';
+    feld.appendChild(beschr);
+    feld.appendChild(gat);
     var zahl = el('span', 'eb__gruppe-zahl');
     var weg = el('button', 'eb__weg eb__weg--gruppe', { type: 'button', 'aria-label': d.tGruppeWeg });
     weg.innerHTML = '&times;';
-    kopf.appendChild(gat);
+    kopf.appendChild(feld);
     kopf.appendChild(zahl);
     kopf.appendChild(weg);
     var ul = el('ul', 'eb__namen');
@@ -219,7 +224,7 @@
     z.forEach(function (g) {
       n += g.namen.length;
       g.namen.forEach(function (name) { zeilen.push((g.gattung ? g.gattung + ' | ' : '') + name); });
-      g.el.querySelector('.eb__gruppe-zahl').textContent = g.namen.length ? String(g.namen.length) : '';
+      g.el.querySelector('.eb__gruppe-zahl').textContent = g.namen.length ? g.namen.length + ' ' + (g.namen.length === 1 ? d.wortEins : d.wortMehr) : '';
       var pg = pruefeGattung(g.gattung);
       var gattungFehlt = g.namen.length > 0 && !g.gattung && g.el.classList.contains('hat-fehler');
       g.el.classList.toggle('hat-fehler', gattungFehlt || istUngueltig(pg));

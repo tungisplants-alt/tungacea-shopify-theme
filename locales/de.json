@@ -155,7 +155,8 @@
       },
       "etikett_bestellung": {
         "list_title": "Deine Etiketten",
-        "genus_placeholder": "Gattung",
+        "genus_placeholder": "z. B. Anthurium",
+        "genus_label": "Gattung",
         "name_label": "Name auf dem Etikett",
         "name_placeholder": "Name auf dem Etikett",
         "add_name": "Name hinzufügen",

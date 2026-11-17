@@ -108,6 +108,7 @@
   data-wort-eins="{{ 'products.product.etikett_bestellung.word_one' | t | escape }}"
   data-wort-mehr="{{ 'products.product.etikett_bestellung.word_other' | t | escape }}"
   data-gattung-platzhalter="{{ 'products.product.etikett_bestellung.genus_placeholder' | t | escape }}"
+  data-t-gattung-label="{{ 'products.product.etikett_bestellung.genus_label' | t | escape }}"
   data-t-name-neu="{{ 'products.product.etikett_bestellung.add_name' | t | escape }}"
   data-t-name="{{ 'products.product.etikett_bestellung.name_placeholder' | t | escape }}"
   data-t-name-label="{{ 'products.product.etikett_bestellung.name_label' | t | escape }}"
@@ -149,6 +150,7 @@
   {%- comment -%} 2. Logo {%- endcomment -%}
   <section class="eb__teil eb__logo">
     <h3 class="eb__kopf">{{ 'products.product.etikett_bestellung.logo_title' | t }}</h3>
+    <div class="eb__karte">
     <div class="eb__wahl" role="radiogroup" aria-label="{{ 'products.product.etikett_bestellung.logo_title' | t | escape }}">
       <button type="button" class="eb__wahl-knopf ist-aktiv" role="radio" aria-checked="true" data-eb-logo="tungacea">{{ 'products.product.etikett_bestellung.logo_tungacea' | t }}</button>
       <button type="button" class="eb__wahl-knopf" role="radio" aria-checked="false" data-eb-logo="ohne">{{ 'products.product.etikett_bestellung.logo_none' | t }}</button>
@@ -184,11 +186,13 @@
         {%- endif -%}
       </div>
     </div>
+    </div>
   </section>
 
   {%- comment -%} 3. Preis {%- endcomment -%}
   <section class="eb__teil eb__summe" aria-live="polite">
     <h3 class="eb__kopf">{{ 'products.product.etikett_bestellung.price_title' | t }}</h3>
+    <div class="eb__karte">
     <div class="eb__summe-zeile">
       <span class="eb__zaehler" data-eb-zaehler></span>
       <span class="eb__betrag" data-eb-betrag></span>
@@ -215,6 +219,7 @@
       </ol>
     {%- endif -%}
     <p class="eb__tipp eb__tipp--staffel" data-eb-tipp></p>
+    </div>
   </section>
 
   <input type="hidden" name="properties[{{ 'products.product.etikett_bestellung.property_labels' | t | escape }}]" form="{{ form_id | escape }}" value="" data-eb-etiketten>
