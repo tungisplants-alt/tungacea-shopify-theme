@@ -31,6 +31,47 @@
   letter-spacing: 0.02em;
 }
 
+/* Der Titel ist ein Link, sieht aber zuerst wie Text aus: nur eine feine
+   Unterstreichung, die beim Ueberfahren deutlicher wird. */
+.etikett__link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(236, 226, 204, 0.32);
+  text-underline-offset: 0.35em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.18s ease;
+}
+
+.etikett__link:hover {
+  text-decoration-color: rgba(236, 226, 204, 0.9);
+}
+
+.etikett__link:focus-visible,
+.etikett__mehr:focus-visible {
+  outline: 2px solid #cc6070;
+  outline-offset: 3px;
+}
+
+.etikett__mehr {
+  display: inline-block;
+  margin-top: 0.7rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  color: var(--tungacea-muted);
+  text-decoration: underline;
+  text-decoration-color: rgba(236, 226, 204, 0.32);
+  text-underline-offset: 0.35em;
+}
+
+.etikett__mehr::after {
+  content: " \203A";
+}
+
+.etikett__mehr:hover {
+  color: #ece2cc;
+  text-decoration-color: rgba(236, 226, 204, 0.9);
+}
+
 .etikett__preis {
   color: var(--tungacea-muted);
   margin-left: 0.4rem;

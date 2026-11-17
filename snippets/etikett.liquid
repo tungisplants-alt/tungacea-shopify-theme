@@ -21,6 +21,11 @@
   alle Produkte. Das Zusatzprodukt selbst, die Winterverpackung und alles
   andere ohne Auswahl "Lieferumfang" zeigen ihn nicht.
 
+  Ist ein Zusatzprodukt eingestellt, fuehrt der Titel (und eine kleine Zeile
+  darunter) auf dessen eigene Seite: Bilder vom Etikett ansehen, mehr Etiketten
+  kaufen. Der Link steht auch bei "inklusive", denn die Neugier danach ist
+  dieselbe.
+
   Der Text auf dem Etikett wird nicht hier erfasst. Er ergibt sich beim
   Fertigen aus den Angaben der Pflanze selbst, deshalb gibt es auch bei
   mehreren Pflanzen im Warenkorb keine Zuordnungsfrage.
@@ -82,7 +87,11 @@
     <div class="etikett__zeile">
       <span class="etikett__text">
         <span class="etikett__titel">
-          {{- ueberschrift | escape -}}
+          {%- if et != blank -%}
+            <a class="etikett__link" href="{{ et.url }}">{{ ueberschrift | escape }}</a>
+          {%- else -%}
+            {{- ueberschrift | escape -}}
+          {%- endif -%}
           {%- if modus == 'zubuchbar' -%}
             <span class="etikett__preis">+ {{ variante.price | money_without_trailing_zeros | replace: '€', ' €' }}</span>
           {%- endif -%}
@@ -111,13 +120,19 @@
 
     <p class="etikett__sub">{{ hinweis | escape }}</p>
 
+    {%- if et != blank -%}
+      <a class="etikett__mehr" href="{{ et.url }}">{{ 'products.product.etikett.more' | t }}</a>
+    {%- endif -%}
+
     {%- if block.settings.bild != blank -%}
       <div class="etikett__bild">
+        {%- if et != blank -%}<a href="{{ et.url }}" tabindex="-1" aria-hidden="true">{%- endif -%}
         {{
           block.settings.bild
           | image_url: width: 720
           | image_tag: loading: 'lazy', widths: '360, 540, 720', sizes: '(min-width: 750px) 40vw, 90vw', alt: block.settings.bild.alt
         }}
+        {%- if et != blank -%}</a>{%- endif -%}
       </div>
     {%- endif -%}
   </div>

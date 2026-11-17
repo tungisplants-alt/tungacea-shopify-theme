@@ -30,6 +30,7 @@ engine.registerFilter('t', function (key) {
 });
 
 const zusatz = (preis, verfuegbar, id) => ({
+  url: '/products/archiv-etikett',
   selected_or_first_available_variant: { id: id || 55667788, price: preis, available: verfuegbar },
 });
 const pflanze = (preisCent, lieferumfang) => ({
@@ -62,6 +63,11 @@ const faelle = [
   { name: 'Eigener Text schlaegt die Uebersetzung', product: pflanze(15000, 'Dieses Exemplar'), block: block({ ueberschrift: 'Etikett', hinweis_inklusive: 'Eigener Satz.' }),
     erwartet: ['Etikett', 'Eigener Satz.'], verboten: ['Archive label', 'Black acrylic'] },
   { name: 'Kein Kontrollkaestchen (§ 312a Abs. 3 BGB)', product: pflanze(5000, 'Dieses Exemplar'), block: block(), erwartet: ['type="button"'], verboten: ['type="checkbox"', 'checked'] },
+  { name: 'Titel und kleine Zeile fuehren auf die Seite des Etiketts (inklusive)', product: pflanze(15000, 'Dieses Exemplar'), block: block(),
+    erwartet: { de: ['class="etikett__link" href="/products/archiv-etikett"', 'class="etikett__mehr" href="/products/archiv-etikett"', 'Bilder ansehen und mehr Etiketten kaufen'], en: ['etikett__link', 'See photos and buy more labels'] } },
+  { name: 'Titel und kleine Zeile fuehren auf die Seite des Etiketts (zubuchbar)', product: pflanze(5000, 'Dieses Exemplar'), block: block(),
+    erwartet: ['class="etikett__link" href="/products/archiv-etikett"', 'etikett__mehr'] },
+  { name: 'Ohne Zusatzprodukt gibt es keinen Link', product: pflanze(15000, 'Dieses Exemplar'), block: block({ produkt: null }), verboten: ['<a ', 'etikett__mehr', 'etikett__link'] },
   { name: 'Mit Bild: es wird gerendert', product: pflanze(15000, 'Dieses Exemplar'), block: block({ bild: { src: '/etikett.jpg', alt: 'Etikett' } }), erwartet: ['etikett__bild', '<img'] },
   { name: 'Ohne Bild: kein Bildbereich', product: pflanze(15000, 'Dieses Exemplar'), block: block(), verboten: ['etikett__bild', '<img'] },
 ];
