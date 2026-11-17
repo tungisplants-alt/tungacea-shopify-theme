@@ -169,6 +169,8 @@
         "name_placeholder": "Name on the label",
         "add_name": "Add name",
         "add_group": "Another genus",
+        "show_more": "Show {{ n }} more",
+        "show_less": "Show less",
         "remove": "Remove label",
         "remove_group": "Remove genus",
         "paste_hint": "Tip: Paste a whole list, every line becomes one label.",

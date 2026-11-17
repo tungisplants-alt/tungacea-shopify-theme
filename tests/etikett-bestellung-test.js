@@ -64,7 +64,7 @@ const faelle = [
     verboten: ['etikett-bestellung__whatsapp'] },
   { name: 'Ohne gueltige Nummer: keine Logo-Zeile', settings: { whatsapp_nummer: '' }, verboten: ['wa.me', 'Eigenes Logo', 'eb__zeile-knopf--link'] },
   { name: 'Alle Texte, die das Skript braucht, stehen als Daten am Block (uebersetzt)',
-    erwartet: { de: ['data-t-name-neu="Name hinzufügen"', 'data-t-fehler-namen="Trag mindestens einen Namen ein."', 'data-t-fehler-gattung=', 'data-t-pro="pro Etikett"', 'data-t-fertig="In den Warenkorb gelegt."'], en: ['data-t-name-neu="Add name"', 'data-t-fehler-namen="Enter at least one name."', 'data-t-pro="each"'] } },
+    erwartet: { de: ['data-t-name-neu="Name hinzufügen"', 'data-t-fehler-namen="Trag mindestens einen Namen ein."', 'data-t-fehler-gattung=', 'data-t-pro="pro Etikett"', 'data-t-fertig="In den Warenkorb gelegt."', 'data-t-mehr="{{ n }} weitere anzeigen"', 'data-t-weniger="Weniger anzeigen"'], en: ['data-t-name-neu="Add name"', 'data-t-fehler-namen="Enter at least one name."', 'data-t-pro="each"', 'data-t-mehr="Show {{ n }} more"', 'data-t-weniger="Show less"'] } },
   { name: 'Vorschlagsliste fuer Gattungen', erwartet: ['<datalist', 'Anthurium', 'Philodendron'] },
   { name: 'Skript und Stil werden geladen', erwartet: ['etikett-bestellung.js', 'component-etikett-bestellung.css'] },
 ];

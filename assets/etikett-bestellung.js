@@ -94,10 +94,36 @@
     var plus = el('button', 'eb__zeile-knopf eb__zeile-knopf--name', { type: 'button' });
     plus.innerHTML = '<span class="eb__plus" aria-hidden="true">+</span>';
     plus.appendChild(document.createTextNode(wurzel.dataset.tNameNeu || ''));
+    var mehr = el('button', 'eb__zeile-knopf eb__mehr-knopf', { type: 'button', 'aria-expanded': 'false' });
+    mehr.hidden = true;
+    mehr.innerHTML = '<span class="eb__mehr-text"></span><span class="eb__pfeil eb__pfeil--mehr" aria-hidden="true">&rsaquo;</span>';
     g.appendChild(kopf);
     g.appendChild(ul);
+    g.appendChild(mehr);
     g.appendChild(plus);
+    g.dataset.zu = '0';
     return g;
+  }
+
+  /* Lange Listen: ab ZU_AB Namen zeigt eine Gruppe nur die ersten ZU_ZEIGEN,
+     der Rest steckt hinter einer Zeile "N weitere anzeigen". Die Zeilen bleiben
+     im DOM, damit Zaehlen und Absenden nichts davon merken. */
+  var ZU_AB = 6;
+  var ZU_ZEIGEN = 3;
+
+  function faltenAnwenden(g) {
+    var zeilen = [].slice.call(g.querySelectorAll('.eb__zeile'));
+    var knopf = g.querySelector('.eb__mehr-knopf');
+    var kann = zeilen.length >= ZU_AB;
+    var zu = kann && g.dataset.zu === '1';
+    zeilen.forEach(function (li, i) { li.hidden = zu && i >= ZU_ZEIGEN; });
+    if (!kann) { knopf.hidden = true; g.dataset.zu = '0'; return; }
+    knopf.hidden = false;
+    knopf.setAttribute('aria-expanded', String(!zu));
+    knopf.classList.toggle('ist-offen', !zu);
+    knopf.querySelector('.eb__mehr-text').textContent = zu
+      ? ersetzen(d.tMehr, { n: zeilen.length - ZU_ZEIGEN })
+      : d.tWeniger;
   }
 
   function gruppen() { return [].slice.call(gruppenBox.querySelectorAll('.eb__gruppe')); }
@@ -127,6 +153,7 @@
       g.namen.forEach(function (name) { zeilen.push((g.gattung ? g.gattung + ' | ' : '') + name); });
       g.el.querySelector('.eb__gruppe-zahl').textContent = g.namen.length ? String(g.namen.length) : '';
       g.el.querySelector('.eb__weg--gruppe').hidden = z.length < 2;
+      faltenAnwenden(g.el);
     });
 
     etikettenFeld.value = zeilen.join('\n');
@@ -209,6 +236,7 @@
     if (e.key === 'Enter') {
       e.preventDefault();
       if (inp.value.trim() === '') return; // keine leeren Zeilen stapeln
+      inp.closest('.eb__gruppe').dataset.zu = '0';
       zeileEinfuegen(li, '', true);
       aktualisieren();
     } else if (e.key === 'Backspace' && inp.value === '') {
@@ -236,7 +264,14 @@
     inp.value = zeilen[0];
     var letzte = li;
     zeilen.slice(1).forEach(function (z) { letzte = zeileEinfuegen(letzte, z, false); });
-    letzte.querySelector('.eb__name').focus();
+    var gr = inp.closest('.eb__gruppe');
+    if (gr.querySelectorAll('.eb__zeile').length >= ZU_AB) {
+      // Eine eingefuegte Liste prueft man nicht Zeile fuer Zeile: sie klappt zu.
+      gr.dataset.zu = '1';
+      inp.blur();
+    } else {
+      letzte.querySelector('.eb__name').focus();
+    }
     aktualisieren();
   });
 
@@ -253,8 +288,13 @@
       aktualisieren();
     } else if (b.classList.contains('eb__zeile-knopf--name')) {
       var ul2 = g.querySelector('.eb__namen');
+      g.dataset.zu = '0';
+      faltenAnwenden(g);
       zeileEinfuegen(ul2.lastElementChild, '', true);
       aktualisieren();
+    } else if (b.classList.contains('eb__mehr-knopf')) {
+      g.dataset.zu = g.dataset.zu === '1' ? '0' : '1';
+      faltenAnwenden(g);
     }
   });
 
@@ -352,7 +392,11 @@
   /* ---------------------------------------------------------------- Start */
   var start = entwurfLaden();
   if (start) {
-    start.forEach(function (g) { gruppenBox.appendChild(gruppe(g.g, g.n)); });
+    start.forEach(function (g) {
+      var gr = gruppe(g.g, g.n);
+      if ((g.n || []).length >= ZU_AB) gr.dataset.zu = '1';
+      gruppenBox.appendChild(gr);
+    });
   } else {
     gruppenBox.appendChild(gruppe(d.gattung || '', ['']));
   }

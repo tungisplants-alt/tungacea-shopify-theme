@@ -160,6 +160,8 @@
         "name_placeholder": "Name auf dem Etikett",
         "add_name": "Name hinzufügen",
         "add_group": "Weitere Gattung",
+        "show_more": "{{ n }} weitere anzeigen",
+        "show_less": "Weniger anzeigen",
         "remove": "Etikett entfernen",
         "remove_group": "Gattung entfernen",
         "paste_hint": "Tipp: Füge eine ganze Liste ein, jede Zeile wird ein Etikett.",

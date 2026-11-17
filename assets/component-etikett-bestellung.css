@@ -355,3 +355,27 @@
 .eb__gattung::-webkit-calendar-picker-indicator {
   display: none !important;
 }
+
+/* Lange Listen: eine Zeile "N weitere anzeigen" statt Dutzender Reihen. */
+.eb__zeile[hidden] {
+  display: none;
+}
+
+.eb__mehr-knopf {
+  justify-content: space-between;
+  color: var(--eb-leise);
+}
+
+.eb__mehr-knopf[hidden] {
+  display: none;
+}
+
+.eb__pfeil--mehr {
+  font-size: 2.2rem;
+  transform: rotate(90deg);
+  transition: transform 0.18s ease;
+}
+
+.eb__mehr-knopf.ist-offen .eb__pfeil--mehr {
+  transform: rotate(-90deg);
+}
