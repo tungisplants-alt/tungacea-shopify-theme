@@ -460,3 +460,51 @@
 .eb__logo-weg[hidden] {
   display: none;
 }
+
+/* ---------------------------------------------- Vorschau der Logo-Wahl
+   Links die zwei Seiten des Etiketts (aus den Vektordaten des Generators), rechts
+   der erklaerende Text. Die Bilder bleiben klein; sie zeigen, wo was steht. */
+.eb__vorschau {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2.4rem;
+  align-items: start;
+  margin-top: 1.6rem;
+}
+
+.eb__bilder {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.eb__bild {
+  margin: 0;
+}
+
+.eb__bild-img {
+  display: block;
+  width: auto;
+  height: 22rem;
+}
+
+.eb__bild-img[hidden] {
+  display: none;
+}
+
+.eb__bild figcaption {
+  margin-top: 0.8rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--eb-leise);
+}
+
+.eb__vorschau-text .eb__logo-hinweis {
+  margin-top: 0;
+}
+
+@media screen and (max-width: 749px) {
+  .eb__bild-img {
+    height: 19rem;
+  }
+}

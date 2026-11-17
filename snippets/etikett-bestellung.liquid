@@ -156,16 +156,34 @@
         <button type="button" class="eb__wahl-knopf" role="radio" aria-checked="false" data-eb-logo="eigenes">{{ 'products.product.etikett_bestellung.logo_custom' | t }}</button>
       {%- endif -%}
     </div>
-    <p class="eb__tipp eb__logo-hinweis" data-eb-logo-hinweis>{{ 'products.product.etikett_bestellung.logo_note_tungacea' | t }}</p>
-    {%- if wa_href != '' -%}
-      <a class="eb__zeile-knopf eb__zeile-knopf--link eb__logo-weg" href="{{ wa_href }}" target="_blank" rel="noopener noreferrer" aria-describedby="a11y-new-window-message" data-eb-logo-weg hidden>
-        <span class="eb__link-text">
-          <span class="eb__link-titel">{{ 'products.product.etikett_bestellung.logo_row' | t }}</span>
-          <span class="eb__link-sub">{{ 'products.product.etikett_bestellung.logo_sub' | t }}</span>
-        </span>
-        <span class="eb__pfeil" aria-hidden="true">&rsaquo;</span>
-      </a>
-    {%- endif -%}
+    <div class="eb__vorschau">
+      <div class="eb__bilder">
+        <figure class="eb__bild">
+          <img class="eb__bild-img" data-eb-vorschau="tungacea" data-seite="front" src="{{ 'etikett-vorschau-tungacea-vorne.svg' | asset_url }}" alt="{{ 'products.product.etikett_bestellung.alt_tungacea_front' | t | escape }}" width="22" height="126" loading="lazy">
+          <img class="eb__bild-img" data-eb-vorschau="ohne" data-seite="front" src="{{ 'etikett-vorschau-ohne-vorne.svg' | asset_url }}" alt="{{ 'products.product.etikett_bestellung.alt_ohne_front' | t | escape }}" width="22" height="126" loading="lazy" hidden>
+          <img class="eb__bild-img" data-eb-vorschau="eigenes" data-seite="front" src="{{ 'etikett-vorschau-eigenes-vorne.svg' | asset_url }}" alt="{{ 'products.product.etikett_bestellung.alt_eigenes_front' | t | escape }}" width="22" height="126" loading="lazy" hidden>
+          <figcaption>{{ 'products.product.etikett_bestellung.side_front' | t }}</figcaption>
+        </figure>
+        <figure class="eb__bild">
+          <img class="eb__bild-img" data-eb-vorschau="tungacea" data-seite="back" src="{{ 'etikett-vorschau-tungacea-hinten.svg' | asset_url }}" alt="{{ 'products.product.etikett_bestellung.alt_tungacea_back' | t | escape }}" width="22" height="126" loading="lazy">
+          <img class="eb__bild-img" data-eb-vorschau="ohne" data-seite="back" src="{{ 'etikett-vorschau-leer.svg' | asset_url }}" alt="{{ 'products.product.etikett_bestellung.alt_ohne_back' | t | escape }}" width="22" height="126" loading="lazy" hidden>
+          <img class="eb__bild-img" data-eb-vorschau="eigenes" data-seite="back" src="{{ 'etikett-vorschau-leer.svg' | asset_url }}" alt="{{ 'products.product.etikett_bestellung.alt_eigenes_back' | t | escape }}" width="22" height="126" loading="lazy" hidden>
+          <figcaption>{{ 'products.product.etikett_bestellung.side_back' | t }}</figcaption>
+        </figure>
+      </div>
+      <div class="eb__vorschau-text">
+        <p class="eb__tipp eb__logo-hinweis" data-eb-logo-hinweis>{{ 'products.product.etikett_bestellung.logo_note_tungacea' | t }}</p>
+        {%- if wa_href != '' -%}
+          <a class="eb__zeile-knopf eb__zeile-knopf--link eb__logo-weg" href="{{ wa_href }}" target="_blank" rel="noopener noreferrer" aria-describedby="a11y-new-window-message" data-eb-logo-weg hidden>
+            <span class="eb__link-text">
+              <span class="eb__link-titel">{{ 'products.product.etikett_bestellung.logo_row' | t }}</span>
+              <span class="eb__link-sub">{{ 'products.product.etikett_bestellung.logo_sub' | t }}</span>
+            </span>
+            <span class="eb__pfeil" aria-hidden="true">&rsaquo;</span>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
   </section>
 
   {%- comment -%} 3. Preis {%- endcomment -%}

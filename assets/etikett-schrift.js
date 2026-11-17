@@ -7,12 +7,14 @@
  *  g400  Name der Pflanze (Jost 400), Schriftgroesse em2 mm, Sperrung tr2 mm
  *  g600  Gattung (Jost 600),          Schriftgroesse em1 mm, Sperrung tr1 mm
  *  maxw  Breite einer Zeile in mm (Etikettenlaenge minus Spitze, Logo, Rand)
+ *  maxwOhne  dasselbe ohne Logo: Der Text beginnt am Rand statt hinter dem Logo
  *
  * Aendert sich die Schrift oder das Etikett im Generator, muessen diese Werte
  * mit. tests/schrift-test.js prueft sie gegen die Daten des Generators.
  */
 window.TUNGACEA_SCHRIFT = {
   maxw: 62.9782,
+  maxwOhne: 78.6,
   em1: 2.65, tr1: 0.371,
   em2: 2.3, tr2: 0.161,
   g400: {"A":660,"B":558,"C":685,"D":680,"E":550,"F":500,"G":775,"H":715,"I":245,"J":240,"K":565,"L":450,"M":810,"N":775,"O":790,"P":548,"Q":790,"R":560,"S":548,"T":465,"U":626,"V":660,"W":990,"X":555,"Y":561,"Z":545,"0":600,"1":450,"2":569,"3":546,"4":583,"5":564,"6":576,"7":525,"8":546,"9":576," ":300,".":300,",":308,";":330,":":300,"'":285,"’":275,"‘":275,"\"":465,"(":310,")":310,"[":300,"]":300,"#":605,"+":615,"-":210,"–":740,"/":515,"&":675,"×":596,"!":300,"?":557,"%":751,"°":278,"@":770,"_":500,"Ä":660,"Ö":790,"Ü":626,"É":550,"È":550,"Ê":550,"Á":660,"À":660,"Â":660,"Ó":790,"Ò":790,"Ô":790,"Ú":626,"Ù":626,"Û":626,"Í":245,"Ì":245,"Î":245,"Ç":685,"Ñ":775},

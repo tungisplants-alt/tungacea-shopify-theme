@@ -76,14 +76,18 @@
   }
 
   // -> { leer, zeilen (1|2), zuLang, fehlt: [Zeichen] }
+  // Ohne Logo beginnt der Text am Rand: Die Zeile ist laenger.
+  function maxBreite() { return (logoWahl === 'ohne' && S.maxwOhne) ? S.maxwOhne : S.maxw; }
+
   function pruefeName(roh) {
     var name = aufbereiten(roh);
     if (!name) return { leer: true, zeilen: 0, zuLang: false, fehlt: [] };
     if (!S) return { leer: false, zeilen: 1, zuLang: false, fehlt: [] };
+    var maxw = maxBreite();
     var m = function (t) { return vorschub(t, S.g400, S.em2, S.tr2); };
     var ganz = m(name);
     var fehlt = ganz.fehlt.filter(function (c, i, a) { return a.indexOf(c) === i; });
-    if (ganz.w <= S.maxw) return { leer: false, zeilen: 1, zuLang: false, fehlt: fehlt };
+    if (ganz.w <= maxw) return { leer: false, zeilen: 1, zuLang: false, fehlt: fehlt };
     var tiefe = 0, schnitte = [], i;
     for (i = 0; i < name.length; i++) {
       var c = name.charAt(i);
@@ -91,23 +95,23 @@
       else if (c === ')') tiefe--;
       else if (c === '×' && tiefe === 0 && i > 0 && name.charAt(i - 1) === ' ' && name.charAt(i + 1) === ' ') schnitte.push(i);
     }
-    schnitte = schnitte.filter(function (k) { return m(name.slice(0, k).trim()).w <= S.maxw; });
+    schnitte = schnitte.filter(function (k) { return m(name.slice(0, k).trim()).w <= maxw; });
     if (!schnitte.length) {
       for (i = 0; i < name.length; i++) {
-        if (name.charAt(i) === ' ' && m(name.slice(0, i)).w <= S.maxw) schnitte.push(i + 1);
+        if (name.charAt(i) === ' ' && m(name.slice(0, i)).w <= maxw) schnitte.push(i + 1);
       }
     }
     if (!schnitte.length) return { leer: false, zeilen: 1, zuLang: true, fehlt: fehlt };
     var k = schnitte[schnitte.length - 1];
     var zweite = name.slice(k).trim();
-    return { leer: false, zeilen: 2, zuLang: m(zweite).w > S.maxw, fehlt: fehlt };
+    return { leer: false, zeilen: 2, zuLang: m(zweite).w > maxw, fehlt: fehlt };
   }
 
   function pruefeGattung(roh) {
     var g = aufbereiten(roh);
     if (!g || !S) return { zuLang: false, fehlt: [] };
     var r = vorschub(g, S.g600, S.em1, S.tr1);
-    return { zuLang: r.w > S.maxw, fehlt: r.fehlt.filter(function (c, i, a) { return a.indexOf(c) === i; }) };
+    return { zuLang: r.w > maxBreite(), fehlt: r.fehlt.filter(function (c, i, a) { return a.indexOf(c) === i; }) };
   }
 
   function istUngueltig(p) { return p.zuLang || p.fehlt.length > 0; }
@@ -415,6 +419,7 @@
   var logoKnoepfe = [].slice.call(wurzel.querySelectorAll('[data-eb-logo]'));
   var logoHinweis = wurzel.querySelector('[data-eb-logo-hinweis]');
   var logoWeg = wurzel.querySelector('[data-eb-logo-weg]');
+  var bilder = [].slice.call(wurzel.querySelectorAll('[data-eb-vorschau]'));
   var logoText = {
     tungacea: { wert: d.tLogoTungacea, hinweis: d.tHinweisTungacea },
     ohne: { wert: d.tLogoOhne, hinweis: d.tHinweisOhne },
@@ -430,11 +435,12 @@
     });
     logoFeld.value = logoText[wahl].wert;
     logoHinweis.textContent = logoText[wahl].hinweis;
+    bilder.forEach(function (bi) { bi.hidden = bi.dataset.ebVorschau !== wahl; });
     if (logoWeg) logoWeg.hidden = wahl !== 'eigenes';
     entwurfSichern(zustand());
   }
   logoKnoepfe.forEach(function (k) {
-    k.addEventListener('click', function () { logoSetzen(k.dataset.ebLogo); });
+    k.addEventListener('click', function () { logoSetzen(k.dataset.ebLogo); aktualisieren(); });
   });
 
   /* ------------------------------------------------------------ Warenkorb */

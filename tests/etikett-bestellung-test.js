@@ -69,11 +69,17 @@ const faelle = [
     verboten: ['etikett-bestellung__whatsapp'] },
   { name: 'Ohne gueltige Nummer: nur Tungacea und Ohne Logo, kein Link',
     settings: { whatsapp_nummer: '' }, erwartet: ['data-eb-logo="tungacea"', 'data-eb-logo="ohne"'], verboten: ['wa.me', 'data-eb-logo="eigenes"', 'eb__zeile-knopf--link', 'data-eb-logo-weg'] },
+  { name: 'Vorschaubilder: je Wahl Vorder- und Rueckseite, nur die vorgewaehlte (Tungacea) ist sichtbar, Texte uebersetzt',
+    erwartet: {
+      de: ['etikett-vorschau-tungacea-vorne.svg', 'etikett-vorschau-tungacea-hinten.svg', 'etikett-vorschau-ohne-vorne.svg', 'etikett-vorschau-eigenes-vorne.svg', 'etikett-vorschau-leer.svg', 'data-eb-vorschau="ohne" data-seite="front"', 'Vorderseite', 'Rückseite', 'Rückseite mit dem Rakkan und der Marke Tungacea', 'Vorderseite ohne Logo: Gattung und Name beginnen weiter oben', 'loading="lazy"'],
+      en: ['Front', 'Back', 'Back with the Rakkan seal and the Tungacea mark', 'Front without a logo'],
+    },
+    verboten: ['data-eb-vorschau="tungacea" data-seite="front" src="/assets/etikett-vorschau-tungacea-vorne.svg" alt="Vorderseite mit Tungacea-Logo, Gattung und Name, Beispiel Anthurium Tungacea × Premium Tag" width="22" height="126" loading="lazy" hidden'] },
   { name: 'Messen wie im Generator: Schriftbreiten werden vor dem Skript geladen',
     erwartet: ['etikett-schrift.js', 'etikett-bestellung.js'],
     verboten: [] },
   { name: 'Alle Texte, die das Skript braucht, stehen als Daten am Block (uebersetzt)',
-    erwartet: { de: ['data-t-name-neu="Name hinzufügen"', 'data-t-fehler-namen="Trag mindestens einen Namen ein."', 'data-t-fehler-gattung=', 'data-t-pro="pro Etikett"', 'data-t-fertig="In den Warenkorb gelegt."', 'data-t-mehr="{{ n }} weitere anzeigen"', 'data-t-weniger="Weniger anzeigen"', 'data-t-zwei-zeilen="2 Zeilen"', 'data-t-zu-lang="Zu lang"', 'data-t-zeichen="Zeichen nicht möglich: {{ z }}"', 'data-t-voll=', 'data-t-fehler-passt=', 'data-t-hinweis-ohne="Nur der Text, ohne Logo und ohne Rakkan."'], en: ['data-t-name-neu="Add name"', 'data-t-fehler-namen="Enter at least one name."', 'data-t-pro="each"', 'data-t-mehr="Show {{ n }} more"', 'data-t-weniger="Show less"', 'data-t-zwei-zeilen="2 lines"', 'data-t-zu-lang="Too long"'] } },
+    erwartet: { de: ['data-t-name-neu="Name hinzufügen"', 'data-t-fehler-namen="Trag mindestens einen Namen ein."', 'data-t-fehler-gattung=', 'data-t-pro="pro Etikett"', 'data-t-fertig="In den Warenkorb gelegt."', 'data-t-mehr="{{ n }} weitere anzeigen"', 'data-t-weniger="Weniger anzeigen"', 'data-t-zwei-zeilen="2 Zeilen"', 'data-t-zu-lang="Zu lang"', 'data-t-zeichen="Zeichen nicht möglich: {{ z }}"', 'data-t-voll=', 'data-t-fehler-passt=', 'data-t-hinweis-ohne="Nur der Text, ohne Logo und ohne Rakkan. Dafür hat ein Name mehr Platz."'], en: ['data-t-name-neu="Add name"', 'data-t-fehler-namen="Enter at least one name."', 'data-t-pro="each"', 'data-t-mehr="Show {{ n }} more"', 'data-t-weniger="Show less"', 'data-t-zwei-zeilen="2 lines"', 'data-t-zu-lang="Too long"'] } },
   { name: 'Vorschlagsliste fuer Gattungen', erwartet: ['<datalist', 'Anthurium', 'Philodendron'] },
   { name: 'Skript und Stil werden geladen', erwartet: ['etikett-bestellung.js', 'component-etikett-bestellung.css'] },
 ];
