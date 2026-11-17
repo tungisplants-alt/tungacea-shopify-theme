@@ -38,6 +38,8 @@
     return { ab: Number(t[0]), preis: Number(t[1]) };
   }).sort(function (a, b) { return a.ab - b.ab; });
   var imKorb = 0;
+  var anzahlUngueltig = 0;
+  var logoWahl = 'tungacea';
   var SPEICHER = 'tungacea-etiketten-entwurf';
 
   var geld;
@@ -52,6 +54,63 @@
     Object.keys(werte).forEach(function (k) { text = text.split('{{ ' + k + ' }}').join(String(werte[k])); });
     return text;
   }
+
+  /* -------------------------------------------------------------- Messen
+     Wie der Generator: Namen in Grossbuchstaben, " x " wird " × ", Platz fuer
+     zwei Zeilen, getrennt wird bevorzugt am letzten " × " ausserhalb von
+     Klammern, sonst an einem Leerzeichen. Schriftbreiten: etikett-schrift.js. */
+  var S = window.TUNGACEA_SCHRIFT || null;
+
+  function vorschub(text, G, em, tr) {
+    var w = 0, fehlt = [];
+    for (var i = 0; i < text.length; i++) {
+      var ch = text.charAt(i), g = G[ch];
+      if (g === undefined) { fehlt.push(ch); w += 0.3 * em + tr; continue; }
+      w += g * em / 1000 + tr;
+    }
+    return { w: Math.max(0, w - tr), fehlt: fehlt };
+  }
+
+  function aufbereiten(roh) {
+    return roh.trim().replace(/\s+/g, ' ').replace(/ x /gi, ' × ').toUpperCase();
+  }
+
+  // -> { leer, zeilen (1|2), zuLang, fehlt: [Zeichen] }
+  function pruefeName(roh) {
+    var name = aufbereiten(roh);
+    if (!name) return { leer: true, zeilen: 0, zuLang: false, fehlt: [] };
+    if (!S) return { leer: false, zeilen: 1, zuLang: false, fehlt: [] };
+    var m = function (t) { return vorschub(t, S.g400, S.em2, S.tr2); };
+    var ganz = m(name);
+    var fehlt = ganz.fehlt.filter(function (c, i, a) { return a.indexOf(c) === i; });
+    if (ganz.w <= S.maxw) return { leer: false, zeilen: 1, zuLang: false, fehlt: fehlt };
+    var tiefe = 0, schnitte = [], i;
+    for (i = 0; i < name.length; i++) {
+      var c = name.charAt(i);
+      if (c === '(') tiefe++;
+      else if (c === ')') tiefe--;
+      else if (c === '×' && tiefe === 0 && i > 0 && name.charAt(i - 1) === ' ' && name.charAt(i + 1) === ' ') schnitte.push(i);
+    }
+    schnitte = schnitte.filter(function (k) { return m(name.slice(0, k).trim()).w <= S.maxw; });
+    if (!schnitte.length) {
+      for (i = 0; i < name.length; i++) {
+        if (name.charAt(i) === ' ' && m(name.slice(0, i)).w <= S.maxw) schnitte.push(i + 1);
+      }
+    }
+    if (!schnitte.length) return { leer: false, zeilen: 1, zuLang: true, fehlt: fehlt };
+    var k = schnitte[schnitte.length - 1];
+    var zweite = name.slice(k).trim();
+    return { leer: false, zeilen: 2, zuLang: m(zweite).w > S.maxw, fehlt: fehlt };
+  }
+
+  function pruefeGattung(roh) {
+    var g = aufbereiten(roh);
+    if (!g || !S) return { zuLang: false, fehlt: [] };
+    var r = vorschub(g, S.g600, S.em1, S.tr1);
+    return { zuLang: r.w > S.maxw, fehlt: r.fehlt.filter(function (c, i, a) { return a.indexOf(c) === i; }) };
+  }
+
+  function istUngueltig(p) { return p.zuLang || p.fehlt.length > 0; }
 
   /* ----------------------------------------------------------- Aufbau */
   function el(tag, klasse, attrs) {
@@ -68,10 +127,14 @@
       enterkeyhint: 'next', placeholder: d.tName, 'aria-label': d.tNameLabel,
     });
     inp.value = wert || '';
+    var hinweis = el('span', 'eb__hinweis', { 'aria-live': 'polite' });
     var weg = el('button', 'eb__weg', { type: 'button', 'aria-label': d.tWeg, tabindex: '-1' });
     weg.innerHTML = '&times;';
     li.appendChild(inp);
+    li.appendChild(hinweis);
     li.appendChild(weg);
+    inp._prev = inp.value;
+    inp._prevValid = true;
     return li;
   }
 
@@ -147,11 +210,31 @@
   function aktualisieren(speichern) {
     var z = zustand();
     var n = 0;
+    var ungueltig = 0;
     var zeilen = [];
     z.forEach(function (g) {
       n += g.namen.length;
       g.namen.forEach(function (name) { zeilen.push((g.gattung ? g.gattung + ' | ' : '') + name); });
       g.el.querySelector('.eb__gruppe-zahl').textContent = g.namen.length ? String(g.namen.length) : '';
+      var pg = pruefeGattung(g.gattung);
+      var gattungFehlt = g.namen.length > 0 && !g.gattung && g.el.classList.contains('hat-fehler');
+      g.el.classList.toggle('hat-fehler', gattungFehlt || istUngueltig(pg));
+      if (istUngueltig(pg)) ungueltig += 1;
+      namenInput(g.el).forEach(function (inp) {
+        var p = pruefeName(inp.value);
+        var li = inp.closest('.eb__zeile');
+        var h = li.querySelector('.eb__hinweis');
+        var text = '', art = '';
+        if (p.fehlt.length) { text = ersetzen(d.tZeichen, { z: p.fehlt.join(' ') }); art = 'fehler'; }
+        else if (p.zuLang) { text = d.tZuLang; art = 'fehler'; }
+        else if (p.zeilen === 2) { text = d.tZweiZeilen; art = 'leise'; }
+        h.textContent = text;
+        h.className = 'eb__hinweis' + (art ? ' eb__hinweis--' + art : '');
+        li.classList.toggle('hat-fehler', art === 'fehler');
+        if (art === 'fehler') ungueltig += 1;
+        inp._prev = inp.value;
+        inp._prevValid = art !== 'fehler';
+      });
       g.el.querySelector('.eb__weg--gruppe').hidden = z.length < 2;
       faltenAnwenden(g.el);
     });
@@ -189,16 +272,17 @@
     tipp.textContent = teile.join(' ');
     tipp.hidden = teile.length === 0;
 
-    if (n > 0 && fehlerBox) fehlerBox.hidden = true;
+    if (n > 0 && ungueltig === 0 && fehlerBox && !fehlerBox.classList.contains('ist-ok')) fehlerBox.hidden = true;
+    anzahlUngueltig = ungueltig;
     if (speichern !== false) entwurfSichern(z);
   }
 
   /* ------------------------------------------------------------- Entwurf */
   function entwurfSichern(z) {
     try {
-      var daten = z.map(function (g) {
+      var daten = { logo: logoWahl, gruppen: z.map(function (g) {
         return { g: g.gattung, n: namenInput(g.el).map(function (i) { return i.value; }) };
-      });
+      }) };
       sessionStorage.setItem(SPEICHER, JSON.stringify(daten));
     } catch (e) {}
   }
@@ -207,7 +291,8 @@
       var roh = sessionStorage.getItem(SPEICHER);
       if (!roh) return null;
       var daten = JSON.parse(roh);
-      if (!Array.isArray(daten) || !daten.length) return null;
+      if (Array.isArray(daten)) daten = { logo: 'tungacea', gruppen: daten }; // alter Entwurf
+      if (!daten || !Array.isArray(daten.gruppen) || !daten.gruppen.length) return null;
       return daten;
     } catch (e) { return null; }
   }
@@ -220,7 +305,27 @@
     return neu;
   }
 
-  gruppenBox.addEventListener('input', function () { aktualisieren(); });
+  // Was nicht aufs Etikett passt, laesst sich nicht tippen: Die Eingabe springt
+  // auf den letzten gueltigen Stand zurueck, und die Zeile sagt kurz warum.
+  gruppenBox.addEventListener('input', function (e) {
+    var inp = e.target;
+    if (inp.classList && inp.classList.contains('eb__name') && !e.isComposing) {
+      var p = pruefeName(inp.value);
+      if (istUngueltig(p) && inp._prevValid && inp.value.length > inp._prev.length) {
+        var pos = Math.max(0, inp.selectionStart - (inp.value.length - inp._prev.length));
+        inp.value = inp._prev;
+        try { inp.setSelectionRange(pos, pos); } catch (x) {}
+        var li = inp.closest('.eb__zeile');
+        var h = li.querySelector('.eb__hinweis');
+        h.textContent = p.fehlt.length ? ersetzen(d.tZeichen, { z: p.fehlt.join(' ') }) : d.tVoll;
+        h.className = 'eb__hinweis eb__hinweis--fehler';
+        clearTimeout(inp._uhr);
+        inp._uhr = setTimeout(function () { aktualisieren(false); }, 1600);
+        return;
+      }
+    }
+    aktualisieren();
+  });
 
   gruppenBox.addEventListener('keydown', function (e) {
     var inp = e.target;
@@ -305,6 +410,33 @@
     aktualisieren();
   });
 
+  /* ---------------------------------------------------------------- Logo */
+  var logoFeld = wurzel.querySelector('[data-eb-logo-feld]');
+  var logoKnoepfe = [].slice.call(wurzel.querySelectorAll('[data-eb-logo]'));
+  var logoHinweis = wurzel.querySelector('[data-eb-logo-hinweis]');
+  var logoWeg = wurzel.querySelector('[data-eb-logo-weg]');
+  var logoText = {
+    tungacea: { wert: d.tLogoTungacea, hinweis: d.tHinweisTungacea },
+    ohne: { wert: d.tLogoOhne, hinweis: d.tHinweisOhne },
+    eigenes: { wert: d.tLogoEigenes, hinweis: d.tHinweisEigenes },
+  };
+  function logoSetzen(wahl) {
+    if (!logoText[wahl]) wahl = 'tungacea';
+    logoWahl = wahl;
+    logoKnoepfe.forEach(function (k) {
+      var an = k.dataset.ebLogo === wahl;
+      k.classList.toggle('ist-aktiv', an);
+      k.setAttribute('aria-checked', String(an));
+    });
+    logoFeld.value = logoText[wahl].wert;
+    logoHinweis.textContent = logoText[wahl].hinweis;
+    if (logoWeg) logoWeg.hidden = wahl !== 'eigenes';
+    entwurfSichern(zustand());
+  }
+  logoKnoepfe.forEach(function (k) {
+    k.addEventListener('click', function () { logoSetzen(k.dataset.ebLogo); });
+  });
+
   /* ------------------------------------------------------------ Warenkorb */
   var wurzelPfad = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
   function korbLesen() {
@@ -343,6 +475,13 @@
         e.preventDefault(); e.stopImmediatePropagation();
         var erste = gruppenBox.querySelector('.eb__name');
         fehler(d.tFehlerNamen, erste);
+        return;
+      }
+      aktualisieren(false);
+      if (anzahlUngueltig > 0) {
+        e.preventDefault(); e.stopImmediatePropagation();
+        var schlecht = gruppenBox.querySelector('.eb__zeile.hat-fehler .eb__name') || gruppenBox.querySelector('.eb__gruppe.hat-fehler .eb__gattung');
+        fehler(ersetzen(d.tFehlerPasst, { n: anzahlUngueltig }), schlecht);
         return;
       }
       var ohne = z.filter(function (g) { return g.namen.length && !g.gattung; })[0];
@@ -392,7 +531,7 @@
   /* ---------------------------------------------------------------- Start */
   var start = entwurfLaden();
   if (start) {
-    start.forEach(function (g) {
+    start.gruppen.forEach(function (g) {
       var gr = gruppe(g.g, g.n);
       if ((g.n || []).length >= ZU_AB) gr.dataset.zu = '1';
       gruppenBox.appendChild(gr);
@@ -400,6 +539,7 @@
   } else {
     gruppenBox.appendChild(gruppe(d.gattung || '', ['']));
   }
+  logoSetzen(start ? start.logo : 'tungacea');
   aktualisieren(false);
   korbAktualisieren();
 })();
