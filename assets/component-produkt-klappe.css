@@ -133,14 +133,61 @@
   margin: 0;
 }
 
-/* Das Etikett (Fakten): Beschriftung klein ueber dem Text, damit man die Zeilen
-   scannen kann. */
-.produkt-klappe--etikett .produkt-klappe__liste strong {
-  display: block;
-  margin-bottom: 0.2rem;
+/* Das Etikett (Fakten): schon zugeklappt ein Satz mit den Staerken darunter,
+   aufgeklappt eine Tabelle wie im Datenblatt (links Stichwort, rechts ein Wert in
+   wenigen Worten). Kein Fliesstext: Wer sucht, findet; wer nicht sucht, liest
+   die Staerken in der Zeile. */
+.produkt-klappe--etikett .produkt-klappe__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.produkt-klappe--etikett .produkt-klappe__sub {
+  font-size: 1.2rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
+}
+
+.etikett-fakten {
+  margin: 0;
+  padding: 0;
+}
+
+.etikett-fakten__zeile {
+  display: grid;
+  grid-template-columns: minmax(8.4rem, 30%) minmax(0, 1fr);
+  gap: 1.6rem;
+  align-items: baseline;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--tungacea-hairline, rgba(236, 226, 204, 0.14));
+}
+
+.etikett-fakten__zeile:first-child {
+  border-top: 0;
+  padding-top: 0.4rem;
+}
+
+.etikett-fakten dt {
+  margin: 0;
   font-size: 1.1rem;
-  font-weight: 400;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
+}
+
+.etikett-fakten dd {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.45;
+  color: #ece2cc;
+}
+
+.etikett-fakten__quelle {
+  margin: 1.2rem 0 0;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  color: rgba(210, 198, 173, 0.6);
 }

@@ -18,10 +18,11 @@ engine.registerFilter('t', function (key) {
 });
 
 const soll = {
-  de: ['Das Etikett', 'Maße', '16 × 120 mm', 'Material', 'Acrylglas, schwarz, mattiert (Frosted Black), 3 mm stark', 'Gravur', 'Namen', 'Platz für zwei Zeilen', 'Haltbarkeit', 'Witterungs-, UV- und wasserfest', 'Laut Hersteller des Acrylglases', 'Fertigung', 'richtet sich nach deiner Anfrage', 'melde ich mich bei dir', '<details', 'produkt-klappe'],
-  en: ['The label', 'Size', 'Material', 'Durability', 'According to the maker of the acrylic glass', 'Production', 'depends on your request', 'I will get in touch'],
+  de: ['Das Etikett', 'Wetterfest · UV-beständig · aus recyceltem Acryl', 'Maße', '16 × 120 mm, 3 mm stark', 'Material', 'Acrylglas, schwarz, beidseitig matt', 'Im Freien', 'UV-, frost- und feuchtigkeitsbeständig', 'Stabilität', 'Stabiler und leichter als Glas', 'Nachhaltig', 'Aus recyceltem Acryl', 'Gravur', 'kein Aufdruck', 'Namen', 'bis zu zwei Zeilen', 'Fertigung', 'Bei Verzug melde ich mich', 'Materialangaben laut Hersteller des Acrylglases', '<details', '<dl class="etikett-fakten">', 'produkt-klappe__sub'],
+  en: ['The label', 'Weatherproof · UV-resistant · made from recycled acrylic', 'Size', 'Outdoors', 'Strength', 'Sustainable', 'Engraving', 'Production', 'according to the maker of the acrylic glass'],
 };
-const verboten = ['Fortlaufend', 'garantiert'];
+// Keine Zahl fuer "wie viel stabiler als Glas": Die Quellen nennen verschiedene Werte.
+const verboten = ['garantiert', '20-mal', '30-mal', '20 Mal', '30 Mal', '20x', '30x'];
 
 (async () => {
   let checks = 0, fails = 0;
@@ -30,8 +31,9 @@ const verboten = ['Fortlaufend', 'garantiert'];
     const html = await engine.renderFile('etikett-details', { block: { shopify_attributes: '' } });
     for (const s of soll[loc]) { checks++; if (!html.includes(s)) { fails++; console.log('FEHLER [' + loc + '] fehlt "' + s + '"'); } }
     for (const v of verboten) { checks++; if (html.includes(v)) { fails++; console.log('FEHLER [' + loc + '] enthaelt "' + v + '"'); } }
-    // Die 20-fach-Angabe steht nur als Herstellerangabe da, nie als eigene Behauptung.
-    checks++; if (/20/.test(html) && !/Hersteller|maker/.test(html)) { fails++; console.log('FEHLER [' + loc + '] 20-fach ohne Herstellerangabe'); }
+    // Genau acht Zeilen, jede mit Stichwort und Wert, und eine Quellenzeile.
+    checks++; if ((html.match(/etikett-fakten__zeile/g) || []).length !== 8) { fails++; console.log('FEHLER [' + loc + '] nicht genau acht Zeilen'); }
+    checks++; if (!/etikett-fakten__quelle/.test(html)) { fails++; console.log('FEHLER [' + loc + '] Quellenzeile fehlt'); }
   }
   console.log('\n' + (checks - fails) + '/' + checks + ' Pruefungen bestanden, ' + fails + ' Fehler.');
   process.exit(fails ? 1 : 0);

@@ -2,14 +2,17 @@
   Tungacea — Das Etikett: Fakten (Seite des Zusatzprodukts "Archiv-Etikett").
 
   Eine zugeklappte Zeile "Das Etikett" im Stil der Zeilen "Versand & Lieferung"
-  und "Hast du Fragen?" (Baustein produkt-klappe). Aufgeklappt stehen die Dinge,
-  die ein Kaeufer vor dem Kauf wissen will: Masse, Material, Gravur, Namen,
-  Haltbarkeit, Fertigung. Die Texte stehen in den Sprachdateien
+  und "Hast du Fragen?" (Baustein produkt-klappe). Schon zugeklappt steht darunter
+  ein Satz mit den Staerken (wetterfest, UV-bestaendig, recycelt). Aufgeklappt
+  keine Absaetze, sondern eine Tabelle: links ein Stichwort, rechts ein Wert in
+  wenigen Worten, wie im Datenblatt. Nur, was ein Kaeufer wirklich wissen will
+  und was den Kauf bestaerkt. Die Texte stehen in den Sprachdateien
   (products.product.etikett_details) und lassen sich im Sprach-Editor aendern.
 
-  Zur Haltbarkeit: Die Angabe "bis zu 20-mal stabiler als Glas" ist eine Angabe
-  des Herstellers des Acrylglases und steht auch so da, nicht als eigene
-  Behauptung.
+  Die Materialangaben (UV, Frost, Feuchtigkeit, Temperatur, stabiler als Glas,
+  recycelt) stammen vom Hersteller des Acrylglases (Datenblatt des Haendlers)
+  und stehen als dessen Angabe da, mit Quellenzeile. Keine Zahl fuer "wie viel
+  stabiler als Glas": Die Quellen nennen verschiedene Werte.
 
   Das Aussehen steht in component-produkt-klappe.css, geladen einmal im Kopf von
   main-product.liquid.
@@ -19,17 +22,47 @@
 {% endcomment %}
 <details class="produkt-klappe produkt-klappe--etikett" {{ block.shopify_attributes }}>
   <summary class="produkt-klappe__toggle">
-    <span class="produkt-klappe__titel">{{ 'products.product.etikett_details.title' | t }}</span>
+    <span class="produkt-klappe__text">
+      <span class="produkt-klappe__titel">{{ 'products.product.etikett_details.title' | t }}</span>
+      <span class="produkt-klappe__sub">{{ 'products.product.etikett_details.subtitle' | t }}</span>
+    </span>
     <span class="produkt-klappe__indikator" aria-hidden="true"></span>
   </summary>
   <div class="produkt-klappe__inhalt">
-    <ul class="produkt-klappe__liste list-unstyled" role="list">
-      <li><strong>{{ 'products.product.etikett_details.size_label' | t }}</strong> {{ 'products.product.etikett_details.size_text' | t }}</li>
-      <li><strong>{{ 'products.product.etikett_details.material_label' | t }}</strong> {{ 'products.product.etikett_details.material_text' | t }}</li>
-      <li><strong>{{ 'products.product.etikett_details.engraving_label' | t }}</strong> {{ 'products.product.etikett_details.engraving_text' | t }}</li>
-      <li><strong>{{ 'products.product.etikett_details.names_label' | t }}</strong> {{ 'products.product.etikett_details.names_text' | t }}</li>
-      <li><strong>{{ 'products.product.etikett_details.durability_label' | t }}</strong> {{ 'products.product.etikett_details.durability_text' | t }}</li>
-      <li><strong>{{ 'products.product.etikett_details.production_label' | t }}</strong> {{ 'products.product.etikett_details.production_text' | t }}</li>
-    </ul>
+    <dl class="etikett-fakten">
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_details.size_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_details.size_value' | t }}</dd>
+      </div>
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_details.material_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_details.material_value' | t }}</dd>
+      </div>
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_details.outdoor_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_details.outdoor_value' | t }}</dd>
+      </div>
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_details.strength_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_details.strength_value' | t }}</dd>
+      </div>
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_details.recycled_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_details.recycled_value' | t }}</dd>
+      </div>
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_details.engraving_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_details.engraving_value' | t }}</dd>
+      </div>
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_details.names_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_details.names_value' | t }}</dd>
+      </div>
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_details.production_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_details.production_value' | t }}</dd>
+      </div>
+    </dl>
+    <p class="etikett-fakten__quelle">{{ 'products.product.etikett_details.source' | t }}</p>
   </div>
 </details>
