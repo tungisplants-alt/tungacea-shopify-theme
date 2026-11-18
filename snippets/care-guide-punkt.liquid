@@ -1,0 +1,38 @@
+{% comment %}
+  Tungacea — ein aufklappbarer Punkt unter Ankunft, Substrat oder Probleme.
+
+  Zu Beginn steht nur die Überschrift. Aufgeklappt stehen entweder die Zeilen
+  "Das siehst du", "Mögliche Ursache" und "Das tue ich" (Probleme), oder der
+  freie Text (Ankunft, Substrat und alte Einträge). Solange eine der drei
+  Zeilen gefüllt ist, erscheint der freie Text nicht.
+
+  Annahmen:
+  - b: {Object} der Block `punkt` (Pflicht)
+{% endcomment %}
+{%- liquid
+  assign p_erkennen = b.settings.erkennen | default: '' | strip
+  assign p_ursache = b.settings.ursache | default: '' | strip
+  assign p_massnahme = b.settings.massnahme | default: '' | strip
+  assign p_hat_zeilen = false
+  if p_erkennen != blank or p_ursache != blank or p_massnahme != blank
+    assign p_hat_zeilen = true
+  endif
+-%}
+<details class="care-guide__klappe" {{ b.shopify_attributes }}>
+  <summary class="care-guide__klappe-kopf">
+    <span class="care-guide__klappe-titel">{{ b.settings.titel | escape }}</span>
+    <span class="care-guide__klappe-zeichen" aria-hidden="true"></span>
+  </summary>
+  {%- if p_hat_zeilen -%}
+    <div class="care-guide__klappe-inhalt care-guide__klappe-inhalt--zeilen">
+      {%- assign l_see = 'care_guide.problem_see' | t -%}
+      {%- assign l_cause = 'care_guide.problem_cause' | t -%}
+      {%- assign l_do = 'care_guide.problem_do' | t -%}
+      {%- render 'care-guide-zeile', label: l_see, text: p_erkennen -%}
+      {%- render 'care-guide-zeile', label: l_cause, text: p_ursache -%}
+      {%- render 'care-guide-zeile', label: l_do, text: p_massnahme, art: 'tipp' -%}
+    </div>
+  {%- else -%}
+    <div class="care-guide__klappe-inhalt care-guide__text rte">{{ b.settings.text }}</div>
+  {%- endif -%}
+</details>

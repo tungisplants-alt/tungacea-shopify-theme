@@ -73,7 +73,7 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   // Oben zuerst die Frage nach dem Stadium: vor Inhaltsverzeichnis, Kapiteln und Disclaimer.
   pruefe('"Welches Stadium hast du?" steht vor allem anderen Inhalt', leer.indexOf('Welches Stadium hast du?') > 0 && leer.indexOf('Welches Stadium hast du?') < leer.indexOf('care-guide__disclaimer') && !/care-guide__chapter-eyebrow/.test(leer), true);
   pruefe('Stufen 01 bis 05 auf der Tafel, der Steckling ohne Nummer', ['01', '02', '03', '04', '05'].every((n) => leer.includes('care-guide__eintrag-stufe">' + n)) && !/care-guide__eintrag-stufe">06/.test(leer), true);
-  pruefe('keine Fotos und keine Karten', /<img|care-guide__karte/.test(leer), false);
+  pruefe('keine Fotos und keine Foto-Karten', /<img|care-guide__foto/.test(leer), false);
   pruefe('Felder fuehren zu den Stadien (Anker)', ['steckling', 'etabliert', 'jungpflanze', 'saemling', 'samen', 'mutterpflanze'].every((st) => leer.includes('href="#stadium-' + st + '"') && leer.includes('id="stadium-' + st + '"')), true);
   pruefe('Tafel folgt der Pflanze: Samen, Saemling, Jungpflanze, Etabliert, Mutterpflanze', ['#stadium-samen', '#stadium-saemling', '#stadium-jungpflanze', '#stadium-etabliert', '#stadium-mutterpflanze'].map((w) => leer.indexOf('href="' + w + '"')).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
   const ohneSteckling = await rendere(['etabliert', 'mutterpflanze'].map((st) => block('stadium', { stadium: st })));
@@ -137,8 +137,8 @@ const zaehle = (h, re) => (h.match(re) || []).length;
   pruefe('Einheit EC in mS/cm', /EC 0,6–0,8 mS\/cm/.test(voll), true);
   pruefe('Stadium mit nur einem Wert zeigt nur diese Zahl', /VPD 0,6 kPa/.test(voll) && zaehle(voll, /care-guide__figures/g) === 2, true);
   pruefe('ausfuehrlicher Text und Ein-Satz-Zeile', /Ausfuehrlich\./.test(voll) && /Ein Satz\./.test(voll), true);
-  pruefe('Basis und Zusatz als Marke', />Basis</.test(voll) && />Zusatz</.test(voll), true);
-  pruefe('Naehrstoff ohne Zweck und Dosierung zeigt nur den Namen', /Zusatz B/.test(voll) && zaehle(voll, /care-guide__dose/g) === 1, true);
+  pruefe('Basis und Zusätze stehen unter eigenen Zwischenüberschriften', /<h3 class="care-guide__gruppe">Basis<\/h3>/.test(voll) && /<h3 class="care-guide__gruppe">Zusätze<\/h3>/.test(voll) && voll.indexOf('>Basis<') < voll.indexOf('>Zusätze<'), true);
+  pruefe('Naehrstoff ohne Dosierung hat keine Dosierungs-Zeile', /Zusatz B/.test(voll) && zaehle(voll, /care-guide__zeile--tipp/g) === 1, true);
   pruefe('pH-Kachel da, EC-Kachel fehlt (leer)', /<small>pH<\/small><b>5,8<\/b>/.test(voll) && !/<small>EC<\/small>/.test(voll), true);
   pruefe('Wasserzeile mit Werten, leere Zeile nicht', /pH 5,8 · EC 0,6/.test(voll) && zaehle(voll, /class="care-guide__fact"/g) === 2, true);
   pruefe('Inhaltsverzeichnis: drei Links', zaehle(voll, /care-guide__nav-link/g), 3);
@@ -190,7 +190,8 @@ const zaehle = (h, re) => (h.match(re) || []).length;
     ]);
     const kopfA = (mitPunkten.slice(mitPunkten.indexOf('id="naehrstoffe"')).match(/<summary class="care-guide__klappe-kopf">([\s\S]*?)<\/summary>/) || [])[1] || '';
     pruefe('Nährstoffe: aufklappbar, zu Beginn nur der Name in der Zeile', /Dünger A/.test(kopfA) && !/Wachstum|1 ml/.test(kopfA), true);
-    pruefe('Nährstoffe: Funktion, Grund und Dosierung stehen im aufklappbaren Teil, mit Beschriftung', /care-guide__klappe-inhalt">\s*<p class="care-guide__etikett">Funktion<\/p>\s*<p>Wachstum<\/p>\s*<p class="care-guide__etikett">Warum ich es nutze<\/p>\s*<p>Weil dunkle Blätter<\/p>\s*<p class="care-guide__etikett">Dosierung<\/p>\s*<p class="care-guide__dose">1 ml\/l<\/p>/.test(mitPunkten), true);
+    const innenA = (mitPunkten.slice(mitPunkten.indexOf('id="naehrstoffe"')).match(/care-guide__klappe-inhalt care-guide__klappe-inhalt--zeilen">([\s\S]*?)<\/details>/) || [])[1] || '';
+    pruefe('Nährstoffe: im aufklappbaren Teil zuerst die Dosierung, dann Funktion und Grund, je mit Beschriftung', /Dosierung[\s\S]*1 ml\/l[\s\S]*Funktion[\s\S]*Wachstum[\s\S]*Warum ich es nutze[\s\S]*Weil dunkle Blätter/.test(innenA), true);
     const ohneGrund = await rendere([block('stadium', { stadium: 'steckling' }), block('naehrstoff', { name: 'Dünger', art: 'basis', zweck: 'Wachstum' })]);
     pruefe('Ohne Grund fehlt die Zeile "Warum ich es nutze"', /Warum ich es nutze/.test(ohneGrund), false);
     const nurGrund = await rendere([block('stadium', { stadium: 'steckling' }), block('naehrstoff', { name: 'Dünger', art: 'basis', grund: 'Nur ein Grund' })]);
@@ -214,6 +215,63 @@ const zaehle = (h, re) => (h.match(re) || []).length;
     pruefe('Start kompakt: kein Stadium und kein Kapitel vorgewählt', /this\.waehlen\(null, false\)/.test(js) && /this\.kapitelWaehlen\(null, false\)/.test(js) && !/vorhanden\('steckling'\)/.test(js), true);
     pruefe('Zweiter Tipp auf dasselbe Stadium oder Kapitel schließt es', (js.match(/schliessen \? null/g) || []).length === 2, true);
     pruefe('Überschrift des offenen Stadiums schließt es', /klappe\.addEventListener\('click'[\s\S]*?this\.waehlen\(null, false\)/.test(js), true);
+  }
+  // ---- Umbau: Stadium als Karte, Nährstoffe in Gruppen, Probleme mit Zeilen, Begriffe ----
+  {
+    const stadium = await rendere([block('stadium', { stadium: 'jungpflanze', kurz: 'Kurz.', vpd: '0,3', aufstellung: 'Im Kindergarten.', giessen: '16 Stunden.', fehler: 'Überdüngung.', tipp: 'Konstant bleiben.', text: '<p>ALTER TEXT</p>' })]);
+    const ord = ['Aufstellung', 'Licht und Gießen', 'Häufigster Fehler', 'Mein Tipp'].map((w) => stadium.indexOf('>' + w + '<'));
+    pruefe('Stadium als Karte: Zeilen in fester Reihenfolge (Aufstellung, Gießen, Fehler, Tipp)', ord.every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
+    pruefe('Stadium: leere Zeilen (Umtopfen, Dünger, Gut zu wissen) fehlen', !/>Umtopfen<|>Dünger<|>Gut zu wissen</.test(stadium.slice(0, stadium.indexOf('care-guide-terms'))), true);
+    pruefe('Stadium: Fehler und Tipp sind hervorgehoben', /care-guide__zeile--fehler/.test(stadium) && /care-guide__zeile--tipp/.test(stadium), true);
+    pruefe('Stadium mit Zeilen: alter Text erscheint nicht', /ALTER TEXT/.test(stadium), false);
+    const alt = await rendere([block('stadium', { stadium: 'jungpflanze', text: '<p>ALTER TEXT</p>' })]);
+    pruefe('Stadium ohne Zeilen: alter Text erscheint weiter', /ALTER TEXT/.test(alt) && !/care-guide__zeilen-label/.test(alt.slice(0, alt.indexOf('care-guide-terms'))), true);
+    const maske = await rendere([block('stadium', { stadium: 'jungpflanze', tipp: 'A & B <b>' })]);
+    pruefe('Stadium-Zeilen werden maskiert', /A &amp; B &lt;b&gt;/.test(maske) && !/<b>/.test(maske.slice(0, maske.indexOf('care-guide-terms'))), true);
+    // Begriffe
+    pruefe('Begriffe: Zeile "Was bedeuten VPD, PPFD und EC?" unter den Stadien, mit vier Erklärungen', /care-guide-terms/.test(stadium) && /Was bedeuten VPD, PPFD und EC\?/.test(stadium) && ['VPD', 'PPFD', 'EC', 'Kataphyll'].every((w) => stadium.includes('care-guide__zeilen-label">' + w + '<')), true);
+    pruefe('Begriffe stehen vor den Themen und nur mit Stadien', stadium.indexOf('care-guide-terms') > stadium.indexOf('id="stadien"') && !/care-guide-terms/.test(await rendere([block('bedingung', { name: 'a', wert: 'b' })])), true);
+    locale = 'en';
+    const stadiumEn = await rendere([block('stadium', { stadium: 'jungpflanze', tipp: 'Stay steady.' })], {}, 'en');
+    pruefe('Begriffe auf Englisch', /What do VPD, PPFD and EC mean\?/.test(stadiumEn) && /Vapour pressure deficit/.test(stadiumEn) && /care-guide__zeilen-label">My tip</.test(stadiumEn), true);
+    locale = 'de';
+    // Nährstoffe: wann, nur eine Gruppe ohne Überschrift
+    const nurBasis = await rendere([block('stadium', { stadium: 'steckling' }), block('naehrstoff', { name: 'Excel', art: 'basis', zweck: 'x', wann: 'Ab Wurzeln' })]);
+    pruefe('Nährstoffe: "wann" steht in der zugeklappten Zeile', /care-guide__klappe-wann">Ab Wurzeln</.test(nurBasis), true);
+    pruefe('Nährstoffe: nur eine Gruppe, keine Zwischenüberschrift', /care-guide__gruppe/.test(nurBasis), false);
+    const ohneWann = await rendere([block('stadium', { stadium: 'steckling' }), block('naehrstoff', { name: 'Excel', art: 'basis', zweck: 'x' })]);
+    pruefe('Nährstoffe: ohne "wann" keine Unterzeile', /care-guide__klappe-wann/.test(ohneWann), false);
+    // Probleme: Zeilen und Gruppen
+    const probleme = await rendere([
+      block('stadium', { stadium: 'steckling' }),
+      block('punkt', { thema: 'probleme', gruppe: 'schaedlinge', titel: 'Thripse', erkennen: 'Verformt.', massnahme: 'Trennen.' }),
+      block('punkt', { thema: 'probleme', gruppe: 'blaetter', titel: 'Gelbe Blätter', erkennen: 'Älter gelb.', ursache: 'Zu nass.', massnahme: 'Abtrocknen.' }),
+      block('punkt', { thema: 'probleme', gruppe: 'keine', titel: 'Alter Punkt', text: '<p>ALTER PUNKT-TEXT</p>' }),
+    ]);
+    const sp = probleme.slice(probleme.indexOf('id="probleme"'));
+    pruefe('Probleme: Gruppen in fester Reihenfolge (Blätter vor Schädlingen), Punkt ohne Gruppe am Ende', sp.indexOf('>Blätter</h3>') > 0 && sp.indexOf('>Blätter</h3>') < sp.indexOf('>Schädlinge und Pilz</h3>') && sp.indexOf('Thripse') < sp.indexOf('Alter Punkt'), true);
+    pruefe('Probleme: Zeilen "Das siehst du", "Mögliche Ursache", "Das tue ich"', ['Das siehst du', 'Mögliche Ursache', 'Das tue ich'].every((w) => sp.includes('care-guide__zeilen-label">' + w + '<')), true);
+    pruefe('Probleme: leere Zeile fehlt (Thripse ohne Ursache)', zaehle(sp, /Mögliche Ursache/g), 1);
+    pruefe('Probleme: alter Text erscheint weiter, wenn keine Zeilen gefüllt sind', /ALTER PUNKT-TEXT/.test(sp), true);
+    const ohneGruppe = await rendere([block('stadium', { stadium: 'steckling' }), block('punkt', { thema: 'probleme', titel: 'Eins', text: '<p>a</p>' }), block('punkt', { thema: 'probleme', titel: 'Zwei', text: '<p>b</p>' })]);
+    pruefe('Probleme ohne Gruppen: keine Zwischenüberschriften, beide Punkte da', !/care-guide__gruppe/.test(ohneGruppe) && /Eins/.test(ohneGruppe) && /Zwei/.test(ohneGruppe), true);
+    const nurZeilen = await rendere([block('stadium', { stadium: 'steckling' }), block('punkt', { thema: 'probleme', titel: 'Nur Zeilen', massnahme: 'Tun.' })]);
+    pruefe('Probleme: ein Punkt nur mit Zeilen (ohne Text) erscheint und öffnet das Kapitel', /id="probleme"/.test(nurZeilen) && /Nur Zeilen/.test(nurZeilen), true);
+  }
+  // Das echte Template ist gefüllt: jedes Stadium hat Zeilen, jedes Problem eine Massnahme
+  {
+    const roh = fs.readFileSync(path.join(THEME, 'templates/page.pflegeguide.json'), 'utf8');
+    const t = JSON.parse(roh);
+    const bl = t.sections.main.blocks;
+    const stadien = Object.values(bl).filter((b) => b.type === 'stadium');
+    pruefe('Template: alle sechs Stadien haben Zeilen und keinen alten Text mehr', stadien.length === 6 && stadien.every((b) => b.settings.aufstellung && b.settings.tipp && !b.settings.text), true);
+    const probl = Object.values(bl).filter((b) => b.type === 'punkt' && b.settings.thema === 'probleme');
+    pruefe('Template: zehn Probleme, jedes mit Gruppe und Maßnahme', probl.length === 10 && probl.every((b) => ['blaetter', 'wurzeln', 'schaedlinge'].includes(b.settings.gruppe) && b.settings.massnahme && !b.settings.text), true);
+    const naehr = Object.values(bl).filter((b) => b.type === 'naehrstoff');
+    pruefe('Template: neun Nährstoffe, jeder mit "wann"', naehr.length === 9 && naehr.every((b) => b.settings.wann), true);
+    const schema = JSON.parse(fs.readFileSync(path.join(THEME, 'sections/main-care-guide.liquid'), 'utf8').match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/)[1]);
+    const ids = (typ) => schema.blocks.find((b) => b.type === typ).settings.map((x) => x.id).filter(Boolean);
+    pruefe('Template: nur Einstellungen, die das Schema kennt', Object.values(bl).every((b) => Object.keys(b.settings).every((k) => ids(b.type).includes(k))), true);
   }
   console.log(fehler + ' Fehler in ' + geprueft + ' Pruefungen');
   process.exit(fehler ? 1 : 0);

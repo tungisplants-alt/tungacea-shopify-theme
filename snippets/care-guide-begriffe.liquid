@@ -1,0 +1,32 @@
+{% comment %}
+  Tungacea — Begriffe im Pflegeguide: Was bedeuten VPD, PPFD, EC und
+  Kataphyll? Eine zugeklappte Zeile in einer Karte unter den Stadien, damit
+  Einsteiger die Kennzahlen lesen können, ohne zu suchen. Die Erklärungen
+  stehen in den Sprachdateien (care_guide.terms_*), Deutsch und Englisch
+  getrennt.
+{% endcomment %}
+<div class="care-guide__begriffe" data-testid="care-guide-terms">
+  <h3 class="care-guide__kopf">{{ 'care_guide.terms_heading' | t }}</h3>
+  <div class="care-guide__karte">
+    <details class="care-guide__klappe care-guide__klappe--in-karte">
+      <summary class="care-guide__klappe-kopf">
+        <span class="care-guide__klappe-titel">{{ 'care_guide.terms_question' | t }}</span>
+        <span class="care-guide__klappe-zeichen" aria-hidden="true"></span>
+      </summary>
+      <div class="care-guide__klappe-inhalt care-guide__klappe-inhalt--zeilen">
+        {%- assign n_vpd = 'care_guide.terms_vpd_name' | t -%}
+        {%- assign n_ppfd = 'care_guide.terms_ppfd_name' | t -%}
+        {%- assign n_ec = 'care_guide.terms_ec_name' | t -%}
+        {%- assign n_kata = 'care_guide.terms_kataphyll_name' | t -%}
+        {%- assign t_vpd = 'care_guide.terms_vpd' | t -%}
+        {%- assign t_ppfd = 'care_guide.terms_ppfd' | t -%}
+        {%- assign t_ec = 'care_guide.terms_ec' | t -%}
+        {%- assign t_kata = 'care_guide.terms_kataphyll' | t -%}
+        {%- render 'care-guide-zeile', label: n_vpd, text: t_vpd -%}
+        {%- render 'care-guide-zeile', label: n_ppfd, text: t_ppfd -%}
+        {%- render 'care-guide-zeile', label: n_ec, text: t_ec -%}
+        {%- render 'care-guide-zeile', label: n_kata, text: t_kata -%}
+      </div>
+    </details>
+  </div>
+</div>

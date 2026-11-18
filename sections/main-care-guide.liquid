@@ -86,7 +86,11 @@
           assign hat_wasser = true
         endif
       when 'punkt'
-        if block.settings.titel != blank and block.settings.text != blank
+        assign punkt_hat_inhalt = false
+        if block.settings.text != blank or block.settings.erkennen != blank or block.settings.ursache != blank or block.settings.massnahme != blank
+          assign punkt_hat_inhalt = true
+        endif
+        if block.settings.titel != blank and punkt_hat_inhalt
           case block.settings.thema
             when 'ankunft'
               assign hat_ankunft = true
@@ -235,8 +239,19 @@
                 assign peek_teil = 'care_guide.value_ec' | t: wert: ec
                 assign peek = peek | append: peek_teil
               endif
+              assign z_aufstellung = block.settings.aufstellung | default: '' | strip
+              assign z_giessen = block.settings.giessen | default: '' | strip
+              assign z_umtopfen = block.settings.umtopfen | default: '' | strip
+              assign z_naehrstoffe = block.settings.naehrstoffe | default: '' | strip
+              assign z_sonst = block.settings.sonst | default: '' | strip
+              assign z_fehler = block.settings.fehler | default: '' | strip
+              assign z_tipp = block.settings.tipp | default: '' | strip
+              assign hat_zeilen = false
+              if z_aufstellung != blank or z_giessen != blank or z_umtopfen != blank or z_naehrstoffe != blank or z_sonst != blank or z_fehler != blank or z_tipp != blank
+                assign hat_zeilen = true
+              endif
               assign hat_inhalt = false
-              if kurz != blank or vpd != blank or ppfd != blank or temperatur != blank or ec != blank or block.settings.text != blank
+              if kurz != blank or vpd != blank or ppfd != blank or temperatur != blank or ec != blank or block.settings.text != blank or hat_zeilen
                 assign hat_inhalt = true
               endif
             -%}
@@ -252,28 +267,47 @@
               </summary>
               <div class="care-guide__stage-body">
                 {%- if hat_inhalt -%}
-                  {%- if kurz != blank -%}
-                    <p class="care-guide__short">{{ kurz | escape }}</p>
-                  {%- endif -%}
-                  {%- if vpd != blank or ppfd != blank or temperatur != blank or ec != blank -%}
-                    <dl class="care-guide__figures">
-                      {%- if vpd != blank -%}
-                        <div><dt>{{ 'care_guide.figure_humidity' | t }}</dt><dd>{{ 'care_guide.value_vpd' | t: wert: vpd | escape }}</dd></div>
-                      {%- endif -%}
-                      {%- if ppfd != blank -%}
-                        <div><dt>{{ 'care_guide.figure_light' | t }}</dt><dd>{{ 'care_guide.value_ppfd' | t: wert: ppfd | escape }}</dd></div>
-                      {%- endif -%}
-                      {%- if temperatur != blank -%}
-                        <div><dt>{{ 'care_guide.figure_temperature' | t }}</dt><dd>{{ 'care_guide.value_temperature' | t: wert: temperatur | escape }}</dd></div>
-                      {%- endif -%}
-                      {%- if ec != blank -%}
-                        <div><dt>{{ 'care_guide.figure_fertilizer' | t }}</dt><dd>{{ 'care_guide.value_ec' | t: wert: ec | escape }}</dd></div>
-                      {%- endif -%}
-                    </dl>
-                  {%- endif -%}
-                  {%- if block.settings.text != blank -%}
-                    <div class="care-guide__text rte">{{ block.settings.text }}</div>
-                  {%- endif -%}
+                  <div class="care-guide__karte">
+                    {%- if kurz != blank -%}
+                      <p class="care-guide__short">{{ kurz | escape }}</p>
+                    {%- endif -%}
+                    {%- if vpd != blank or ppfd != blank or temperatur != blank or ec != blank -%}
+                      <dl class="care-guide__figures">
+                        {%- if vpd != blank -%}
+                          <div><dt>{{ 'care_guide.figure_humidity' | t }}</dt><dd>{{ 'care_guide.value_vpd' | t: wert: vpd | escape }}</dd></div>
+                        {%- endif -%}
+                        {%- if ppfd != blank -%}
+                          <div><dt>{{ 'care_guide.figure_light' | t }}</dt><dd>{{ 'care_guide.value_ppfd' | t: wert: ppfd | escape }}</dd></div>
+                        {%- endif -%}
+                        {%- if temperatur != blank -%}
+                          <div><dt>{{ 'care_guide.figure_temperature' | t }}</dt><dd>{{ 'care_guide.value_temperature' | t: wert: temperatur | escape }}</dd></div>
+                        {%- endif -%}
+                        {%- if ec != blank -%}
+                          <div><dt>{{ 'care_guide.figure_fertilizer' | t }}</dt><dd>{{ 'care_guide.value_ec' | t: wert: ec | escape }}</dd></div>
+                        {%- endif -%}
+                      </dl>
+                    {%- endif -%}
+                    {%- if hat_zeilen -%}
+                      {%- liquid
+                        assign l_setup = 'care_guide.row_setup' | t
+                        assign l_water = 'care_guide.row_water' | t
+                        assign l_repot = 'care_guide.row_repot' | t
+                        assign l_feed = 'care_guide.row_feed' | t
+                        assign l_more = 'care_guide.row_more' | t
+                        assign l_mistake = 'care_guide.row_mistake' | t
+                        assign l_tip = 'care_guide.row_tip' | t
+                      -%}
+                      {%- render 'care-guide-zeile', label: l_setup, text: z_aufstellung -%}
+                      {%- render 'care-guide-zeile', label: l_water, text: z_giessen -%}
+                      {%- render 'care-guide-zeile', label: l_repot, text: z_umtopfen -%}
+                      {%- render 'care-guide-zeile', label: l_feed, text: z_naehrstoffe -%}
+                      {%- render 'care-guide-zeile', label: l_more, text: z_sonst -%}
+                      {%- render 'care-guide-zeile', label: l_mistake, text: z_fehler, art: 'fehler' -%}
+                      {%- render 'care-guide-zeile', label: l_tip, text: z_tipp, art: 'tipp' -%}
+                    {%- elsif block.settings.text != blank -%}
+                      <div class="care-guide__text care-guide__zeile rte">{{ block.settings.text }}</div>
+                    {%- endif -%}
+                  </div>
                 {%- else -%}
                   <p class="care-guide__empty">{{ 'care_guide.empty' | t }}</p>
                 {%- endif -%}
@@ -281,6 +315,7 @@
             </details>
           {%- endif -%}
         {%- endfor -%}
+        {%- render 'care-guide-begriffe' -%}
       </section>
     {%- endif -%}
 
@@ -329,47 +364,68 @@
       <section class="care-guide__chapter" id="naehrstoffe" data-testid="care-guide-nutrients">
         <h2 class="care-guide__title">{{ kapitel_naehrstoffe }}</h2>
         <p class="care-guide__chapter-lead">{{ lead_naehrstoffe }}</p>
-        <ul class="care-guide__klappen" role="list">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'naehrstoff' and block.settings.name != blank -%}
-              <li {{ block.shopify_attributes }}>
-                {%- if block.settings.zweck != blank or block.settings.grund != blank or block.settings.dosierung != blank -%}
-                  <details class="care-guide__klappe">
-                    <summary class="care-guide__klappe-kopf">
-                      <span class="care-guide__klappe-titel">{{ block.settings.name | escape }}</span>
-                      <span class="care-guide__klappe-zeichen" aria-hidden="true"></span>
-                    </summary>
-                    <div class="care-guide__klappe-inhalt">
-                      {%- if block.settings.zweck != blank -%}
-                        <p class="care-guide__etikett">{{ 'care_guide.label_function' | t }}</p>
-                        <p>{{ block.settings.zweck | escape }}</p>
-                      {%- endif -%}
-                      {%- if block.settings.grund != blank -%}
-                        <p class="care-guide__etikett">{{ 'care_guide.label_reason' | t }}</p>
-                        <p>{{ block.settings.grund | escape }}</p>
-                      {%- endif -%}
-                      {%- if block.settings.dosierung != blank -%}
-                        <p class="care-guide__etikett">{{ 'care_guide.label_dose' | t }}</p>
-                        <p class="care-guide__dose">{{ block.settings.dosierung | escape }}</p>
-                      {%- endif -%}
-                      <span class="care-guide__chip">
-                        {%- if block.settings.art == 'zusatz' -%}
-                          {{ 'care_guide.type_addition' | t }}
-                        {%- else -%}
-                          {{ 'care_guide.type_basis' | t }}
-                        {%- endif -%}
-                      </span>
-                    </div>
-                  </details>
-                {%- else -%}
-                  <div class="care-guide__klappe care-guide__klappe--einfach">
-                    <span class="care-guide__klappe-titel">{{ block.settings.name | escape }}</span>
-                  </div>
-                {%- endif -%}
-              </li>
+        {%- liquid
+          assign hat_basis = false
+          assign hat_zusatz = false
+          for block in section.blocks
+            if block.type == 'naehrstoff' and block.settings.name != blank
+              if block.settings.art == 'zusatz'
+                assign hat_zusatz = true
+              else
+                assign hat_basis = true
+              endif
+            endif
+          endfor
+          assign gruppen_naehr = 'basis,zusatz' | split: ','
+        -%}
+        {%- for gruppe in gruppen_naehr -%}
+          {%- assign gruppe_da = false -%}
+          {%- if gruppe == 'basis' and hat_basis -%}{%- assign gruppe_da = true -%}{%- endif -%}
+          {%- if gruppe == 'zusatz' and hat_zusatz -%}{%- assign gruppe_da = true -%}{%- endif -%}
+          {%- if gruppe_da -%}
+            {%- if hat_basis and hat_zusatz -%}
+              <h3 class="care-guide__gruppe">
+                {%- if gruppe == 'basis' -%}{{ 'care_guide.group_basis' | t }}{%- else -%}{{ 'care_guide.group_addition' | t }}{%- endif -%}
+              </h3>
             {%- endif -%}
-          {%- endfor -%}
-        </ul>
+            <ul class="care-guide__klappen" role="list">
+              {%- for block in section.blocks -%}
+                {%- assign block_gruppe = 'basis' -%}
+                {%- if block.settings.art == 'zusatz' -%}{%- assign block_gruppe = 'zusatz' -%}{%- endif -%}
+                {%- if block.type == 'naehrstoff' and block.settings.name != blank and block_gruppe == gruppe -%}
+                  <li {{ block.shopify_attributes }}>
+                    {%- assign wann = block.settings.wann | default: '' | strip -%}
+                    {%- if block.settings.zweck != blank or block.settings.grund != blank or block.settings.dosierung != blank -%}
+                      <details class="care-guide__klappe">
+                        <summary class="care-guide__klappe-kopf">
+                          <span class="care-guide__klappe-name">
+                            <span class="care-guide__klappe-titel">{{ block.settings.name | escape }}</span>
+                            {%- if wann != blank -%}
+                              <span class="care-guide__klappe-wann">{{ wann | escape }}</span>
+                            {%- endif -%}
+                          </span>
+                          <span class="care-guide__klappe-zeichen" aria-hidden="true"></span>
+                        </summary>
+                        <div class="care-guide__klappe-inhalt care-guide__klappe-inhalt--zeilen">
+                          {%- assign l_dose = 'care_guide.label_dose' | t -%}
+                          {%- assign l_funktion = 'care_guide.label_function' | t -%}
+                          {%- assign l_grund = 'care_guide.label_reason' | t -%}
+                          {%- render 'care-guide-zeile', label: l_dose, text: block.settings.dosierung, art: 'tipp' -%}
+                          {%- render 'care-guide-zeile', label: l_funktion, text: block.settings.zweck -%}
+                          {%- render 'care-guide-zeile', label: l_grund, text: block.settings.grund -%}
+                        </div>
+                      </details>
+                    {%- else -%}
+                      <div class="care-guide__klappe care-guide__klappe--einfach">
+                        <span class="care-guide__klappe-titel">{{ block.settings.name | escape }}</span>
+                      </div>
+                    {%- endif -%}
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        {%- endfor -%}
       </section>
     {%- endif -%}
 
@@ -525,7 +581,15 @@
         { "type": "text", "id": "ppfd", "label": "Licht: PPFD in µmol/m²/s", "info": "Nur die Zahl oder ein Bereich, zum Beispiel 150–250." },
         { "type": "text", "id": "temperatur", "label": "Temperatur in °C", "info": "Nur die Zahl oder ein Bereich, zum Beispiel 22–26." },
         { "type": "text", "id": "ec", "label": "Dünger: EC in mS/cm", "info": "Nur die Zahl oder ein Bereich, zum Beispiel 0,6–0,8." },
-        { "type": "richtext", "id": "text", "label": "Ausführlicher Text" }
+        { "type": "header", "content": "Zeilen der Karte" },
+        { "type": "textarea", "id": "aufstellung", "label": "Aufstellung", "info": "Wo und wie steht sie bei dir? Leere Zeilen werden ausgeblendet." },
+        { "type": "textarea", "id": "giessen", "label": "Licht und Gießen" },
+        { "type": "textarea", "id": "umtopfen", "label": "Umtopfen" },
+        { "type": "textarea", "id": "naehrstoffe", "label": "Dünger" },
+        { "type": "textarea", "id": "sonst", "label": "Gut zu wissen" },
+        { "type": "textarea", "id": "fehler", "label": "Häufigster Fehler" },
+        { "type": "textarea", "id": "tipp", "label": "Mein Tipp" },
+        { "type": "richtext", "id": "text", "label": "Ausführlicher Text", "info": "Nur für alte Einträge. Solange eine der Zeilen oben gefüllt ist, erscheint dieser Text nicht." }
       ]
     },
     {
@@ -543,6 +607,7 @@
           ],
           "default": "basis"
         },
+        { "type": "text", "id": "wann", "label": "Wann (kurz)", "info": "Steht in der zugeklappten Zeile, zum Beispiel „nur Mutterpflanzen“ oder „Woche 1–2 nach Ankunft“. Leer lassen: Die Zeile fehlt." },
         { "type": "textarea", "id": "zweck", "label": "Funktion", "info": "Was macht das Mittel? Steht beim Aufklappen unter „Funktion“." },
         { "type": "textarea", "id": "grund", "label": "Warum ich es nutze", "info": "Dein Grund. Steht beim Aufklappen unter „Warum ich es nutze“. Leer lassen: Dann fehlt die Zeile." },
         { "type": "textarea", "id": "dosierung", "label": "Dosierung und wann" }
@@ -585,8 +650,24 @@
           ],
           "default": "probleme"
         },
+        {
+          "type": "select",
+          "id": "gruppe",
+          "label": "Gruppe (nur Probleme)",
+          "info": "Sortiert die Probleme unter Zwischenüberschriften. Leer lassen: Keine Gruppen.",
+          "options": [
+            { "value": "keine", "label": "Keine" },
+            { "value": "blaetter", "label": "Blätter" },
+            { "value": "wurzeln", "label": "Wurzeln und Wachstum" },
+            { "value": "schaedlinge", "label": "Schädlinge und Pilz" }
+          ],
+          "default": "keine"
+        },
         { "type": "text", "id": "titel", "label": "Überschrift" },
-        { "type": "richtext", "id": "text", "label": "Text" }
+        { "type": "textarea", "id": "erkennen", "label": "Das siehst du", "info": "Woran man es erkennt. Leere Zeilen werden ausgeblendet." },
+        { "type": "textarea", "id": "ursache", "label": "Mögliche Ursache" },
+        { "type": "textarea", "id": "massnahme", "label": "Das tue ich" },
+        { "type": "richtext", "id": "text", "label": "Text", "info": "Für Ankunft und Substrat. Bei Problemen nur für alte Einträge: Solange eine der drei Zeilen oben gefüllt ist, erscheint dieser Text nicht." }
       ]
     },
     {

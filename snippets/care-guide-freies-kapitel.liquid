@@ -39,9 +39,11 @@
 
   assign hat_punkte = false
   for b in bloecke
-    if b.type == 'punkt' and b.settings.thema == thema and b.settings.titel != blank and b.settings.text != blank
-      assign hat_punkte = true
-      break
+    if b.type == 'punkt' and b.settings.thema == thema and b.settings.titel != blank
+      if b.settings.text != blank or b.settings.erkennen != blank or b.settings.ursache != blank or b.settings.massnahme != blank
+        assign hat_punkte = true
+        break
+      endif
     endif
   endfor
 -%}
@@ -78,16 +80,70 @@
       <div class="care-guide__text care-guide__text--kapitel rte">{{ kapitel_block.settings.text }}</div>
     {%- endif -%}
     {%- if hat_punkte -%}
-      <div class="care-guide__klappen" data-testid="care-guide-punkte-{{ thema }}">
-        {%- for b in bloecke -%}
-          {%- if b.type == 'punkt' and b.settings.thema == thema and b.settings.titel != blank and b.settings.text != blank -%}
-            <details class="care-guide__klappe" {{ b.shopify_attributes }}>
-              <summary class="care-guide__klappe-kopf">
-                <span class="care-guide__klappe-titel">{{ b.settings.titel | escape }}</span>
-                <span class="care-guide__klappe-zeichen" aria-hidden="true"></span>
-              </summary>
-              <div class="care-guide__klappe-inhalt care-guide__text rte">{{ b.settings.text }}</div>
-            </details>
+      {%- liquid
+        comment
+          Probleme koennen unter Zwischenueberschriften stehen (Bloecke mit
+          einer Gruppe). Ohne Gruppe bleibt es eine Liste wie bisher; Punkte
+          ohne Gruppe stehen dann am Ende, ohne eigene Ueberschrift.
+        endcomment
+        assign gruppen_da = false
+        for b in bloecke
+          if b.type == 'punkt' and b.settings.thema == thema and b.settings.gruppe != blank and b.settings.gruppe != 'keine'
+            assign gruppen_da = true
+            break
+          endif
+        endfor
+        if gruppen_da
+          assign gruppen_folge = 'blaetter,wurzeln,schaedlinge,keine' | split: ','
+        else
+          assign gruppen_folge = 'alle' | split: ','
+        endif
+      -%}
+      <div data-testid="care-guide-punkte-{{ thema }}">
+        {%- for g in gruppen_folge -%}
+          {%- liquid
+            assign g_zeigen = false
+            for b in bloecke
+              if b.type == 'punkt' and b.settings.thema == thema and b.settings.titel != blank
+                if b.settings.text != blank or b.settings.erkennen != blank or b.settings.ursache != blank or b.settings.massnahme != blank
+                  assign b_gruppe = b.settings.gruppe
+                  if b_gruppe == blank
+                    assign b_gruppe = 'keine'
+                  endif
+                  if g == 'alle' or g == b_gruppe
+                    assign g_zeigen = true
+                    break
+                  endif
+                endif
+              endif
+            endfor
+            assign g_label = ''
+            case g
+              when 'blaetter'
+                assign g_label = 'care_guide.group_leaves' | t
+              when 'wurzeln'
+                assign g_label = 'care_guide.group_roots' | t
+              when 'schaedlinge'
+                assign g_label = 'care_guide.group_pests' | t
+            endcase
+          -%}
+          {%- if g_zeigen -%}
+            {%- if g_label != blank -%}
+              <h3 class="care-guide__gruppe">{{ g_label }}</h3>
+            {%- endif -%}
+            <div class="care-guide__klappen">
+              {%- for b in bloecke -%}
+                {%- if b.type == 'punkt' and b.settings.thema == thema and b.settings.titel != blank -%}
+                  {%- if b.settings.text != blank or b.settings.erkennen != blank or b.settings.ursache != blank or b.settings.massnahme != blank -%}
+                    {%- assign b_gruppe = b.settings.gruppe -%}
+                    {%- if b_gruppe == blank -%}{%- assign b_gruppe = 'keine' -%}{%- endif -%}
+                    {%- if g == 'alle' or g == b_gruppe -%}
+                      {%- render 'care-guide-punkt', b: b -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
           {%- endif -%}
         {%- endfor -%}
       </div>

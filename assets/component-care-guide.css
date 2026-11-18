@@ -750,3 +750,294 @@
 .care-guide__klappe-inhalt > .care-guide__etikett:first-child {
   margin-top: 0;
 }
+
+/* =====================================================================
+   Karten-System: wie Produktseite und Archiv
+   ---------------------------------------------------------------------
+   Abschnitt = kleine Kopfzeile in Grossbuchstaben, Karte = fast schwarze
+   Flaeche mit kaum sichtbarem Rand (--tg-* aus tungacea.css), Reihe =
+   mindestens 4,8 rem, innerhalb einer Karte nur durch eingerueckte
+   Haarlinien getrennt. Die Tafeln mit den Zeichnungen bleiben, wie sie sind:
+   sie sind die Handschrift dieser Seite.
+   ===================================================================== */
+.care-guide {
+  --cg-flaeche: var(--tg-flaeche, #0b0b0d);
+  --cg-rand: var(--tg-rand, rgba(236, 226, 204, 0.08));
+  --cg-reihe: var(--tg-linie, rgba(236, 226, 204, 0.08));
+  --cg-band: var(--tg-band, rgba(236, 226, 204, 0.035));
+  --cg-innen: 1.6rem;
+  --cg-zeile: 4.8rem;
+  --cg-fehler: #e08a96;
+}
+
+.care-guide__kopf,
+.care-guide__gruppe {
+  margin: 3.2rem 0 1.2rem;
+  font-family: var(--font-body-family);
+  font-size: var(--tg-kopf-groesse, 1.2rem);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  color: var(--cg-muted);
+}
+
+.care-guide__karte,
+.care-guide__klappen,
+.care-guide__facts {
+  background: var(--cg-flaeche);
+  border: 1px solid var(--cg-rand);
+}
+
+/* ---- Stadium als Karte ---- */
+.care-guide__stage-body {
+  padding: 0 0 0.8rem;
+}
+
+.care-guide__short {
+  margin: 0;
+  padding: 1.8rem var(--cg-innen) 1.6rem;
+  font-style: italic;
+}
+
+.care-guide__karte .care-guide__figures {
+  margin: 0;
+  gap: 0;
+  border-top: 1px solid var(--cg-reihe);
+}
+
+.care-guide__karte .care-guide__figures > div {
+  padding: 1.4rem var(--cg-innen);
+  border-top: 0;
+  border-bottom: 1px solid var(--cg-reihe);
+}
+
+.care-guide__karte .care-guide__figures > div:nth-child(odd) {
+  border-right: 1px solid var(--cg-reihe);
+}
+
+.care-guide__karte .care-guide__figures > div:nth-last-child(-n + 2):nth-child(odd),
+.care-guide__karte .care-guide__figures > div:last-child {
+  border-bottom: 0;
+}
+
+.care-guide__karte .care-guide__figures > div:nth-last-child(2):nth-child(odd) {
+  border-bottom: 0;
+}
+
+.care-guide__zeile {
+  position: relative;
+  min-height: var(--cg-zeile);
+  box-sizing: border-box;
+  padding: 1.4rem var(--cg-innen);
+}
+
+.care-guide__karte > .care-guide__zeile:first-of-type,
+.care-guide__figures + .care-guide__zeile,
+.care-guide__short + .care-guide__zeile,
+.care-guide__klappe-inhalt--zeilen > .care-guide__zeile:first-child {
+  border-top: 1px solid var(--cg-reihe);
+}
+
+.care-guide__zeile + .care-guide__zeile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--cg-innen);
+  right: var(--cg-innen);
+  border-top: 1px solid var(--cg-reihe);
+}
+
+.care-guide__zeilen-label {
+  margin: 0 0 0.4rem;
+  font-size: var(--tg-kopf-groesse, 1.2rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  color: var(--cg-muted);
+}
+
+.care-guide__zeilen-text {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgba(236, 226, 204, 0.92);
+}
+
+.care-guide__zeile--fehler .care-guide__zeilen-label {
+  color: var(--cg-fehler);
+}
+
+.care-guide__zeile--tipp {
+  background: var(--cg-band);
+}
+
+.care-guide__zeile--tipp .care-guide__zeilen-label {
+  color: var(--cg-accent);
+}
+
+/* Alter Fliesstext in einer Karte (Eintraege ohne Zeilen) */
+.care-guide__karte > .care-guide__text.care-guide__zeile {
+  border-top: 1px solid var(--cg-reihe);
+}
+
+/* ---- Listen aus Klappzeilen (Naehrstoffe, Probleme) als Karte ---- */
+.care-guide__klappen {
+  margin: 0 0 0.8rem;
+}
+
+@media screen and (min-width: 750px) {
+  .care-guide__klappen,
+  .care-guide__karte,
+  .care-guide__begriffe {
+    max-width: 78rem;
+  }
+}
+
+.care-guide__klappen > *,
+.care-guide__begriffe .care-guide__klappe {
+  position: relative;
+}
+
+.care-guide__klappen > * + *::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--cg-innen);
+  right: var(--cg-innen);
+  border-top: 1px solid var(--cg-reihe);
+}
+
+.care-guide__klappen .care-guide__klappe,
+.care-guide__begriffe .care-guide__klappe {
+  border-bottom: 0;
+}
+
+.care-guide__klappe-kopf {
+  min-height: var(--cg-zeile);
+  box-sizing: border-box;
+  padding: 1rem var(--cg-innen);
+}
+
+.care-guide__klappe--einfach {
+  min-height: var(--cg-zeile);
+  box-sizing: border-box;
+  padding: 1.4rem var(--cg-innen);
+  display: flex;
+  align-items: center;
+}
+
+.care-guide__klappe-name {
+  display: block;
+  min-width: 0;
+}
+
+.care-guide__klappe-wann {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: var(--tg-kopf-groesse, 1.2rem);
+  line-height: 1.4;
+  color: var(--cg-muted);
+}
+
+.care-guide__klappe-inhalt {
+  padding: 0 var(--cg-innen) 1.6rem;
+}
+
+.care-guide__klappe-inhalt--zeilen {
+  max-width: none;
+  padding: 0;
+}
+
+.care-guide__begriffe .care-guide__karte {
+  max-width: 78rem;
+}
+
+/* ---- Datenzeilen: Bedingungen und Wasser je Stadium als Karte ---- */
+.care-guide__facts {
+  margin: 0;
+}
+
+.care-guide__fact {
+  position: relative;
+  min-height: var(--cg-zeile);
+  box-sizing: border-box;
+  align-items: center;
+  padding: 1.2rem var(--cg-innen);
+  border-bottom: 0;
+}
+
+.care-guide__fact + .care-guide__fact::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--cg-innen);
+  right: var(--cg-innen);
+  border-top: 1px solid var(--cg-reihe);
+}
+
+/* ---- pH und EC als Kacheln in der Karte ---- */
+.care-guide__tile {
+  padding: 1.4rem var(--cg-innen) 1.6rem;
+  background: var(--cg-flaeche);
+  border: 1px solid var(--cg-rand);
+}
+
+/* ---- Tafeln kompakter, damit beide am Handy nah beieinander liegen ---- */
+@media screen and (max-width: 749px) {
+  .care-guide__eintrag {
+    padding: 1.2rem 0.4rem 1.2rem;
+  }
+
+  .care-guide__zeichnung {
+    max-width: 7.2rem;
+  }
+
+  .care-guide__eintrag-name {
+    font-size: 1.5rem;
+  }
+
+  .care-guide__themen {
+    margin-top: 4.8rem;
+    padding-top: 3.6rem;
+  }
+
+  .care-guide__tafel {
+    margin-bottom: 2.4rem;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .care-guide__zeichnung {
+    max-width: 10.4rem;
+  }
+
+  .care-guide__eintrag {
+    padding: 1.8rem 1rem 1.8rem;
+  }
+}
+
+/* Die allgemeine Regel fuer Absaetze in aufgeklappten Punkten (Groesse, Farbe,
+   Abstand) ist spezifischer als die Zeilen-Klassen und machte die
+   Beschriftungen zu gross. In den Zeilen gelten die Zeilen-Werte. */
+.care-guide__klappe-inhalt .care-guide__zeilen-label {
+  margin: 0 0 0.4rem;
+  font-size: var(--tg-kopf-groesse, 1.2rem);
+  line-height: 1.3;
+  color: var(--cg-muted);
+}
+
+.care-guide__klappe-inhalt .care-guide__zeilen-text {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgba(236, 226, 204, 0.92);
+}
+
+.care-guide__klappe-inhalt .care-guide__zeile--fehler .care-guide__zeilen-label {
+  color: var(--cg-fehler);
+}
+
+.care-guide__klappe-inhalt .care-guide__zeile--tipp .care-guide__zeilen-label {
+  color: var(--cg-accent);
+}

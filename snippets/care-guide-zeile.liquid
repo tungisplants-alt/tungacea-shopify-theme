@@ -1,0 +1,16 @@
+{% comment %}
+  Tungacea — eine Zeile in einer Karte des Pflegeguides: kleine Beschriftung
+  oben, der Text darunter. Ist der Text leer, entsteht keine Zeile.
+
+  Annahmen:
+  - label: {String} schon übersetzte Beschriftung (Pflicht)
+  - text: {String} der Text, noch nicht maskiert (Pflicht)
+  - art: {String} leer | fehler | tipp (hebt die Zeile hervor)
+{% endcomment %}
+{%- assign zeilen_text = text | default: '' | strip -%}
+{%- if zeilen_text != blank -%}
+  <div class="care-guide__zeile{% if art != blank %} care-guide__zeile--{{ art }}{% endif %}">
+    <p class="care-guide__zeilen-label">{{ label }}</p>
+    <p class="care-guide__zeilen-text">{{ zeilen_text | escape }}</p>
+  </div>
+{%- endif -%}
