@@ -502,12 +502,14 @@
     "contact": {
       "intro": "Du hast eine Frage zu einem Exemplar, zum Versand oder zur Eingewöhnung deiner Pflanze? Schreib mir direkt – ich antworte persönlich.",
       "direct_email": "Oder direkt per E-Mail:",
-      "form_lead": "Oder per Formular:",
+      "form_lead": "Oder per Formular",
+      "help_title": "Vielleicht steht es schon hier",
       "form": {
         "name": "Name",
         "email": "E-Mail",
         "phone": "Telefonnummer",
-        "comment": "Kommentar",
+        "comment": "Deine Nachricht",
+        "order": "Pflanze oder Bestellnummer (optional)",
         "send": "Senden",
         "post_success": "Danke für deine Nachricht. Ich melde mich so schnell wie möglich bei dir.",
         "error_heading": "Bitte passe Folgendes an:",
@@ -919,6 +921,14 @@
     "message_names": "Hallo Tung, ich bestelle Etiketten und schicke dir die Namen hier. Meine Bestellnummer:",
     "message_eu": "Hallo Tung, ich wohne in der EU, aber nicht in Deutschland, und möchte gern bestellen. Mein Land:",
     "message_eu_product": "Hallo Tung, ich wohne in der EU, aber nicht in Deutschland, und möchte gern {{ name }} bestellen. Mein Land:"
+  },
+  "page_head": {
+    "about_heading": "Was ich selbst gern sammle und wachsen sehe, teile ich bei Tungacea mit dir.",
+    "contact_heading": "Schreib mir direkt."
+  },
+  "page_info": {
+    "glance_title": "Auf einen Blick",
+    "next_title": "Weiter"
   },
   "care_guide": {
     "eyebrow": "Pflegeguide",

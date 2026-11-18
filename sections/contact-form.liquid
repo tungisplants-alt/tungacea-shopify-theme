@@ -15,7 +15,9 @@
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="contact page-width page-width--narrow section-{{ section.id }}-padding">
+  <div class="contact page-width section-{{ section.id }}-padding">
+   <div class="contact__grid">
+    <div class="contact__aside">
     <div class="contact__intro rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
       <p>{{ 'templates.contact.intro' | t }}</p>
       {%- if section.settings.show_whatsapp -%}
@@ -50,6 +52,37 @@
         </p>
       {%- endif -%}
     </div>
+    {%- comment -%}
+      Karte "Vielleicht steht es schon hier": Links auf Antworten, die schon
+      auf der Seite stehen (Pflegeguide, Versand). Entlastet dich bei den
+      immer gleichen Fragen; WhatsApp und Formular bleiben daneben. Ohne Block
+      mit Titel und Link erscheint die Karte nicht.
+    {%- endcomment -%}
+    {%- assign hat_hilfe = false -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'hilfe' and block.settings.titel != blank and block.settings.link != blank -%}
+        {%- assign hat_hilfe = true -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if hat_hilfe -%}
+      <section class="contact__hilfe" data-testid="contact-help">
+        <h2 class="contact__kopf">{{ 'templates.contact.help_title' | t }}</h2>
+        <ul class="contact__karte" role="list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'hilfe' and block.settings.titel != blank and block.settings.link != blank -%}
+              <li {{ block.shopify_attributes }}>
+                <a class="contact__karte-zeile" href="{{ block.settings.link }}">
+                  <span>{{ block.settings.titel | escape }}</span>
+                  <span class="contact__pfeil" aria-hidden="true"></span>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </section>
+    {%- endif -%}
+    </div>
+    <div class="contact__formular">
     {%- if section.settings.heading != blank -%}
       <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
         {{ section.settings.heading }}
@@ -138,16 +171,14 @@
       </div>
       <div class="field">
         <input
-          type="tel"
-          id="ContactForm-phone"
+          type="text"
+          id="ContactForm-order"
           class="field__input"
-          autocomplete="tel"
-          name="contact[{{ 'templates.contact.form.phone' | t }}]"
-          pattern="[0-9\-]*"
-          value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-          placeholder="{{ 'templates.contact.form.phone' | t }}"
+          name="contact[{{ 'templates.contact.form.order' | t }}]"
+          value=""
+          placeholder="{{ 'templates.contact.form.order' | t }}"
         >
-        <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
+        <label class="field__label" for="ContactForm-order">{{ 'templates.contact.form.order' | t }}</label>
       </div>
       <div class="field">
         <textarea
@@ -169,6 +200,8 @@
         </button>
       </div>
     {%- endform -%}
+    </div>
+   </div>
   </div>
 </div>
 
@@ -252,6 +285,18 @@
       "default": 36
     }
   ],
+  "blocks": [
+    {
+      "type": "hilfe",
+      "name": "Hilfe-Link",
+      "settings": [
+        { "type": "paragraph", "content": "Eine Zeile in der Karte „Vielleicht steht es schon hier“. Ohne Titel oder Link erscheint sie nicht." },
+        { "type": "text", "id": "titel", "label": "Titel", "info": "Zum Beispiel: Pflanze ist angekommen" },
+        { "type": "url", "id": "link", "label": "Link", "info": "Zum Beispiel /pages/pflegeguide#ankunft" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
   "presets": [
     {
       "name": "t:sections.contact-form.presets.name"

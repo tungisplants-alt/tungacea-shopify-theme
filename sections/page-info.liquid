@@ -1,0 +1,129 @@
+{% comment %}
+  Tungacea — zwei Karten unter einer Seite: "Auf einen Blick" (Zeilen mit
+  Name und Wert) und "Weiter" (Zeilen als Links). Dasselbe System wie die
+  Karten auf Produktseite, Archiv und Pflegeguide: kleine Kopfzeile in
+  Großbuchstaben, fast schwarze Karte, Reihen mit eingerückten Haarlinien.
+
+  Blöcke:
+  - fakt: Name und Wert. Die Karte erscheint, sobald es eine Zeile mit Wert gibt.
+  - link: Titel und Link. Die Karte erscheint, sobald es einen Link mit Titel gibt.
+
+  Leere Überschriften werden übersetzt (page_info.*); ein eigener Text im
+  Theme-Editor erscheint in beiden Sprachen gleich.
+{% endcomment %}
+{{ 'component-page-info.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign hat_fakten = false
+  assign hat_links = false
+  for block in section.blocks
+    if block.type == 'fakt' and block.settings.name != blank and block.settings.wert != blank
+      assign hat_fakten = true
+    endif
+    if block.type == 'link' and block.settings.titel != blank and block.settings.link != blank
+      assign hat_links = true
+    endif
+  endfor
+
+  assign titel_fakten = section.settings.fakten_titel | default: '' | strip | escape
+  if titel_fakten == blank
+    assign titel_fakten = 'page_info.glance_title' | t
+  endif
+  assign titel_weiter = section.settings.weiter_titel | default: '' | strip | escape
+  if titel_weiter == blank
+    assign titel_weiter = 'page_info.next_title' | t
+  endif
+-%}
+{%- if hat_fakten or hat_links -%}
+  <div class="page-info color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding" data-testid="page-info">
+    <div class="page-width">
+      <div class="page-info__inner">
+        {%- if hat_fakten -%}
+          <section class="page-info__abschnitt" data-testid="page-info-facts">
+            <h2 class="page-info__kopf">{{ titel_fakten }}</h2>
+            <dl class="page-info__karte">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'fakt' and block.settings.name != blank and block.settings.wert != blank -%}
+                  <div class="page-info__zeile" {{ block.shopify_attributes }}>
+                    <dt>{{ block.settings.name | escape }}</dt>
+                    <dd>{{ block.settings.wert | escape }}</dd>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </dl>
+          </section>
+        {%- endif -%}
+        {%- if hat_links -%}
+          <section class="page-info__abschnitt" data-testid="page-info-links">
+            <h2 class="page-info__kopf">{{ titel_weiter }}</h2>
+            <ul class="page-info__karte page-info__karte--links" role="list">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'link' and block.settings.titel != blank and block.settings.link != blank -%}
+                  <li {{ block.shopify_attributes }}>
+                    <a class="page-info__zeile page-info__zeile--link" href="{{ block.settings.link }}">
+                      <span>{{ block.settings.titel | escape }}</span>
+                      <span class="page-info__pfeil" aria-hidden="true"></span>
+                    </a>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </section>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Karten Fakten und Links",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "text", "id": "fakten_titel", "label": "Überschrift Fakten", "info": "Leer lassen: Dann wird übersetzt (Auf einen Blick)." },
+    { "type": "text", "id": "weiter_titel", "label": "Überschrift Links", "info": "Leer lassen: Dann wird übersetzt (Weiter)." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Farbschema", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Abstand oben", "default": 20 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Abstand unten", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "fakt",
+      "name": "Fakt",
+      "settings": [
+        { "type": "paragraph", "content": "Eine Zeile in der Karte „Auf einen Blick“. Ohne Wert erscheint sie nicht." },
+        { "type": "text", "id": "name", "label": "Name", "info": "Zum Beispiel: Seit" },
+        { "type": "text", "id": "wert", "label": "Wert", "info": "Zum Beispiel: 2024" }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        { "type": "paragraph", "content": "Eine Zeile in der Karte „Weiter“. Ohne Link erscheint sie nicht." },
+        { "type": "text", "id": "titel", "label": "Titel" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Karten Fakten und Links" }
+  ]
+}
+{% endschema %}

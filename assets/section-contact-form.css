@@ -4,7 +4,7 @@
 
 .contact__intro {
   max-width: 62rem;
-  margin: 0 0 4rem;
+  margin: 0 0 0.8rem;
 }
 
 .contact__intro p {
@@ -30,8 +30,12 @@
 }
 
 .contact__form-lead {
-  margin: 0 0 2rem;
-  color: rgba(var(--color-foreground), 0.72);
+  margin: 3.2rem 0 1.2rem;
+  font-size: var(--tg-kopf-groesse, 1.2rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
 }
 
 .contact .form__message {
@@ -68,4 +72,102 @@
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 2rem;
   }
+}
+
+/* ---------------------------------------------------------------------
+   Seite im Karten-System: Wege zu dir links, Formular rechts
+   ---------------------------------------------------------------------
+   Am Handy untereinander in der Reihenfolge: Einleitung, WhatsApp, E-Mail,
+   Hilfe-Karte, Formular. Ab Tablet zwei Spalten.
+   --------------------------------------------------------------------- */
+.contact {
+  /* Die Rahmen der Felder ruhiger als bisher (55 %): sichtbar genug fuer
+     Bedienelemente, aber im Ton der Karten. */
+  --inputs-border-opacity: 0.3;
+}
+
+.contact .field__input {
+  background-color: var(--tg-flaeche, #0b0b0d);
+}
+
+.contact__grid {
+  max-width: 62rem;
+}
+
+@media screen and (min-width: 990px) {
+  .contact__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    column-gap: 6.4rem;
+    align-items: start;
+    max-width: 112rem;
+  }
+
+  .contact__form-lead {
+    margin-top: 0;
+  }
+}
+
+.contact__kopf {
+  margin: 3.2rem 0 1.2rem;
+  font-family: var(--font-body-family);
+  font-size: var(--tg-kopf-groesse, 1.2rem);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
+}
+
+.contact__karte {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--tg-flaeche, #0b0b0d);
+  border: 1px solid var(--tg-rand, rgba(236, 226, 204, 0.08));
+}
+
+.contact__karte > li {
+  position: relative;
+}
+
+.contact__karte > li + li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1.6rem;
+  right: 1.6rem;
+  border-top: 1px solid var(--tg-linie, rgba(236, 226, 204, 0.08));
+}
+
+.contact__karte-zeile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  min-height: 4.8rem;
+  box-sizing: border-box;
+  padding: 1.2rem 1.6rem;
+  font-size: 1.6rem;
+  color: #ece2cc;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.contact__pfeil::after {
+  content: '\203A';
+  font-size: 2rem;
+  line-height: 1;
+  color: rgb(var(--tungacea-accent-text, 204, 96, 112));
+}
+
+@media (hover: hover) {
+  .contact__karte-zeile:hover {
+    background: var(--tg-band, rgba(236, 226, 204, 0.035));
+  }
+}
+
+.contact__karte-zeile:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: -2px;
 }

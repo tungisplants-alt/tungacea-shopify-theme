@@ -1,0 +1,97 @@
+{% comment %}
+  Tungacea — Seitenkopf für "Über Tungacea" und "Kontakt".
+
+  Dasselbe Muster wie der Kopf des Pflegeguides: kleine Zeile mit roter
+  Linie, Überschrift in der Serifenschrift, darunter optional ein Satz. Ersetzt
+  den großen Standard-Seitentitel. Es gibt genau eine Überschrift erster Ebene
+  auf der Seite: diese.
+
+  Leer gelassene Felder werden übersetzt:
+  - Kleine Zeile: der Titel der Seite (page.title)
+  - Überschrift: je nach Seite ein Satz aus den Sprachdateien (page_head.*),
+    sonst der Titel der Seite. Dann entfällt die kleine Zeile, damit der Titel
+    nicht zweimal steht.
+  - Satz darunter: keiner
+  Ein eigener Text im Theme-Editor erscheint in beiden Sprachen gleich.
+{% endcomment %}
+{{ 'section-page-head.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign seitentitel = page.title | default: '' | strip | escape
+  assign eyebrow = section.settings.eyebrow | default: '' | strip | escape
+  assign heading = section.settings.heading | default: '' | strip | escape
+  assign lead = section.settings.lead | default: '' | strip | escape
+
+  if heading == blank
+    case section.settings.thema
+      when 'about'
+        assign heading = 'page_head.about_heading' | t
+      when 'contact'
+        assign heading = 'page_head.contact_heading' | t
+    endcase
+  endif
+  if heading == blank
+    assign heading = seitentitel
+  elsif eyebrow == blank
+    assign eyebrow = seitentitel
+  endif
+  if heading == eyebrow
+    assign eyebrow = ''
+  endif
+-%}
+<div class="page-head color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding" data-testid="page-head">
+  <div class="page-width">
+    <header class="page-head__inner">
+      {%- if eyebrow != blank -%}
+        <p class="page-head__eyebrow">{{ eyebrow }}</p>
+      {%- endif -%}
+      <h1 class="page-head__heading">{{ heading }}</h1>
+      {%- if lead != blank -%}
+        <p class="page-head__lead">{{ lead }}</p>
+      {%- endif -%}
+    </header>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Seitenkopf",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "thema",
+      "label": "Seite",
+      "info": "Bestimmt die Überschrift, wenn das Feld unten leer ist.",
+      "options": [
+        { "value": "about", "label": "Über Tungacea" },
+        { "value": "contact", "label": "Kontakt" },
+        { "value": "other", "label": "Andere Seite" }
+      ],
+      "default": "other"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Kleine Zeile", "info": "Leer lassen: Titel der Seite." },
+    { "type": "textarea", "id": "heading", "label": "Überschrift", "info": "Leer lassen: Dann wird übersetzt." },
+    { "type": "textarea", "id": "lead", "label": "Satz darunter", "info": "Leer lassen: Es gibt keinen." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Farbschema", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Abstand oben", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Abstand unten", "default": 20 }
+  ],
+  "presets": [{ "name": "Seitenkopf" }]
+}
+{% endschema %}

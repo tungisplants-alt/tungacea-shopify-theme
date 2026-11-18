@@ -2,12 +2,12 @@
 // die ECHTEN Sprachdateien.
 //
 // Der Weg steht unter dem Einleitungstext, die E-Mail-Zeile und das Formular
-// bleiben, was sie waren, und vor dem Formular steht "Oder per Formular:". Die
+// bleiben, was sie waren, und vor dem Formular steht "Oder per Formular". Die
 // Pruefungen halten fest, was nicht verloren gehen darf:
 //   - die bestehende E-Mail-Zeile (Adresse aus shop.email) und das ganze Formular
 //   - dieselbe Nummer und derselbe Satz wie in der Karte unten rechts, nicht
 //     eine zweite getippte Fassung
-//   - Reihenfolge: Einleitung, WhatsApp, E-Mail, "Oder per Formular:", Formular
+//   - Reihenfolge: Einleitung, WhatsApp, E-Mail, "Oder per Formular", Formular
 //   - ohne gueltige Nummer oder bei ausgeschaltetem Schalter fehlt beides, der
 //     Knopf UND der Satz, denn "Oder per Formular" ohne Knopf davor liest sich falsch
 //
@@ -113,8 +113,8 @@ function pruefe(name, ist, soll) {
     pruefe('WhatsApp-Link zeigt auf die Nummer', (href(html) || '').split('?')[0], 'https://wa.me/491791627287');
     pruefe('Knopf traegt die Klasse fuer die Kontaktseite', /class="whatsapp-contact__option contact__whatsapp"/.test(html), true);
     pruefe('Knopf heisst "Per WhatsApp" mit dem Zusatz', /Per WhatsApp<span class="whatsapp-contact__hint"><span[^>]*>&bull;<\/span>schnellere Antwort/.test(html.replace(/\s+/g, ' ').replace(/> </g, '><')), true);
-    pruefe('Satz "Oder per Formular:" steht genau einmal da', (html.match(/Oder per Formular:/g) || []).length, 1);
-    pruefe('Der Satz ist ein eigener Absatz mit Klasse', /<p class="contact__form-lead">Oder per Formular:<\/p>/.test(html), true);
+    pruefe('Satz "Oder per Formular" steht genau einmal da', (html.match(/Oder per Formular/g) || []).length, 1);
+    pruefe('Der Satz ist ein eigener Absatz mit Klasse', /<p class="contact__form-lead">Oder per Formular<\/p>/.test(html), true);
     pruefe('Stylesheet der Karte wird geladen, sonst hat der Knopf keinen Rahmen', /component-whatsapp-contact\.css/.test(html), true);
     pruefe('Link oeffnet neu und mit noopener', /target="_blank"/.test(html) && /rel="noopener noreferrer"/.test(html), true);
     pruefe('Satz auf der Kontaktseite ist der offene allgemeine Satz', decodeURIComponent((href(html) || '').split('?text=')[1] || ''), 'Hallo Tung, ich habe eine Frage zu…');
@@ -122,7 +122,7 @@ function pruefe(name, ist, soll) {
     const einl = pos(html, /Du hast eine Frage zu einem Exemplar/);
     const wa = pos(html, /data-whatsapp-link/);
     const mail = pos(html, /Oder direkt per E-Mail:/);
-    const lead = pos(html, /Oder per Formular:/);
+    const lead = pos(html, /Oder per Formular/);
     const form = pos(html, /<form /);
     pruefe('Reihenfolge: Einleitung, WhatsApp, E-Mail-Zeile, "Oder per Formular", Formular',
       einl >= 0 && einl < wa && wa < mail && mail < lead && lead < form, true);
@@ -139,7 +139,7 @@ function pruefe(name, ist, soll) {
     pruefe(name + ': Formular bleibt', /<form[^>]*action="\/contact#ContactForm"/.test(html), true);
     pruefe(name + ': E-Mail-Feld bleibt Pflichtfeld', /name="contact\[email\]"[\s\S]*?aria-required="true"/.test(html), true);
     pruefe(name + ': Senden-Knopf bleibt', />\s*Senden\s*</.test(html), true);
-    pruefe(name + ': Kommentarfeld bleibt', /name="contact\[Kommentar\]"/.test(html), true);
+    pruefe(name + ': Nachrichtenfeld bleibt', /name="contact\[Deine Nachricht\]"/.test(html), true);
   }
 
   // ---- Ohne Knopf auch ohne den Satz ---------------------------------------
@@ -172,7 +172,7 @@ function pruefe(name, ist, soll) {
   {
     const en = await seite(gut, { sprache: 'en' });
     pruefe('Englisch: Knopf', /On WhatsApp<span class="whatsapp-contact__hint"><span[^>]*>&bull;<\/span>quicker reply/.test(en.replace(/\s+/g, ' ').replace(/> </g, '><')), true);
-    pruefe('Englisch: Satz vor dem Formular', /<p class="contact__form-lead">Or use the form:<\/p>/.test(en), true);
+    pruefe('Englisch: Satz vor dem Formular', /<p class="contact__form-lead">Or use the form<\/p>/.test(en), true);
     pruefe('Englisch: vorausgefuellter Satz', decodeURIComponent((href(en) || '').split('?text=')[1] || ''), 'Hi Tung, I have a question about…');
     pruefe('Englisch: bestehende Zeile bleibt', /Or email me directly:/.test(en), true);
     pruefe('Englisch: kein deutsches Wort im neuen Teil', /Per WhatsApp|schnellere|Oder per Formular/.test(en), false);

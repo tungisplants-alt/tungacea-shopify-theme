@@ -9,12 +9,12 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
+    "head": {
+      "type": "page-head",
       "settings": {
-        "padding_top": 48,
-        "padding_bottom": 20
+        "thema": "about",
+        "padding_top": 36,
+        "padding_bottom": 16
       }
     },
     "hobby_timeline": {
@@ -36,7 +36,7 @@
           "settings": {
             "image": "shopify://shop_images/CCE187F9-FF02-483E-AE52-FD03D955E44F.jpg",
             "caption": "DIE SAMMLUNG WÄCHST",
-            "heading": "Vom Interesse zur Leidenschaft",
+            "heading": "Aus der Vitrine ins Zelt",
             "text": "<p>Mit einem klassischen <em>Anthurium papillilaminum</em> fing der nächste Abschnitt an. Dieses matte, dunkle Blatt beim Austrieb hatte etwas, das mich nicht mehr losließ. Aus der kleinen Pflanzenvitrine wurde eine Milsbo, später eine ganze Ecke mit Regalen und schließlich zwei Growzelte. Spätestens als ich in einem Zelt voller Pflanzen stand, war klar: Das war längst mehr als nur Interesse. Die besonderen Anthurien kamen erst danach – mit jedem Schritt tiefer ins Hobby.<br/><br/></p>",
             "button_label": "",
             "button_link": ""
@@ -59,7 +59,7 @@
             "image": "shopify://shop_images/IMG_8398.jpg",
             "caption": "VON MEINER SAMMLUNG ZU DIR",
             "heading": "Aus eigener Hand",
-            "text": "<p>Bei Tungacea findest du Klone meiner eigenen Mutterpflanzen und Anthurien aus eigener Züchtung. Ich biete nur Pflanzen an, die ich selbst mag und auch in meine eigene Sammlung stellen würde. Jede Bestellung packe ich persönlich – sorgfältig und nach bestem Wissen und Gewissen. Wenn danach Fragen zu deiner Pflanze auftauchen, kannst du dich jederzeit direkt bei mir melden.</p>",
+            "text": "<p>Bei Tungacea findest du Klone meiner eigenen Mutterpflanzen und Anthurien aus eigener Züchtung. Ich biete nur Pflanzen an, die ich selbst mag und auch in meine eigene Sammlung stellen würde. Jede Bestellung packe ich persönlich. Wenn danach Fragen zu deiner Pflanze auftauchen, kannst du dich jederzeit direkt bei mir melden.</p>",
             "button_label": "Kollektion entdecken",
             "button_link": "shopify://collections/all"
           }
@@ -86,10 +86,95 @@
         "padding_top": 20,
         "padding_bottom": 64
       }
+    },
+    "info": {
+      "type": "page-info",
+      "blocks": {
+        "fakt_seit": {
+          "type": "fakt",
+          "settings": {
+            "name": "Seit",
+            "wert": "2024"
+          }
+        },
+        "fakt_sammlung": {
+          "type": "fakt",
+          "settings": {
+            "name": "Sammlung",
+            "wert": "Zwei Growzelte, eigene Mutterpflanzen"
+          }
+        },
+        "fakt_angebot": {
+          "type": "fakt",
+          "settings": {
+            "name": "Bei Tungacea",
+            "wert": "Klone und eigene Züchtungen"
+          }
+        },
+        "fakt_packen": {
+          "type": "fakt",
+          "settings": {
+            "name": "Verpackt",
+            "wert": "Jede Bestellung von mir persönlich"
+          }
+        },
+        "fakt_versand": {
+          "type": "fakt",
+          "settings": {
+            "name": "Versand",
+            "wert": "Mo und Di, 1–3 Werktage"
+          }
+        },
+        "link_kollektion": {
+          "type": "link",
+          "settings": {
+            "titel": "Kollektion ansehen",
+            "link": "shopify://collections/all"
+          }
+        },
+        "link_archiv": {
+          "type": "link",
+          "settings": {
+            "titel": "Archiv: Mutterpflanzen und Kreuzungen",
+            "link": "shopify://pages/archive"
+          }
+        },
+        "link_guide": {
+          "type": "link",
+          "settings": {
+            "titel": "Pflegeguide",
+            "link": "shopify://pages/pflegeguide"
+          }
+        },
+        "link_kontakt": {
+          "type": "link",
+          "settings": {
+            "titel": "Schreib mir",
+            "link": "shopify://pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "fakt_seit",
+        "fakt_sammlung",
+        "fakt_angebot",
+        "fakt_packen",
+        "fakt_versand",
+        "link_kollektion",
+        "link_archiv",
+        "link_guide",
+        "link_kontakt"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
-    "main",
-    "hobby_timeline"
+    "head",
+    "hobby_timeline",
+    "info"
   ]
 }

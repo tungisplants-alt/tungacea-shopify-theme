@@ -502,13 +502,15 @@
     "contact": {
       "intro": "Have a question about a specimen, shipping, or helping your plant settle in? Send me a message—I’ll reply personally.",
       "direct_email": "Or email me directly:",
-      "form_lead": "Or use the form:",
+      "form_lead": "Or use the form",
+      "help_title": "Maybe the answer is already here",
       "form": {
         "title": "Contact form",
         "name": "Name",
         "email": "Email",
         "phone": "Phone number",
-        "comment": "Comment",
+        "comment": "Your message",
+        "order": "Plant or order number (optional)",
         "send": "Send",
         "post_success": "Thanks for your message. I’ll get back to you as soon as possible.",
         "error_heading": "Please adjust the following:"
@@ -919,6 +921,14 @@
     "message_names": "Hi Tung, I am ordering labels and will send you the names here. My order number:",
     "message_eu": "Hi Tung, I live in the EU, but not in Germany, and I would like to order. My country:",
     "message_eu_product": "Hi Tung, I live in the EU, but not in Germany, and I would like to order {{ name }}. My country:"
+  },
+  "page_head": {
+    "about_heading": "What I like to collect and watch grow, I share with you at Tungacea.",
+    "contact_heading": "Message me directly."
+  },
+  "page_info": {
+    "glance_title": "At a glance",
+    "next_title": "Next"
   },
   "care_guide": {
     "eyebrow": "Care guide",
