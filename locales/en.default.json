@@ -172,7 +172,7 @@
         "outdoor_label": "Outdoors",
         "outdoor_value": "Yes: UV-, frost- and moisture-resistant",
         "strength_label": "Strength",
-        "strength_value": "Stronger and lighter than glass",
+        "strength_value": "30 times stronger than glass, and lighter",
         "recycled_label": "Sustainable",
         "recycled_value": "Made from recycled acrylic",
         "engraving_label": "Engraving",
@@ -180,8 +180,7 @@
         "names_label": "Names",
         "names_value": "Capital letters, up to two lines. No Å, Ø, Ł",
         "production_label": "Production",
-        "production_value": "After you order. I will get in touch if it takes longer",
-        "source": "Material details according to the maker of the acrylic glass."
+        "production_value": "After you order. I will get in touch if it takes longer"
       },
       "etikett_bestellung": {
         "list_title": "Your labels",

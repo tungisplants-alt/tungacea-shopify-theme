@@ -9,10 +9,10 @@
   und was den Kauf bestaerkt. Die Texte stehen in den Sprachdateien
   (products.product.etikett_details) und lassen sich im Sprach-Editor aendern.
 
-  Die Materialangaben (UV, Frost, Feuchtigkeit, Temperatur, stabiler als Glas,
-  recycelt) stammen vom Hersteller des Acrylglases (Datenblatt des Haendlers)
-  und stehen als dessen Angabe da, mit Quellenzeile. Keine Zahl fuer "wie viel
-  stabiler als Glas": Die Quellen nennen verschiedene Werte.
+  Die Materialangaben (UV, Frost, Feuchtigkeit, stabiler als Glas, recycelt)
+  stammen aus dem Datenblatt und den FAQ des Haendlers der Acrylglasplatte (Frost
+  Schwarz 3 mm, Greencast). "30-mal staerker als Glas" steht dort in den FAQ;
+  Tung hat entschieden, die Zahl zu uebernehmen und keine Quelle zu nennen.
 
   Das Aussehen steht in component-produkt-klappe.css, geladen einmal im Kopf von
   main-product.liquid.
@@ -63,6 +63,5 @@
         <dd>{{ 'products.product.etikett_details.production_value' | t }}</dd>
       </div>
     </dl>
-    <p class="etikett-fakten__quelle">{{ 'products.product.etikett_details.source' | t }}</p>
   </div>
 </details>

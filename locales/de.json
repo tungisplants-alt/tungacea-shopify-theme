@@ -163,7 +163,7 @@
         "outdoor_label": "Im Freien",
         "outdoor_value": "Ja: UV-, frost- und feuchtigkeitsbeständig",
         "strength_label": "Stabilität",
-        "strength_value": "Stabiler und leichter als Glas",
+        "strength_value": "30-mal stärker als Glas, dabei leichter",
         "recycled_label": "Nachhaltig",
         "recycled_value": "Aus recyceltem Acryl",
         "engraving_label": "Gravur",
@@ -171,8 +171,7 @@
         "names_label": "Namen",
         "names_value": "Großbuchstaben, bis zu zwei Zeilen. Ohne Å, Ø, Ł",
         "production_label": "Fertigung",
-        "production_value": "Nach deiner Bestellung. Bei Verzug melde ich mich",
-        "source": "Materialangaben laut Hersteller des Acrylglases."
+        "production_value": "Nach deiner Bestellung. Bei Verzug melde ich mich"
       },
       "etikett_bestellung": {
         "list_title": "Deine Etiketten",
