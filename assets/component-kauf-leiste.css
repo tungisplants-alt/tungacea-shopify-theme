@@ -19,7 +19,7 @@
     gap: 1.6rem;
     padding: 1.2rem 1.6rem calc(1.2rem + env(safe-area-inset-bottom, 0px));
     background: rgba(14, 12, 12, 0.96);
-    border-top: 1px solid rgba(236, 226, 204, 0.16);
+    border-top: 1px solid var(--tg-rand, rgba(236, 226, 204, 0.08));
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     transform: translateY(100%);

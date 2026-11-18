@@ -5,9 +5,9 @@
  *   (Diese Pflanze, Herkunft: Steckbrief und Herkunft aus specimen-passport)
  *   Gut zu wissen  Pflege, Versand, Fragen, EU als zugeklappte Zeilen
  *
- * Dasselbe System wie auf der Seite des Etiketts:
+ * Dasselbe System wie im Archiv (Werte in tungacea.css, --tg-*):
  *   Abschnitt  kleine Kopfzeile in Grossbuchstaben
- *   Karte      leicht aufgehellte Flaeche mit feiner Kontur, mit Anfang und Ende
+ *   Karte      fast schwarze Flaeche mit kaum sichtbarem Rand, mit Anfang und Ende
  *   Reihe      mindestens 4,8 rem hoch, innerhalb einer Karte nur durch
  *              eingerueckte Haarlinien getrennt
  *
@@ -15,10 +15,10 @@
  * Farbvariablen gelten nur innerhalb der Farbschema-Klassen.
  */
 .pg {
-  --pg-flaeche: rgba(236, 226, 204, 0.035);
-  --pg-band: rgba(236, 226, 204, 0.05);
-  --pg-rand: rgba(236, 226, 204, 0.16);
-  --pg-linie: rgba(236, 226, 204, 0.1);
+  --pg-flaeche: var(--tg-flaeche, #0b0b0d);
+  --pg-band: var(--tg-band, rgba(236, 226, 204, 0.035));
+  --pg-rand: var(--tg-rand, rgba(236, 226, 204, 0.08));
+  --pg-linie: var(--tg-linie, rgba(236, 226, 204, 0.08));
   --pg-text: #ece2cc;
   --pg-leise: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
   --pg-innen: 1.6rem;
@@ -33,7 +33,7 @@
 .pg__kopf {
   margin: 3.2rem 0 1.2rem;
   font-family: var(--font-body-family);
-  font-size: 1.1rem;
+  font-size: var(--tg-kopf-groesse, 1.2rem);
   font-weight: 400;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -76,7 +76,7 @@
 }
 
 .kauf-dazu__titel {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--pg-leise);
@@ -212,7 +212,7 @@
   padding: 1.2rem var(--pg-innen);
   background: var(--pg-band);
   border-bottom: 1px solid var(--pg-rand);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--pg-leise);
@@ -285,7 +285,7 @@
 
 .pp .specimen-passport__label {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--pg-leise);

@@ -710,6 +710,15 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
      Linie oder Rand bleibt accent-bright richtig. */
   --tungacea-accent-text: 204, 96, 112;
   --tungacea-hairline-accent: rgba(110, 28, 40, 0.32);
+
+  /* Karten, wie im Archiv: fast schwarze Flaeche, kaum sichtbarer Rand, innen
+     nur feine Linien. Produktseite, Kauf, Etikett und Warenkorb lesen diese
+     Werte, statt eigene zu fuehren. */
+  --tg-flaeche: #0b0b0d;
+  --tg-band: rgba(236, 226, 204, 0.035);
+  --tg-rand: rgba(236, 226, 204, 0.08);
+  --tg-linie: rgba(236, 226, 204, 0.08);
+  --tg-kopf-groesse: 1.2rem;
 }
 
 /* ---------- Tonal layering: panels read as distinct raised surfaces ---------- */
