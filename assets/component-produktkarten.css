@@ -1,0 +1,365 @@
+/*
+ * Produktseite: drei Karten mit je einer Kopfzeile.
+ *
+ *   Deine Auswahl  Variante, Zusaetze unter "Dazu", Kaufknopf, Vertrauenszeile
+ *   (Diese Pflanze, Herkunft: Steckbrief und Herkunft aus specimen-passport)
+ *   Gut zu wissen  Pflege, Versand, Fragen, EU als zugeklappte Zeilen
+ *
+ * Dasselbe System wie auf der Seite des Etiketts:
+ *   Abschnitt  kleine Kopfzeile in Grossbuchstaben
+ *   Karte      leicht aufgehellte Flaeche mit feiner Kontur, mit Anfang und Ende
+ *   Reihe      mindestens 4,8 rem hoch, innerhalb einer Karte nur durch
+ *              eingerueckte Haarlinien getrennt
+ *
+ * Abstaende in Vielfachen von 0,8 rem. Farben als feste Werte: Dawns
+ * Farbvariablen gelten nur innerhalb der Farbschema-Klassen.
+ */
+.pg {
+  --pg-flaeche: rgba(236, 226, 204, 0.035);
+  --pg-band: rgba(236, 226, 204, 0.05);
+  --pg-rand: rgba(236, 226, 204, 0.16);
+  --pg-linie: rgba(236, 226, 204, 0.1);
+  --pg-text: #ece2cc;
+  --pg-leise: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
+  --pg-innen: 1.6rem;
+  --pg-zeile: 4.8rem;
+  position: relative;
+  margin: 0 0 3.2rem;
+  background: var(--pg-flaeche);
+  border: 1px solid var(--pg-rand);
+  color: var(--pg-text);
+}
+
+.pg__kopf {
+  margin: 3.2rem 0 1.2rem;
+  font-family: var(--font-body-family);
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
+}
+
+/* ---------------------------------------------------------- Deine Auswahl */
+.pg--kauf > * {
+  padding-left: var(--pg-innen);
+  padding-right: var(--pg-innen);
+}
+
+.pg--kauf > link,
+.pg--kauf > script {
+  padding: 0;
+}
+
+.pg--kauf > variant-selects,
+.pg--kauf > variant-radios {
+  display: block;
+  padding-top: 1.6rem;
+  padding-bottom: 0.4rem;
+}
+
+/* Kopfband "Dazu": nur da, wo es auch Reihen gibt. */
+.kauf-dazu {
+  display: none;
+}
+
+.pg--kauf:has(.kauf-reihe) .kauf-dazu {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.2rem;
+  margin-top: 1.2rem;
+  padding: 1.2rem var(--pg-innen);
+  background: var(--pg-band);
+  border-top: 1px solid var(--pg-rand);
+  border-bottom: 1px solid var(--pg-rand);
+}
+
+.kauf-dazu__titel {
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pg-leise);
+}
+
+.kauf-dazu__sub {
+  font-size: 1.2rem;
+  color: var(--pg-leise);
+}
+
+/* Reihen der Zusaetze (Etikett, Winterverpackung): gleiche Bauart. Die
+   Selektoren sind absichtlich stark: Die Stile der beiden Zusaetze werden
+   spaeter geladen und setzen "padding: ... 0" mit dem Kurzbefehl. */
+.pg--kauf > .kauf-reihe {
+  position: relative;
+  margin: 0;
+  border: 0;
+  padding: 1.2rem var(--pg-innen);
+  min-height: var(--pg-zeile);
+}
+
+.pg--kauf .kauf-reihe ~ .kauf-reihe::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--pg-innen);
+  right: 0;
+  height: 1px;
+  background: var(--pg-linie);
+}
+
+/* Kaufknopf: eigener Bereich unten in der Karte, durch eine volle Linie getrennt. */
+.pg--kauf product-form,
+.pg--kauf > .product-form {
+  display: block;
+  margin: 0;
+  padding-top: 1.6rem;
+  padding-bottom: 0.4rem;
+  border-top: 1px solid var(--pg-rand);
+}
+
+.pg--kauf .kauf-reihe + product-form,
+.pg--kauf .kauf-reihe ~ product-form {
+  margin-top: 0;
+}
+
+/* Vertrauenszeile */
+.kauf-vertrauen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  margin: 0;
+  padding-top: 0.8rem;
+  padding-bottom: 1.6rem;
+  list-style: none;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  color: var(--pg-leise);
+}
+
+.kauf-vertrauen li {
+  margin: 0;
+}
+
+
+/* Etikett und Winterverpackung als Reihe: links Text, rechts die Handlung. */
+.pg--kauf .winter-pack,
+.pg--kauf .etikett {
+  border: 0;
+}
+
+.pg--kauf .winter-pack__zeile,
+.pg--kauf .etikett__zeile {
+  align-items: flex-start;
+}
+
+.pg--kauf .winter-pack__sub,
+.pg--kauf .etikett__sub {
+  margin-top: 0.4rem;
+  max-width: 34rem;
+}
+
+/* --------------------------------------------------------------- Gut zu wissen */
+.pg--wissen {
+  margin-bottom: 2.4rem;
+}
+
+.pg--wissen .produkt-klappe {
+  margin: 0;
+  padding-left: var(--pg-innen);
+  padding-right: var(--pg-innen);
+  border: 0;
+  border-top: 1px solid var(--pg-linie);
+}
+
+.pg--wissen .produkt-klappe:first-child {
+  border-top: 0;
+}
+
+.pg--wissen .produkt-klappe:not(:has(+ .produkt-klappe)) {
+  margin-bottom: 0;
+}
+
+.pg--wissen .produkt-klappe__toggle {
+  min-height: var(--pg-zeile);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.pg--wissen .produkt-klappe__inhalt {
+  padding-bottom: 1.6rem;
+}
+
+/* ----------------------------------------------- Diese Pflanze / Herkunft
+   Der botanische Pass (snippets/specimen-passport.liquid) besteht aus zwei
+   Karten. Die inneren Bausteine (Elternteil mit Foto, Link ins Archiv) behalten
+   ihr Aussehen aus component-specimen-passport.css; hier steht nur die Huelle. */
+.pg-hulle {
+  margin: 0;
+}
+
+.specimen-passport.pp {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.pp-karte {
+  margin: 0 0 1.6rem;
+}
+
+.pp-band {
+  margin: 0;
+  padding: 1.2rem var(--pg-innen);
+  background: var(--pg-band);
+  border-bottom: 1px solid var(--pg-rand);
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pg-leise);
+}
+
+/* Der Satz "Du erhaeltst ...": ruhig, nicht fett. */
+.pp .specimen-passport__lead {
+  margin: 0;
+  padding: 1.6rem var(--pg-innen) 0.8rem;
+  font-size: 1.5rem;
+  line-height: 1.55;
+  color: var(--pg-text);
+}
+
+.pp .specimen-passport__lead strong {
+  font-weight: 500;
+}
+
+/* Merkmale als Marken, jede fuer sich lesbar. */
+.pp .specimen-passport__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0.4rem var(--pg-innen) 1.6rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.pp-marke {
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  border: 1px solid var(--pg-rand);
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pg-leise);
+  white-space: nowrap;
+}
+
+/* Zuechter, Bezogen von, Exemplar-ID: eine Tabelle wie ueberall. */
+.pp .specimen-passport__grid {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--pg-rand);
+}
+
+.pp .specimen-passport__row {
+  display: grid;
+  grid-template-columns: minmax(9rem, 32%) minmax(0, 1fr);
+  gap: 1.2rem;
+  align-items: baseline;
+  min-height: 0;
+  margin: 0;
+  padding: 1.2rem var(--pg-innen);
+  border: 0;
+  position: relative;
+}
+
+.pp .specimen-passport__row + .specimen-passport__row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--pg-innen);
+  right: 0;
+  height: 1px;
+  background: var(--pg-linie);
+}
+
+.pp .specimen-passport__label {
+  margin: 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pg-leise);
+}
+
+.pp .specimen-passport__value {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--pg-text);
+}
+
+/* Hinweis zur Erfahrung: letzte Reihe der Karte, kein Kasten mit rotem Balken. */
+.pp .specimen-passport__hint {
+  margin: 0;
+  padding: 1.4rem var(--pg-innen);
+  border: 0;
+  border-top: 1px solid var(--pg-rand);
+  background: var(--pg-band);
+  font-size: 1.4rem;
+  line-height: 1.55;
+  color: var(--pg-leise);
+}
+
+.pp .specimen-passport__hint strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: var(--pg-text);
+}
+
+/* Herkunft */
+.pp-karte--herkunft {
+  padding: var(--pg-innen);
+}
+
+/* Herkunft: In der Karte ist weniger Platz als im alten Pass. Die Spalten duerfen
+   schrumpfen (minmax), der Kopf der alten Gestaltung (Linie und Abstand oben)
+   entfaellt, weil die Karte selbst den Anfang zeigt. */
+.pp-karte--herkunft .specimen-passport__cross {
+  margin: 0;
+  padding-top: 0;
+  border-top: 0;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  column-gap: 1rem;
+  --kreuz-bild: min(44cqi, 24rem);
+}
+
+.pp-karte--herkunft .specimen-passport__mother {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.pp-karte--herkunft .specimen-passport__cross > .specimen-passport__mother > * {
+  min-width: 0;
+}
+
+.pp-karte--herkunft .specimen-passport__mother-link {
+  letter-spacing: 0.08em;
+}
+
+/* In der Kreuzung liegen zwei Eltern nebeneinander: Die Beschriftung bekommt
+   keine Zierlinie und weniger Sperrung, damit "Vaterpflanze" in die schmale
+   Spalte passt, statt in die Nachbarspalte zu laufen. */
+.pp-karte--herkunft .specimen-passport__cross .specimen-passport__mother-label {
+  min-width: 0;
+  max-width: 100%;
+  gap: 0;
+  letter-spacing: 0.04em;
+  font-size: 1.05rem;
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
+.pp-karte--herkunft .specimen-passport__cross .specimen-passport__mother-label::before {
+  display: none;
+}

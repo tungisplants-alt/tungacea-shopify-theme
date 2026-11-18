@@ -1,0 +1,26 @@
+{% comment %}
+  Feste Kaufleiste am Handy: Preis und Knopf, sobald der eigentliche Knopf
+  aus dem Bild gescrollt ist. Die Leiste kauft nichts selbst, sie loest den
+  echten Knopf aus (assets/kauf-leiste.js) und zeigt dessen Text, Zustand und
+  den aktuellen Preis. Ist der echte Knopf gesperrt (vergeben, ausverkauft), bleibt sie weg.
+
+  Aufruf (einmal je Produktabschnitt):
+  {%- render 'kauf-leiste', product: product, section_id: section.id -%}
+{% endcomment %}
+{%- if product != blank -%}
+  {{ 'component-kauf-leiste.css' | asset_url | stylesheet_tag }}
+  <div
+    class="kauf-leiste"
+    data-kauf-leiste
+    data-section-id="{{ section_id }}"
+    hidden
+  >
+    <p class="kauf-leiste__preis" data-kauf-leiste-preis>
+      {{- product.selected_or_first_available_variant.price | money_without_trailing_zeros -}}
+    </p>
+    <button type="button" class="kauf-leiste__knopf button button--primary" data-kauf-leiste-knopf>
+      {{- 'products.product.add_to_cart' | t -}}
+    </button>
+  </div>
+  <script src="{{ 'kauf-leiste.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

@@ -83,9 +83,9 @@
 {%- if modus != '' -%}
   {{ 'component-etikett.css' | asset_url | stylesheet_tag }}
 
-  <div class="etikett etikett--{{ modus }} quick-add-hidden" {{ block.shopify_attributes }}>
+  <div class="etikett kauf-reihe etikett--{{ modus }} quick-add-hidden" {{ block.shopify_attributes }}>
     <div class="etikett__zeile">
-      <span class="etikett__text">
+      <div class="etikett__text">
         <span class="etikett__titel">
           {%- if et != blank -%}
             <a class="etikett__link" href="{{ et.url }}">{{ ueberschrift | escape }}</a>
@@ -96,7 +96,11 @@
             <span class="etikett__preis">+ {{ variante.price | money_without_trailing_zeros | replace: '€', ' €' }}</span>
           {%- endif -%}
         </span>
-      </span>
+        <p class="etikett__sub">{{ hinweis | escape }}</p>
+        {%- if et != blank -%}
+          <a class="etikett__mehr" href="{{ et.url }}">{{ 'products.product.etikett.more' | t }}</a>
+        {%- endif -%}
+      </div>
 
       {%- if modus == 'inklusive' -%}
         <span class="etikett__inklusive">{{ 'products.product.etikett.included' | t }}</span>
@@ -117,12 +121,6 @@
         </button>
       {%- endif -%}
     </div>
-
-    <p class="etikett__sub">{{ hinweis | escape }}</p>
-
-    {%- if et != blank -%}
-      <a class="etikett__mehr" href="{{ et.url }}">{{ 'products.product.etikett.more' | t }}</a>
-    {%- endif -%}
 
     {%- if block.settings.bild != blank -%}
       <div class="etikett__bild">

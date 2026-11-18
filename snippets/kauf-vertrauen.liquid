@@ -1,0 +1,15 @@
+{% comment %}
+  Tungacea — Vertrauenszeile unter dem Kaufknopf (Produktseite).
+
+  Drei kurze Angaben, die ein Kaeufer vor dem Kauf wissen will: wann versendet
+  wird, wie lange es dauert, und dass bei Frost und grosser Hitze nicht
+  verschickt wird. Sie stehen schon in den Versandbedingungen und in der
+  zugeklappten Zeile "Versand & Lieferung"; hier stehen sie dort, wo die
+  Entscheidung faellt. Aendern sich die Bedingungen, muessen diese Zeilen
+  mitgehen (Sprach-Editor: products.product.kaufkarte).
+{% endcomment %}
+<ul class="kauf-vertrauen list-unstyled" role="list">
+  <li>{{ 'products.product.kaufkarte.trust_ship' | t }}</li>
+  <li>{{ 'products.product.kaufkarte.trust_days' | t }}</li>
+  <li>{{ 'products.product.kaufkarte.trust_frost' | t }}</li>
+</ul>

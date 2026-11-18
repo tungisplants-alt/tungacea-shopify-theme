@@ -293,19 +293,26 @@
 {%- if has_anything -%}
   {{ 'component-specimen-passport.css' | asset_url | stylesheet_tag }}
 
+  {%- comment -%}
+    Zwei Karten statt einer langen Seite, im selben System wie "Deine
+    Auswahl" und "Gut zu wissen":
+      Diese Pflanze  Satz "Du erhaeltst ...", Merkmale als Marken, Zuechter und
+                     Bezugsquelle, der Hinweis zur Erfahrung als letzte Reihe
+      Herkunft       Mutter (und Vater) mit Foto und Link ins Archiv
+    Die Ueberschrift "Botanische Dokumentation" bleibt fuer Screenreader
+    erhalten (aria-labelledby), steht aber nicht mehr gross im Bild.
+  {%- endcomment -%}
   <section
-    class="specimen-passport quick-add-hidden"
+    class="specimen-passport pp quick-add-hidden"
     aria-labelledby="SpecimenPassport-title-{{ block.id }}"
     {{ block.shopify_attributes }}
   >
-    <header class="specimen-passport__header">
-      <div class="specimen-passport__heading-group">
-        <p class="specimen-passport__eyebrow">{{ 'products.product.specimen.eyebrow' | t }}</p>
-        <h2 class="specimen-passport__title" id="SpecimenPassport-title-{{ block.id }}">
-          {{- 'products.product.specimen.heading' | t -}}
-        </h2>
-      </div>
-    </header>
+    <h2 class="visually-hidden" id="SpecimenPassport-title-{{ block.id }}">
+      {{- 'products.product.specimen.heading' | t -}}
+    </h2>
+    <h3 class="pg__kopf">{{ 'products.product.specimen.card_plant' | t }}</h3>
+    <div class="pg pp-karte pp-karte--pflanze">
+    <p class="pp-band">{{ 'products.product.specimen.eyebrow' | t }}</p>
 
     {%- if lead != blank -%}
       <p class="specimen-passport__lead" data-testid="specimen-lead">
@@ -319,42 +326,9 @@
     {%- if spec_list.size > 0 -%}
       <p class="specimen-passport__specs" data-testid="specimen-specs">
         {%- for part in spec_list -%}
-          {{- part -}}{%- unless forloop.last %} · {% endunless -%}
+          <span class="pp-marke">{{- part -}}</span>
         {%- endfor -%}
       </p>
-    {%- endif -%}
-
-    {%- comment -%}
-      The mother plant follows the lead sentence directly, because that sentence
-      points at her: the shorter the way to "shown below", the better it holds.
-      The experience hint comes after her — it is a caveat, and a caveat placed
-      second makes the whole record read like a warning.
-    {%- endcomment -%}
-    {%- comment -%}
-      Ein Cutting hat eine Mutterpflanze, ein Saemling zwei Eltern. Es ist
-      derselbe Block, ein- oder zweimal gerendert — keine zweite Darstellung
-      daneben, die auseinanderlaufen koennte. Die Rolle steuert nur das
-      Etikett und die Herkunftszeile.
-    {%- endcomment -%}
-    {%- if hat_zwei -%}
-      {%- comment -%}
-        Die Kreuzungsschreibweise des Fachs: Mutter × Vater nebeneinander, das
-        Zeichen dazwischen. Untereinander gesetzt sah es aus wie zwei getrennte
-        Herkuenfte statt wie eine Kreuzung. Das Zeichen ist dekorativ — die
-        Etiketten tragen die Bedeutung, auch ohne Bildschirm.
-      {%- endcomment -%}
-      <div class="specimen-passport__cross" data-testid="specimen-cross">
-        {%- render 'specimen-parent', eintrag: mutter, rolle: 'mutter', thing_word: thing_word, max_fotos: 1, kurz: true -%}
-        <span class="specimen-passport__cross-sign" aria-hidden="true">&times;</span>
-        {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word, max_fotos: 1, kurz: true -%}
-      </div>
-    {%- else -%}
-      {%- if mutter != blank -%}
-        {%- render 'specimen-parent', eintrag: mutter, rolle: 'einzeln', thing_word: thing_word -%}
-      {%- endif -%}
-      {%- if vater != blank -%}
-        {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word -%}
-      {%- endif -%}
     {%- endif -%}
 
     {%- if has_lower -%}
@@ -400,6 +374,46 @@
       <p class="specimen-passport__hint" role="note" data-testid="specimen-hint">
         <strong>{{ hint_title }}</strong> {{ hint_body }}
       </p>
+    {%- endif -%}
+    </div>
+
+    {%- if eltern_da -%}
+    <h3 class="pg__kopf">{{ 'products.product.specimen.card_origin' | t }}</h3>
+    <div class="pg pp-karte pp-karte--herkunft">
+    {%- comment -%}
+      The mother plant follows the lead sentence directly, because that sentence
+      points at her: the shorter the way to "shown below", the better it holds.
+      The experience hint comes after her — it is a caveat, and a caveat placed
+      second makes the whole record read like a warning.
+    {%- endcomment -%}
+    {%- comment -%}
+      Ein Cutting hat eine Mutterpflanze, ein Saemling zwei Eltern. Es ist
+      derselbe Block, ein- oder zweimal gerendert — keine zweite Darstellung
+      daneben, die auseinanderlaufen koennte. Die Rolle steuert nur das
+      Etikett und die Herkunftszeile.
+    {%- endcomment -%}
+    {%- if hat_zwei -%}
+      {%- comment -%}
+        Die Kreuzungsschreibweise des Fachs: Mutter × Vater nebeneinander, das
+        Zeichen dazwischen. Untereinander gesetzt sah es aus wie zwei getrennte
+        Herkuenfte statt wie eine Kreuzung. Das Zeichen ist dekorativ — die
+        Etiketten tragen die Bedeutung, auch ohne Bildschirm.
+      {%- endcomment -%}
+      <div class="specimen-passport__cross" data-testid="specimen-cross">
+        {%- render 'specimen-parent', eintrag: mutter, rolle: 'mutter', thing_word: thing_word, max_fotos: 1, kurz: true -%}
+        <span class="specimen-passport__cross-sign" aria-hidden="true">&times;</span>
+        {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word, max_fotos: 1, kurz: true -%}
+      </div>
+    {%- else -%}
+      {%- if mutter != blank -%}
+        {%- render 'specimen-parent', eintrag: mutter, rolle: 'einzeln', thing_word: thing_word -%}
+      {%- endif -%}
+      {%- if vater != blank -%}
+        {%- render 'specimen-parent', eintrag: vater, rolle: 'vater', thing_word: thing_word -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    </div>
     {%- endif -%}
   </section>
 {%- endif -%}

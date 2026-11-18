@@ -392,12 +392,14 @@ const faelle = [
         continue;
       }
       if (loc === 'de') {
-        // Reihenfolge: Einstiegssatz, Mutterpflanze, Herkunft, Hinweis zuletzt.
+        // Reihenfolge seit dem 18. November (zwei Karten): Einstiegssatz, Herkunft
+        // (Zuechter, Bezogen von), Hinweis zur Erfahrung, dann die Karte "Herkunft"
+        // mit der Mutterpflanze. Der Hinweis steht damit vor der Mutterpflanze.
         const pos = s => html.indexOf(s);
         const pLead = pos('specimen-lead'), pMutter = pos('specimen-mother"'), pHint = pos('specimen-hint'), pGrid = pos('specimen-passport__grid');
         if (pMutter !== -1 && pHint !== -1) {
           checks++;
-          if (pMutter > pHint) { fails++; console.log('FEHLER ' + f.name + ': Hinweis steht vor der Mutterpflanze'); }
+          if (pMutter < pHint) { fails++; console.log('FEHLER ' + f.name + ': Mutterpflanze steht vor dem Hinweis (der Hinweis gehoert in die Karte "Diese Pflanze")'); }
         }
         if (pGrid !== -1 && pHint !== -1) {
           checks++;

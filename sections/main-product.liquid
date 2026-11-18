@@ -18,6 +18,7 @@
   {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
   {{ 'component-specimen-passport.css' | asset_url | stylesheet_tag }}
   {{ 'component-produkt-klappe.css' | asset_url | stylesheet_tag }}
+  {{ 'component-produktkarten.css' | asset_url | stylesheet_tag }}
   {{ 'component-whatsapp-contact.css' | asset_url | stylesheet_tag }}
 
   {% unless product.has_only_default_variant %}
@@ -90,7 +91,52 @@
           >
             {%- assign product_form_id = 'product-form-' | append: section.id -%}
 
+            {%- comment -%}
+              Drei Gruppen, jede eine Karte mit eigener Kopfzeile:
+                kauf     Auswahl, Zusaetze ("Dazu"), Kaufknopf, Vertrauenszeile
+                pflanze  Steckbrief und Herkunft (Block specimen)
+                wissen   Pflege, Versand, Fragen, EU als zugeklappte Zeilen
+              Bloecke ausserhalb einer Gruppe (Titel, Preis, Beschreibung ...) stehen
+              frei. Die Reihenfolge der Bloecke im Theme-Editor bestimmt, wo eine
+              Gruppe beginnt und endet: Folgen zwei Bloecke einer Gruppe
+              aufeinander, stehen sie in derselben Karte.
+            {%- endcomment -%}
+            {%- assign gruppe_offen = '' -%}
+            {%- assign dazu_gezeigt = false -%}
             {%- for block in section.blocks -%}
+              {%- assign gruppe_neu = '' -%}
+              {%- case block.type -%}
+                {%- when 'variant_picker', 'etikett', 'winterpack', 'buy_buttons' -%}
+                  {%- assign gruppe_neu = 'kauf' -%}
+                {%- when 'specimen' -%}
+                  {%- assign gruppe_neu = 'pflanze' -%}
+                {%- when 'pflege', 'versandinfo', 'fragen', 'eu_bestellung' -%}
+                  {%- assign gruppe_neu = 'wissen' -%}
+              {%- endcase -%}
+              {%- if gruppe_neu != gruppe_offen -%}
+                {%- if gruppe_offen != '' -%}
+                  </div>
+                {%- endif -%}
+                {%- if gruppe_neu == 'kauf' -%}
+                  <h3 class="pg__kopf">{{ 'products.product.gruppen.kauf' | t }}</h3>
+                  <div class="pg pg--kauf">
+                {%- elsif gruppe_neu == 'pflanze' -%}
+                  <div class="pg-hulle pg-hulle--pflanze">
+                {%- elsif gruppe_neu == 'wissen' -%}
+                  <h3 class="pg__kopf">{{ 'products.product.gruppen.wissen' | t }}</h3>
+                  <div class="pg pg--wissen">
+                {%- endif -%}
+                {%- assign gruppe_offen = gruppe_neu -%}
+              {%- endif -%}
+              {%- if block.type == 'etikett' or block.type == 'winterpack' -%}
+                {%- unless dazu_gezeigt -%}
+                  <div class="kauf-dazu">
+                    <span class="kauf-dazu__titel">{{ 'products.product.gruppen.dazu' | t }}</span>
+                    <span class="kauf-dazu__sub">{{ 'products.product.gruppen.dazu_sub' | t }}</span>
+                  </div>
+                  {%- assign dazu_gezeigt = true -%}
+                {%- endunless -%}
+              {%- endif -%}
               {%- case block.type -%}
                 {%- when '@app' -%}
                   {% render block %}
@@ -124,18 +170,13 @@
                       <span>{{ 'products.product.volume_pricing.note' | t }}</span>
                     </div>
                   {%- endif -%}
-                  {%- if cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
+                  {%- comment -%}
+                    Kein "Inkl. Steuern": Als Kleinunternehmer weist Tung keine
+                    Umsatzsteuer aus. Es bleibt der Hinweis zum Versand.
+                  {%- endcomment -%}
+                  {%- if shop.shipping_policy.body != blank -%}
                     <div class="product__tax caption rte">
-                      {%- if cart.duties_included and cart.taxes_included -%}
-                        {{ 'products.product.duties_and_taxes_included' | t }}
-                      {%- elsif cart.taxes_included -%}
-                        {{ 'products.product.taxes_included' | t }}
-                      {%- elsif cart.duties_included -%}
-                        {{ 'products.product.duties_included' | t }}
-                      {%- endif -%}
-                      {%- if shop.shipping_policy.body != blank -%}
-                        {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
-                      {%- endif -%}
+                      {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
                     </div>
                   {%- endif -%}
                   <div {{ block.shopify_attributes }}>
@@ -522,6 +563,7 @@
                     show_pickup_availability: true
                   -%}
                   {%- render 'nachzucht-vormerken', product: product -%}
+                  {%- render 'kauf-vertrauen' -%}
                 {%- when 'rating' -%}
                   {%- if product.metafields.reviews.rating.value != blank -%}
                     <div class="rating-wrapper">
@@ -713,6 +755,9 @@
                   {% render 'icon-with-text', block: block %}
               {%- endcase -%}
             {%- endfor -%}
+            {%- if gruppe_offen != '' -%}
+              </div>
+            {%- endif -%}
             <a href="{{ product.url }}" class="link product__view-details animate-arrow">
               {{ 'products.product.view_full_details' | t }}
               {{- 'icon-arrow.svg' | inline_asset_content -}}
@@ -722,6 +767,7 @@
       </div>
 
       {% render 'product-media-modal', variant_images: variant_images %}
+      {%- render 'kauf-leiste', product: product, section_id: section.id -%}
 
       {% assign popups = section.blocks | where: 'type', 'popup' %}
       {%- for block in popups -%}

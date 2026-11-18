@@ -162,6 +162,17 @@
         "add": "Add",
         "added": "Added"
       },
+      "gruppen": {
+        "kauf": "Your selection",
+        "dazu": "Add-ons",
+        "dazu_sub": "optional",
+        "wissen": "Good to know"
+      },
+      "kaufkarte": {
+        "trust_ship": "Ships Mon and Tue",
+        "trust_days": "1–3 business days",
+        "trust_frost": "No shipping in frost"
+      },
       "etikett_details": {
         "title": "The label",
         "subtitle": "Weatherproof · UV-resistant · made from recycled acrylic",
@@ -246,11 +257,11 @@
       "etikett": {
         "title": "Archive label",
         "included": "included",
-        "hint_included": "Black acrylic, laser-engraved with the genus and name of this plant. My Rakkan seal is on the back. It ships with your plant.",
-        "hint_extra": "Black acrylic, laser-engraved with the genus and name of this plant. My Rakkan seal is on the back. Add it for this plant.",
+        "hint_included": "Black acrylic, engraved with the name of the plant. Comes with the plant.",
+        "hint_extra": "Black acrylic, engraved with the name of the plant.",
         "add": "Add",
         "added": "Added",
-        "more": "See photos and buy more labels",
+        "more": "Photos and more labels",
         "property_for": "For"
       },
       "specimen": {
@@ -300,6 +311,8 @@
         "photo_open": "View photo of {{ name }} larger",
         "photo_close": "Close",
         "sourced": "Sourced from",
+        "card_plant": "This plant",
+        "card_origin": "Origin",
         "eyebrow": "Tungacea Archive Record",
         "heading": "Botanical Documentation",
         "exact_notice": "You will receive the exact specimen shown in the product images.",
@@ -539,8 +552,8 @@
       "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart.",
       "duties_and_taxes_included_shipping_at_checkout_with_policy_html": "Duties and taxes included. Discounts and <a href=\"{{ link }}\">shipping</a> calculated at checkout.",
       "duties_and_taxes_included_shipping_at_checkout_without_policy": "Duties and taxes included. Discounts and shipping calculated at checkout.",
-      "taxes_included_shipping_at_checkout_with_policy_html": "Taxes included. Discounts and <a href=\"{{ link }}\">shipping</a> calculated at checkout.",
-      "taxes_included_shipping_at_checkout_without_policy": "Taxes included. Discounts and shipping calculated at checkout.",
+      "taxes_included_shipping_at_checkout_with_policy_html": "Discounts and <a href=\"{{ link }}\">shipping</a> calculated at checkout.",
+      "taxes_included_shipping_at_checkout_without_policy": "Discounts and shipping calculated at checkout.",
       "duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html": "Duties included. Taxes, discounts and <a href=\"{{ link }}\">shipping</a> calculated at checkout.",
       "duties_included_taxes_at_checkout_shipping_at_checkout_without_policy": "Duties included. Taxes, discounts and shipping calculated at checkout.",
       "taxes_at_checkout_shipping_at_checkout_with_policy_html": "Taxes, discounts and <a href=\"{{ link }}\">shipping</a> calculated at checkout.",

@@ -153,6 +153,17 @@
         "add": "Hinzufügen",
         "added": "Hinzugefügt"
       },
+      "gruppen": {
+        "kauf": "Deine Auswahl",
+        "dazu": "Dazu",
+        "dazu_sub": "optional",
+        "wissen": "Gut zu wissen"
+      },
+      "kaufkarte": {
+        "trust_ship": "Versand Mo und Di",
+        "trust_days": "1–3 Werktage",
+        "trust_frost": "Kein Versand bei Frost"
+      },
       "etikett_details": {
         "title": "Das Etikett",
         "subtitle": "Wetterfest · UV-beständig · aus recyceltem Acryl",
@@ -237,11 +248,11 @@
       "etikett": {
         "title": "Archiv-Etikett",
         "included": "inklusive",
-        "hint_included": "Schwarzes Acryl, mit dem Laser graviert: Gattung und Name dieser Pflanze, auf der Rückseite mein Rakkan. Es kommt mit der Pflanze.",
-        "hint_extra": "Schwarzes Acryl, mit dem Laser graviert: Gattung und Name dieser Pflanze, auf der Rückseite mein Rakkan. Für diese Pflanze dazubuchen.",
+        "hint_included": "Schwarzes Acryl, mit dem Namen der Pflanze graviert. Kommt mit der Pflanze.",
+        "hint_extra": "Schwarzes Acryl, mit dem Namen der Pflanze graviert.",
         "add": "Hinzufügen",
         "added": "Hinzugefügt",
-        "more": "Bilder ansehen und mehr Etiketten kaufen",
+        "more": "Bilder und mehr Etiketten",
         "property_for": "Für"
       },
       "specimen": {
@@ -291,6 +302,8 @@
         "photo_open": "Foto von {{ name }} größer ansehen",
         "photo_close": "Schließen",
         "sourced": "Bezogen von",
+        "card_plant": "Diese Pflanze",
+        "card_origin": "Herkunft",
         "eyebrow": "Tungacea Sammlerarchiv",
         "heading": "Botanische Dokumentation",
         "exact_notice": "Du erhältst exakt das abgebildete Exemplar.",
@@ -544,8 +557,8 @@
       "new_estimated_total": "Neuer geschätzter Gesamtbetrag",
       "duties_and_taxes_included_shipping_at_checkout_with_policy_html": "Inkl. Zollgebühren und Steuern. Rabatte und <a href=\"{{ link }}\">Versand</a> werden beim Checkout berechnet.",
       "duties_and_taxes_included_shipping_at_checkout_without_policy": "Inkl. Zollgebühren und Steuern. Rabatte und Versand werden beim Checkout berechnet.",
-      "taxes_included_shipping_at_checkout_with_policy_html": "Inkl. Steuern. Rabatte und <a href=\"{{ link }}\">Versand</a> werden beim Checkout berechnet.",
-      "taxes_included_shipping_at_checkout_without_policy": "Inkl. Steuern. Rabatte und Versand werden beim Checkout berechnet.",
+      "taxes_included_shipping_at_checkout_with_policy_html": "Rabatte und <a href=\"{{ link }}\">Versand</a> werden beim Checkout berechnet.",
+      "taxes_included_shipping_at_checkout_without_policy": "Rabatte und Versand werden beim Checkout berechnet.",
       "duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html": "Inkl. Zollgebühren. Steuern, Rabatte und <a href=\"{{ link }}\">Versand</a> werden beim Checkout berechnet.",
       "duties_included_taxes_at_checkout_shipping_at_checkout_without_policy": "Inkl. Zollgebühren. Steuern, Rabatte und Versand werden beim Checkout berechnet.",
       "taxes_at_checkout_shipping_at_checkout_with_policy_html": "Steuern, Rabatte und <a href=\"{{ link }}\">Versand</a> werden beim Checkout berechnet.",
