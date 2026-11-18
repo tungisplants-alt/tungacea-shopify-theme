@@ -13,7 +13,7 @@
   --cg-line-soft: var(--tungacea-hairline-soft, rgba(236, 226, 204, 0.08));
   --cg-muted: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
   --cg-accent: rgba(var(--tungacea-accent-text, 204, 96, 112), 1);
-  --cg-ox: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  --cg-ox: rgb(var(--tungacea-accent-bright, 177, 61, 76));
   --cg-panel: #0e0e10;
   display: block;
   color: #ece2cc;

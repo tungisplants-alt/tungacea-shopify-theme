@@ -98,7 +98,7 @@
   height: 1px;
   margin-right: 1.2rem;
   vertical-align: middle;
-  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  background: rgb(var(--tungacea-accent-bright, 177, 61, 76));
 }
 
 .plant-archive__hero .plant-archive__heading {
@@ -202,7 +202,7 @@
 
 @media (hover: hover) {
   .plant-card:hover {
-    border-color: rgba(var(--tungacea-accent-bright, 168, 52, 66), 0.55);
+    border-color: rgba(var(--tungacea-accent-bright, 177, 61, 76), 0.55);
   }
 }
 
@@ -1640,7 +1640,7 @@ html.plant-search-lock {
   flex: none;
   width: 1.6rem;
   height: 1px;
-  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  background: rgb(var(--tungacea-accent-bright, 177, 61, 76));
 }
 
 /* Die Spanne der vergebenen Nummern, direkt unter der Einleitung. Die nächste

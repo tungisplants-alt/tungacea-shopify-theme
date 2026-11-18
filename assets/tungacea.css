@@ -6,7 +6,7 @@
 
 :root {
   --tungacea-accent: 150, 45, 58;        /* restrained oxblood for accents */
-  --tungacea-accent-deep: 91, 22, 33;
+  --tungacea-accent-deep: 78, 20, 30;
   --tungacea-hairline: rgba(236, 226, 204, 0.14);
   --tungacea-hairline-soft: rgba(236, 226, 204, 0.08);
   --tungacea-muted: rgba(210, 198, 173, 0.88);
@@ -699,6 +699,14 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
    ===================================================================== */
 
 :root {
+  /* Das Rot der Seite ist #6E1C28. Alle Rottoene sind Stufen davon, gleicher
+     Farbton (351 Grad), nur heller oder dunkler. Eine Stufe je Aufgabe, keine
+     Zwischentoene:
+       wine           #4E141E  dunkelste Flaeche
+       oxblood        #6E1C28  Knoepfe, Flaechen
+       accent         #962D3A  Zaehler, Auswahl, Hover
+       accent-bright  #B13D4C  Linien, Raender, Punkte auf Schwarz
+       accent-text    #CC6070  nur fuer kleine Schrift auf Schwarz (5,2:1) */
   --tungacea-black: #0a0a0a;
   --tungacea-charcoal: #151517;
   --tungacea-graphite: #1f1e22;
@@ -940,7 +948,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   width: 1.2rem;
   height: 1.2rem;
   flex: 0 0 auto;
-  color: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  color: rgb(var(--tungacea-accent-bright, 177, 61, 76));
 }
 .tungacea-lang__check .icon,
 .tungacea-lang__check svg {
@@ -951,7 +959,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 /* Active language — restrained oxblood indicator + off-white text */
 .tungacea-lang .tungacea-lang__link[aria-current='true'] {
   color: #ece2cc;
-  box-shadow: inset 2px 0 0 rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  box-shadow: inset 2px 0 0 rgb(var(--tungacea-accent-bright, 177, 61, 76));
 }
 
 /* Preferred (Deutsch / English) — subtle oxblood dot + faint label */
@@ -963,7 +971,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   margin-right: 0.7rem;
   border-radius: 50%;
   vertical-align: middle;
-  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  background: rgb(var(--tungacea-accent-bright, 177, 61, 76));
 }
 .tungacea-lang__pref {
   flex: 0 0 auto;
@@ -1280,7 +1288,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   margin-top: 1.2rem;
   padding: 0 0 0.3rem !important;
   border: 0 !important;
-  border-bottom: 1px solid rgb(var(--tungacea-accent-bright, 168, 52, 66)) !important;
+  border-bottom: 1px solid rgb(var(--tungacea-accent-bright, 177, 61, 76)) !important;
   border-radius: 0;
   background: none !important;
   box-shadow: none !important;
@@ -1404,7 +1412,7 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
 }
 
 .nachzucht__knopf:hover {
-  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  background: rgb(var(--tungacea-accent-bright, 177, 61, 76));
 }
 
 .nachzucht__knopf:focus-visible {

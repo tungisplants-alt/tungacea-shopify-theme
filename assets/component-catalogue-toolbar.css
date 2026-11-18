@@ -106,13 +106,13 @@
 .tungacea-catalogue .active-facets__button:hover .active-facets__button-inner,
 .tungacea-catalogue .active-facets__button--light:hover .active-facets__button-inner {
   box-shadow: none;
-  border-color: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  border-color: rgb(var(--tungacea-accent-bright, 177, 61, 76));
   color: rgb(var(--color-foreground));
-  background: rgba(var(--tungacea-accent-bright, 168, 52, 66), 0.08);
+  background: rgba(var(--tungacea-accent-bright, 177, 61, 76), 0.08);
 }
 
 .tungacea-catalogue .active-facets__button .svg-wrapper {
-  color: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  color: rgb(var(--tungacea-accent-bright, 177, 61, 76));
 }
 
 /* "Clear all" reads as a quiet editorial link */
@@ -170,7 +170,7 @@
   height: 1px;
   margin-right: 1.2rem;
   vertical-align: middle;
-  background: rgb(var(--tungacea-accent-bright, 168, 52, 66));
+  background: rgb(var(--tungacea-accent-bright, 177, 61, 76));
 }
 
 .tungacea-catalogue .collection-empty__message {

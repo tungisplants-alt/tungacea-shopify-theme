@@ -192,7 +192,7 @@
           "background_gradient": "",
           "text": "#ece2cc",
           "button": "#ece2cc",
-          "button_label": "#5a141e",
+          "button_label": "#4e141e",
           "secondary_button_label": "#ece2cc",
           "shadow": "#000000"
         }
@@ -253,7 +253,7 @@
             "background_gradient": "",
             "text": "#ECE2CC",
             "button": "#ECE2CC",
-            "button_label": "#5A141E",
+            "button_label": "#4e141e",
             "secondary_button_label": "#ECE2CC",
             "shadow": "#000000"
           }
