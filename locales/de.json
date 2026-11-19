@@ -262,7 +262,7 @@
         "property_labels": "Etiketten"
       },
       "etikett": {
-        "title": "Archiv-Etikett",
+        "title": "Pflanzenetikett",
         "included": "inklusive",
         "hint_included": "Schwarzes Acryl, mit dem Namen der Pflanze graviert. Kommt mit der Pflanze.",
         "hint_extra": "Schwarzes Acryl, mit dem Namen der Pflanze graviert.",
@@ -950,6 +950,11 @@
     "about_heading": "Was ich selbst gern sammle und wachsen sehe, teile ich bei Tungacea mit dir.",
     "contact_heading": "Schreib mir direkt."
   },
+  "etikett_vorschlag": {
+    "title": "Pflanzenetikett dazu?",
+    "sub": "Graviert mit dem Namen deiner Pflanze, schwarzes Acryl.",
+    "add": "Hinzufügen"
+  },
   "etikett_kopf": {
     "eyebrow": "Pflanzenetikett",
     "heading": "Dein Etikett",
@@ -964,7 +969,7 @@
     "fact_3_value": "Mit dem Laser",
     "fact_4_label": "Im Freien",
     "fact_4_value": "Wetterfest",
-    "image_alt": "Ein schwarzes Archiv-Etikett von Tungacea in der Hand, vor einem Regal mit Anthurien. Auf dem Etikett stehen das Logo, ANTHURIUM und der Name der Pflanze."
+    "image_alt": "Ein schwarzes Pflanzenetikett von Tungacea in der Hand, vor einem Regal mit Anthurien. Auf dem Etikett stehen das Logo, ANTHURIUM und der Name der Pflanze."
   },
   "page_info": {
     "glance_title": "Auf einen Blick",

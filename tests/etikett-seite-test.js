@@ -60,6 +60,9 @@ function pruefe(name, ok, info) { n++; if (!ok) { fehler++; console.log('FEHLER 
   const raw = fs.readFileSync(path.join(THEME, 'templates/product.etikett.json'), 'utf8');
   const tpl = JSON.parse(raw.slice(raw.indexOf('{\n  "sections"')));
   pruefe('Vorlage: Kopf steht vor main', tpl.order[0] === 'kopf' && tpl.order[1] === 'main' && tpl.sections.kopf.type === 'etikett-kopf');
+  const rawI = fs.readFileSync(path.join(THEME, 'templates/index.json'), 'utf8');
+  const idx = JSON.parse(rawI.slice(rawI.indexOf('\n{\n') + 1));
+  pruefe('Startseite: Etikett-Band nach dem Archiv-Teaser, mit Link zur Etikett-Seite', idx.order[idx.order.indexOf('private_archive_teaser') + 1] === 'etikett_band' && idx.sections.etikett_band.type === 'etikett-kopf' && idx.sections.etikett_band.settings.knopf_link === 'shopify://products/archiv-etikett');
   const main = tpl.sections.main;
   pruefe('Vorlage: Ablauf-Block definiert und in block_order', main.blocks.etikett_ablauf && main.block_order.includes('etikett_ablauf'));
   pruefe('Vorlage: Mindestmenge fuer eigenes Logo ist 36', main.blocks.etikett_bestellung.settings.logo_ab === 36);

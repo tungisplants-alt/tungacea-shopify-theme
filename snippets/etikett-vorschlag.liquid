@@ -1,0 +1,102 @@
+{% comment %}
+  Tungacea — Etikett-Vorschlag im Warenkorb (Schublade und Warenkorbseite).
+
+  Unter der Liste der Positionen: Fuer jede Pflanze, zu der noch kein Etikett im
+  Warenkorb liegt und die keins inklusive hat, steht eine Zeile mit dem Namen der
+  Pflanze und einem Knopf. Ein Klick legt das Pflanzenetikett (Menge 1) mit
+  dem Namen der Pflanze in den Warenkorb, genau wie der Knopf auf der Pflanzenseite
+  (assets/etikett.js): sichtbare Zeile "Fuer: <Pflanze>", verborgen _pflanze.
+
+  **Nichts ist vorausgewaehlt.** Ein kostenpflichtiger Zusatz, den der Kunde nicht
+  ausdruecklich waehlt, ist nach § 312a Abs. 3 BGB unwirksam. Es gibt nur einen
+  Knopf, der Warenkorb aendert sich erst mit dem Klick.
+
+  Wer bekommt keine Zeile:
+  - alles ohne Auswahl "Lieferumfang" (Zusatzprodukte, Winterverpackung, Etiketten)
+  - Pflanzen ab 100 € (ausser Saemlinge und gekeimte Samen): Das Etikett ist
+    inklusive. Die Grenze steht auch am Block "Archiv-Etikett" der Produktvorlage
+    (schwelle); tests/etikett-vorschlag-test.js prueft, dass beide gleich sind.
+  - Pflanzen, zu denen schon ein Etikett im Warenkorb liegt (Eigenschaft _pflanze
+    mit dem Handle der Pflanze)
+
+  Das Zusatzprodukt ist das mit dem Handle archiv-etikett (der Name im Shop ist
+  "Pflanzenetikett", der Handle bleibt, damit Links weiter gehen). Ohne dieses
+  Produkt, ohne Lagerbestand oder bei leerem Warenkorb erscheint nichts.
+{% endcomment %}
+{%- liquid
+  assign et = all_products['archiv-etikett']
+  assign variante = et.selected_or_first_available_variant
+  assign schwelle_cent = 10000
+  assign moeglich = false
+  if et != blank and variante != blank and variante.available
+    assign moeglich = true
+  endif
+
+  comment
+    Handles der Pflanzen, zu denen schon ein Etikett im Warenkorb liegt, in
+    senkrechten Strichen (so findet "contains" nur ganze Handles).
+  endcomment
+  assign belegt = ''
+  if moeglich
+    for item in cart.items
+      if item.product.handle == et.handle
+        assign belegt = belegt | append: '|' | append: item.properties._pflanze | append: '|'
+      endif
+    endfor
+  endif
+  assign anzahl = 0
+-%}
+{%- capture zeilen -%}
+  {%- if moeglich -%}
+    {%- for item in cart.items -%}
+      {%- liquid
+        assign lieferumfang = item.product.metafields.custom.lieferumfang.value | default: '' | strip
+        assign zeigen = false
+        if lieferumfang != blank and item.product.handle != et.handle and anzahl < 5
+          assign zeigen = true
+          if item.variant.price >= schwelle_cent
+            if lieferumfang != 'Sämling aus dieser Kreuzung' and lieferumfang != 'Gekeimter Samen aus dieser Kreuzung'
+              assign zeigen = false
+            endif
+          endif
+        endif
+        assign schluessel = '|' | append: item.product.handle | append: '|'
+        if zeigen
+          if belegt contains schluessel
+            assign zeigen = false
+          endif
+        endif
+      -%}
+      {%- if zeigen -%}
+        {%- assign anzahl = anzahl | plus: 1 -%}
+        {%- assign belegt = belegt | append: schluessel -%}
+        <li class="etikett-vorschlag__zeile">
+          <span class="etikett-vorschlag__name">{{ item.product.title | escape }}</span>
+          <button
+            type="button"
+            class="etikett-vorschlag__knopf"
+            data-etikett-vorschlag
+            data-variante="{{ variante.id }}"
+            data-handle="{{ item.product.handle | escape }}"
+            data-fuer="{{ item.product.title | escape }}"
+            data-schluessel-fuer="{{ 'products.product.etikett.property_for' | t | escape }}"
+            data-label-fertig="{{ 'products.product.etikett.added' | t | escape }}"
+          >
+            <span aria-hidden="true">+</span>
+            <span class="etikett-vorschlag__knopf-text">{{ variante.price | money_without_trailing_zeros | replace: '€', ' €' }} · {{ 'etikett_vorschlag.add' | t }}</span>
+          </button>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+{%- if anzahl > 0 -%}
+  {{ 'component-etikett-vorschlag.css' | asset_url | stylesheet_tag }}
+  <div class="etikett-vorschlag" data-testid="etikett-vorschlag">
+    <p class="etikett-vorschlag__kopf">{{ 'etikett_vorschlag.title' | t }}</p>
+    <p class="etikett-vorschlag__sub">{{ 'etikett_vorschlag.sub' | t }}</p>
+    <ul class="etikett-vorschlag__liste list-unstyled" role="list">{{ zeilen }}</ul>
+    <a class="etikett-vorschlag__mehr" href="{{ et.url }}">{{ 'products.product.etikett.more' | t }}</a>
+  </div>
+  <script src="{{ 'etikett-vorschlag.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

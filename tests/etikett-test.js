@@ -44,7 +44,7 @@ const block = (settings) => ({ id: 'b1', shopify_attributes: '', settings: Objec
 const faelle = [
   { name: 'Ohne Lieferumfang erscheint nichts (z. B. das Zusatzprodukt selbst)', product: pflanze(15000, null), block: block(), leer: true },
   { name: '150 € Exemplar: inklusive, kein Knopf', product: pflanze(15000, 'Dieses Exemplar'), block: block(),
-    erwartet: { de: ['Archiv-Etikett', 'inklusive', 'Schwarzes Acryl', 'etikett--inklusive'], en: ['Archive label', 'included', 'Black acrylic', 'etikett--inklusive'] },
+    erwartet: { de: ['Pflanzenetikett', 'inklusive', 'Schwarzes Acryl', 'etikett--inklusive'], en: ['Plant label', 'included', 'Black acrylic', 'etikett--inklusive'] },
     verboten: ['<button', 'data-etikett', 'etikett.js', '+ 2,50'] },
   { name: 'Genau auf der Grenze (100 €) ist inklusive', product: pflanze(10000, 'Cutting der Mutterpflanze'), block: block(), erwartet: ['etikett--inklusive'], verboten: ['<button'] },
   { name: 'Ein Cent darunter (99,99 €): zubuchbar mit Knopf und Preis', product: pflanze(9999, 'Dieses Exemplar'), block: block(),
@@ -61,15 +61,15 @@ const faelle = [
   { name: 'Eingestellte Schwelle 50 €: 60 € ist inklusive', product: pflanze(6000, 'Dieses Exemplar'), block: block({ schwelle: 50 }), erwartet: ['etikett--inklusive'] },
   { name: 'Eingestellte Schwelle 200 €: 150 € ist zubuchbar', product: pflanze(15000, 'Dieses Exemplar'), block: block({ schwelle: 200 }), erwartet: ['etikett--zubuchbar'] },
   { name: 'Eigener Text schlaegt die Uebersetzung', product: pflanze(15000, 'Dieses Exemplar'), block: block({ ueberschrift: 'Etikett', hinweis_inklusive: 'Eigener Satz.' }),
-    erwartet: ['Etikett', 'Eigener Satz.'], verboten: ['Archive label', 'Black acrylic'] },
+    erwartet: ['Etikett', 'Eigener Satz.'], verboten: ['Plant label', 'Black acrylic'] },
   { name: 'Kein Kontrollkaestchen (§ 312a Abs. 3 BGB)', product: pflanze(5000, 'Dieses Exemplar'), block: block(), erwartet: ['type="button"'], verboten: ['type="checkbox"', 'checked'] },
   { name: 'Titel und kleine Zeile fuehren auf die Seite des Etiketts (inklusive)', product: pflanze(15000, 'Dieses Exemplar'), block: block(),
     erwartet: { de: ['class="etikett__link" href="/products/archiv-etikett"', 'class="etikett__mehr" href="/products/archiv-etikett"', 'Bilder und mehr Etiketten'], en: ['etikett__link', 'Photos and more labels'] } },
   { name: 'Titel und kleine Zeile fuehren auf die Seite des Etiketts (zubuchbar)', product: pflanze(5000, 'Dieses Exemplar'), block: block(),
     erwartet: ['class="etikett__link" href="/products/archiv-etikett"', 'etikett__mehr'] },
   { name: 'Ohne Zusatzprodukt gibt es keinen Link', product: pflanze(15000, 'Dieses Exemplar'), block: block({ produkt: null }), verboten: ['<a ', 'etikett__mehr', 'etikett__link'] },
-  { name: 'Mit Bild: es wird gerendert', product: pflanze(15000, 'Dieses Exemplar'), block: block({ bild: { src: '/etikett.jpg', alt: 'Etikett' } }), erwartet: ['etikett__bild', '<img'] },
-  { name: 'Ohne Bild: kein Bildbereich', product: pflanze(15000, 'Dieses Exemplar'), block: block(), verboten: ['etikett__bild', '<img'] },
+  { name: 'Mit Bild: es wird gerendert', product: pflanze(15000, 'Dieses Exemplar'), block: block({ bild: { src: '/etikett.jpg', alt: 'Etikett' } }), erwartet: ['etikett__bild', '<img'], verboten: ['etikett__vorschau'] },
+  { name: 'Ohne Bild: kein Bildbereich', product: pflanze(15000, 'Dieses Exemplar'), block: block(), erwartet: ['etikett__vorschau', 'etikett-foto.jpg'], verboten: ['etikett__bild'] },
 ];
 
 (async () => {

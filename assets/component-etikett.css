@@ -14,12 +14,35 @@
 
 .etikett__zeile {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1.6rem;
 }
 
+.etikett__vorschau {
+  flex: 0 0 auto;
+  display: block;
+  width: 4.8rem;
+  height: 6rem;
+  border: 1px solid rgba(236, 226, 204, 0.14);
+  overflow: hidden;
+}
+
+.etikett__vorschau a,
+.etikett__vorschau img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.etikett__vorschau img {
+  object-fit: cover;
+  object-position: 50% 28%;
+}
+
 .etikett__text {
+  flex: 1 1 16rem;
   display: block;
   min-width: 0;
 }
@@ -73,6 +96,7 @@
 }
 
 .etikett__preis {
+  white-space: nowrap;
   color: var(--tungacea-muted);
   margin-left: 0.4rem;
 }
@@ -165,5 +189,13 @@
 @media screen and (max-width: 749px) {
   .etikett {
     padding: 1.2rem 0;
+  }
+}
+
+/* Am schmalen Handy steht der Knopf unter dem Text, in voller Breite. */
+@media screen and (max-width: 480px) {
+  .etikett__knopf {
+    flex: 1 1 100%;
+    justify-content: center;
   }
 }

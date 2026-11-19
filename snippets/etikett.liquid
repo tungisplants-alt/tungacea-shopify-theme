@@ -85,6 +85,14 @@
 
   <div class="etikett kauf-reihe etikett--{{ modus }} quick-add-hidden" {{ block.shopify_attributes }}>
     <div class="etikett__zeile">
+      {%- if block.settings.bild == blank -%}
+        {%- comment -%} Kleines Foto vom echten Etikett, damit man sieht, was man dazubucht. Ein eigenes Bild im Block ersetzt es und steht gross darunter. {%- endcomment -%}
+        <span class="etikett__vorschau">
+          {%- if et != blank -%}<a href="{{ et.url }}" tabindex="-1" aria-hidden="true">{%- endif -%}
+          <img src="{{ 'etikett-foto.jpg' | asset_url }}" width="48" height="60" alt="" loading="lazy">
+          {%- if et != blank -%}</a>{%- endif -%}
+        </span>
+      {%- endif -%}
       <div class="etikett__text">
         <span class="etikett__titel">
           {%- if et != blank -%}

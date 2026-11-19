@@ -38,6 +38,10 @@
   if lead == blank
     assign lead = 'etikett_kopf.lead' | t
   endif
+  assign image_laden = 'eager'
+  if section.index > 2
+    assign image_laden = 'lazy'
+  endif
   assign bild_alt = section.settings.bild.alt | default: '' | strip
   if bild_alt == blank
     assign bild_alt = 'etikett_kopf.image_alt' | t
@@ -50,7 +54,7 @@
         <p class="etikett-kopf__eyebrow">{{ eyebrow }}</p>
         <h2 class="etikett-kopf__heading">{{ heading }}</h2>
         <p class="etikett-kopf__lead">{{ lead }}</p>
-        <a class="etikett-kopf__knopf" href="#etikett-konfigurator">{{ 'etikett_kopf.cta' | t }}</a>
+        <a class="etikett-kopf__knopf" href="{{ section.settings.knopf_link | default: '#etikett-konfigurator' }}">{{ 'etikett_kopf.cta' | t }}</a>
         <dl class="etikett-kopf__fakten">
           {%- for k in (1..4) -%}
             {%- liquid
@@ -69,7 +73,7 @@
           {{
             section.settings.bild
             | image_url: width: 1100
-            | image_tag: widths: '450, 700, 900, 1100', sizes: '(min-width: 750px) 40vw, 92vw', alt: bild_alt, loading: 'eager'
+            | image_tag: widths: '450, 700, 900, 1100', sizes: '(min-width: 750px) 40vw, 92vw', alt: bild_alt, loading: image_laden
           }}
         {%- else -%}
           <img
@@ -77,7 +81,7 @@
             width="900"
             height="1125"
             alt="{{ bild_alt | escape }}"
-            loading="eager"
+            loading="{% if section.index > 2 %}lazy{% else %}eager{% endif %}"
           >
         {%- endif -%}
         <figcaption class="etikett-kopf__bildtext">{{ 'etikett_kopf.caption' | t }}</figcaption>
@@ -96,6 +100,7 @@
     { "type": "textarea", "id": "heading", "label": "Überschrift", "info": "Leer lassen: Dann wird übersetzt." },
     { "type": "textarea", "id": "lead", "label": "Satz darunter", "info": "Leer lassen: Dann wird übersetzt." },
     { "type": "image_picker", "id": "bild", "label": "Foto", "info": "Leer lassen: Das mitgelieferte Foto vom Etikett." },
+    { "type": "url", "id": "knopf_link", "label": "Link des Knopfes", "info": "Leer lassen: Springt zum Konfigurator auf der Etikett-Seite. Auf anderen Seiten hierher den Link zur Etikett-Seite setzen." },
     { "type": "color_scheme", "id": "color_scheme", "label": "Farbschema", "default": "scheme-1" },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Abstand oben", "default": 32 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Abstand unten", "default": 8 }

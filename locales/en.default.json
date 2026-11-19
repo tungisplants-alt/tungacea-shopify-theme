@@ -271,7 +271,7 @@
         "property_labels": "Labels"
       },
       "etikett": {
-        "title": "Archive label",
+        "title": "Plant label",
         "included": "included",
         "hint_included": "Black acrylic, engraved with the name of the plant. Comes with the plant.",
         "hint_extra": "Black acrylic, engraved with the name of the plant.",
@@ -950,6 +950,11 @@
     "about_heading": "What I like to collect and watch grow, I share with you at Tungacea.",
     "contact_heading": "Message me directly."
   },
+  "etikett_vorschlag": {
+    "title": "Add a plant label?",
+    "sub": "Engraved with your plant's name, black acrylic.",
+    "add": "Add"
+  },
   "etikett_kopf": {
     "eyebrow": "Plant label",
     "heading": "Your label",
@@ -964,7 +969,7 @@
     "fact_3_value": "By laser",
     "fact_4_label": "Outdoors",
     "fact_4_value": "Weatherproof",
-    "image_alt": "A black Tungacea archive label held in a hand, in front of a shelf of Anthuriums. The label shows the logo, ANTHURIUM and the plant's name."
+    "image_alt": "A black Tungacea plant label held in a hand, in front of a shelf of Anthuriums. The label shows the logo, ANTHURIUM and the plant's name."
   },
   "page_info": {
     "glance_title": "At a glance",
