@@ -71,9 +71,9 @@ async function kopf(einst, sprache = 'de', titel = 'Über Tungacea') {
   locale = sprache;
   return engine.renderFile('page-head', {}, { globals: { page: { title: titel }, section: { id: 'k', settings: { color_scheme: 'scheme-1', padding_top: 36, padding_bottom: 8, ...einst } } } });
 }
-async function karten(bloecke, einst = {}, sprache = 'de') {
+async function karten(bloecke, einst = {}, sprache = 'de', shop = {}) {
   locale = sprache;
-  return engine.renderFile('page-info', {}, { globals: { section: { id: 'i', blocks: bloecke, settings: { color_scheme: 'scheme-1', padding_top: 0, padding_bottom: 64, ...einst } } } });
+  return engine.renderFile('page-info', {}, { globals: { ...shop, section: { id: 'i', blocks: bloecke, settings: { color_scheme: 'scheme-1', padding_top: 0, padding_bottom: 64, ...einst } } } });
 }
 async function kontakt(bloecke = [], sprache = 'de', nummer = '+49 179 1627287') {
   locale = sprache;
@@ -128,6 +128,32 @@ async function kontakt(bloecke = [], sprache = 'de', nummer = '+49 179 1627287')
     pruefe('Karten: eigene Texte maskiert', /A &amp; B/.test(eig) && /&lt;b&gt;x&lt;\/b&gt;/.test(eig) && /Kurz &lt;i&gt;/.test(eig), true);
     const en = await karten([block('fakt', { name: 'Since', wert: '2024' }), block('link', { titel: 'Care guide', link: '/g' })], {}, 'en');
     pruefe('Englisch: Ueberschriften', />At a glance</.test(en) && />Next</.test(en), true);
+  }
+
+  // ---- Karten: Live-Zeilen und Links mit Zeile darunter ---------------------------
+  {
+    const laden = (n, verfuegbar) => ({
+      collections: { all: { products: Array.from({ length: n }, (_, i) => ({ available: i < verfuegbar })) } },
+      shop: { metaobjects: { mutterpflanze: { values: Array.from({ length: 14 }, () => ({})) } } },
+    });
+    const live = [
+      block('fakt', { name: 'Jetzt verfügbar', wert: '', live: 'verfuegbar', link: '/collections/all' }, 'v'),
+      block('fakt', { name: 'Im Archiv', wert: '', live: 'archiv', link: '/pages/archive' }, 'a'),
+      block('fakt', { name: 'Versand', wert: 'Mo und Di', live: 'keine' }, 's'),
+    ];
+    const h = await karten(live, {}, 'de', laden(5, 2));
+    pruefe('Live: gerade zu kaufende Pflanzen werden gezaehlt (2 von 5)', /<dt>Jetzt verfügbar<\/dt>\s*<dd>\s*<a class="page-info__fakt-link" href="\/collections\/all">\s*<span>2 Exemplare<\/span>/.test(h), true);
+    pruefe('Live: Archiv zeigt die Zahl der Eintraege (14) und ist ein Weg dorthin', /Im Archiv[\s\S]*?href="\/pages\/archive"[\s\S]*?<span>14 Pflanzen<\/span>/.test(h), true);
+    pruefe('Live: Zeile ohne Link bleibt eine gewoehnliche Zeile', /<dt>Versand<\/dt>\s*<dd>Mo und Di<\/dd>/.test(h), true);
+    pruefe('Live: Zahl 1 heisst "1 Exemplar", Zahl 0 "Gerade keine"', /<span>1 Exemplar<\/span>/.test(await karten(live, {}, 'de', laden(3, 1))) && /<span>Gerade keine<\/span>/.test(await karten(live, {}, 'de', laden(3, 0))), true);
+    pruefe('Live: nur eine Zeile mit "Live" noetig, Zeile ohne Wert und ohne Live fehlt', zaehle(await karten([block('fakt', { name: 'Leer', wert: '', live: 'keine' })], {}, 'de', laden(1, 1)), /page-info__zeile/g), 0);
+    pruefe('Ohne Live-Zeile werden weder Produkte noch Archiv angefasst (kein Fehler ohne Shop-Daten)', /Seit/.test(await karten([block('fakt', { name: 'Seit', wert: '2024', live: 'keine' })])), true);
+    const en = await karten(live, {}, 'en', laden(5, 2));
+    pruefe('Live englisch', /2 specimens/.test(en) && /14 plants/.test(en), true);
+    const q = fs.readFileSync(path.join(THEME, 'sections/page-info.liquid'), 'utf8');
+    pruefe('Zaehlung der kaufbaren Pflanzen laeuft in der Datei mit paginate (sonst nur 50)', /paginate collections\.all\.products by 250/.test(q), true);
+    const links = await karten([block('link', { titel: 'Archiv', link: '/pages/archive', beschreibung: 'Mutterpflanzen und Kreuzungen' }), block('link', { titel: 'Guide', link: '/pages/pflegeguide' })]);
+    pruefe('Link: kleine Zeile darunter nur wenn eingetragen', /page-info__beschreibung">Mutterpflanzen und Kreuzungen</.test(links) && zaehle(links, /page-info__beschreibung/g) === 1, true);
   }
 
   // ---- Kontakt-Formular ------------------------------------------------------
@@ -197,6 +223,27 @@ async function kontakt(bloecke = [], sprache = 'de', nummer = '+49 179 1627287')
         }
       }
     }
+  }
+
+  // ---- Startseite ---------------------------------------------------------------
+  {
+    const t = JSON.parse(strip(fs.readFileSync(path.join(THEME, 'templates/index.json'), 'utf8')));
+    const o = t.order;
+    pruefe('Startseite: Karte "Auf einen Blick" direkt unter dem Banner', o.indexOf('hero') >= 0 && o[o.indexOf('hero') + 1] === 'info_glance' && t.sections.info_glance.type === 'page-info', true);
+    pruefe('Startseite: Weiter-Karte steht nach dem Ueber-Teaser', o[o.indexOf('about') + 1] === 'info_next', true);
+    pruefe('Startseite: Bewertungen (Judge.me) bleiben drin', Object.values(t.sections).some((s) => s.type === 'apps' && Object.values(s.blocks || {}).some((b) => /judge-me/.test(b.type))), true);
+    const gl = Object.values(t.sections.info_glance.blocks);
+    pruefe('Startseite: zwei Live-Zeilen (verfuegbar, Archiv) mit Link', gl.some((b) => b.settings.live === 'verfuegbar' && b.settings.link) && gl.some((b) => b.settings.live === 'archiv' && b.settings.link), true);
+    const hero = t.sections.hero.blocks;
+    pruefe('Banner: zwei Knoepfe (Kollektion, Archiv), die Zeile darueber wiederholt nicht die Ankuendigungsleiste', hero.button.settings.button_label_1 === 'Kollektion entdecken' && hero.button.settings.button_label_2 === 'Archiv ansehen' && hero.button.settings.button_link_2 === 'shopify://pages/archive' && hero.caption.settings.text !== 'Seltene Anthurien. Lebende Kunst.', true);
+    const bs = t.sections.brand_statement;
+    pruefe('Zitat: auf Schwarz (Schema 1), mit deutschen Anfuehrungszeichen', bs.settings.color_scheme === 'scheme-1' && /^„.*“$/.test(bs.blocks.heading.settings.heading), true);
+    const schemaVon = (typ) => JSON.parse(fs.readFileSync(path.join(THEME, 'sections', typ + '.liquid'), 'utf8').match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/)[1]);
+    for (const id of ['info_glance', 'info_next']) {
+      const sec = t.sections[id], sch = schemaVon('page-info');
+      pruefe('Startseite ' + id + ': Einstellungen und Bloecke kennt das Schema', Object.keys(sec.settings).every((k) => sch.settings.map((x) => x.id).includes(k)) && Object.values(sec.blocks).every((b) => { const bs2 = sch.blocks.find((x) => x.type === b.type); return bs2 && Object.keys(b.settings).every((k) => bs2.settings.map((x) => x.id).includes(k)); }), true);
+    }
+    pruefe('Startseite: jeder Block in block_order existiert', ['info_glance', 'info_next'].every((id) => t.sections[id].block_order.every((b) => t.sections[id].blocks[b])), true);
   }
 
   console.log(fehler + ' Fehler in ' + geprueft + ' Pruefungen');

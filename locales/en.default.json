@@ -928,7 +928,13 @@
   },
   "page_info": {
     "glance_title": "At a glance",
-    "next_title": "Next"
+    "next_title": "Next",
+    "available_zero": "None right now",
+    "available_one": "1 specimen",
+    "available_other": "{{ anzahl }} specimens",
+    "archive_zero": "None yet",
+    "archive_one": "1 plant",
+    "archive_other": "{{ anzahl }} plants"
   },
   "care_guide": {
     "eyebrow": "Care guide",

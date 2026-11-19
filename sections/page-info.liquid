@@ -6,7 +6,12 @@
 
   Blöcke:
   - fakt: Name und Wert. Die Karte erscheint, sobald es eine Zeile mit Wert gibt.
-  - link: Titel und Link. Die Karte erscheint, sobald es einen Link mit Titel gibt.
+          Mit "Live" kommt der Wert aus dem Shop und stimmt immer:
+          verfuegbar = Zahl der Pflanzen, die gerade zu kaufen sind,
+          archiv = Zahl der Pflanzen im Archiv. Mit Link wird die Zeile zum Weg
+          dorthin (Pfeil rechts).
+  - link: Titel, Link und optional eine kleine Zeile darunter. Die Karte erscheint,
+          sobald es einen Link mit Titel gibt.
 
   Leere Überschriften werden übersetzt (page_info.*); ein eigener Text im
   Theme-Editor erscheint in beiden Sprachen gleich.
@@ -30,8 +35,46 @@
 {%- liquid
   assign hat_fakten = false
   assign hat_links = false
+  assign braucht_verfuegbar = false
+  assign braucht_archiv = false
   for block in section.blocks
-    if block.type == 'fakt' and block.settings.name != blank and block.settings.wert != blank
+    if block.type == 'fakt' and block.settings.live == 'verfuegbar'
+      assign braucht_verfuegbar = true
+    endif
+    if block.type == 'fakt' and block.settings.live == 'archiv'
+      assign braucht_archiv = true
+    endif
+  endfor
+  assign anzahl_verfuegbar = 0
+  assign anzahl_archiv = 0
+  if braucht_archiv
+    assign anzahl_archiv = shop.metaobjects.mutterpflanze.values.size
+  endif
+-%}
+{%- comment -%}
+  Die Zaehlung der kaufbaren Pflanzen laeuft in dieser Datei mit paginate: Shopify
+  liefert sonst nur 50 Produkte (gemessen, siehe sections/main-plant-archive.liquid).
+{%- endcomment -%}
+{%- if braucht_verfuegbar -%}
+  {%- paginate collections.all.products by 250 -%}
+    {%- for produkt in collections.all.products -%}
+      {%- if produkt.available -%}
+        {%- assign anzahl_verfuegbar = anzahl_verfuegbar | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endpaginate -%}
+{%- endif -%}
+{%- liquid
+  for block in section.blocks
+    assign hat_wert = false
+    if block.type == 'fakt' and block.settings.name != blank
+      if block.settings.live == 'verfuegbar' or block.settings.live == 'archiv'
+        assign hat_wert = true
+      elsif block.settings.wert != blank
+        assign hat_wert = true
+      endif
+    endif
+    if hat_wert
       assign hat_fakten = true
     endif
     if block.type == 'link' and block.settings.titel != blank and block.settings.link != blank
@@ -57,11 +100,46 @@
             <h2 class="page-info__kopf">{{ titel_fakten }}</h2>
             <dl class="page-info__karte">
               {%- for block in section.blocks -%}
-                {%- if block.type == 'fakt' and block.settings.name != blank and block.settings.wert != blank -%}
-                  <div class="page-info__zeile" {{ block.shopify_attributes }}>
-                    <dt>{{ block.settings.name | escape }}</dt>
-                    <dd>{{ block.settings.wert | escape }}</dd>
-                  </div>
+                {%- if block.type == 'fakt' and block.settings.name != blank -%}
+                  {%- liquid
+                    assign zeilen_wert = block.settings.wert | default: '' | strip
+                    case block.settings.live
+                      when 'verfuegbar'
+                        if anzahl_verfuegbar == 0
+                          assign zeilen_wert = 'page_info.available_zero' | t
+                        elsif anzahl_verfuegbar == 1
+                          assign zeilen_wert = 'page_info.available_one' | t
+                        else
+                          assign zeilen_wert = 'page_info.available_other' | t: anzahl: anzahl_verfuegbar
+                        endif
+                      when 'archiv'
+                        if anzahl_archiv == 0
+                          assign zeilen_wert = 'page_info.archive_zero' | t
+                        elsif anzahl_archiv == 1
+                          assign zeilen_wert = 'page_info.archive_one' | t
+                        else
+                          assign zeilen_wert = 'page_info.archive_other' | t: anzahl: anzahl_archiv
+                        endif
+                    endcase
+                  -%}
+                  {%- if zeilen_wert != blank -%}
+                    {%- if block.settings.link != blank -%}
+                      <div class="page-info__zeile page-info__zeile--fakt-link" {{ block.shopify_attributes }}>
+                        <dt>{{ block.settings.name | escape }}</dt>
+                        <dd>
+                          <a class="page-info__fakt-link" href="{{ block.settings.link }}">
+                            <span>{{ zeilen_wert | escape }}</span>
+                            <span class="page-info__pfeil" aria-hidden="true"></span>
+                          </a>
+                        </dd>
+                      </div>
+                    {%- else -%}
+                      <div class="page-info__zeile" {{ block.shopify_attributes }}>
+                        <dt>{{ block.settings.name | escape }}</dt>
+                        <dd>{{ zeilen_wert | escape }}</dd>
+                      </div>
+                    {%- endif -%}
+                  {%- endif -%}
                 {%- endif -%}
               {%- endfor -%}
             </dl>
@@ -75,7 +153,12 @@
                 {%- if block.type == 'link' and block.settings.titel != blank and block.settings.link != blank -%}
                   <li {{ block.shopify_attributes }}>
                     <a class="page-info__zeile page-info__zeile--link" href="{{ block.settings.link }}">
-                      <span>{{ block.settings.titel | escape }}</span>
+                      <span class="page-info__text">
+                        <span class="page-info__titel">{{ block.settings.titel | escape }}</span>
+                        {%- if block.settings.beschreibung != blank -%}
+                          <span class="page-info__beschreibung">{{ block.settings.beschreibung | escape }}</span>
+                        {%- endif -%}
+                      </span>
                       <span class="page-info__pfeil" aria-hidden="true"></span>
                     </a>
                   </li>
@@ -109,7 +192,20 @@
       "settings": [
         { "type": "paragraph", "content": "Eine Zeile in der Karte „Auf einen Blick“. Ohne Wert erscheint sie nicht." },
         { "type": "text", "id": "name", "label": "Name", "info": "Zum Beispiel: Seit" },
-        { "type": "text", "id": "wert", "label": "Wert", "info": "Zum Beispiel: 2024" }
+        { "type": "text", "id": "wert", "label": "Wert", "info": "Zum Beispiel: 2024. Bei „Live“ unten leer lassen." },
+        {
+          "type": "select",
+          "id": "live",
+          "label": "Live",
+          "info": "Der Wert kommt aus dem Shop und stimmt immer. Ersetzt das Feld Wert.",
+          "options": [
+            { "value": "keine", "label": "Nein, mein Wert" },
+            { "value": "verfuegbar", "label": "Pflanzen, die gerade zu kaufen sind" },
+            { "value": "archiv", "label": "Pflanzen im Archiv" }
+          ],
+          "default": "keine"
+        },
+        { "type": "url", "id": "link", "label": "Link", "info": "Optional. Macht die Zeile zum Weg mit Pfeil." }
       ]
     },
     {
@@ -118,7 +214,8 @@
       "settings": [
         { "type": "paragraph", "content": "Eine Zeile in der Karte „Weiter“. Ohne Link erscheint sie nicht." },
         { "type": "text", "id": "titel", "label": "Titel" },
-        { "type": "url", "id": "link", "label": "Link" }
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "beschreibung", "label": "Zeile darunter", "info": "Optional, klein unter dem Titel." }
       ]
     }
   ],

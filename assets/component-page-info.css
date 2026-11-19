@@ -93,3 +93,53 @@
   outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
   outline-offset: -2px;
 }
+
+/* Zeile mit Link, rechts mit Pfeil (Live-Zeilen: "Jetzt verfuegbar 6 Exemplare >") */
+.page-info__zeile--fakt-link dd {
+  flex: 1;
+  min-width: 0;
+}
+
+.page-info__fakt-link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  color: #ece2cc;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Die ganze Zeile ist antippbar, nicht nur der Text. */
+.page-info__fakt-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+@media (hover: hover) {
+  .page-info__fakt-link:hover span:first-child {
+    text-decoration: underline;
+    text-decoration-color: rgb(var(--tungacea-accent-bright, 177, 61, 76));
+    text-underline-offset: 0.4rem;
+  }
+}
+
+.page-info__fakt-link:focus-visible {
+  outline: 2px solid rgba(var(--tungacea-accent-text, 204, 96, 112), 0.9);
+  outline-offset: -2px;
+}
+
+/* Link mit kleiner Zeile darunter (Karte "Weiter") */
+.page-info__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.page-info__beschreibung {
+  font-size: 1.3rem;
+  line-height: 1.4;
+  color: var(--tungacea-muted, rgba(210, 198, 173, 0.88));
+}

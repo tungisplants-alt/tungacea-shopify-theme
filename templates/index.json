@@ -15,7 +15,7 @@
         "caption": {
           "type": "text",
           "settings": {
-            "text": "Seltene Anthurien. Lebende Kunst.",
+            "text": "Von mir kultiviert und aus Deutschland versendet",
             "text_style": "caption-with-letter-spacing"
           }
         },
@@ -32,9 +32,9 @@
             "button_label_1": "Kollektion entdecken",
             "button_link_1": "shopify://collections/all",
             "button_style_secondary_1": false,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "button_label_2": "Archiv ansehen",
+            "button_link_2": "shopify://pages/archive",
+            "button_style_secondary_2": true
           }
         }
       },
@@ -99,7 +99,7 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "\"Was ich selbst gern sammle und wachsen sehe, teile ich bei Tungacea mit dir.\"",
+            "heading": "„Was ich selbst gern sammle und wachsen sehe, teile ich bei Tungacea mit dir.“",
             "heading_size": "h1"
           }
         }
@@ -111,12 +111,12 @@
       "settings": {
         "desktop_content_position": "left",
         "content_alignment": "left",
-        "color_scheme": "scheme-4",
+        "color_scheme": "scheme-1",
         "full_width": true,
         "archive_page": "",
         "archive_button_label": "",
-        "padding_top": 88,
-        "padding_bottom": 88
+        "padding_top": 72,
+        "padding_bottom": 72
       }
     },
     "private_archive_teaser": {
@@ -243,14 +243,114 @@
         "padding_top": 88,
         "padding_bottom": 88
       }
+    },
+    "info_glance": {
+      "type": "page-info",
+      "blocks": {
+        "fakt_verfuegbar": {
+          "type": "fakt",
+          "settings": {
+            "name": "Jetzt verfügbar",
+            "wert": "",
+            "live": "verfuegbar",
+            "link": "shopify://collections/all"
+          }
+        },
+        "fakt_archiv": {
+          "type": "fakt",
+          "settings": {
+            "name": "Im Archiv",
+            "wert": "",
+            "live": "archiv",
+            "link": "shopify://pages/archive"
+          }
+        },
+        "fakt_versand": {
+          "type": "fakt",
+          "settings": {
+            "name": "Versand",
+            "wert": "Mo und Di · 1–3 Werktage",
+            "live": "keine"
+          }
+        },
+        "fakt_frost": {
+          "type": "fakt",
+          "settings": {
+            "name": "Bei Frost",
+            "wert": "Kein Versand",
+            "live": "keine"
+          }
+        },
+        "fakt_packen": {
+          "type": "fakt",
+          "settings": {
+            "name": "Verpackt",
+            "wert": "Jede Bestellung von mir persönlich",
+            "live": "keine"
+          }
+        }
+      },
+      "block_order": [
+        "fakt_verfuegbar",
+        "fakt_archiv",
+        "fakt_versand",
+        "fakt_frost",
+        "fakt_packen"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 8,
+        "padding_bottom": 0
+      }
+    },
+    "info_next": {
+      "type": "page-info",
+      "blocks": {
+        "link_kollektion": {
+          "type": "link",
+          "settings": {
+            "titel": "Kollektion",
+            "link": "shopify://collections/all",
+            "beschreibung": "Was jetzt verfügbar ist"
+          }
+        },
+        "link_archiv": {
+          "type": "link",
+          "settings": {
+            "titel": "Archiv",
+            "link": "shopify://pages/archive",
+            "beschreibung": "Mutterpflanzen und Kreuzungen"
+          }
+        },
+        "link_guide": {
+          "type": "link",
+          "settings": {
+            "titel": "Pflegeguide",
+            "link": "shopify://pages/pflegeguide",
+            "beschreibung": "So pflege ich meine Anthurien"
+          }
+        }
+      },
+      "block_order": [
+        "link_kollektion",
+        "link_archiv",
+        "link_guide"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
     "hero",
+    "info_glance",
     "current_drop",
     "brand_statement",
     "private_archive_teaser",
     "about",
+    "info_next",
     "17909307571e713dc2",
     "collector_access"
   ]

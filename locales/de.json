@@ -928,7 +928,13 @@
   },
   "page_info": {
     "glance_title": "Auf einen Blick",
-    "next_title": "Weiter"
+    "next_title": "Weiter",
+    "available_zero": "Gerade keine",
+    "available_one": "1 Exemplar",
+    "available_other": "{{ anzahl }} Exemplare",
+    "archive_zero": "Noch keine",
+    "archive_one": "1 Pflanze",
+    "archive_other": "{{ anzahl }} Pflanzen"
   },
   "care_guide": {
     "eyebrow": "Pflegeguide",
