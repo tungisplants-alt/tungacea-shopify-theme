@@ -279,7 +279,7 @@ async function kontakt(bloecke = [], sprache = 'de', nummer = '+49 179 1627287')
     pruefe('Startseite: Weiter-Karte steht nach dem Ueber-Teaser', o[o.indexOf('about') + 1] === 'info_next', true);
     pruefe('Startseite: Bewertungen (Judge.me) bleiben drin', Object.values(t.sections).some((s) => s.type === 'apps' && Object.values(s.blocks || {}).some((b) => /judge-me/.test(b.type))), true);
     const hero = t.sections.hero.blocks;
-    pruefe('Banner: zwei Knoepfe (Kollektion, Archiv), die Zeile darueber wiederholt nicht die Ankuendigungsleiste', hero.button.settings.button_label_1 === 'Kollektion entdecken' && hero.button.settings.button_label_2 === 'Archiv ansehen' && hero.button.settings.button_link_2 === 'shopify://pages/archive' && hero.caption.settings.text !== 'Seltene Anthurien. Lebende Kunst.', true);
+    pruefe('Banner: zwei Knoepfe (Kollektion, Archiv), die Zeile darueber ist der Slogan (er steht nicht mehr in der Ankuendigungsleiste)', hero.button.settings.button_label_1 === 'Kollektion entdecken' && hero.button.settings.button_label_2 === 'Archiv ansehen' && hero.button.settings.button_link_2 === 'shopify://pages/archive' && hero.caption.settings.text === 'Seltene Anthurien. Lebende Kunst.', true);
     const bs = t.sections.brand_statement;
     pruefe('Zitat: auf Schwarz (Schema 1), mit deutschen Anfuehrungszeichen', bs.settings.color_scheme === 'scheme-1' && /^„.*“$/.test(bs.blocks.heading.settings.heading), true);
     const schemaVon = (typ) => JSON.parse(fs.readFileSync(path.join(THEME, 'sections', typ + '.liquid'), 'utf8').match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/)[1]);
