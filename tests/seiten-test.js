@@ -275,21 +275,19 @@ async function kontakt(bloecke = [], sprache = 'de', nummer = '+49 179 1627287')
   {
     const t = JSON.parse(strip(fs.readFileSync(path.join(THEME, 'templates/index.json'), 'utf8')));
     const o = t.order;
-    pruefe('Startseite: Karte "Auf einen Blick" direkt unter dem Banner', o.indexOf('hero') >= 0 && o[o.indexOf('hero') + 1] === 'info_glance' && t.sections.info_glance.type === 'page-info', true);
+    pruefe('Startseite: keine Karte "Auf einen Blick" mehr, direkt nach dem Banner kommt die Aktuelle Auswahl', !o.includes('info_glance') && !t.sections.info_glance && o[o.indexOf('hero') + 1] === 'current_drop', true);
     pruefe('Startseite: Weiter-Karte steht nach dem Ueber-Teaser', o[o.indexOf('about') + 1] === 'info_next', true);
     pruefe('Startseite: Bewertungen (Judge.me) bleiben drin', Object.values(t.sections).some((s) => s.type === 'apps' && Object.values(s.blocks || {}).some((b) => /judge-me/.test(b.type))), true);
-    const gl = Object.values(t.sections.info_glance.blocks);
-    pruefe('Startseite: zwei Live-Zeilen (verfuegbar, Archiv) mit Link', gl.some((b) => b.settings.live === 'verfuegbar' && b.settings.link) && gl.some((b) => b.settings.live === 'archiv' && b.settings.link), true);
     const hero = t.sections.hero.blocks;
     pruefe('Banner: zwei Knoepfe (Kollektion, Archiv), die Zeile darueber wiederholt nicht die Ankuendigungsleiste', hero.button.settings.button_label_1 === 'Kollektion entdecken' && hero.button.settings.button_label_2 === 'Archiv ansehen' && hero.button.settings.button_link_2 === 'shopify://pages/archive' && hero.caption.settings.text !== 'Seltene Anthurien. Lebende Kunst.', true);
     const bs = t.sections.brand_statement;
     pruefe('Zitat: auf Schwarz (Schema 1), mit deutschen Anfuehrungszeichen', bs.settings.color_scheme === 'scheme-1' && /^„.*“$/.test(bs.blocks.heading.settings.heading), true);
     const schemaVon = (typ) => JSON.parse(fs.readFileSync(path.join(THEME, 'sections', typ + '.liquid'), 'utf8').match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/)[1]);
-    for (const id of ['info_glance', 'info_next']) {
+    for (const id of ['info_next']) {
       const sec = t.sections[id], sch = schemaVon('page-info');
       pruefe('Startseite ' + id + ': Einstellungen und Bloecke kennt das Schema', Object.keys(sec.settings).every((k) => sch.settings.map((x) => x.id).includes(k)) && Object.values(sec.blocks).every((b) => { const bs2 = sch.blocks.find((x) => x.type === b.type); return bs2 && Object.keys(b.settings).every((k) => bs2.settings.map((x) => x.id).includes(k)); }), true);
     }
-    pruefe('Startseite: jeder Block in block_order existiert', ['info_glance', 'info_next'].every((id) => t.sections[id].block_order.every((b) => t.sections[id].blocks[b])), true);
+    pruefe('Startseite: jeder Block in block_order existiert', ['info_next'].every((id) => t.sections[id].block_order.every((b) => t.sections[id].blocks[b])), true);
   }
 
   console.log(fehler + ' Fehler in ' + geprueft + ' Pruefungen');

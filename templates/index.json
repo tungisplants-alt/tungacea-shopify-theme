@@ -244,65 +244,6 @@
         "padding_bottom": 88
       }
     },
-    "info_glance": {
-      "type": "page-info",
-      "blocks": {
-        "fakt_verfuegbar": {
-          "type": "fakt",
-          "settings": {
-            "name": "Jetzt verfügbar",
-            "wert": "",
-            "live": "verfuegbar",
-            "link": "shopify://collections/all"
-          }
-        },
-        "fakt_archiv": {
-          "type": "fakt",
-          "settings": {
-            "name": "Im Archiv",
-            "wert": "",
-            "live": "archiv",
-            "link": "shopify://pages/archive"
-          }
-        },
-        "fakt_versand": {
-          "type": "fakt",
-          "settings": {
-            "name": "Versand",
-            "wert": "Mo und Di · 1–3 Werktage",
-            "live": "keine"
-          }
-        },
-        "fakt_frost": {
-          "type": "fakt",
-          "settings": {
-            "name": "Bei Frost",
-            "wert": "Kein Versand",
-            "live": "keine"
-          }
-        },
-        "fakt_packen": {
-          "type": "fakt",
-          "settings": {
-            "name": "Verpackt",
-            "wert": "Jede Bestellung von mir persönlich",
-            "live": "keine"
-          }
-        }
-      },
-      "block_order": [
-        "fakt_verfuegbar",
-        "fakt_archiv",
-        "fakt_versand",
-        "fakt_frost",
-        "fakt_packen"
-      ],
-      "settings": {
-        "color_scheme": "scheme-1",
-        "padding_top": 8,
-        "padding_bottom": 0
-      }
-    },
     "info_next": {
       "type": "page-info",
       "blocks": {
@@ -345,7 +286,6 @@
   },
   "order": [
     "hero",
-    "info_glance",
     "current_drop",
     "brand_statement",
     "private_archive_teaser",
