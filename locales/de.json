@@ -952,8 +952,9 @@
   },
   "etikett_vorschlag": {
     "title": "Pflanzenetikett dazu?",
-    "sub": "Graviert mit dem Namen deiner Pflanze, schwarzes Acryl.",
-    "add": "Hinzufügen"
+    "sub": "Graviert mit dem Namen deiner Pflanze, schwarzes Acryl. Die Menge änderst du im Warenkorb.",
+    "add": "Hinzufügen",
+    "add_many": "{{ menge }} × {{ preis }} · Hinzufügen"
   },
   "etikett_kopf": {
     "eyebrow": "Pflanzenetikett",

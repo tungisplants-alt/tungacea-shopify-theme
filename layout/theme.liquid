@@ -439,5 +439,8 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+
+    {%- comment -%} Knopf im Etikett-Vorschlag des Warenkorbs: immer laden, die Schublade zeichnet sich neu, ohne Skripte auszufuehren. {%- endcomment -%}
+    <script src="{{ 'etikett-vorschlag.js' | asset_url }}" defer="defer"></script>
   </body>
 </html>

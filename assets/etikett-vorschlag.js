@@ -2,7 +2,7 @@
  * Etikett-Vorschlag im Warenkorb (snippets/etikett-vorschlag.liquid).
  *
  * Ein Klick legt das Pflanzenetikett mit dem Namen der Pflanze in den
- * Warenkorb, wie der Knopf auf der Pflanzenseite (assets/etikett.js): sichtbare
+ * Warenkorb (so viele, wie die Pflanze Stueck hat, siehe data-menge), wie der Knopf auf der Pflanzenseite (assets/etikett.js): sichtbare
  * Zeile "Für: <Pflanze>", verborgen _pflanze = Handle der Pflanze.
  *
  * Der Warenkorb wird danach neu gezeichnet: in der Schublade ueber die
@@ -34,7 +34,8 @@
     if (knopf.dataset.fuer) eigenschaften[schluessel] = knopf.dataset.fuer;
 
     var d = schublade();
-    var koerper = { items: [{ id: id, quantity: 1, properties: eigenschaften }] };
+    var menge = Math.max(1, Math.min(99, Number(knopf.dataset.menge) || 1));
+    var koerper = { items: [{ id: id, quantity: menge, properties: eigenschaften }] };
     if (d && typeof d.getSectionsToRender === 'function') {
       try {
         koerper.sections = d.getSectionsToRender().map(function (a) { return a.id; });

@@ -952,8 +952,9 @@
   },
   "etikett_vorschlag": {
     "title": "Add a plant label?",
-    "sub": "Engraved with your plant's name, black acrylic.",
-    "add": "Add"
+    "sub": "Engraved with your plant's name, black acrylic. You can change the quantity in the cart.",
+    "add": "Add",
+    "add_many": "{{ menge }} × {{ preis }} · Add"
   },
   "etikett_kopf": {
     "eyebrow": "Plant label",

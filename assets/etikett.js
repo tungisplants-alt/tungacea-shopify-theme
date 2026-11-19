@@ -81,7 +81,10 @@
     var schluessel = knopf.dataset.schluesselFuer || 'Für';
     if (knopf.dataset.fuer) eigenschaften[schluessel] = knopf.dataset.fuer;
 
-    var koerper = { items: [{ id: id, quantity: 1, properties: eigenschaften }] };
+    // So viele Etiketten, wie die Pflanze Stueck gewaehlt ist (Mengenfeld der Seite).
+    var mengenFeld = document.querySelector('input.quantity__input[name="quantity"]');
+    var menge = Math.max(1, Math.min(99, Number(mengenFeld && mengenFeld.value) || 1));
+    var koerper = { items: [{ id: id, quantity: menge, properties: eigenschaften }] };
     var abschnitte = abschnitteBestellen();
     if (abschnitte) {
       koerper.sections = abschnitte;

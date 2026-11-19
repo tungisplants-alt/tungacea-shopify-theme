@@ -16,8 +16,19 @@
   - Pflanzen ab 100 € (ausser Saemlinge und gekeimte Samen): Das Etikett ist
     inklusive. Die Grenze steht auch am Block "Archiv-Etikett" der Produktvorlage
     (schwelle); tests/etikett-vorschlag-test.js prueft, dass beide gleich sind.
-  - Pflanzen, zu denen schon ein Etikett im Warenkorb liegt (Eigenschaft _pflanze
-    mit dem Handle der Pflanze)
+  - Pflanzen, zu denen schon genug Etiketten im Warenkorb liegen (Eigenschaft
+    _pflanze mit dem Handle der Pflanze)
+
+  **Menge:** Eine Zeile je Pflanze, aber so viele Etiketten, wie die Pflanze im
+  Warenkorb hat, abzueglich der Etiketten, die schon dazu liegen. Wer vier Samen
+  kauft, bekommt "4 × 2,50 €" angeboten, ein Klick legt vier Etiketten mit dem
+  Namen der Pflanze hinein. Zu viele? Die Menge der Etikett-Position laesst sich
+  im Warenkorb aendern.
+
+  Das Skript (assets/etikett-vorschlag.js) steht in layout/theme.liquid, nicht
+  hier: Die Schublade wird nach jeder Aenderung neu gezeichnet, Skripte darin
+  laufen nicht. Wurde die Seite mit leerem Warenkorb geladen, haette der Knopf
+  sonst nie ein Skript bekommen.
 
   Das Zusatzprodukt ist das mit dem Handle archiv-etikett (der Name im Shop ist
   "Pflanzenetikett", der Handle bleibt, damit Links weiter gehen). Ohne dieses
@@ -32,19 +43,8 @@
     assign moeglich = true
   endif
 
-  comment
-    Handles der Pflanzen, zu denen schon ein Etikett im Warenkorb liegt, in
-    senkrechten Strichen (so findet "contains" nur ganze Handles).
-  endcomment
-  assign belegt = ''
-  if moeglich
-    for item in cart.items
-      if item.product.handle == et.handle
-        assign belegt = belegt | append: '|' | append: item.properties._pflanze | append: '|'
-      endif
-    endfor
-  endif
   assign anzahl = 0
+  assign gezeigt = ''
 -%}
 {%- capture zeilen -%}
   {%- if moeglich -%}
@@ -61,15 +61,34 @@
           endif
         endif
         assign schluessel = '|' | append: item.product.handle | append: '|'
+        assign menge = 0
         if zeigen
-          if belegt contains schluessel
+          if gezeigt contains schluessel
             assign zeigen = false
+          else
+            comment
+              So viele Etiketten, wie die Pflanze Stueck im Warenkorb hat (alle
+              Positionen), minus die, die schon fuer sie im Warenkorb liegen.
+            endcomment
+            assign pflanzen_menge = 0
+            assign etiketten_menge = 0
+            for x in cart.items
+              if x.product.handle == item.product.handle
+                assign pflanzen_menge = pflanzen_menge | plus: x.quantity
+              elsif x.product.handle == et.handle and x.properties._pflanze == item.product.handle
+                assign etiketten_menge = etiketten_menge | plus: x.quantity
+              endif
+            endfor
+            assign menge = pflanzen_menge | minus: etiketten_menge
+            if menge < 1
+              assign zeigen = false
+            endif
           endif
         endif
       -%}
       {%- if zeigen -%}
         {%- assign anzahl = anzahl | plus: 1 -%}
-        {%- assign belegt = belegt | append: schluessel -%}
+        {%- assign gezeigt = gezeigt | append: schluessel -%}
         <li class="etikett-vorschlag__zeile">
           <span class="etikett-vorschlag__name">{{ item.product.title | escape }}</span>
           <button
@@ -77,13 +96,14 @@
             class="etikett-vorschlag__knopf"
             data-etikett-vorschlag
             data-variante="{{ variante.id }}"
+            data-menge="{{ menge }}"
             data-handle="{{ item.product.handle | escape }}"
             data-fuer="{{ item.product.title | escape }}"
             data-schluessel-fuer="{{ 'products.product.etikett.property_for' | t | escape }}"
             data-label-fertig="{{ 'products.product.etikett.added' | t | escape }}"
           >
             <span aria-hidden="true">+</span>
-            <span class="etikett-vorschlag__knopf-text">{{ variante.price | money_without_trailing_zeros | replace: '€', ' €' }} · {{ 'etikett_vorschlag.add' | t }}</span>
+            <span class="etikett-vorschlag__knopf-text">{%- assign preis_text = variante.price | money_without_trailing_zeros | replace: '€', ' €' -%}{%- if menge > 1 -%}{{ 'etikett_vorschlag.add_many' | t: menge: menge, preis: preis_text }}{%- else -%}{{ preis_text }} · {{ 'etikett_vorschlag.add' | t }}{%- endif -%}</span>
           </button>
         </li>
       {%- endif -%}
@@ -98,5 +118,4 @@
     <ul class="etikett-vorschlag__liste list-unstyled" role="list">{{ zeilen }}</ul>
     <a class="etikett-vorschlag__mehr" href="{{ et.url }}">{{ 'products.product.etikett.more' | t }}</a>
   </div>
-  <script src="{{ 'etikett-vorschlag.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
