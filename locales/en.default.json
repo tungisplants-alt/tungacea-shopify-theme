@@ -890,7 +890,11 @@
     "announcement_live_zero": "No specimens available right now",
     "announcement_live_one": "1 specimen available",
     "announcement_live_other": "{{ anzahl }} specimens available",
-    "announcement_live_more": "{{ anzahl }}+ specimens available"
+    "announcement_live_more": "{{ anzahl }}+ specimens available",
+    "announcement_shipping_days": "Shipping Mon and Tue · 1–3 working days",
+    "announcement_shipping_area": "Shipping in Germany · EU on request",
+    "announcement_frost": "No shipping in frost or heat",
+    "announcement_packed": "Every order packed personally"
   },
   "seo": {
     "home_description": "Rare Anthuriums, clones of my own mother plants, and my own crosses—grown, photographed, and carefully shipped by me.",

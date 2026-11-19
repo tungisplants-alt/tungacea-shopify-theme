@@ -17,23 +17,59 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
+            "art": "live",
             "text": "SELTENE ANTHURIEN · LEBENDE KUNST",
+            "link": ""
+          }
+        },
+        "announcement-bar-1": {
+          "type": "announcement",
+          "settings": {
+            "art": "versand_tage",
+            "text": "",
+            "link": ""
+          }
+        },
+        "announcement-bar-2": {
+          "type": "announcement",
+          "settings": {
+            "art": "versand_gebiet",
+            "text": "",
+            "link": ""
+          }
+        },
+        "announcement-bar-3": {
+          "type": "announcement",
+          "settings": {
+            "art": "frost",
+            "text": "",
+            "link": ""
+          }
+        },
+        "announcement-bar-4": {
+          "type": "announcement",
+          "settings": {
+            "art": "verpackt",
+            "text": "",
             "link": ""
           }
         }
       },
       "block_order": [
-        "announcement-bar-0"
+        "announcement-bar-0",
+        "announcement-bar-1",
+        "announcement-bar-2",
+        "announcement-bar-3",
+        "announcement-bar-4"
       ],
       "settings": {
-        "auto_rotate": false,
+        "auto_rotate": true,
         "change_slides_speed": 5,
         "color_scheme": "scheme-1",
         "show_line_separator": true,
         "show_social": false,
         "enable_country_selector": false,
-        "enable_language_selector": false,
-        "live_verfuegbar": true
+        "enable_language_selector": false
       }
     },
     "header": {

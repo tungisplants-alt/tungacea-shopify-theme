@@ -1,0 +1,65 @@
+{% comment %}
+  Tungacea — der Inhalt einer Zeile der Ankündigungsleiste.
+
+  Jede Zeile hat eine Art. Die festen Arten kommen aus den Sprachdateien
+  (brand.announcement_*), Deutsch und Englisch getrennt, und stimmen mit den
+  Angaben auf der Produktseite (Versand & Lieferung, Bestellung aus der EU)
+  überein. Dort ändern, wenn sich etwas ändert.
+
+  - live:            Zahl der Pflanzen, die gerade zu kaufen sind (siehe Bereich)
+  - versand_tage:    Versand Mo und Di, 1–3 Werktage; führt zu den Versandinfos
+  - versand_gebiet:  Versand in Deutschland, EU auf Anfrage; führt zum Kontakt
+  - frost:           Kein Versand bei Frost oder großer Hitze
+  - verpackt:        Jede Bestellung persönlich verpackt
+  - slogan:          Seltene Anthurien · lebende Kunst
+  - frei:            eigener Text und eigener Link (nur eine Sprache)
+
+  Annahmen:
+  - block: {Object} der Block "announcement" (Pflicht)
+  - live_text, live_link: {String} fertige Live-Zeile und ihr Link (nur für "live")
+{% endcomment %}
+{%- liquid
+  assign z_art = block.settings.art | default: 'frei'
+  assign z_text = ''
+  assign z_link = block.settings.link
+  case z_art
+    when 'live'
+      assign z_text = live_text
+      assign z_link = live_link
+    when 'versand_tage'
+      assign z_text = 'brand.announcement_shipping_days' | t | upcase
+      if z_link == blank
+        assign z_link = shop.shipping_policy.url
+      endif
+    when 'versand_gebiet'
+      assign z_text = 'brand.announcement_shipping_area' | t | upcase
+      if z_link == blank
+        assign z_link = pages['contact'].url
+      endif
+    when 'frost'
+      assign z_text = 'brand.announcement_frost' | t | upcase
+    when 'verpackt'
+      assign z_text = 'brand.announcement_packed' | t | upcase
+    when 'slogan'
+      assign z_text = 'brand.strapline' | t | upcase
+    else
+      assign z_text = block.settings.text
+  endcase
+-%}
+{%- if z_text != blank -%}
+  {%- if z_link != blank -%}
+    <a
+      href="{{ z_link }}"
+      class="announcement-bar__link link link--text focus-inset animate-arrow"
+    >
+  {%- endif -%}
+  <p class="announcement-bar__message h5">
+    <span>{{ z_text | escape }}</span>
+    {%- if z_link != blank -%}
+      {{- 'icon-arrow.svg' | inline_asset_content -}}
+    {%- endif -%}
+  </p>
+  {%- if z_link != blank -%}
+    </a>
+  {%- endif -%}
+{%- endif -%}

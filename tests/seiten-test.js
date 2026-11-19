@@ -79,6 +79,7 @@ async function leiste(blocks, einst, produkte, sprache = 'de', gesamt) {
   locale = sprache;
   return engine.renderFile('announcement-bar', {}, { globals: {
     settings: {}, routes: { all_products_collection_url: '/collections/all' },
+    shop: { shipping_policy: { url: '/policies/shipping-policy' } }, pages: { contact: { url: '/pages/contact' } },
     collections: { all: { products: produkte, products_count: gesamt === undefined ? produkte.length : gesamt } },
     section: { id: 'a', blocks, settings: { color_scheme: 'scheme-1', show_social: false, auto_rotate: false, change_slides_speed: 5, show_line_separator: true, enable_country_selector: false, enable_language_selector: false, ...einst } },
   } });
@@ -164,27 +165,39 @@ async function kontakt(bloecke = [], sprache = 'de', nummer = '+49 179 1627287')
     pruefe('Link: kleine Zeile darunter nur wenn eingetragen', /page-info__beschreibung">Mutterpflanzen und Kreuzungen</.test(links) && zaehle(links, /page-info__beschreibung/g) === 1, true);
   }
 
-  // ---- Ankuendigungsleiste: Live-Zahl statt Slogan ----------------------------------
+  // ---- Ankuendigungsleiste: wechselnde Informationen -------------------------------
   {
     const prod = (n, v) => Array.from({ length: n }, (_, i) => ({ available: i < v }));
-    const b0 = [block('announcement', { text: 'egal', link: '' }, 'announcement-bar-0')];
-    const an = await leiste(b0, { live_verfuegbar: true }, prod(6, 5));
-    pruefe('Leiste live: "5 EXEMPLARE VERFÜGBAR" statt des Slogans', /<span>5 EXEMPLARE VERFÜGBAR<\/span>/.test(an) && !/LEBENDE KUNST/.test(an), true);
-    pruefe('Leiste live: die Zeile fuehrt zur Kollektion', /href="\/collections\/all"/.test(an), true);
-    const aus = await leiste(b0, { live_verfuegbar: false }, prod(6, 5));
-    pruefe('Leiste ohne Schalter: der Slogan bleibt, kein Link', /SELTENE ANTHURIEN · LEBENDE KUNST/.test(aus) && !/<a /.test(aus), true);
-    pruefe('Leiste live: 1 = "1 EXEMPLAR", 0 = "GERADE KEINE EXEMPLARE VERFÜGBAR"', /<span>1 EXEMPLAR VERFÜGBAR<\/span>/.test(await leiste(b0, { live_verfuegbar: true }, prod(4, 1))) && /<span>GERADE KEINE EXEMPLARE VERFÜGBAR<\/span>/.test(await leiste(b0, { live_verfuegbar: true }, prod(4, 0))), true);
-    pruefe('Leiste live: mehr als 50 Produkte, die Zahl steht mit Plus', /<span>12\+ EXEMPLARE VERFÜGBAR<\/span>/.test(await leiste(b0, { live_verfuegbar: true }, prod(50, 12), 'de', 80)), true);
-    const slider = await leiste([...b0, block('announcement', { text: 'Zweite Zeile', link: '' }, 'zwei')], { live_verfuegbar: true }, prod(6, 5));
-    pruefe('Leiste mit mehreren Zeilen: nur die erste ist live, die zweite bleibt', /5 EXEMPLARE VERFÜGBAR/.test(slider) && /Zweite Zeile/.test(slider), true);
-    pruefe('Leiste live englisch', /<span>5 SPECIMENS AVAILABLE<\/span>/.test(await leiste(b0, { live_verfuegbar: true }, prod(6, 5), 'en')), true);
-    pruefe('Leiste ohne Blocke: nichts, auch keine Zaehlung noetig', /announcement-bar__message/.test(await leiste([], { live_verfuegbar: true }, prod(6, 5))), false);
+    const z = (art, extra = {}, id = 'x') => block('announcement', { art, text: '', link: '', ...extra }, id);
+    const eine = (art, extra, produkte = prod(6, 5), sprache = 'de', gesamt) => leiste([z(art, extra)], {}, produkte, sprache, gesamt);
+    const live = await eine('live');
+    pruefe('Zeile "live": "5 EXEMPLARE VERFÜGBAR", Link zur Kollektion', /<span>5 EXEMPLARE VERFÜGBAR<\/span>/.test(live) && /<a\s+href="\/collections\/all"/.test(live), true);
+    pruefe('Zeile "live": 1 = "1 EXEMPLAR", 0 = "GERADE KEINE EXEMPLARE VERFÜGBAR", mehr als 50 Produkte mit Plus', /<span>1 EXEMPLAR VERFÜGBAR<\/span>/.test(await eine('live', {}, prod(4, 1))) && /<span>GERADE KEINE EXEMPLARE VERFÜGBAR<\/span>/.test(await eine('live', {}, prod(4, 0))) && /<span>12\+ EXEMPLARE VERFÜGBAR<\/span>/.test(await eine('live', {}, prod(50, 12), 'de', 80)), true);
+    const tage = await eine('versand_tage');
+    pruefe('Zeile Versandtage: Mo und Di, 1–3 Werktage, Link zu den Versandinfos', /<span>VERSAND MO UND DI · 1–3 WERKTAGE<\/span>/.test(tage) && /href="\/policies\/shipping-policy"/.test(tage), true);
+    const gebiet = await eine('versand_gebiet');
+    pruefe('Zeile Versandgebiet: Deutschland, EU auf Anfrage, Link zum Kontakt', /<span>VERSAND IN DE · EU AUF ANFRAGE<\/span>/.test(gebiet) && /href="\/pages\/contact"/.test(gebiet), true);
+    pruefe('Zeilen Frost und Verpackt: Text und kein Link', /<span>KEIN VERSAND BEI FROST ODER HITZE<\/span>/.test(await eine('frost')) && /<span>JEDE BESTELLUNG PERSÖNLICH VERPACKT<\/span>/.test(await eine('verpackt')) && !/<a /.test(await eine('frost')), true);
+    pruefe('Zeile Slogan kommt aus den Sprachdateien', /<span>SELTENE ANTHURIEN · LEBENDE KUNST<\/span>/.test(await eine('slogan')), true);
+    const frei = await eine('frei', { text: 'A & B <b>', link: '/x' });
+    pruefe('Zeile "Eigener Text": maskiert, mit eigenem Link', /<span>A &amp; B &lt;b&gt;<\/span>/.test(frei) && /href="\/x"/.test(frei) && !/<b>/.test(frei), true);
+    pruefe('Zeile ohne Text und ohne feste Art bleibt leer', /announcement-bar__message/.test(await eine('frei')), false);
+    const en = async (art) => eine(art, {}, prod(6, 5), 'en');
+    pruefe('Alle festen Zeilen gibt es auf Englisch', /5 SPECIMENS AVAILABLE/.test(await en('live')) && /SHIPPING MON AND TUE · 1–3 WORKING DAYS/.test(await en('versand_tage')) && /SHIPPING IN GERMANY · EU ON REQUEST/.test(await en('versand_gebiet')) && /NO SHIPPING IN FROST OR HEAT/.test(await en('frost')) && /EVERY ORDER PACKED PERSONALLY/.test(await en('verpackt')), true);
+    // mehrere Zeilen: Karussell
     const hg = JSON.parse(strip(fs.readFileSync(path.join(THEME, 'sections/header-group.json'), 'utf8')));
-    pruefe('Kopfbereich: Live-Zeile ist eingeschaltet', hg.sections['announcement-bar'].settings.live_verfuegbar, true);
+    const ab = hg.sections['announcement-bar'];
+    const bloecke = ab.block_order.map((id) => ({ ...ab.blocks[id], id, shopify_attributes: '' }));
+    const slider = await leiste(bloecke, ab.settings, prod(6, 5));
+    pruefe('Kopfbereich: fuenf Zeilen, in dieser Reihenfolge', ['5 EXEMPLARE VERFÜGBAR', 'VERSAND MO UND DI', 'VERSAND IN DE', 'KEIN VERSAND BEI FROST', 'PERSÖNLICH VERPACKT'].map((w) => slider.indexOf(w)).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
+    pruefe('Kopfbereich: wechselt von selbst', ab.settings.auto_rotate === true && ab.settings.change_slides_speed >= 3, true);
+    pruefe('Kopfbereich: genau eine Live-Zeile', bloecke.filter((b) => b.settings.art === 'live').length, 1);
     const schema = JSON.parse(fs.readFileSync(path.join(THEME, 'sections/announcement-bar.liquid'), 'utf8').match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/)[1]);
-    pruefe('Schema kennt die Einstellung live_verfuegbar', schema.settings.some((x) => x.id === 'live_verfuegbar'), true);
+    const artOpt = schema.blocks.find((b) => b.type === 'announcement').settings.find((x) => x.id === 'art').options.map((o) => o.value);
+    pruefe('Schema kennt alle Arten, die der Kopfbereich nutzt', bloecke.every((b) => artOpt.includes(b.settings.art)), true);
     const q = fs.readFileSync(path.join(THEME, 'sections/announcement-bar.liquid'), 'utf8');
     pruefe('Leiste zaehlt ohne paginate (sicher in einem Bereich auf jeder Seite)', /\{%-?\s*paginate/.test(q), false);
+    pruefe('Ohne Live-Zeile wird nichts gezaehlt', !/EXEMPLAR/.test(await leiste([z('frost')], {}, prod(6, 5))), true);
   }
 
   // ---- Kontakt-Formular ------------------------------------------------------
