@@ -270,12 +270,21 @@
             "link": "shopify://pages/pflegeguide",
             "beschreibung": "So pflege ich meine Anthurien"
           }
+        },
+        "link_etikett": {
+          "type": "link",
+          "settings": {
+            "titel": "Etiketten",
+            "link": "shopify://products/archiv-etikett",
+            "beschreibung": "Dein Name, in Acryl graviert"
+          }
         }
       },
       "block_order": [
         "link_kollektion",
         "link_archiv",
-        "link_guide"
+        "link_guide",
+        "link_etikett"
       ],
       "settings": {
         "color_scheme": "scheme-1",

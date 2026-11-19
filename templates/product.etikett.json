@@ -66,11 +66,16 @@
             "ab_1": 10,
             "preis_1": 225,
             "ab_2": 25,
-            "preis_2": 200
+            "preis_2": 200,
+            "logo_ab": 36
           }
         },
         "etikett_details": {
           "type": "etikett_details",
+          "settings": {}
+        },
+        "etikett_ablauf": {
+          "type": "etikett_ablauf",
           "settings": {}
         }
       },
@@ -82,6 +87,7 @@
         "buy_buttons",
         "description",
         "etikett_details",
+        "etikett_ablauf",
         "versandinfo",
         "fragen",
         "share"
@@ -101,9 +107,14 @@
         "padding_top": 36,
         "padding_bottom": 12
       }
+    },
+    "kopf": {
+      "type": "etikett-kopf",
+      "settings": {}
     }
   },
   "order": [
+    "kopf",
     "main"
   ]
 }

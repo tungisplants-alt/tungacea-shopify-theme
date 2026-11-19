@@ -42,6 +42,7 @@
   - block:      {Object} main-product `etikett_bestellung` block (required)
   - form_id:    {String} id des Kaufformulars (required)
   - section_id: {String} id des Abschnitts (required)
+  - logo_ab:    {Number} Mindestmenge fuer ein eigenes Logo, 0 = keine (optional)
 {% endcomment %}
 
 {%- liquid
@@ -109,6 +110,7 @@
   data-waehrung="{{ cart.currency.iso_code | default: 'EUR' }}"
   data-sprache="{{ request.locale.iso_code | default: 'de' }}"
   data-gattung="{{ gattung | escape }}"
+  data-logo-ab="{{ logo_ab | default: 0 }}"
   data-wort-eins="{{ 'products.product.etikett_bestellung.word_one' | t | escape }}"
   data-wort-mehr="{{ 'products.product.etikett_bestellung.word_other' | t | escape }}"
   data-gattung-platzhalter="{{ 'products.product.etikett_bestellung.genus_placeholder' | t | escape }}"
@@ -134,6 +136,8 @@
   data-t-hinweis-tungacea="{{ 'products.product.etikett_bestellung.logo_note_tungacea' | t | escape }}"
   data-t-hinweis-ohne="{{ 'products.product.etikett_bestellung.logo_note_none' | t | escape }}"
   data-t-hinweis-eigenes="{{ 'products.product.etikett_bestellung.logo_note_custom' | t | escape }}"
+  data-t-eigenes-fehlt="{{ 'products.product.etikett_bestellung.logo_custom_missing' | t | escape }}"
+  data-t-fehler-logo="{{ 'products.product.etikett_bestellung.error_logo' | t | escape }}"
   data-t-mehr="{{ 'products.product.etikett_bestellung.show_more' | t | escape }}"
   data-t-weniger="{{ 'products.product.etikett_bestellung.show_less' | t | escape }}"
   data-t-weg="{{ 'products.product.etikett_bestellung.remove' | t | escape }}"

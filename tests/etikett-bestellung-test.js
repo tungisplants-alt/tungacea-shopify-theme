@@ -33,7 +33,7 @@ engine.registerFilter('t', function (key, ...rest) {
 const produkt = { selected_or_first_available_variant: { price: 250 } };
 const block = (settings) => ({ id: 'b1', shopify_attributes: '', settings: Object.assign({ gattung: 'Anthurium', ab_1: 10, preis_1: 225, ab_2: 25, preis_2: 200 }, settings || {}) });
 const ctx = (extra) => Object.assign({
-  product: produkt, block: block(), form_id: 'product-form-main', section_id: 'main',
+  product: produkt, block: block(), form_id: 'product-form-main', section_id: 'main', logo_ab: 36,
   cart: { currency: { iso_code: 'EUR' } }, request: { locale: { iso_code: locale } },
 }, extra || {});
 // settings und template sind in Shopify Globale und fuer die eingebetteten Snippets (whatsapp-option) sichtbar.
@@ -43,7 +43,7 @@ const faelle = [
   { name: 'Aufbau: drei Teile mit Kopfzeile, Liste, Preis, Logo',
     erwartet: {
       de: ['Deine Etiketten', '>Preis<', 'Eigenes Logo', 'data-eb-gruppen', 'data-eb-gruppe-neu', 'Weitere Gattung', 'Füge eine ganze Liste ein'],
-      en: ['Your labels', '>Price<', 'Your own logo', 'Another genus', 'Paste a whole list'],
+      en: ['Your labels', '>Price<', 'data-logo-ab="36"', 'Another genus', 'Paste a whole list'],
     } },
   { name: 'Eine Position: Felder haengen am Kaufformular, Eigenschaft "Etiketten", versteckte Anzahl',
     erwartet: {
@@ -65,7 +65,7 @@ const faelle = [
       en: ['name="properties[Logo]"', 'value="Tungacea logo"', 'No logo', 'Own logo', 'My logo sits at the top'],
     } },
   { name: 'Eigenes Logo: WhatsApp-Zeile mit vorausgefuelltem Satz, erst bei dieser Wahl sichtbar',
-    erwartet: { de: ['href="https://wa.me/491512345678?text=', 'eigenen%20Logo', 'Auf Anfrage per WhatsApp', 'data-eb-logo-weg hidden', 'eb__pfeil'], en: ['wa.me/491512345678', 'own%20logo', 'On request via WhatsApp', 'data-eb-logo-weg hidden'] },
+    erwartet: { de: ['href="https://wa.me/491512345678?text=', 'eigenen%20Logo', 'Dein Logo schicken', 'Per WhatsApp, am besten nach der Bestellung', 'data-eb-logo-weg hidden', 'eb__pfeil'], en: ['wa.me/491512345678', 'own%20logo', 'Send your logo', 'data-eb-logo-weg hidden'] },
     verboten: ['etikett-bestellung__whatsapp'] },
   { name: 'Ohne gueltige Nummer: nur Tungacea und Ohne Logo, kein Link',
     settings: { whatsapp_nummer: '' }, erwartet: ['data-eb-logo="tungacea"', 'data-eb-logo="ohne"'], verboten: ['wa.me', 'data-eb-logo="eigenes"', 'eb__zeile-knopf--link', 'data-eb-logo-weg'] },

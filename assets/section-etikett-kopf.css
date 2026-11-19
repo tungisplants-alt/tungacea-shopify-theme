@@ -1,0 +1,70 @@
+/*
+ * Kopf der Etikett-Seite (sections/etikett-kopf.liquid): Text und ein echtes
+ * Foto des Etiketts. Am Handy steht das Foto unter dem Text, ab Tablet daneben.
+ * Rahmen und Linien im System von Produktseite und Archiv (--tg-* aus
+ * tungacea.css).
+ */
+.etikett-kopf__raster {
+  display: grid;
+  gap: 2.4rem;
+}
+
+.etikett-kopf__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin: 0 0 1.4rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(236, 226, 204, 0.78);
+}
+
+.etikett-kopf__eyebrow::before {
+  content: '';
+  width: 2.4rem;
+  height: 1px;
+  background: rgb(var(--tungacea-accent-bright, 177, 61, 76));
+}
+
+.etikett-kopf__heading {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(3.2rem, 8vw, 4.8rem);
+  line-height: 1.1;
+}
+
+.etikett-kopf__lead {
+  margin: 1.2rem 0 0;
+  max-width: 48rem;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgba(236, 226, 204, 0.86);
+}
+
+.etikett-kopf__foto {
+  margin: 0;
+  background: var(--tg-flaeche, #0b0b0d);
+  border: 1px solid var(--tg-rand, rgba(236, 226, 204, 0.08));
+}
+
+.etikett-kopf__foto img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 46rem;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+@media screen and (min-width: 750px) {
+  .etikett-kopf__raster {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 36rem);
+    gap: 6.4rem;
+    align-items: center;
+  }
+
+  .etikett-kopf__foto img {
+    max-height: 52rem;
+  }
+}

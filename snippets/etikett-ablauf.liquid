@@ -1,0 +1,56 @@
+{% comment %}
+  Tungacea — So laeuft es (Seite des Zusatzprodukts "Archiv-Etikett").
+
+  Eine Zeile im Stil von "Das Etikett" (Baustein produkt-klappe), hier aber
+  aufgeklappt, weil Lieferzeit und Versand vor dem Kauf gelesen werden sollen.
+  Eine Tabelle, kein Fliesstext: links ein Stichwort, rechts wenige Worte.
+
+  Die Aussagen sind bewusst ehrlich offen: Tung hat noch keine Praxis mit der
+  Fertigung auf Bestellung, deshalb steht dort "je nach Menge und Nachfrage"
+  und keine Zahl in Tagen. Wird daraus spaeter eine feste Zeit, aendert man
+  sie in den Sprachdateien (products.product.etikett_ablauf).
+
+  Die Mindestmenge fuer ein eigenes Logo (36 Stueck, eine volle Platte) steht
+  als Einstellung am Block "Etiketten bestellen" (logo_ab); der Text hier
+  nimmt dieselbe Zahl.
+
+  Accepts:
+  - block:   {Object} main-product `etikett_ablauf` block (required)
+  - logo_ab: {Number} Mindestmenge fuer ein eigenes Logo (optional, Standard 36)
+{% endcomment %}
+{%- liquid
+  assign ab = logo_ab | default: 36
+-%}
+<details class="produkt-klappe produkt-klappe--etikett produkt-klappe--ablauf" open {{ block.shopify_attributes }}>
+  <summary class="produkt-klappe__toggle">
+    <span class="produkt-klappe__text">
+      <span class="produkt-klappe__titel">{{ 'products.product.etikett_ablauf.title' | t }}</span>
+      <span class="produkt-klappe__sub">{{ 'products.product.etikett_ablauf.subtitle' | t }}</span>
+    </span>
+    <span class="produkt-klappe__indikator" aria-hidden="true"></span>
+  </summary>
+  <div class="produkt-klappe__inhalt">
+    <dl class="etikett-fakten">
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_ablauf.order_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_ablauf.order_value' | t }}</dd>
+      </div>
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_ablauf.time_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_ablauf.time_value' | t }}</dd>
+      </div>
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_ablauf.with_plant_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_ablauf.with_plant_value' | t }}</dd>
+      </div>
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_ablauf.alone_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_ablauf.alone_value' | t }}</dd>
+      </div>
+      <div class="etikett-fakten__zeile">
+        <dt>{{ 'products.product.etikett_ablauf.logo_label' | t }}</dt>
+        <dd>{{ 'products.product.etikett_ablauf.logo_value' | t: menge: ab }}</dd>
+      </div>
+    </dl>
+  </div>
+</details>

@@ -184,6 +184,20 @@
         "production_label": "Fertigung",
         "production_value": "Nach deiner Bestellung. Bei Verzug melde ich mich"
       },
+      "etikett_ablauf": {
+        "title": "So läuft es",
+        "subtitle": "Namen tippen · ich graviere · Versand",
+        "order_label": "Bestellen",
+        "order_value": "Namen tippen, in der Vorschau prüfen, in den Warenkorb legen",
+        "time_label": "Lieferzeit",
+        "time_value": "Je nach Menge und Nachfrage. Dauert es länger, melde ich mich bei dir",
+        "with_plant_label": "Mit Pflanze",
+        "with_plant_value": "Etiketten zur Pflanze liegen nach Möglichkeit im selben Paket",
+        "alone_label": "Nur Etiketten",
+        "alone_value": "Gehen einzeln raus, sobald sie fertig sind. Je nach Menge und Anfrage",
+        "logo_label": "Eigenes Logo",
+        "logo_value": "Ab {{ menge }} Etiketten, das ist eine volle Platte"
+      },
       "etikett_bestellung": {
         "list_title": "Deine Etiketten",
         "genus_placeholder": "z. B. Anthurium",
@@ -203,10 +217,12 @@
         "logo_custom": "Eigenes Logo",
         "logo_note_tungacea": "Mein Logo steht oben auf dem Etikett, auf der Rückseite das Rakkan.",
         "logo_note_none": "Nur der Text, ohne Logo und ohne Rakkan. Dafür hat ein Name mehr Platz.",
-        "logo_note_custom": "Dein Logo schickst du mir per WhatsApp. Schreib mir, bevor du bestellst, dann klären wir, ob es sich gravieren lässt.",
+        "logo_note_custom": "Ab {{ menge }} Etiketten, das ist eine volle Platte. Dein Logo schickst du mir nach der Bestellung per WhatsApp. Ich prüfe, ob es sich gravieren lässt, und melde mich, bevor ich anfange.",
+        "logo_custom_missing": "Noch {{ rest }} bis {{ menge }}.",
+        "error_logo": "Ein eigenes Logo gibt es ab {{ menge }} Etiketten. Dir fehlen noch {{ rest }}, oder wähle Tungacea oder Ohne Logo.",
         "logo_value_tungacea": "Tungacea-Logo",
         "logo_value_none": "Ohne Logo",
-        "logo_value_custom": "Eigenes Logo (auf Anfrage)",
+        "logo_value_custom": "Eigenes Logo (kommt per WhatsApp)",
         "property_logo": "Logo",
         "side_front": "Vorderseite",
         "side_back": "Rückseite",
@@ -239,8 +255,8 @@
         "error_genus": "Trag über den Namen eine Gattung ein.",
         "added": "In den Warenkorb gelegt.",
         "logo_title": "Logo",
-        "logo_row": "Eigenes Logo auf den Etiketten",
-        "logo_sub": "Auf Anfrage per WhatsApp",
+        "logo_row": "Dein Logo schicken",
+        "logo_sub": "Per WhatsApp, am besten nach der Bestellung",
         "word_one": "Etikett",
         "word_other": "Etiketten",
         "property_labels": "Etiketten"
@@ -933,6 +949,12 @@
   "page_head": {
     "about_heading": "Was ich selbst gern sammle und wachsen sehe, teile ich bei Tungacea mit dir.",
     "contact_heading": "Schreib mir direkt."
+  },
+  "etikett_kopf": {
+    "eyebrow": "Etiketten",
+    "heading": "Dein Name, in Acryl graviert.",
+    "lead": "Tippe den Namen deiner Pflanze, sieh sofort, wie dein Etikett aussieht, und bestelle direkt hier.",
+    "image_alt": "Ein schwarzes Archiv-Etikett von Tungacea in der Hand, vor einem Regal mit Anthurien. Auf dem Etikett stehen das Logo, ANTHURIUM und der Name der Pflanze."
   },
   "page_info": {
     "glance_title": "Auf einen Blick",

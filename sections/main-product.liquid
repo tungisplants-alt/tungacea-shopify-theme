@@ -102,6 +102,13 @@
               aufeinander, stehen sie in derselben Karte.
             {%- endcomment -%}
             {%- assign gruppe_offen = '' -%}
+            {%- comment -%} Mindestmenge fuer ein eigenes Logo: steht am Block "Etiketten bestellen", der Ablauf-Block zeigt dieselbe Zahl. {%- endcomment -%}
+            {%- assign logo_ab = 36 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'etikett_bestellung' -%}
+                {%- assign logo_ab = block.settings.logo_ab | default: 36 -%}
+              {%- endif -%}
+            {%- endfor -%}
             {%- assign dazu_gezeigt = false -%}
             {%- for block in section.blocks -%}
               {%- assign gruppe_neu = '' -%}
@@ -110,7 +117,7 @@
                   {%- assign gruppe_neu = 'kauf' -%}
                 {%- when 'specimen' -%}
                   {%- assign gruppe_neu = 'pflanze' -%}
-                {%- when 'pflege', 'versandinfo', 'fragen', 'eu_bestellung' -%}
+                {%- when 'pflege', 'versandinfo', 'fragen', 'eu_bestellung', 'etikett_ablauf', 'etikett_details' -%}
                   {%- assign gruppe_neu = 'wissen' -%}
               {%- endcase -%}
               {%- if gruppe_neu != gruppe_offen -%}
@@ -249,8 +256,10 @@
                   {% render 'etikett', product: product, block: block %}
                 {%- when 'etikett_details' -%}
                   {% render 'etikett-details', block: block %}
+                {%- when 'etikett_ablauf' -%}
+                  {% render 'etikett-ablauf', block: block, logo_ab: logo_ab %}
                 {%- when 'etikett_bestellung' -%}
-                  {% render 'etikett-bestellung', product: product, block: block, form_id: product_form_id, section_id: section.id %}
+                  {% render 'etikett-bestellung', product: product, block: block, form_id: product_form_id, section_id: section.id, logo_ab: logo_ab %}
                 {%- when 'pflege' -%}
                   {% render 'pflege-zeile', block: block %}
                 {%- when 'versandinfo' -%}
@@ -1029,6 +1038,17 @@
       ]
     },
     {
+      "type": "etikett_ablauf",
+      "name": "Etikett: So läuft es",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Aufgeklappte Zeile mit Bestellung, Lieferzeit, Versand und Mindestmenge für ein eigenes Logo. Die Texte stehen im Sprach-Editor unter products.product.etikett_ablauf. Die Mindestmenge stellst du am Block \"Etiketten bestellen\" ein."
+        }
+      ]
+    },
+    {
       "type": "etikett_bestellung",
       "name": "Etiketten bestellen",
       "limit": 1,
@@ -1043,6 +1063,13 @@
           "label": "Zeile 1 vorbelegt mit",
           "default": "Anthurium",
           "info": "Der Kunde kann sie ändern."
+        },
+        {
+          "type": "number",
+          "id": "logo_ab",
+          "label": "Eigenes Logo ab Stück",
+          "default": 36,
+          "info": "Mindestmenge für ein eigenes Logo, damit sich das Umrüsten lohnt. 36 Stück füllen eine Platte."
         },
         {
           "type": "header",

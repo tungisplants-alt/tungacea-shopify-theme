@@ -193,6 +193,20 @@
         "production_label": "Production",
         "production_value": "After you order. I will get in touch if it takes longer"
       },
+      "etikett_ablauf": {
+        "title": "How it works",
+        "subtitle": "Type names · I engrave · shipping",
+        "order_label": "Ordering",
+        "order_value": "Type the names, check the preview, add to cart",
+        "time_label": "Lead time",
+        "time_value": "Depends on quantity and demand. If it takes longer, I'll get in touch",
+        "with_plant_label": "With a plant",
+        "with_plant_value": "Labels for a plant go in the same parcel whenever possible",
+        "alone_label": "Labels only",
+        "alone_value": "Ship on their own as soon as they're done, depending on quantity and requests",
+        "logo_label": "Your own logo",
+        "logo_value": "From {{ menge }} labels, which fills a whole sheet"
+      },
       "etikett_bestellung": {
         "list_title": "Your labels",
         "genus_placeholder": "e.g. Anthurium",
@@ -212,10 +226,12 @@
         "logo_custom": "Own logo",
         "logo_note_tungacea": "My logo sits at the top of the label, my Rakkan seal on the back.",
         "logo_note_none": "Only the text, without logo and without the Rakkan. A name gets more room.",
-        "logo_note_custom": "You send me your logo on WhatsApp. Write to me before you order and we will check whether it can be engraved.",
+        "logo_note_custom": "From {{ menge }} labels, which fills a whole sheet. You send me your logo on WhatsApp after ordering. I check that it can be engraved and get back to you before I start.",
+        "logo_custom_missing": "{{ rest }} more to reach {{ menge }}.",
+        "error_logo": "A custom logo is available from {{ menge }} labels. You are {{ rest }} short, or choose Tungacea or No logo.",
         "logo_value_tungacea": "Tungacea logo",
         "logo_value_none": "No logo",
-        "logo_value_custom": "Own logo (on request)",
+        "logo_value_custom": "Own logo (sent via WhatsApp)",
         "property_logo": "Logo",
         "side_front": "Front",
         "side_back": "Back",
@@ -248,8 +264,8 @@
         "error_genus": "Enter a genus above the names.",
         "added": "Added to your cart.",
         "logo_title": "Logo",
-        "logo_row": "Your own logo on the labels",
-        "logo_sub": "On request via WhatsApp",
+        "logo_row": "Send your logo",
+        "logo_sub": "On WhatsApp, ideally after ordering",
         "word_one": "label",
         "word_other": "labels",
         "property_labels": "Labels"
@@ -933,6 +949,12 @@
   "page_head": {
     "about_heading": "What I like to collect and watch grow, I share with you at Tungacea.",
     "contact_heading": "Message me directly."
+  },
+  "etikett_kopf": {
+    "eyebrow": "Labels",
+    "heading": "Your name, engraved in acrylic.",
+    "lead": "Type your plant's name, see right away how your label looks, and order it here.",
+    "image_alt": "A black Tungacea archive label held in a hand, in front of a shelf of Anthuriums. The label shows the logo, ANTHURIUM and the plant's name."
   },
   "page_info": {
     "glance_title": "At a glance",

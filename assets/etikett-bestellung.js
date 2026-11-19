@@ -40,6 +40,8 @@
   var imKorb = 0;
   var anzahlUngueltig = 0;
   var logoWahl = 'tungacea';
+  var logoAb = Number(d.logoAb) || 0; // Mindestmenge fuer ein eigenes Logo (eine volle Platte)
+  var anzahlJetzt = 0;
   var SPEICHER = 'tungacea-etiketten-entwurf';
 
   var geld;
@@ -336,6 +338,8 @@
     etikettenFeld.value = zeilen.join('\n');
     mengeFeld.value = String(Math.max(n, 1));
     anzahlFeld.value = String(n);
+    anzahlJetzt = n;
+    logoHinweisSetzen();
 
     var gesamt = imKorb + n;
     var wort = n === 1 ? d.wortEins : d.wortMehr;
@@ -516,6 +520,16 @@
     ohne: { wert: d.tLogoOhne, hinweis: d.tHinweisOhne },
     eigenes: { wert: d.tLogoEigenes, hinweis: d.tHinweisEigenes },
   };
+  // Eigenes Logo: erst ab einer Mindestmenge. Der Hinweis zeigt, wie viele noch fehlen.
+  function logoZuWenig() { return logoWahl === 'eigenes' && logoAb > 0 && anzahlJetzt < logoAb; }
+  function logoHinweisSetzen() {
+    if (!logoHinweis || !logoText[logoWahl]) return;
+    var text = logoText[logoWahl].hinweis;
+    if (logoZuWenig() && d.tEigenesFehlt) {
+      text += ' ' + ersetzen(d.tEigenesFehlt, { rest: logoAb - anzahlJetzt, menge: logoAb });
+    }
+    logoHinweis.textContent = ersetzen(text, { menge: logoAb });
+  }
   function logoSetzen(wahl) {
     if (!logoText[wahl]) wahl = 'tungacea';
     logoWahl = wahl;
@@ -525,7 +539,7 @@
       k.setAttribute('aria-checked', String(an));
     });
     logoFeld.value = logoText[wahl].wert;
-    logoHinweis.textContent = logoText[wahl].hinweis;
+    logoHinweisSetzen();
     bilder.forEach(function (bi) { bi.hidden = bi.dataset.ebVorschau !== wahl; });
     if (logoWeg) logoWeg.hidden = wahl !== 'eigenes';
     entwurfSichern(zustand());
@@ -579,6 +593,11 @@
         e.preventDefault(); e.stopImmediatePropagation();
         var schlecht = gruppenBox.querySelector('.eb__zeile.hat-fehler .eb__name') || gruppenBox.querySelector('.eb__gruppe.hat-fehler .eb__gattung');
         fehler(ersetzen(d.tFehlerPasst, { n: anzahlUngueltig }), schlecht);
+        return;
+      }
+      if (logoZuWenig()) {
+        e.preventDefault(); e.stopImmediatePropagation();
+        fehler(ersetzen(d.tFehlerLogo, { menge: logoAb, rest: logoAb - n }), logoKnoepfe.filter(function (k) { return k.dataset.ebLogo === 'eigenes'; })[0]);
         return;
       }
       var ohne = z.filter(function (g) { return g.namen.length && !g.gattung; })[0];
