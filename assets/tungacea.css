@@ -258,6 +258,13 @@ h1, h2, h3, h4, h5,
 }
 
 /* ---------- Announcement bar ---------- */
+/* Die Ankuendigungsleiste wechselt von selbst; Pfeile zum Blaettern braucht sie
+   nicht. Die Knoepfe bleiben im Quelltext (das Skript der Leiste erwartet sie),
+   werden aber nicht angezeigt. */
+.announcement-bar-slider .slider-button {
+  display: none;
+}
+
 .announcement-bar__message {
   text-transform: uppercase;
   letter-spacing: 0.16em;

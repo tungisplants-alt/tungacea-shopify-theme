@@ -14,6 +14,9 @@
   - slogan:          Seltene Anthurien · lebende Kunst
   - frei:            eigener Text und eigener Link (nur eine Sprache)
 
+  Kein Pfeil hinter dem Text: Die Zeile wirkt ruhig, der Link ist trotzdem da
+  (die ganze Zeile ist antippbar).
+
   Annahmen:
   - block: {Object} der Block "announcement" (Pflicht)
   - live_text, live_link: {String} fertige Live-Zeile und ihr Link (nur für "live")
@@ -55,9 +58,6 @@
   {%- endif -%}
   <p class="announcement-bar__message h5">
     <span>{{ z_text | escape }}</span>
-    {%- if z_link != blank -%}
-      {{- 'icon-arrow.svg' | inline_asset_content -}}
-    {%- endif -%}
   </p>
   {%- if z_link != blank -%}
     </a>

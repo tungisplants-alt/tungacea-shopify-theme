@@ -197,6 +197,8 @@ async function kontakt(bloecke = [], sprache = 'de', nummer = '+49 179 1627287')
     pruefe('Schema kennt alle Arten, die der Kopfbereich nutzt', bloecke.every((b) => artOpt.includes(b.settings.art)), true);
     const q = fs.readFileSync(path.join(THEME, 'sections/announcement-bar.liquid'), 'utf8');
     pruefe('Leiste zaehlt ohne paginate (sicher in einem Bereich auf jeder Seite)', /\{%-?\s*paginate/.test(q), false);
+    pruefe('Leiste: kein Pfeil hinter den Zeilen (auch mit Link), der Link bleibt', !/<svg/.test(live) && /<a\s+href=/.test(live) && !/<svg/.test(tage), true);
+    pruefe('Leiste: Pfeile zum Blaettern werden nicht angezeigt', /\.announcement-bar-slider \.slider-button\s*\{\s*display:\s*none/.test(fs.readFileSync(path.join(THEME, 'assets/tungacea.css'), 'utf8')), true);
     pruefe('Ohne Live-Zeile wird nichts gezaehlt', !/EXEMPLAR/.test(await leiste([z('frost')], {}, prod(6, 5))), true);
   }
 
