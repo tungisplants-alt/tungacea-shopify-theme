@@ -30,7 +30,7 @@
 .etikett-kopf__heading {
   margin: 0;
   font-weight: 400;
-  font-size: clamp(3.2rem, 8vw, 4.8rem);
+  font-size: clamp(3.6rem, 9vw, 6.4rem);
   line-height: 1.1;
 }
 
@@ -40,6 +40,66 @@
   font-size: 1.5rem;
   line-height: 1.6;
   color: rgba(236, 226, 204, 0.86);
+}
+
+.etikett-kopf__knopf {
+  display: inline-block;
+  margin: 2.2rem 0 0;
+  padding: 1.3rem 3rem;
+  border: 1px solid rgba(236, 226, 204, 0.55);
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #ece2cc;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.etikett-kopf__knopf:hover {
+  border-color: rgb(var(--tungacea-accent-bright, 177, 61, 76));
+  background: rgba(110, 28, 40, 0.28);
+}
+
+/* Datenblatt-Zeile: vier Werte zwischen zwei Haarlinien, wie beim Etikett selbst. */
+.etikett-kopf__fakten {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 3rem 0 0;
+  padding: 0;
+  border-top: 1px solid var(--tg-linie, rgba(236, 226, 204, 0.14));
+  border-bottom: 1px solid var(--tg-linie, rgba(236, 226, 204, 0.14));
+}
+
+.etikett-kopf__fakt {
+  padding: 1.3rem 0;
+}
+
+.etikett-kopf__fakt:nth-child(n + 3) {
+  border-top: 1px solid var(--tg-linie, rgba(236, 226, 204, 0.14));
+}
+
+.etikett-kopf__fakten dt {
+  margin: 0 0 0.3rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(210, 198, 173, 0.78);
+}
+
+.etikett-kopf__fakten dd {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #ece2cc;
+}
+
+.etikett-kopf__bildtext {
+  padding: 1rem 1.4rem 1.2rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(210, 198, 173, 0.78);
+  border-top: 1px solid var(--tg-linie, rgba(236, 226, 204, 0.14));
 }
 
 .etikett-kopf__foto {
@@ -66,5 +126,14 @@
 
   .etikett-kopf__foto img {
     max-height: 52rem;
+  }
+
+  .etikett-kopf__fakten {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 2rem;
+  }
+
+  .etikett-kopf__fakt:nth-child(n + 3) {
+    border-top: 0;
   }
 }

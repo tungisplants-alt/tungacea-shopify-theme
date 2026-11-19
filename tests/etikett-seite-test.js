@@ -47,6 +47,7 @@ function pruefe(name, ok, info) { n++; if (!ok) { fehler++; console.log('FEHLER 
     pruefe('[' + loc + '] Kopf mit Ueberschrift, Satz und Eyebrow', kopf.includes('etikett-kopf__heading') && kopf.includes('etikett-kopf__lead') && kopf.includes('etikett-kopf__eyebrow'));
     pruefe('[' + loc + '] Mitgeliefertes Foto mit Alt-Text', kopf.includes('/assets/etikett-foto.jpg') && /alt="[^"]{20,}"/.test(kopf));
     pruefe('[' + loc + '] Text uebersetzt', loc === 'de' ? kopf.includes('Dein Name, in Acryl graviert.') : kopf.includes('Your name, engraved in acrylic.'));
+    pruefe('['+loc+'] Kopf: Knopf zum Konfigurator und vier Fakten', kopf.includes('href="#etikett-konfigurator"') && (kopf.match(/etikett-kopf__fakt"/g) || []).length === 4);
     const eigen = await engine.renderFile('etikett-kopf', { section: { id: 's1', settings: { heading: 'Eigene Zeile', bild: { src: '/mein.jpg', alt: 'Mein Bild' }, color_scheme: 'scheme-1' } } });
     pruefe('[' + loc + '] Eigener Text und Bild ersetzen die Standardwerte', eigen.includes('Eigene Zeile') && eigen.includes('/mein.jpg') && !eigen.includes('etikett-foto.jpg'));
     const ablauf = await engine.renderFile('etikett-ablauf', { block: { shopify_attributes: '' }, logo_ab: 36 });

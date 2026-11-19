@@ -951,9 +951,19 @@
     "contact_heading": "Schreib mir direkt."
   },
   "etikett_kopf": {
-    "eyebrow": "Etiketten",
-    "heading": "Dein Name, in Acryl graviert.",
-    "lead": "Tippe den Namen deiner Pflanze, sieh sofort, wie dein Etikett aussieht, und bestelle direkt hier.",
+    "eyebrow": "Pflanzenetikett",
+    "heading": "Dein Etikett",
+    "lead": "Dein Name, in Acryl graviert. Tippe ihn ein, sieh sofort, wie er auf dem Etikett steht, und bestelle direkt hier.",
+    "cta": "Namen eintippen",
+    "caption": "Schwarzes Acryl, mit dem Laser graviert",
+    "fact_1_label": "Material",
+    "fact_1_value": "Acryl, schwarz, matt",
+    "fact_2_label": "Maße",
+    "fact_2_value": "16 × 120 mm",
+    "fact_3_label": "Gravur",
+    "fact_3_value": "Mit dem Laser",
+    "fact_4_label": "Im Freien",
+    "fact_4_value": "Wetterfest",
     "image_alt": "Ein schwarzes Archiv-Etikett von Tungacea in der Hand, vor einem Regal mit Anthurien. Auf dem Etikett stehen das Logo, ANTHURIUM und der Name der Pflanze."
   },
   "page_info": {

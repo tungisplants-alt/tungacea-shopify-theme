@@ -50,6 +50,19 @@
         <p class="etikett-kopf__eyebrow">{{ eyebrow }}</p>
         <h2 class="etikett-kopf__heading">{{ heading }}</h2>
         <p class="etikett-kopf__lead">{{ lead }}</p>
+        <a class="etikett-kopf__knopf" href="#etikett-konfigurator">{{ 'etikett_kopf.cta' | t }}</a>
+        <dl class="etikett-kopf__fakten">
+          {%- for k in (1..4) -%}
+            {%- liquid
+              assign l_key = 'etikett_kopf.fact_' | append: k | append: '_label'
+              assign v_key = 'etikett_kopf.fact_' | append: k | append: '_value'
+            -%}
+            <div class="etikett-kopf__fakt">
+              <dt>{{ l_key | t }}</dt>
+              <dd>{{ v_key | t }}</dd>
+            </div>
+          {%- endfor -%}
+        </dl>
       </header>
       <figure class="etikett-kopf__foto">
         {%- if section.settings.bild != blank -%}
@@ -67,6 +80,7 @@
             loading="eager"
           >
         {%- endif -%}
+        <figcaption class="etikett-kopf__bildtext">{{ 'etikett_kopf.caption' | t }}</figcaption>
       </figure>
     </div>
   </div>

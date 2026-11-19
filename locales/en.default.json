@@ -951,9 +951,19 @@
     "contact_heading": "Message me directly."
   },
   "etikett_kopf": {
-    "eyebrow": "Labels",
-    "heading": "Your name, engraved in acrylic.",
-    "lead": "Type your plant's name, see right away how your label looks, and order it here.",
+    "eyebrow": "Plant label",
+    "heading": "Your label",
+    "lead": "Your name, engraved in acrylic. Type it in, see right away how it looks on the label, and order here.",
+    "cta": "Type your names",
+    "caption": "Black acrylic, laser-engraved",
+    "fact_1_label": "Material",
+    "fact_1_value": "Acrylic, black, matte",
+    "fact_2_label": "Size",
+    "fact_2_value": "16 × 120 mm",
+    "fact_3_label": "Engraving",
+    "fact_3_value": "By laser",
+    "fact_4_label": "Outdoors",
+    "fact_4_value": "Weatherproof",
     "image_alt": "A black Tungacea archive label held in a hand, in front of a shelf of Anthuriums. The label shows the logo, ANTHURIUM and the plant's name."
   },
   "page_info": {
