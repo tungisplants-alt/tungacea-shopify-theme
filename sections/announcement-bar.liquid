@@ -12,6 +12,35 @@
   if section.blocks.size > 0
     assign announcement_bar = true
   endif
+
+  comment
+    Live-Zeile: Statt des festen Slogans steht die Zahl der Pflanzen, die gerade
+    zu kaufen sind ("5 Exemplare verfügbar"), und die Zeile fuehrt zur Kollektion.
+    Gezaehlt werden die ersten 50 Produkte der Kollektion "Alle": paginate ist in
+    einem Bereich, der auf jeder Seite steht, nicht sicher, und eine falsche
+    Zahl im Seitenkopf waere schlimmer als keine. Hat der Shop mehr als 50
+    Produkte, steht die Zahl mit Plus ("12+ Exemplare verfügbar").
+  endcomment
+  assign live_text = ''
+  assign live_link = ''
+  if section.settings.live_verfuegbar and section.blocks.size > 0
+    assign anzahl_live = 0
+    for produkt in collections.all.products limit: 50
+      if produkt.available
+        assign anzahl_live = anzahl_live | plus: 1
+      endif
+    endfor
+    if anzahl_live == 0
+      assign live_text = 'brand.announcement_live_zero' | t | upcase
+    elsif collections.all.products_count > 50
+      assign live_text = 'brand.announcement_live_more' | t: anzahl: anzahl_live | upcase
+    elsif anzahl_live == 1
+      assign live_text = 'brand.announcement_live_one' | t | upcase
+    else
+      assign live_text = 'brand.announcement_live_other' | t: anzahl: anzahl_live | upcase
+    endif
+    assign live_link = routes.all_products_collection_url
+  endif
 -%}
 
 {% if social_icons %}
@@ -34,24 +63,29 @@
       >
         {%- liquid
           assign first_announcement_text = section.blocks.first.settings.text
+          assign first_announcement_link = section.blocks.first.settings.link
           if section.blocks.first.id == 'announcement-bar-0'
             assign first_announcement_text = 'brand.strapline' | t | upcase
+            if live_text != blank
+              assign first_announcement_text = live_text
+              assign first_announcement_link = live_link
+            endif
           endif
         -%}
         {%- if first_announcement_text != blank -%}
-          {%- if section.blocks.first.settings.link != blank -%}
+          {%- if first_announcement_link != blank -%}
             <a
-              href="{{ section.blocks.first.settings.link }}"
+              href="{{ first_announcement_link }}"
               class="announcement-bar__link link link--text focus-inset animate-arrow"
             >
           {%- endif -%}
           <p class="announcement-bar__message h5">
             <span>{{ first_announcement_text | escape }}</span>
-            {%- if section.blocks.first.settings.link != blank -%}
+            {%- if first_announcement_link != blank -%}
               {{- 'icon-arrow.svg' | inline_asset_content -}}
             {%- endif -%}
           </p>
-          {%- if section.blocks.first.settings.link != blank -%}
+          {%- if first_announcement_link != blank -%}
             </a>
           {%- endif -%}
         {%- endif -%}
@@ -100,24 +134,29 @@
                 >
                   {%- liquid
                     assign announcement_text = block.settings.text
+                    assign announcement_link = block.settings.link
                     if block.id == 'announcement-bar-0'
                       assign announcement_text = 'brand.strapline' | t | upcase
+                      if live_text != blank
+                        assign announcement_text = live_text
+                        assign announcement_link = live_link
+                      endif
                     endif
                   -%}
                   {%- if announcement_text != blank -%}
-                    {%- if block.settings.link != blank -%}
+                    {%- if announcement_link != blank -%}
                       <a
-                        href="{{ block.settings.link }}"
+                        href="{{ announcement_link }}"
                         class="announcement-bar__link link link--text focus-inset animate-arrow"
                       >
                     {%- endif -%}
                     <p class="announcement-bar__message h5">
                       <span>{{ announcement_text | escape }}</span>
-                      {%- if block.settings.link != blank -%}
+                      {%- if announcement_link != blank -%}
                         {{- 'icon-arrow.svg' | inline_asset_content -}}
                       {%- endif -%}
                     </p>
-                    {%- if block.settings.link != blank -%}
+                    {%- if announcement_link != blank -%}
                       </a>
                     {%- endif -%}
                   {%- endif -%}
@@ -183,6 +222,13 @@
     "groups": ["header"]
   },
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "live_verfuegbar",
+      "label": "Erste Zeile: Zahl der kaufbaren Pflanzen zeigen",
+      "info": "Statt des Slogans steht zum Beispiel „5 Exemplare verfügbar“, die Zeile führt zur Kollektion. Gezählt werden die ersten 50 Produkte.",
+      "default": false
+    },
     {
       "type": "checkbox",
       "id": "auto_rotate",

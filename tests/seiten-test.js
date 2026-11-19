@@ -75,6 +75,14 @@ async function karten(bloecke, einst = {}, sprache = 'de', shop = {}) {
   locale = sprache;
   return engine.renderFile('page-info', {}, { globals: { ...shop, section: { id: 'i', blocks: bloecke, settings: { color_scheme: 'scheme-1', padding_top: 0, padding_bottom: 64, ...einst } } } });
 }
+async function leiste(blocks, einst, produkte, sprache = 'de', gesamt) {
+  locale = sprache;
+  return engine.renderFile('announcement-bar', {}, { globals: {
+    settings: {}, routes: { all_products_collection_url: '/collections/all' },
+    collections: { all: { products: produkte, products_count: gesamt === undefined ? produkte.length : gesamt } },
+    section: { id: 'a', blocks, settings: { color_scheme: 'scheme-1', show_social: false, auto_rotate: false, change_slides_speed: 5, show_line_separator: true, enable_country_selector: false, enable_language_selector: false, ...einst } },
+  } });
+}
 async function kontakt(bloecke = [], sprache = 'de', nummer = '+49 179 1627287') {
   locale = sprache;
   return engine.renderFile('contact-form', {}, {
@@ -154,6 +162,29 @@ async function kontakt(bloecke = [], sprache = 'de', nummer = '+49 179 1627287')
     pruefe('Zaehlung der kaufbaren Pflanzen laeuft in der Datei mit paginate (sonst nur 50)', /paginate collections\.all\.products by 250/.test(q), true);
     const links = await karten([block('link', { titel: 'Archiv', link: '/pages/archive', beschreibung: 'Mutterpflanzen und Kreuzungen' }), block('link', { titel: 'Guide', link: '/pages/pflegeguide' })]);
     pruefe('Link: kleine Zeile darunter nur wenn eingetragen', /page-info__beschreibung">Mutterpflanzen und Kreuzungen</.test(links) && zaehle(links, /page-info__beschreibung/g) === 1, true);
+  }
+
+  // ---- Ankuendigungsleiste: Live-Zahl statt Slogan ----------------------------------
+  {
+    const prod = (n, v) => Array.from({ length: n }, (_, i) => ({ available: i < v }));
+    const b0 = [block('announcement', { text: 'egal', link: '' }, 'announcement-bar-0')];
+    const an = await leiste(b0, { live_verfuegbar: true }, prod(6, 5));
+    pruefe('Leiste live: "5 EXEMPLARE VERFÜGBAR" statt des Slogans', /<span>5 EXEMPLARE VERFÜGBAR<\/span>/.test(an) && !/LEBENDE KUNST/.test(an), true);
+    pruefe('Leiste live: die Zeile fuehrt zur Kollektion', /href="\/collections\/all"/.test(an), true);
+    const aus = await leiste(b0, { live_verfuegbar: false }, prod(6, 5));
+    pruefe('Leiste ohne Schalter: der Slogan bleibt, kein Link', /SELTENE ANTHURIEN · LEBENDE KUNST/.test(aus) && !/<a /.test(aus), true);
+    pruefe('Leiste live: 1 = "1 EXEMPLAR", 0 = "GERADE KEINE EXEMPLARE VERFÜGBAR"', /<span>1 EXEMPLAR VERFÜGBAR<\/span>/.test(await leiste(b0, { live_verfuegbar: true }, prod(4, 1))) && /<span>GERADE KEINE EXEMPLARE VERFÜGBAR<\/span>/.test(await leiste(b0, { live_verfuegbar: true }, prod(4, 0))), true);
+    pruefe('Leiste live: mehr als 50 Produkte, die Zahl steht mit Plus', /<span>12\+ EXEMPLARE VERFÜGBAR<\/span>/.test(await leiste(b0, { live_verfuegbar: true }, prod(50, 12), 'de', 80)), true);
+    const slider = await leiste([...b0, block('announcement', { text: 'Zweite Zeile', link: '' }, 'zwei')], { live_verfuegbar: true }, prod(6, 5));
+    pruefe('Leiste mit mehreren Zeilen: nur die erste ist live, die zweite bleibt', /5 EXEMPLARE VERFÜGBAR/.test(slider) && /Zweite Zeile/.test(slider), true);
+    pruefe('Leiste live englisch', /<span>5 SPECIMENS AVAILABLE<\/span>/.test(await leiste(b0, { live_verfuegbar: true }, prod(6, 5), 'en')), true);
+    pruefe('Leiste ohne Blocke: nichts, auch keine Zaehlung noetig', /announcement-bar__message/.test(await leiste([], { live_verfuegbar: true }, prod(6, 5))), false);
+    const hg = JSON.parse(strip(fs.readFileSync(path.join(THEME, 'sections/header-group.json'), 'utf8')));
+    pruefe('Kopfbereich: Live-Zeile ist eingeschaltet', hg.sections['announcement-bar'].settings.live_verfuegbar, true);
+    const schema = JSON.parse(fs.readFileSync(path.join(THEME, 'sections/announcement-bar.liquid'), 'utf8').match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/)[1]);
+    pruefe('Schema kennt die Einstellung live_verfuegbar', schema.settings.some((x) => x.id === 'live_verfuegbar'), true);
+    const q = fs.readFileSync(path.join(THEME, 'sections/announcement-bar.liquid'), 'utf8');
+    pruefe('Leiste zaehlt ohne paginate (sicher in einem Bereich auf jeder Seite)', /\{%-?\s*paginate/.test(q), false);
   }
 
   // ---- Kontakt-Formular ------------------------------------------------------
