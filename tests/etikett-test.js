@@ -33,7 +33,8 @@ const zusatz = (preis, verfuegbar, id) => ({
   url: '/products/archiv-etikett',
   selected_or_first_available_variant: { id: id || 55667788, price: preis, available: verfuegbar },
 });
-const pflanze = (preisCent, lieferumfang) => ({
+const pflanze = (preisCent, lieferumfang, optionen) => ({
+  variants: (optionen || ['A']).map((o, i) => ({ id: 100 + i, option1: o })),
   title: 'Anthurium Test "Q"',
   handle: 'anthurium-test-q',
   selected_or_first_available_variant: { price: preisCent },
@@ -68,6 +69,8 @@ const faelle = [
   { name: 'Titel und kleine Zeile fuehren auf die Seite des Etiketts (zubuchbar)', product: pflanze(5000, 'Dieses Exemplar'), block: block(),
     erwartet: ['class="etikett__link" href="/products/archiv-etikett"', 'etikett__mehr'] },
   { name: 'Ohne Zusatzprodukt gibt es keinen Link', product: pflanze(15000, 'Dieses Exemplar'), block: block({ produkt: null }), verboten: ['<a ', 'etikett__mehr', 'etikett__link'] },
+  { name: 'Samen-Packungen: Etiketten je Variante stehen am Knopf', product: pflanze(1500, 'Gekeimter Samen aus dieser Kreuzung', ['2x', '4x', '6x']), block: block(), erwartet: ['data-packungen="100:2,101:4,102:6"'] },
+  { name: 'Normale Pflanze: je Variante ein Etikett', product: pflanze(5000, 'Dieses Exemplar', ['A', 'B']), block: block(), erwartet: ['data-packungen="100:1,101:1"'] },
   { name: 'Mit Bild: es wird gerendert', product: pflanze(15000, 'Dieses Exemplar'), block: block({ bild: { src: '/etikett.jpg', alt: 'Etikett' } }), erwartet: ['etikett__bild', '<img'], verboten: ['etikett__vorschau'] },
   { name: 'Ohne Bild: kein Bildbereich', product: pflanze(15000, 'Dieses Exemplar'), block: block(), erwartet: ['etikett__vorschau', 'etikett-foto.jpg'], verboten: ['etikett__bild'] },
 ];

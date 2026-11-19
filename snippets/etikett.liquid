@@ -57,6 +57,22 @@
     endif
   endif
 
+  comment
+    Etiketten je Variante: bei Samen-Packungen ("2x", "4x", "6x") so viele, wie
+    Samen in der Packung sind. Format "Variante-ID:Anzahl,...", das Skript nimmt
+    die gewaehlte Variante mal die gewaehlte Menge.
+  endcomment
+  assign packungen = ''
+  for v in product.variants
+    capture packung_text
+      render 'etikett-packung', variante: v
+    endcapture
+    if packungen != ''
+      assign packungen = packungen | append: ','
+    endif
+    assign packungen = packungen | append: v.id | append: ':' | append: packung_text | strip
+  endfor
+
   assign ueberschrift = block.settings.ueberschrift | default: '' | strip
   if ueberschrift == blank
     assign ueberschrift = 'products.product.etikett.title' | t
@@ -118,6 +134,7 @@
           class="etikett__knopf"
           data-etikett
           data-variante="{{ variante.id }}"
+          data-packungen="{{ packungen }}"
           data-handle="{{ product.handle | escape }}"
           data-fuer="{{ product.title | escape }}"
           data-schluessel-fuer="{{ 'products.product.etikett.property_for' | t | escape }}"

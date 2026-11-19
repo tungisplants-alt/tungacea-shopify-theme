@@ -81,9 +81,18 @@
     var schluessel = knopf.dataset.schluesselFuer || 'Für';
     if (knopf.dataset.fuer) eigenschaften[schluessel] = knopf.dataset.fuer;
 
-    // So viele Etiketten, wie die Pflanze Stueck gewaehlt ist (Mengenfeld der Seite).
+    // So viele Etiketten, wie Pflanzen gewaehlt sind (Mengenfeld der Seite).
     var mengenFeld = document.querySelector('input.quantity__input[name="quantity"]');
-    var menge = Math.max(1, Math.min(99, Number(mengenFeld && mengenFeld.value) || 1));
+    var stueck = Math.max(1, Number(mengenFeld && mengenFeld.value) || 1);
+    // Samen-Packungen ("4x"): jedes Stueck der Packung bekommt ein Etikett.
+    var idFeld = document.querySelector('product-form input[name="id"], form[action*="/cart/add"] [name="id"]');
+    var gewaehlt = idFeld ? idFeld.value : '';
+    var packung = 1;
+    (knopf.dataset.packungen || '').split(',').forEach(function (p) {
+      var t = p.split(':');
+      if (t[0] === gewaehlt && Number(t[1]) > 0) packung = Number(t[1]);
+    });
+    var menge = Math.max(1, Math.min(99, stueck * packung));
     var koerper = { items: [{ id: id, quantity: menge, properties: eigenschaften }] };
     var abschnitte = abschnitteBestellen();
     if (abschnitte) {

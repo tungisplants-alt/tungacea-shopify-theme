@@ -1,0 +1,27 @@
+{%- comment -%}
+  Tungacea — Wie viele Pflanzen stecken in einer Variante? Gibt eine Zahl aus.
+
+  Samen und Saemlinge gibt es als Packung: Die Variante heisst "2x", "4x" oder
+  "6x" (Option "Samen"). Eine Position im Warenkorb mit Menge 1 sind dann 4 Samen,
+  und zu jedem soll ein Etikett angeboten werden. Alles andere (Varianten wie "A",
+  "B", "Default Title") ist ein Stueck: Ausgabe 1.
+
+  Erkannt wird: eine Zahl, direkt gefolgt von "x" oder "×" und sonst nichts
+  ("4x", "4 x", "4×"). Gross- und Kleinschreibung egal.
+
+  Accepts:
+  - variante: {Object} Variant Liquid object (required)
+{%- endcomment -%}
+{%- comment -%}
+  Gelesen wird ohne split: Ruby (Shopify) und JavaScript (Tests) trennen "4x" dort verschieden (ein leeres Ende bleibt oder faellt weg). Die Zahl vor dem x wird gelesen und geprueft, dass der Text genau "<Zahl>x" ist.
+{%- endcomment -%}
+{%- liquid
+  assign klein = variante.option1 | default: '' | downcase | replace: '×', 'x' | replace: ' ', ''
+  assign packung = 1
+  assign n = klein | remove: 'x' | plus: 0
+  assign erwartet = n | append: 'x'
+  if n > 0 and klein == erwartet
+    assign packung = n
+  endif
+  echo packung
+-%}

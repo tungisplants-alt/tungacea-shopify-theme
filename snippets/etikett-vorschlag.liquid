@@ -20,7 +20,7 @@
     _pflanze mit dem Handle der Pflanze)
 
   **Menge:** Eine Zeile je Pflanze, aber so viele Etiketten, wie die Pflanze im
-  Warenkorb hat, abzueglich der Etiketten, die schon dazu liegen. Wer vier Samen
+  Warenkorb hat (eine Samen-Packung "4x" zaehlt vier), abzueglich der Etiketten, die schon dazu liegen. Wer vier Samen
   kauft, bekommt "4 × 2,50 €" angeboten, ein Klick legt vier Etiketten mit dem
   Namen der Pflanze hinein. Zu viele? Die Menge der Etikett-Position laesst sich
   im Warenkorb aendern.
@@ -68,13 +68,20 @@
           else
             comment
               So viele Etiketten, wie die Pflanze Stueck im Warenkorb hat (alle
-              Positionen), minus die, die schon fuer sie im Warenkorb liegen.
+              Positionen; eine Packung "4x" sind vier Stueck, siehe
+              snippets/etikett-packung.liquid), minus die, die schon fuer sie im
+              Warenkorb liegen.
             endcomment
             assign pflanzen_menge = 0
             assign etiketten_menge = 0
             for x in cart.items
               if x.product.handle == item.product.handle
-                assign pflanzen_menge = pflanzen_menge | plus: x.quantity
+                capture packung_text
+                  render 'etikett-packung', variante: x.variant
+                endcapture
+                assign packung = packung_text | strip | plus: 0
+                assign stueck = x.quantity | times: packung
+                assign pflanzen_menge = pflanzen_menge | plus: stueck
               elsif x.product.handle == et.handle and x.properties._pflanze == item.product.handle
                 assign etiketten_menge = etiketten_menge | plus: x.quantity
               endif
