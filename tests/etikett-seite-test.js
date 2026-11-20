@@ -4,7 +4,7 @@
 // Was nicht verloren gehen darf:
 //   - Der Kopf setzt KEINE Ueberschrift erster Ebene (die steht mit dem Produktnamen)
 //   - Ohne eigenes Bild steht das mitgelieferte Foto da, mit Alt-Text
-//   - Der Ablauf nennt keine Zahl in Tagen (Tung hat noch keine Praxis), nur "je nach
+//   - Der Ablauf nennt die Fertigung (meist 1 bis 5 Tage, Angabe von Tung) und den Versandpreis fuer kleine Sendungen, vorher stand "je nach
 //     Menge und Nachfrage", und die Mindestmenge fuer ein eigenes Logo kommt aus der Einstellung
 //   - Die Vorlage hat Kopf + main, und der Ablauf-Block steht in block_order
 const fs = require('fs');
@@ -54,8 +54,8 @@ function pruefe(name, ok, info) { n++; if (!ok) { fehler++; console.log('FEHLER 
     pruefe('[' + loc + '] Ablauf: fuenf Zeilen, aufgeklappt', (ablauf.match(/etikett-fakten__zeile/g) || []).length === 5 && /<details[^>]* open/.test(ablauf));
     pruefe('[' + loc + '] Ablauf: Mindestmenge 36 kommt vor', ablauf.includes('36') && !ablauf.includes('{{'));
     pruefe('[' + loc + '] Ablauf: Mindestmenge aus der Einstellung', (await engine.renderFile('etikett-ablauf', { block: { shopify_attributes: '' }, logo_ab: 48 })).includes('48'));
-    pruefe('[' + loc + '] Ablauf: keine Zahl in Tagen', !/\b\d+\s*(Werktage|Tage|days)\b/.test(ablauf));
-    pruefe('[' + loc + '] Ablauf: ehrlich offen ("Menge und Nachfrage")', loc === 'de' ? ablauf.includes('Menge und Nachfrage') : ablauf.includes('quantity and demand'));
+    pruefe('[' + loc + '] Ablauf: Fertigung 1 bis 5 Tage', loc === 'de' ? ablauf.includes('1 bis 5 Tage') : ablauf.includes('1 to 5 days'));
+    pruefe('[' + loc + '] Ablauf: Termin-Satz und Versandpreis fuer kleine Sendungen', loc === 'de' ? ablauf.includes('Schreib mir das Datum') && ablauf.includes('6,50 €') : ablauf.includes('Write me the date') && ablauf.includes('€6.50'));
   }
   const raw = fs.readFileSync(path.join(THEME, 'templates/product.etikett.json'), 'utf8');
   const tpl = JSON.parse(raw.slice(raw.indexOf('{\n  "sections"')));

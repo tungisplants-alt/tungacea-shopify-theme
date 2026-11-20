@@ -144,7 +144,7 @@
         "titel": "Versand & Lieferung",
         "gebiet": "Versand innerhalb Deutschlands mit DHL oder UPS.",
         "zeiten": "Ich versende montags und dienstags, die Pakete sind in der Regel 1–3 Werktage unterwegs.",
-        "wetter": "Bei Frost oder großer Hitze warte ich mit dem Versand, damit deine Pflanze sicher ankommt.",
+        "wetter": "Bei Nachttemperaturen unter 0 °C ruht der Versand, ebenso bei großer Hitze. Deine Bestellung wartet dann, ich melde mich per E-Mail oder mit einer Ankündigung auf der Website.",
         "link": "Alle Versandinfos"
       },
       "winterpack": {
@@ -162,7 +162,11 @@
       "kaufkarte": {
         "trust_ship": "Versand Mo und Di",
         "trust_days": "1–3 Werktage",
-        "trust_frost": "Kein Versand bei Frost"
+        "trust_frost": "Versandstopp bei Frost",
+        "trust_cost": "Versand 8,99 €",
+        "label_make": "Fertigung 1–5 Tage",
+        "label_ship": "Dann Versand Mo und Di",
+        "label_cost": "Versand ab 6,50 €"
       },
       "etikett_details": {
         "title": "Das Etikett",
@@ -190,11 +194,11 @@
         "order_label": "Bestellen",
         "order_value": "Namen tippen, in der Vorschau prüfen, in den Warenkorb legen",
         "time_label": "Lieferzeit",
-        "time_value": "Je nach Menge und Nachfrage. Dauert es länger, melde ich mich bei dir",
+        "time_value": "Fertigung meist 1 bis 5 Tage, danach Versand. Brauchst du sie zu einem Termin? Schreib mir das Datum",
         "with_plant_label": "Mit Pflanze",
         "with_plant_value": "Etiketten zur Pflanze liegen nach Möglichkeit im selben Paket",
         "alone_label": "Nur Etiketten",
-        "alone_value": "Gehen einzeln raus, sobald sie fertig sind. Je nach Menge und Anfrage",
+        "alone_value": "Gehen einzeln raus, sobald sie fertig sind. Versand ab 6,50 €",
         "logo_label": "Eigenes Logo",
         "logo_value": "Ab {{ menge }} Etiketten, das ist eine volle Platte"
       },
@@ -909,7 +913,7 @@
     "announcement_live_more": "{{ anzahl }}+ Exemplare verfügbar",
     "announcement_shipping_days": "Versand Mo und Di · 1–3 Werktage",
     "announcement_shipping_area": "Versand in DE · EU auf Anfrage",
-    "announcement_frost": "Kein Versand bei Frost oder Hitze",
+    "announcement_frost": "Versandstopp bei Nachtfrost unter 0 °C",
     "announcement_packed": "Jede Bestellung persönlich verpackt"
   },
   "seo": {

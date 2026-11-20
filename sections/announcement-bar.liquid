@@ -3,7 +3,8 @@
 
 {%- comment -%}
   Live-Zeile (Art "live"): die Zahl der Pflanzen, die gerade zu kaufen sind
-  ("5 Exemplare verfügbar"); die Zeile fuehrt zur Kollektion. Gezaehlt werden die
+  ("5 Exemplare verfügbar"); die Zeile fuehrt zur Kollektion. Gezaehlt werden nur
+  Pflanzen (Lieferumfang gesetzt, ohne gekeimte Samen). Aus den
   ersten 50 Produkte der Kollektion "Alle": paginate ist in einem Bereich, der auf
   jeder Seite steht, nicht sicher, und eine falsche Zahl im Seitenkopf waere
   schlimmer als keine. Hat der Shop mehr als 50 Produkte, steht die Zahl mit Plus.
@@ -33,7 +34,13 @@
   if braucht_live
     assign anzahl_live = 0
     for produkt in collections.all.products limit: 50
-      if produkt.available
+      comment
+        Nur Pflanzen: Wer den Lieferumfang gesetzt hat, ist eine Pflanze.
+        Zusatzprodukte (Etikett, Winterverpackung) und Testprodukte haben
+        keinen, gekeimte Samen zaehlen nicht mit.
+      endcomment
+      assign live_umfang = produkt.metafields.custom.lieferumfang.value | default: '' | strip
+      if produkt.available and live_umfang != blank and live_umfang != 'Gekeimter Samen aus dieser Kreuzung'
         assign anzahl_live = anzahl_live | plus: 1
       endif
     endfor

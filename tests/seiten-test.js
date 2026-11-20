@@ -167,29 +167,31 @@ async function kontakt(bloecke = [], sprache = 'de', nummer = '+49 179 1627287')
 
   // ---- Ankuendigungsleiste: wechselnde Informationen -------------------------------
   {
-    const prod = (n, v) => Array.from({ length: n }, (_, i) => ({ available: i < v }));
+    const prod = (n, v) => Array.from({ length: n }, (_, i) => ({ available: i < v, metafields: { custom: { lieferumfang: { value: 'Dieses Exemplar' } } } }));
     const z = (art, extra = {}, id = 'x') => block('announcement', { art, text: '', link: '', ...extra }, id);
     const eine = (art, extra, produkte = prod(6, 5), sprache = 'de', gesamt) => leiste([z(art, extra)], {}, produkte, sprache, gesamt);
     const live = await eine('live');
     pruefe('Zeile "live": "5 EXEMPLARE VERFÜGBAR", Link zur Kollektion', /<span>5 EXEMPLARE VERFÜGBAR<\/span>/.test(live) && /<a\s+href="\/collections\/all"/.test(live), true);
+    const gemischt = [{ available: true, metafields: { custom: { lieferumfang: { value: 'Dieses Exemplar' } } } }, { available: true, metafields: { custom: { lieferumfang: { value: 'Cutting der Mutterpflanze' } } } }, { available: true, metafields: { custom: { lieferumfang: { value: 'Gekeimter Samen aus dieser Kreuzung' } } } }, { available: true, metafields: { custom: { lieferumfang: null } } }, { available: true, metafields: { custom: {} } }];
+    pruefe('Zeile "live": Samen, Zusatzprodukte und Testprodukte zaehlen nicht (2 von 5 kaufbaren)', /<span>2 EXEMPLARE VERFÜGBAR<\/span>/.test(await eine('live', {}, gemischt)), true);
     pruefe('Zeile "live": 1 = "1 EXEMPLAR", 0 = "GERADE KEINE EXEMPLARE VERFÜGBAR", mehr als 50 Produkte mit Plus', /<span>1 EXEMPLAR VERFÜGBAR<\/span>/.test(await eine('live', {}, prod(4, 1))) && /<span>GERADE KEINE EXEMPLARE VERFÜGBAR<\/span>/.test(await eine('live', {}, prod(4, 0))) && /<span>12\+ EXEMPLARE VERFÜGBAR<\/span>/.test(await eine('live', {}, prod(50, 12), 'de', 80)), true);
     const tage = await eine('versand_tage');
     pruefe('Zeile Versandtage: Mo und Di, 1–3 Werktage, Link zu den Versandinfos', /<span>VERSAND MO UND DI · 1–3 WERKTAGE<\/span>/.test(tage) && /href="\/policies\/shipping-policy"/.test(tage), true);
     const gebiet = await eine('versand_gebiet');
     pruefe('Zeile Versandgebiet: Deutschland, EU auf Anfrage, Link zum Kontakt', /<span>VERSAND IN DE · EU AUF ANFRAGE<\/span>/.test(gebiet) && /href="\/pages\/contact"/.test(gebiet), true);
-    pruefe('Zeilen Frost und Verpackt: Text und kein Link', /<span>KEIN VERSAND BEI FROST ODER HITZE<\/span>/.test(await eine('frost')) && /<span>JEDE BESTELLUNG PERSÖNLICH VERPACKT<\/span>/.test(await eine('verpackt')) && !/<a /.test(await eine('frost')), true);
+    pruefe('Zeilen Frost und Verpackt: Text und kein Link', /<span>VERSANDSTOPP BEI NACHTFROST UNTER 0 °C<\/span>/.test(await eine('frost')) && /<span>JEDE BESTELLUNG PERSÖNLICH VERPACKT<\/span>/.test(await eine('verpackt')) && !/<a /.test(await eine('frost')), true);
     pruefe('Zeile Slogan kommt aus den Sprachdateien', /<span>SELTENE ANTHURIEN · LEBENDE KUNST<\/span>/.test(await eine('slogan')), true);
     const frei = await eine('frei', { text: 'A & B <b>', link: '/x' });
     pruefe('Zeile "Eigener Text": maskiert, mit eigenem Link', /<span>A &amp; B &lt;b&gt;<\/span>/.test(frei) && /href="\/x"/.test(frei) && !/<b>/.test(frei), true);
     pruefe('Zeile ohne Text und ohne feste Art bleibt leer', /announcement-bar__message/.test(await eine('frei')), false);
     const en = async (art) => eine(art, {}, prod(6, 5), 'en');
-    pruefe('Alle festen Zeilen gibt es auf Englisch', /5 SPECIMENS AVAILABLE/.test(await en('live')) && /SHIPPING MON AND TUE · 1–3 WORKING DAYS/.test(await en('versand_tage')) && /SHIPPING IN GERMANY · EU ON REQUEST/.test(await en('versand_gebiet')) && /NO SHIPPING IN FROST OR HEAT/.test(await en('frost')) && /EVERY ORDER PACKED PERSONALLY/.test(await en('verpackt')), true);
+    pruefe('Alle festen Zeilen gibt es auf Englisch', /5 SPECIMENS AVAILABLE/.test(await en('live')) && /SHIPPING MON AND TUE · 1–3 WORKING DAYS/.test(await en('versand_tage')) && /SHIPPING IN GERMANY · EU ON REQUEST/.test(await en('versand_gebiet')) && /SHIPPING STOPS IN NIGHT FROST BELOW 0 °C/.test(await en('frost')) && /EVERY ORDER PACKED PERSONALLY/.test(await en('verpackt')), true);
     // mehrere Zeilen: Karussell
     const hg = JSON.parse(strip(fs.readFileSync(path.join(THEME, 'sections/header-group.json'), 'utf8')));
     const ab = hg.sections['announcement-bar'];
     const bloecke = ab.block_order.map((id) => ({ ...ab.blocks[id], id, shopify_attributes: '' }));
     const slider = await leiste(bloecke, ab.settings, prod(6, 5));
-    pruefe('Kopfbereich: fuenf Zeilen, in dieser Reihenfolge', ['5 EXEMPLARE VERFÜGBAR', 'VERSAND MO UND DI', 'VERSAND IN DE', 'KEIN VERSAND BEI FROST', 'PERSÖNLICH VERPACKT'].map((w) => slider.indexOf(w)).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
+    pruefe('Kopfbereich: fuenf Zeilen, in dieser Reihenfolge', ['5 EXEMPLARE VERFÜGBAR', 'VERSAND MO UND DI', 'VERSAND IN DE', 'VERSANDSTOPP BEI NACHTFROST', 'PERSÖNLICH VERPACKT'].map((w) => slider.indexOf(w)).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])), true);
     pruefe('Kopfbereich: wechselt von selbst', ab.settings.auto_rotate === true && ab.settings.change_slides_speed >= 3, true);
     pruefe('Kopfbereich: genau eine Live-Zeile', bloecke.filter((b) => b.settings.art === 'live').length, 1);
     const schema = JSON.parse(fs.readFileSync(path.join(THEME, 'sections/announcement-bar.liquid'), 'utf8').match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/)[1]);

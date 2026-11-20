@@ -7,9 +7,23 @@
   zugeklappten Zeile "Versand & Lieferung"; hier stehen sie dort, wo die
   Entscheidung faellt. Aendern sich die Bedingungen, muessen diese Zeilen
   mitgehen (Sprach-Editor: products.product.kaufkarte).
+
+  Auf der Seite des Pflanzenetiketts (Vorlage product.etikett) stehen andere
+  Zeilen: Fertigung 1 bis 5 Tage, dann Versand, und der Preis fuer kleine
+  Sendungen. Die Preise stehen als Text in den Sprachdateien und muessen zu den
+  Versandraten in Shopify passen (Pflanzen 8,99 EUR, kleine Sendungen ab 6,50 EUR).
 {% endcomment %}
+{%- if template.suffix == 'etikett' -%}
+<ul class="kauf-vertrauen list-unstyled" role="list">
+  <li>{{ 'products.product.kaufkarte.label_make' | t }}</li>
+  <li>{{ 'products.product.kaufkarte.label_ship' | t }}</li>
+  <li>{{ 'products.product.kaufkarte.label_cost' | t }}</li>
+</ul>
+{%- else -%}
 <ul class="kauf-vertrauen list-unstyled" role="list">
   <li>{{ 'products.product.kaufkarte.trust_ship' | t }}</li>
   <li>{{ 'products.product.kaufkarte.trust_days' | t }}</li>
+  <li>{{ 'products.product.kaufkarte.trust_cost' | t }}</li>
   <li>{{ 'products.product.kaufkarte.trust_frost' | t }}</li>
 </ul>
+{%- endif -%}

@@ -60,7 +60,7 @@ function pruefe(name, ist, soll) {
     pruefe('drei Zeilen', z.length, 3);
     pruefe('Zeile 1: Liefergebiet und Dienstleister', z[0], 'Versand innerhalb Deutschlands mit DHL oder UPS.');
     pruefe('Zeile 2: Versandtage und Laufzeit', z[1], 'Ich versende montags und dienstags, die Pakete sind in der Regel 1–3 Werktage unterwegs.');
-    pruefe('Zeile 3: Verschiebung bei Frost und Hitze', z[2], 'Bei Frost oder großer Hitze warte ich mit dem Versand, damit deine Pflanze sicher ankommt.');
+    pruefe('Zeile 3: Verschiebung bei Frost und Hitze', z[2], 'Bei Nachttemperaturen unter 0 °C ruht der Versand, ebenso bei großer Hitze. Deine Bestellung wartet dann, ich melde mich per E-Mail oder mit einer Ankündigung auf der Website.');
     pruefe('Link zu den Versandbedingungen aus Shopify', /<a class="produkt-klappe__link link" href="\/policies\/shipping-policy">Alle Versandinfos<\/a>/.test(html), true);
     pruefe('Liste hat eine Rolle fuer Screenreader (Safari entfernt sonst die Listensemantik)', /<ul class="produkt-klappe__liste list-unstyled" role="list">/.test(html), true);
     pruefe('Editor-Attribut des Blocks ist gesetzt', /data-shopify-editor-block="b1"/.test(html), true);
@@ -96,7 +96,7 @@ function pruefe(name, ist, soll) {
   {
     const de = LOC.de.products.product.versandinfo;
     const alles = de.gebiet + ' ' + de.zeiten + ' ' + de.wetter;
-    for (const wort of ['Deutschlands', 'DHL', 'UPS', 'montags', 'dienstags', '1–3 Werktage', 'Frost', 'Hitze']) {
+    for (const wort of ['Deutschlands', 'DHL', 'UPS', 'montags', 'dienstags', '1–3 Werktage', 'Nachttemperaturen unter 0 °C', 'Hitze']) {
       pruefe('Aussage "' + wort + '" steht in den Zeilen', alles.includes(wort), true);
     }
     pruefe('keine Preise und keine festen Versandkosten in den Zeilen', /€|Euro|kostenlos|gratis/i.test(alles), false);
@@ -109,7 +109,7 @@ function pruefe(name, ist, soll) {
     const z = zeilen(html);
     pruefe('eigener Text ersetzt die Uebersetzung', z[0], 'Eigene Zeile eins');
     pruefe('leeres Feld: Uebersetzung bleibt', z[1], 'Ich versende montags und dienstags, die Pakete sind in der Regel 1–3 Werktage unterwegs.');
-    pruefe('nur Leerzeichen zaehlen als leer', z[2], 'Bei Frost oder großer Hitze warte ich mit dem Versand, damit deine Pflanze sicher ankommt.');
+    pruefe('nur Leerzeichen zaehlen als leer', z[2], 'Bei Nachttemperaturen unter 0 °C ruht der Versand, ebenso bei großer Hitze. Deine Bestellung wartet dann, ich melde mich per E-Mail oder mit einer Ankündigung auf der Website.');
     const boese = await render({ zeile_1: '<script>x</script><b>fett</b> & "Quote"' });
     pruefe('eigener Text wird maskiert, kein Markup aus dem Editor', /<script>|<b>/.test(boese), false);
     pruefe('eigener Text erscheint als Text', zeilen(boese)[0].includes('&lt;script&gt;'), true);
@@ -128,7 +128,7 @@ function pruefe(name, ist, soll) {
     const z = zeilen(html);
     pruefe('Englisch: Zeile 1', z[0], 'Shipping within Germany with DHL or UPS.');
     pruefe('Englisch: Zeile 2', z[1], 'I ship on Mondays and Tuesdays; parcels usually take 1–3 working days.');
-    pruefe('Englisch: Zeile 3', z[2], 'In frost or extreme heat I hold the shipment so your plant arrives safely.');
+    pruefe('Englisch: Zeile 3', z[2], 'When night temperatures drop below 0 °C shipping pauses, as it does in extreme heat. Your order waits, and I get in touch by email or with a notice on the website.');
     pruefe('Englisch: Link', />All shipping details</.test(html), true);
     pruefe('Englisch: kein deutsches Wort', /Versand|Ich |montags|Werktage|Frost oder|Hitze/.test(html), false);
     const de = LOC.de.products.product.versandinfo;
