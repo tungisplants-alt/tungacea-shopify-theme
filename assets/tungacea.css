@@ -1446,3 +1446,74 @@ a.link { color: rgb(var(--color-foreground)); text-underline-offset: 0.3em; }
   line-height: 1.6;
   color: #ece2cc;
 }
+
+
+/* Karten wie die Produktseite
+   -------------------------------------------------------------------------
+   Kollektion und Archiv zeigen ihre Karten jetzt in derselben Sprache wie die
+   Produktseite: eine fast schwarze Flaeche (--tg-flaeche) mit kaum sichtbarem
+   Rand (--tg-rand), das Foto mit Abstand darin, darunter das Schild. Beim
+   Ueberfahren faerbt sich der Rand leicht rot, wie bisher im Archiv. Der Titel
+   ist in beiden gleich gross, die kleine Zeile darunter ebenso. */
+.product-card-wrapper .card--standard {
+  background: var(--tg-flaeche, #0b0b0d);
+  border: 1px solid var(--tg-rand, rgba(236, 226, 204, 0.08));
+  padding: 1.6rem 1.6rem 0;
+  transition: border-color 0.6s var(--tungacea-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+}
+
+.product-card-wrapper .card--standard > .card__inner {
+  box-shadow: none;
+  background-color: rgba(0, 0, 0, 0.28);
+}
+
+.product-card-wrapper .card__media .media,
+.product-card-wrapper .card__inner .placeholder-svg {
+  background-color: rgba(0, 0, 0, 0.28);
+}
+
+.product-card-wrapper .card--standard > .card__content {
+  padding: 1.8rem 0 2rem;
+}
+
+@media (hover: hover) {
+  .product-card-wrapper:hover .card--standard {
+    border-color: rgba(var(--tungacea-accent-bright, 177, 61, 76), 0.55);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .product-card-wrapper .card--standard {
+    padding: 1rem 1rem 0;
+  }
+
+  .product-card-wrapper .card--standard > .card__content {
+    padding: 1.4rem 0 1.6rem;
+  }
+}
+
+/* Titel und kleine Zeile: Kollektion und Archiv gleich gross. Die Auswahl ist
+   um eine Stufe spezifischer als in component-specimen-card.css, das spaeter
+   geladen wird, damit diese Werte gelten. */
+.product-card-wrapper .card--standard .card__heading.specimen-card__title,
+.plant-card__name {
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.15;
+}
+
+.product-card-wrapper .card--standard .card__heading.specimen-card__title a {
+  font-size: 2rem;
+}
+
+.product-card-wrapper .card__information.specimen-card .specimen-card__traits {
+  font-size: 1.2rem;
+  letter-spacing: 0.14em;
+  color: rgba(210, 198, 173, 0.78);
+}
+
+@media screen and (max-width: 749px) {
+  .product-card-wrapper .card--standard .card__heading.specimen-card__title a {
+    font-size: 1.6rem;
+  }
+}
