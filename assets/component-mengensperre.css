@@ -1,0 +1,14 @@
+/*
+ * Mengensperre im Warenkorb: Eine einzelne Pflanze (Lieferumfang "Dieses Exemplar"
+ * oder "Cutting der Mutterpflanze") gibt es nur einmal. Ihre Zeile zeigt keine
+ * Plus- und Minus-Knoepfe und kein Mengenfeld, nur den Knopf zum Entfernen. Die
+ * Menge bleibt 1; Shopify begrenzt sie ohnehin auf den Bestand.
+ */
+.cart-item__quantity--fest quantity-input.quantity {
+  display: none;
+}
+
+.cart-item__quantity--fest .quantity-popover__info-button,
+.cart-item__quantity--fest .quantity-popover__info {
+  display: none;
+}

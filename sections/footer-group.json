@@ -35,8 +35,8 @@
       ],
       "settings": {
         "color_scheme": "scheme-1",
-        "newsletter_enable": false,
-        "newsletter_heading": "Abonniere unsere E-Mails",
+        "newsletter_enable": true,
+        "newsletter_heading": "DROP-MAIL",
         "enable_follow_on_shop": false,
         "show_social": true,
         "enable_country_selector": true,

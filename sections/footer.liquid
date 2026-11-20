@@ -189,6 +189,51 @@
     </div>
   </div>
 
+  {%- comment -%}
+    Drop-Mail: eine Zeile mit Satz und E-Mail-Feld, nur wenn die Einstellung "Newsletter" an ist.
+    Zweck laut Tung: nur wenn ein Drop angekuendigt wird oder eine wichtige Meldung zu einer
+    Bestellung ansteht, kein regelmaessiger Newsletter. Das Formular ist Shopifys Kundenformular
+    (Tag "drop"). Fuer Zustimmung per Bestaetigungsmail (Double-Opt-in) die Einstellung in Shopify
+    unter Einstellungen > Kunden-Datenschutz pruefen.
+  {%- endcomment -%}
+  {%- if section.settings.newsletter_enable -%}
+    <div class="page-width tungacea-footer__drops" data-testid="footer-drops">
+      <div class="tungacea-footer__drops-text">
+        <h2 class="tungacea-footer__group-heading">{{ section.settings.newsletter_heading | escape }}</h2>
+        <p class="tungacea-footer__drops-satz">{{ 'sections.footer.drops_text' | t }}</p>
+      </div>
+      {%- form 'customer', id: 'FooterDropForm', class: 'tungacea-footer__drops-form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter,drop">
+        <div class="tungacea-footer__drops-zeile">
+          <label class="visually-hidden" for="FooterDropMail">{{ 'newsletter.label' | t }}</label>
+          <input
+            id="FooterDropMail"
+            class="tungacea-footer__drops-feld"
+            type="email"
+            name="contact[email]"
+            autocomplete="email"
+            required
+            placeholder="{{ 'newsletter.label' | t }}"
+            {% if form.errors %}aria-invalid="true" aria-describedby="FooterDropFehler"{% endif %}
+          >
+          <button type="submit" class="tungacea-footer__drops-knopf">{{ 'sections.footer.drops_button' | t }}</button>
+        </div>
+        {%- if form.errors -%}
+          <p class="tungacea-footer__drops-meldung tungacea-footer__drops-meldung--fehler" id="FooterDropFehler" role="alert">
+            {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+          </p>
+        {%- endif -%}
+        {%- if form.posted_successfully? -%}
+          <p class="tungacea-footer__drops-meldung" role="status">{{ 'newsletter.success' | t }}</p>
+        {%- endif -%}
+        <p class="tungacea-footer__drops-hinweis">
+          {{ 'sections.footer.drops_hint' | t }}
+          {%- if shop.privacy_policy.url != blank %} <a class="link" href="{{ shop.privacy_policy.url }}">{{ 'sections.footer.drops_privacy' | t }}</a>{% endif -%}
+        </p>
+      {%- endform -%}
+    </div>
+  {%- endif -%}
+
   {%- comment -%} 5. Copyright + dynamic payment methods {%- endcomment -%}
   <div class="footer__content-bottom tungacea-footer__bottom">
     <div class="page-width tungacea-footer__bottom-inner">

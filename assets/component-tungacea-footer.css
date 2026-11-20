@@ -397,3 +397,90 @@
     max-width: 100%;
   }
 }
+
+
+/* ------------------------------------------------------------------
+   Drop-Mail: ein Satz und ein E-Mail-Feld, nur wenn die Einstellung an ist.
+   Haarlinie oben, Serifenschrift wie die anderen Fussgruppen, eckiges Feld.
+   ------------------------------------------------------------------ */
+.tungacea-footer .tungacea-footer__drops {
+  display: grid;
+  gap: 1.6rem;
+  margin-top: 3.2rem;
+  padding-top: 2.4rem;
+  padding-bottom: 0.8rem;
+  border-top: 1px solid rgba(236, 226, 204, 0.14);
+}
+
+.tungacea-footer .tungacea-footer__drops-satz {
+  margin: 0.6rem 0 0;
+  max-width: 44rem;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: rgba(236, 226, 204, 0.86);
+}
+
+.tungacea-footer .tungacea-footer__drops-zeile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.tungacea-footer .tungacea-footer__drops-feld {
+  flex: 1 1 22rem;
+  min-width: 0;
+  padding: 1.1rem 1.4rem;
+  border: 1px solid rgba(236, 226, 204, 0.32);
+  background: transparent;
+  color: #ece2cc;
+  font: inherit;
+  font-size: 1.4rem;
+}
+
+.tungacea-footer .tungacea-footer__drops-feld:focus-visible {
+  outline: 2px solid #cc6070;
+  outline-offset: 2px;
+}
+
+.tungacea-footer .tungacea-footer__drops-knopf {
+  flex: 0 0 auto;
+  padding: 1.1rem 2.4rem;
+  border: 1px solid rgba(236, 226, 204, 0.55);
+  background: transparent;
+  color: #ece2cc;
+  font: inherit;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.tungacea-footer .tungacea-footer__drops-knopf:hover {
+  border-color: #b13d4c;
+  background: rgba(110, 28, 40, 0.28);
+}
+
+.tungacea-footer .tungacea-footer__drops-meldung {
+  margin: 0.8rem 0 0;
+  font-size: 1.3rem;
+  color: #ece2cc;
+}
+
+.tungacea-footer .tungacea-footer__drops-meldung--fehler {
+  color: #cc6070;
+}
+
+.tungacea-footer .tungacea-footer__drops-hinweis {
+  margin: 0.8rem 0 0;
+  font-size: 1.2rem;
+  color: rgba(210, 198, 173, 0.78);
+}
+
+@media screen and (min-width: 750px) {
+  .tungacea-footer .tungacea-footer__drops {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 4rem;
+    align-items: start;
+  }
+}

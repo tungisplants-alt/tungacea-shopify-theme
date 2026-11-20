@@ -82,6 +82,16 @@
 
               <tbody>
                 {%- for item in cart.items -%}
+{%- comment -%}
+                    Mengensperre: Eine einzelne Pflanze gibt es nur einmal. Ihre Position hat keine
+                    Plus- und Minus-Knoepfe, nur "Entfernen". Samen, Etiketten und anderes
+                    Zubehoer bleiben aenderbar. Siehe component-mengensperre.css.
+                  {%- endcomment -%}
+                  {%- assign mengen_umfang = item.product.metafields.custom.lieferumfang.value | default: '' | strip -%}
+                  {%- assign mengen_fest = false -%}
+                  {%- if mengen_umfang == 'Dieses Exemplar' or mengen_umfang == 'Cutting der Mutterpflanze' -%}
+                    {%- assign mengen_fest = true -%}
+                  {%- endif -%}
                   <tr
                     class="cart-item {% if item.parent_relationship.parent != null %}cart-item__nested-line{% endif %}"
                     id="CartItem-{{ item.index | plus: 1 }}"
@@ -229,7 +239,7 @@
                         assign has_vol_pricing = true
                       endif
                     -%}
-                    <td class="cart-item__quantity{% if has_qty_rules or has_vol_pricing %} cart-item__quantity--info{% endif %}">
+                    <td class="cart-item__quantity{% if has_qty_rules or has_vol_pricing %} cart-item__quantity--info{% endif %}{% if mengen_fest %} cart-item__quantity--fest{% endif %}">
                       <quantity-popover>
                         <div class="cart-item__quantity-wrapper quantity-popover-wrapper">
                           <label class="visually-hidden" for="Quantity-{{ item.index | plus: 1 }}">

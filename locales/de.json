@@ -589,6 +589,10 @@
     "footer": {
       "payment": "Zahlungsmethoden",
       "service_legal_heading": "SERVICE & RECHT",
+      "drops_text": "Ich schreibe dir nur, wenn ein Drop kommt oder zu deiner Bestellung etwas Wichtiges ansteht.",
+      "drops_button": "Eintragen",
+      "drops_hint": "Du kannst dich jederzeit abmelden.",
+      "drops_privacy": "Datenschutzerklärung",
       "withdrawal_link": "Widerruf erklären",
       "brand_copy_html": "<strong>Seltene Anthurien · lebende Kunst.</strong><br>Von mir kultiviert und aus Deutschland versendet."
     },
