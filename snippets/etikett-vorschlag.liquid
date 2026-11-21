@@ -38,6 +38,19 @@
   assign et = all_products['archiv-etikett']
   assign variante = et.selected_or_first_available_variant
   assign schwelle_cent = 10000
+  comment
+    Das Pflanzenetikett hat zwei Varianten, Pflanze (die erste) und Samen. Nur auf die Variante
+    Pflanze greifen die Gratis-Rabatte (ab 150 EUR Pflanzenwert). Etiketten fuer Samen bleiben
+    bezahlt. Fehlt die Variante Samen, bekommen Samen die erste Variante.
+  endcomment
+  assign hat_samen_var = false
+  assign samen_variante = variante
+  for v in et.variants
+    if v.option1 == 'Samen'
+      assign samen_variante = v
+      assign hat_samen_var = true
+    endif
+  endfor
   assign moeglich = false
   if et != blank and variante != blank and variante.available
     assign moeglich = true
@@ -82,8 +95,12 @@
         assign schluessel = '|' | append: item.product.handle | append: '|'
         assign menge = 0
         assign ist_samen = false
+        assign zeile_var = variante
         if lieferumfang == 'Gekeimter Samen aus dieser Kreuzung'
           assign ist_samen = true
+          if hat_samen_var
+            assign zeile_var = samen_variante
+          endif
         endif
         if zeigen
           if gezeigt contains schluessel
@@ -125,7 +142,7 @@
             type="button"
             class="etikett-vorschlag__knopf"
             data-etikett-vorschlag
-            data-variante="{{ variante.id }}"
+            data-variante="{{ zeile_var.id }}"
             data-menge="{{ menge }}"
             data-handle="{{ item.product.handle | escape }}"
             data-fuer="{{ item.product.title | escape }}"

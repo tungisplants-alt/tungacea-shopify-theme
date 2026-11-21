@@ -45,6 +45,17 @@
 
   assign et = block.settings.produkt
   assign variante = et.selected_or_first_available_variant
+  comment
+    Samen bekommen die Variante Samen des Pflanzenetiketts: Nur die Variante Pflanze ist ab 150 EUR
+    Pflanzenwert im Warenkorb gratis. Fehlt die Variante Samen, bleibt es bei der ersten Variante.
+  endcomment
+  if product.metafields.custom.lieferumfang.value == 'Gekeimter Samen aus dieser Kreuzung'
+    for v in et.variants
+      if v.option1 == 'Samen'
+        assign variante = v
+      endif
+    endfor
+  endif
   assign preis = product.selected_or_first_available_variant.price
   assign schwelle = block.settings.schwelle | default: 100 | times: 100
 

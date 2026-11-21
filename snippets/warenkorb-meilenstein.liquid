@@ -180,6 +180,6 @@
     {%- endfor -%}
   {%- endcapture -%}
   <script type="application/json" data-meilenstein-stand>
-    {"auto":true,"winterMarke":{{ winter_marke }},"b1":{{ b1 }},"b2":{{ b2 }},"maxEtiketten":10,"winterVar":{% if winter_var != blank %}{{ winter_var.id }}{% else %}0{% endif %},"etikettVar":{% if etikett_var != blank and etikett_var.available %}{{ etikett_var.id }}{% else %}0{% endif %},"fuerSchluessel":{{ 'products.product.etikett.property_for' | t | json }},"zeilen":[{{ m_zeilen }}]}
+    {"auto":true,"winterMarke":{{ winter_marke }},"b1":{{ b1 }},"b2":{{ b2 }},"maxEtiketten":15,"winterVar":{% if winter_var != blank %}{{ winter_var.id }}{% else %}0{% endif %},"etikettVar":{% if etikett_var != blank and etikett_var.available %}{{ etikett_var.id }}{% else %}0{% endif %},"fuerSchluessel":{{ 'products.product.etikett.property_for' | t | json }},"zeilen":[{{ m_zeilen }}]}
   </script>
 {%- endif -%}

@@ -958,6 +958,14 @@
     "about_heading": "Was ich selbst gern sammle und wachsen sehe, teile ich bei Tungacea mit dir.",
     "contact_heading": "Schreib mir direkt."
   },
+  "rabattcode": {
+    "title": "Rabattcode einlösen",
+    "label": "Rabattcode",
+    "placeholder": "Code",
+    "button": "Einlösen",
+    "applied": "Code {{ code }} angewendet",
+    "hint": "Der Rabatt erscheint in der Summe, wenn der Code gilt."
+  },
   "meilenstein": {
     "next_winter": "Noch {{ rest }} bis zur kostenlosen Winterpackung",
     "next_label": "Noch {{ rest }} bis zu den Premium-Etiketten gratis",

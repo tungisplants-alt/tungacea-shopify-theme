@@ -1,0 +1,30 @@
+{% comment %}
+  Tungacea — Rabattcode im Warenkorb (Schublade und Warenkorbseite).
+
+  Dawn hat im Warenkorb kein Feld fuer einen Rabattcode. Dieses Feld ist zugeklappt (eine Zeile) und
+  loest den Code ueber Shopifys Adresse /discount/<Code> ein; danach geht es zurueck in den Warenkorb
+  (assets/rabattcode.js). Ein gueltiger Code steht danach als Zeile "Code ... angewendet" da und der Rabatt
+  in der Summe. Ein ungueltiger Code aendert nichts, Shopify meldet dort keinen Fehler.
+
+  Zusaetzlich zeigt Shopify an der Kasse ein eigenes Feld "Rabattcode oder Geschenkgutschein", sobald
+  es mindestens einen aktiven Code im Shop gibt. Ohne Code im Shop fehlt es.
+{% endcomment %}
+{{ 'component-rabattcode.css' | asset_url | stylesheet_tag }}
+<div class="rabattcode" data-testid="rabattcode">
+  {%- assign codes_angewendet = false -%}
+  {%- for d in cart.cart_level_discount_applications -%}
+    {%- if d.type == 'discount_code' -%}
+      {%- assign codes_angewendet = true -%}
+      <p class="rabattcode__ok">✓ {{ 'rabattcode.applied' | t: code: d.title }}</p>
+    {%- endif -%}
+  {%- endfor -%}
+  <details class="rabattcode__klappe"{% if codes_angewendet %} hidden{% endif %}>
+    <summary class="rabattcode__titel">{{ 'rabattcode.title' | t }}</summary>
+    <form class="rabattcode__form" data-rabattcode-form>
+      <label class="visually-hidden" for="Rabattcode-{{ section.id | default: 'drawer' }}">{{ 'rabattcode.label' | t }}</label>
+      <input id="Rabattcode-{{ section.id | default: 'drawer' }}" class="rabattcode__feld" type="text" name="code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="{{ 'rabattcode.placeholder' | t }}" required>
+      <button type="submit" class="rabattcode__knopf">{{ 'rabattcode.button' | t }}</button>
+    </form>
+    <p class="rabattcode__hinweis">{{ 'rabattcode.hint' | t }}</p>
+  </details>
+</div>

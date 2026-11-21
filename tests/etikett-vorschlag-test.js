@@ -34,9 +34,10 @@ engine.registerFilter('t', function (key, ...rest) {
   return hit;
 });
 
-const etikett = (verfuegbar = true) => ({
+const etikett = (verfuegbar = true, mitSamen = false) => ({
   handle: 'archiv-etikett', url: '/products/archiv-etikett',
   selected_or_first_available_variant: { id: 777, price: 250, available: verfuegbar },
+  variants: mitSamen ? [{ id: 777, option1: 'Pflanze' }, { id: 778, option1: 'Samen' }] : [],
 });
 const pos = (handle, preis, lieferumfang, extra) => Object.assign({
   product: { handle, title: 'Anthurium ' + handle, metafields: { custom: { lieferumfang: lieferumfang ? { value: lieferumfang } : null } } },
@@ -66,6 +67,8 @@ const faelle = [
   { name: 'Zwei verschiedene Packungen derselben Pflanze (2x + 4x): sechs', cart: [pos('s-1', 1500, 'Gekeimter Samen aus dieser Kreuzung', { variant: { price: 1000, option1: '2x' } }), pos('s-1', 1500, 'Gekeimter Samen aus dieser Kreuzung', { variant: { price: 2000, option1: '4x' } })], zeilen: 1, erwartet: ['data-menge="6"'] },
   { name: 'Packung 4x, zwei Etiketten schon im Warenkorb: noch zwei', cart: [pos('s-1', 1500, 'Gekeimter Samen aus dieser Kreuzung', { variant: { price: 1500, option1: '4x' } }), etikettPos('s-1', 2)], zeilen: 1, erwartet: ['data-menge="2"'] },
   { name: 'Variante "A" oder "Default Title" zaehlt als ein Stueck', cart: [pos('a-1', 5000, 'Dieses Exemplar', { variant: { price: 5000, option1: 'Default Title' } })], zeilen: 1, erwartet: ['data-menge="1"'] },
+  { name: 'Mit Variante "Samen": Samen bekommen sie (778), Pflanzen die erste (777)', mitSamen: true, cart: [pos('s-1', 1500, 'Gekeimter Samen aus dieser Kreuzung'), pos('a-1', 5000, 'Dieses Exemplar')], zeilen: 2, erwartet: ['data-variante="778"', 'data-variante="777"'] },
+  { name: 'Ohne Variante "Samen": Samen nehmen die erste', cart: [pos('s-1', 1500, 'Gekeimter Samen aus dieser Kreuzung')], zeilen: 1, erwartet: ['data-variante="777"'], verboten: ['data-variante="778"'] },
   { name: 'Vier Samen, eins schon im Warenkorb: noch drei', cart: [pos('s-1', 1500, 'Gekeimter Samen aus dieser Kreuzung', { quantity: 4 }), etikettPos('s-1', 1)], zeilen: 1, erwartet: ['data-menge="3"'] },
   { name: 'Vier Samen, vier Etiketten schon im Warenkorb: keine Zeile', cart: [pos('s-1', 1500, 'Gekeimter Samen aus dieser Kreuzung', { quantity: 4 }), etikettPos('s-1', 4)], zeilen: 0 },
   { name: 'Eine Pflanze: Menge 1, Text ohne Mal-Zeichen', cart: [pos('a-1', 5000, 'Dieses Exemplar')], zeilen: 1, erwartet: ['data-menge="1"'], verboten: ['1 × '] },
@@ -83,7 +86,7 @@ const faelle = [
     locale = loc;
     for (const f of faelle) {
       const cart = { items: f.cart };
-      const html = await engine.renderFile('etikett-vorschlag', { cart, settings: f.settings || {}, all_products: { 'archiv-etikett': etikett(!f.ausverkauft) } });
+      const html = await engine.renderFile('etikett-vorschlag', { cart, settings: f.settings || {}, all_products: { 'archiv-etikett': etikett(!f.ausverkauft, !!f.mitSamen) } });
       const z = (html.match(/class="etikett-vorschlag__zeile"/g) || []).length;
       pruefe('[' + loc + '] ' + f.name + ' (Zeilen)', z === f.zeilen, 'ist ' + z + ', soll ' + f.zeilen);
       if (f.zeilen === 0) pruefe('[' + loc + '] ' + f.name + ' (nichts ausgegeben)', html.trim() === '');

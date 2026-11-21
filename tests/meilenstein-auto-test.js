@@ -8,7 +8,7 @@ const THEME = path.join(__dirname, '..');
 let n = 0, fehler = 0;
 const pruefe = (name, ok, info) => { n++; if (!ok) { fehler++; console.log('FEHLER ' + name + (info ? ': ' + JSON.stringify(info) : '')); } };
 
-const BASIS = { auto: true, winterMarke: true, b1: 10000, b2: 15000, maxEtiketten: 10, winterVar: 999, etikettVar: 777, fuerSchluessel: 'Für', zeilen: [] };
+const BASIS = { auto: true, winterMarke: true, b1: 10000, b2: 15000, maxEtiketten: 15, winterVar: 999, etikettVar: 777, fuerSchluessel: 'Für', zeilen: [] };
 const st = (zeilen, extra) => Object.assign({}, BASIS, extra || {}, { zeilen });
 const P = (h, c, extra) => Object.assign({ k: 'k-' + h, h, v: 1, q: 1, c, kl: 'pflanze', pk: 1, inkl: false, auto: null, pf: null, t: 'Anthurium ' + h }, extra || {});
 const S = (h, c) => ({ k: 'k-' + h, h, v: 2, q: 1, c, kl: 'samen', pk: 4, inkl: false, auto: null, pf: null, t: 'Samen' });
@@ -40,9 +40,9 @@ pruefe('Kunde hat das Etikett schon selbst gelegt: nichts dazu', plane(st([P('a'
 p = plane(st([P('a', 15000, { q: 1, pk: 4 })]));
 pruefe('Packung 4x: vier Etiketten', p.aktionen.some((a) => a.id === 777 && a.menge === 4));
 pruefe('Packung 4x, eines vom Kunden: drei', plane(st([P('a', 15000, { pk: 4 }), E('a', 1, false)])).aktionen.some((a) => a.id === 777 && a.menge === 3));
-const viele = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => P('p' + String(i).padStart(2, '0'), 1500));
+const viele = Array.from({ length: 20 }, (_, i) => i + 1).map((i) => P('p' + String(i).padStart(2, '0'), 1500));
 p = plane(st(viele));
-pruefe('Hoechstens 10 automatische Etiketten', p.aktionen.filter((a) => a.id === 777).reduce((s, a) => s + a.menge, 0) === 10);
+pruefe('Hoechstens 15 automatische Etiketten', p.aktionen.filter((a) => a.id === 777).reduce((s, a) => s + a.menge, 0) === 15);
 p = plane(st([P('a', 7000), P('b', 8000), E('a', 1, true), E('b', 2, true)]));
 const nurSet = p.aktionen.filter((a) => a.art === 'set');
 pruefe('Automatisches Etikett mit falscher Menge wird angepasst', nurSet.length === 1 && nurSet[0].key === 'e-b-a' && nurSet[0].menge === 1);

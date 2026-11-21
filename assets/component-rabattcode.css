@@ -1,0 +1,86 @@
+/*
+ * Rabattcode im Warenkorb: eine zugeklappte Zeile mit Haarlinie, aufgeklappt ein Feld und ein Knopf.
+ * Farben fest (Dawns Variablen gelten nur in Farbschemata).
+ */
+.rabattcode {
+  margin: 0 0 1.6rem;
+  padding: 0 0 1.2rem;
+  border-bottom: 1px solid rgba(236, 226, 204, 0.14);
+}
+
+.rabattcode__titel {
+  cursor: pointer;
+  list-style: none;
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  color: rgba(210, 198, 173, 0.88);
+}
+
+.rabattcode__titel::-webkit-details-marker {
+  display: none;
+}
+
+.rabattcode__titel::after {
+  content: ' +';
+  color: #cc6070;
+}
+
+.rabattcode__klappe[open] .rabattcode__titel::after {
+  content: ' –';
+}
+
+.rabattcode__form {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.rabattcode__feld {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 1rem 1.2rem;
+  border: 1px solid rgba(236, 226, 204, 0.32);
+  background: transparent;
+  color: #ece2cc;
+  font: inherit;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.rabattcode__feld:focus-visible,
+.rabattcode__knopf:focus-visible,
+.rabattcode__titel:focus-visible {
+  outline: 2px solid #cc6070;
+  outline-offset: 2px;
+}
+
+.rabattcode__knopf {
+  flex: 0 0 auto;
+  padding: 1rem 1.6rem;
+  border: 1px solid rgba(236, 226, 204, 0.55);
+  background: transparent;
+  color: #ece2cc;
+  font: inherit;
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.rabattcode__knopf:hover {
+  border-color: #b13d4c;
+  background: rgba(110, 28, 40, 0.28);
+}
+
+.rabattcode__ok {
+  margin: 0 0 0.6rem;
+  font-size: 1.3rem;
+  color: #ece2cc;
+}
+
+.rabattcode__hinweis {
+  margin: 0.8rem 0 0;
+  font-size: 1.1rem;
+  color: rgba(210, 198, 173, 0.7);
+}

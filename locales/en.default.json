@@ -958,6 +958,14 @@
     "about_heading": "What I like to collect and watch grow, I share with you at Tungacea.",
     "contact_heading": "Message me directly."
   },
+  "rabattcode": {
+    "title": "Enter discount code",
+    "label": "Discount code",
+    "placeholder": "Code",
+    "button": "Apply",
+    "applied": "Code {{ code }} applied",
+    "hint": "The discount appears in the total if the code is valid."
+  },
   "meilenstein": {
     "next_winter": "{{ rest }} to go for the free winter packaging",
     "next_label": "{{ rest }} to go for free premium labels",
