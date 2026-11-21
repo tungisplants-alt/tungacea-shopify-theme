@@ -128,7 +128,7 @@
                     {%- endcomment -%}
                     {%- assign mengen_umfang = item.product.metafields.custom.lieferumfang.value | default: '' | strip -%}
                     {%- assign mengen_fest = false -%}
-                    {%- if mengen_umfang == 'Dieses Exemplar' or mengen_umfang == 'Cutting der Mutterpflanze' -%}
+                    {%- if mengen_umfang == 'Dieses Exemplar' or mengen_umfang == 'Cutting der Mutterpflanze' or item.properties._auto == 'meilenstein' -%}
                       {%- assign mengen_fest = true -%}
                     {%- endif -%}
                       <tr

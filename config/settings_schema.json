@@ -1534,6 +1534,13 @@
       },
       {
         "type": "checkbox",
+        "id": "meilenstein_auto",
+        "label": "Meilensteine automatisch in den Warenkorb legen",
+        "info": "Winterpackung und Premium-Etiketten kommen von selbst hinein und stehen mit dem Preis durchgestrichen auf 0 €. Nur einschalten, wenn die automatischen Rabatte in Shopify angelegt sind, sonst kosten die Zeilen Geld.",
+        "default": false
+      },
+      {
+        "type": "checkbox",
         "id": "meilenstein_winter",
         "label": "Winterpackung-Marke anzeigen",
         "info": "Im Sommer ausschalten.",

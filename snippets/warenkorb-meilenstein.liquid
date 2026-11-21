@@ -130,11 +130,56 @@
       </ul>
     {%- endif -%}
 
-    {%- if winter_ok and winter_im_korb == false and winter_var != blank and winter_var.available -%}
+    {%- if winter_ok and winter_im_korb == false and winter_var != blank and winter_var.available and settings.meilenstein_auto != true -%}
       <button type="button" class="meilenstein__knopf" data-meilenstein-add data-variante="{{ winter_var.id }}">
         <span aria-hidden="true">+</span> {{ 'meilenstein.add_winter' | t }}
       </button>
     {%- endif -%}
     <p class="meilenstein__hinweis">{{ 'meilenstein.hint' | t }}</p>
   </div>
+{%- endif -%}
+
+{%- comment -%}
+  Datenknoten fuer assets/meilenstein-auto.js (nur mit der Einstellung "Meilensteine automatisch"). Der
+  Warenkorb wird nach jeder Aenderung neu gerendert, dieser Knoten damit auch: Er ist die aktuelle
+  Wahrheit ueber jede Zeile (Art, Menge, Preis vor Rabatt, ob automatisch gelegt). Das Skript
+  rechnet daraus, was dazukommen oder wegfallen muss. Klassen: pflanze, samen, etikett, winter, sonst.
+  "inkl": Pflanze ab 100 EUR je Stueck, bei der das Etikett schon inklusive ist (keine Zeile).
+{%- endcomment -%}
+{%- if m_an and settings.meilenstein_auto == true and cart.item_count > 0 -%}
+  {%- assign etikett_prod = all_products['archiv-etikett'] -%}
+  {%- assign etikett_var = etikett_prod.selected_or_first_available_variant -%}
+  {%- capture m_zeilen -%}
+    {%- for item in cart.items -%}
+      {%- liquid
+        assign z_umfang = item.product.metafields.custom.lieferumfang.value | default: '' | strip
+        assign z_kl = 'sonst'
+        if winter != blank and item.product.handle == winter.handle
+          assign z_kl = 'winter'
+        elsif etikett_prod != blank and item.product.handle == etikett_prod.handle
+          assign z_kl = 'etikett'
+        elsif z_umfang == 'Gekeimter Samen aus dieser Kreuzung'
+          assign z_kl = 'samen'
+        elsif z_umfang != blank
+          assign z_kl = 'pflanze'
+        endif
+        assign z_pk = 1
+        assign z_inkl = false
+        if z_kl == 'pflanze'
+          capture z_pk_text
+            render 'etikett-packung', variante: item.variant
+          endcapture
+          assign z_pk = z_pk_text | strip | plus: 0
+          if z_umfang != 'Sämling aus dieser Kreuzung' and item.variant.price >= 10000
+            assign z_inkl = true
+          endif
+        endif
+      -%}
+      {%- unless forloop.first -%},{%- endunless -%}
+      {"k":{{ item.key | json }},"h":{{ item.product.handle | json }},"v":{{ item.variant_id }},"q":{{ item.quantity }},"c":{{ item.original_line_price }},"kl":"{{ z_kl }}","pk":{{ z_pk }},"inkl":{{ z_inkl }},"auto":"{{ item.properties._auto | escape }}","pf":"{{ item.properties._pflanze | escape }}","t":{{ item.product.title | json }}}
+    {%- endfor -%}
+  {%- endcapture -%}
+  <script type="application/json" data-meilenstein-stand>
+    {"auto":true,"winterMarke":{{ winter_marke }},"b1":{{ b1 }},"b2":{{ b2 }},"maxEtiketten":10,"winterVar":{% if winter_var != blank %}{{ winter_var.id }}{% else %}0{% endif %},"etikettVar":{% if etikett_var != blank and etikett_var.available %}{{ etikett_var.id }}{% else %}0{% endif %},"fuerSchluessel":{{ 'products.product.etikett.property_for' | t | json }},"zeilen":[{{ m_zeilen }}]}
+  </script>
 {%- endif -%}
