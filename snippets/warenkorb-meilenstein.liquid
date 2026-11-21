@@ -1,0 +1,140 @@
+{% comment %}
+  Tungacea — Meilensteine im Warenkorb (Schublade und Warenkorbseite).
+
+  Ein schmaler Balken ueber den Positionen. Er zeigt immer nur die NAECHSTE Marke,
+  dahinter klein, was schon erreicht ist. Drei Marken, in dieser Reihenfolge
+  (Betraege in Theme-Einstellungen > Warenkorb-Meilensteine, Standard 100 / 150 / 200 EUR):
+
+    1. Winterpackung gratis      Wert der Pflanzen im Warenkorb (ohne Samen)
+    2. Premium-Etiketten gratis  Wert der Pflanzen im Warenkorb (ohne Samen)
+    3. Versand gratis            Warenwert des ganzen Warenkorbs
+
+  Marke 1 laesst sich im Sommer ausschalten (Einstellung "Winterpackung-Marke").
+
+  **Die Betraege hier sind nur die Anzeige.** Was wirklich gratis wird, entscheiden
+  die automatischen Rabatte in Shopify (Rabatte > Automatische Rabatte). Beide muessen
+  zusammenpassen, genau wie die Etiketten-Staffel. Das Snippet rechnet mit dem Preis
+  VOR Rabatten (original_line_price), wie Shopify beim Mindestbetrag.
+
+  Der Knopf "Winterpackung gratis dazulegen" erscheint, sobald Marke 1 erreicht ist und die
+  Winterpackung noch nicht im Warenkorb liegt. Er legt sie (Menge 1) hinein, ohne eine
+  Eigenschaft; den Preis 0 macht der Rabatt. Das Skript steht in assets/etikett-vorschlag.js.
+
+  Erscheint nichts bei leerem Warenkorb, ausgeschalteter Einstellung oder ohne Pflanzen.
+{% endcomment %}
+{%- liquid
+  assign m_an = true
+  if settings.meilenstein_aktiv == false
+    assign m_an = false
+  endif
+
+  assign pflanzen_cent = 0
+  assign winter_im_korb = false
+  assign winter = all_products['winterverpackung']
+  assign winter_var = winter.selected_or_first_available_variant
+  for item in cart.items
+    assign m_umfang = item.product.metafields.custom.lieferumfang.value | default: '' | strip
+    if m_umfang != blank and m_umfang != 'Gekeimter Samen aus dieser Kreuzung'
+      assign pflanzen_cent = pflanzen_cent | plus: item.original_line_price
+    endif
+    if winter != blank and item.product.handle == winter.handle
+      assign winter_im_korb = true
+    endif
+  endfor
+  assign gesamt_cent = cart.original_total_price
+
+  assign b1 = settings.meilenstein_winter_ab | default: 100 | times: 100
+  assign b2 = settings.meilenstein_etikett_ab | default: 150 | times: 100
+  assign b3 = settings.meilenstein_versand_ab | default: 200 | times: 100
+  assign winter_marke = true
+  if settings.meilenstein_winter == false
+    assign winter_marke = false
+  endif
+
+  comment
+    Naechste Marke bestimmen: die erste, die noch nicht erreicht ist. "vorher" ist die
+    letzte erreichte Marke (oder 0), damit der Balken von dort bis zur naechsten fuellt.
+  endcomment
+  assign naechste = ''
+  assign rest_cent = 0
+  assign vorher_cent = 0
+  assign ziel_cent = 0
+  assign stand_cent = 0
+  if winter_marke and pflanzen_cent < b1
+    assign naechste = 'winter'
+    assign ziel_cent = b1
+    assign stand_cent = pflanzen_cent
+  elsif pflanzen_cent < b2
+    assign naechste = 'etikett'
+    assign ziel_cent = b2
+    assign stand_cent = pflanzen_cent
+    if winter_marke
+      assign vorher_cent = b1
+    endif
+  elsif gesamt_cent < b3
+    assign naechste = 'versand'
+    assign ziel_cent = b3
+    assign stand_cent = gesamt_cent
+    assign vorher_cent = b2
+  endif
+  assign rest_cent = ziel_cent | minus: stand_cent
+  assign prozent = 100
+  if naechste != ''
+    assign spanne = ziel_cent | minus: vorher_cent
+    assign gefuellt = stand_cent | minus: vorher_cent
+    if gefuellt < 0
+      assign gefuellt = 0
+    endif
+    assign prozent = gefuellt | times: 100 | divided_by: spanne
+  endif
+
+  assign winter_ok = false
+  if winter_marke and pflanzen_cent >= b1
+    assign winter_ok = true
+  endif
+  assign etikett_ok = false
+  if pflanzen_cent >= b2
+    assign etikett_ok = true
+  endif
+  assign versand_ok = false
+  if gesamt_cent >= b3
+    assign versand_ok = true
+  endif
+-%}
+{%- if m_an and cart.item_count > 0 and pflanzen_cent > 0 -%}
+  {{ 'component-meilenstein.css' | asset_url | stylesheet_tag }}
+  <div class="meilenstein" data-testid="meilenstein">
+    {%- if naechste != '' -%}
+      {%- assign rest_text = rest_cent | money_without_trailing_zeros | replace: '€', ' €' -%}
+      <p class="meilenstein__zeile">
+        {%- if naechste == 'winter' -%}
+          {{- 'meilenstein.next_winter' | t: rest: rest_text -}}
+        {%- elsif naechste == 'etikett' -%}
+          {{- 'meilenstein.next_label' | t: rest: rest_text -}}
+        {%- else -%}
+          {{- 'meilenstein.next_shipping' | t: rest: rest_text -}}
+        {%- endif -%}
+      </p>
+      <div class="meilenstein__balken" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ prozent }}">
+        <span class="meilenstein__fuellung" style="width: {{ prozent }}%"></span>
+      </div>
+    {%- else -%}
+      <p class="meilenstein__zeile">{{ 'meilenstein.all_done' | t }}</p>
+    {%- endif -%}
+
+    {%- if winter_ok or etikett_ok or versand_ok -%}
+      <ul class="meilenstein__erreicht list-unstyled" role="list">
+        {%- if winter_ok -%}<li>✓ {{ 'meilenstein.done_winter' | t }}</li>{%- endif -%}
+        {%- if etikett_ok -%}<li>✓ {{ 'meilenstein.done_label' | t }}</li>{%- endif -%}
+        {%- if versand_ok -%}<li>✓ {{ 'meilenstein.done_shipping' | t }}</li>{%- endif -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if winter_ok and winter_im_korb == false and winter_var != blank and winter_var.available -%}
+      <button type="button" class="meilenstein__knopf" data-meilenstein-add data-variante="{{ winter_var.id }}">
+        <span aria-hidden="true">+</span> {{ 'meilenstein.add_winter' | t }}
+      </button>
+    {%- endif -%}
+    <p class="meilenstein__hinweis">{{ 'meilenstein.hint' | t }}</p>
+  </div>
+{%- endif -%}

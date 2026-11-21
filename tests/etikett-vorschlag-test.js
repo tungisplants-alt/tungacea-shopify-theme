@@ -40,9 +40,9 @@ const etikett = (verfuegbar = true) => ({
 });
 const pos = (handle, preis, lieferumfang, extra) => Object.assign({
   product: { handle, title: 'Anthurium ' + handle, metafields: { custom: { lieferumfang: lieferumfang ? { value: lieferumfang } : null } } },
-  variant: { price: preis, option1: 'A' }, properties: {}, quantity: 1,
+  variant: { price: preis, option1: 'A' }, properties: {}, quantity: 1, original_line_price: preis,
 }, extra || {});
-const etikettPos = (fuer, menge = 1) => ({ product: { handle: 'archiv-etikett', title: 'Pflanzenetikett', metafields: { custom: { lieferumfang: null } } }, variant: { price: 250, option1: 'Default Title' }, properties: { _pflanze: fuer }, quantity: menge });
+const etikettPos = (fuer, menge = 1) => ({ product: { handle: 'archiv-etikett', title: 'Pflanzenetikett', metafields: { custom: { lieferumfang: null } } }, variant: { price: 250, option1: 'Default Title' }, properties: { _pflanze: fuer }, quantity: menge, original_line_price: 250 * menge });
 
 const faelle = [
   { name: 'Pflanze unter 100 €: Zeile mit Knopf, Namen und Preis', cart: [pos('a-1', 5000, 'Dieses Exemplar')], zeilen: 1,
@@ -55,6 +55,12 @@ const faelle = [
   { name: 'Etikett fuer eine andere Pflanze: die erste bekommt trotzdem eine Zeile', cart: [pos('a-1', 5000, 'Dieses Exemplar'), pos('a-2', 5000, 'Dieses Exemplar'), etikettPos('a-2')], zeilen: 1, erwartet: ['data-handle="a-1"'], verboten: ['data-handle="a-2"'] },
   { name: 'Vier Samen: ein Angebot ueber vier Etiketten', cart: [pos('s-1', 1500, 'Gekeimter Samen aus dieser Kreuzung', { quantity: 4 })], zeilen: 1,
     erwartet: { de: ['data-menge="4"', '4 × 2,50 € · Hinzufügen'], en: ['data-menge="4"', '4 × 2,50 € · Add'] } },
+  { name: 'Marke "Etiketten gratis" erreicht (Pflanzen ab 150 €): Pflanzen-Etikett gratis', cart: [pos('a-1', 8000, 'Dieses Exemplar'), pos('a-2', 8000, 'Dieses Exemplar')], zeilen: 2,
+    erwartet: { de: ['gratis · Hinzufügen'], en: ['free · Add'] }, verboten: ['2,50 €'] },
+  { name: 'Unter der Marke (149 €): noch mit Preis', cart: [pos('a-1', 7450, 'Cutting der Mutterpflanze'), pos('a-2', 7450, 'Cutting der Mutterpflanze')], zeilen: 2, erwartet: ['2,50 €'], verboten: ['gratis · Hinzufügen'] },
+  { name: 'Marke erreicht: Samen-Etikett bleibt mit Preis, Samen zaehlen nicht zur Marke', cart: [pos('s-1', 20000, 'Gekeimter Samen aus dieser Kreuzung')], zeilen: 1, erwartet: ['2,50 €'], verboten: ['gratis · Hinzufügen'] },
+  { name: 'Marke erreicht, Menge 4: "4 × gratis"', cart: [pos('a-1', 16000, 'Sämling aus dieser Kreuzung', { variant: { price: 16000, option1: '4x' } })], zeilen: 1, erwartet: { de: ['4 × gratis · Hinzufügen'], en: ['4 × free · Add'] } },
+  { name: 'Meilensteine ausgeschaltet: Preis statt gratis', cart: [pos('a-1', 20000, 'Sämling aus dieser Kreuzung')], zeilen: 1, settings: { meilenstein_aktiv: false }, erwartet: ['2,50 €'], verboten: ['gratis · Hinzufügen'] },
   { name: 'Samen-Packung 4x, Menge 1: vier Etiketten', cart: [pos('s-1', 1500, 'Gekeimter Samen aus dieser Kreuzung', { variant: { price: 1500, option1: '4x' } })], zeilen: 1, erwartet: ['data-menge="4"'] },
   { name: 'Samen-Packung 6x, Menge 2: zwoelf Etiketten', cart: [pos('s-1', 1500, 'Gekeimter Samen aus dieser Kreuzung', { variant: { price: 1500, option1: '6x' }, quantity: 2 })], zeilen: 1, erwartet: ['data-menge="12"'] },
   { name: 'Zwei verschiedene Packungen derselben Pflanze (2x + 4x): sechs', cart: [pos('s-1', 1500, 'Gekeimter Samen aus dieser Kreuzung', { variant: { price: 1000, option1: '2x' } }), pos('s-1', 1500, 'Gekeimter Samen aus dieser Kreuzung', { variant: { price: 2000, option1: '4x' } })], zeilen: 1, erwartet: ['data-menge="6"'] },
@@ -77,7 +83,7 @@ const faelle = [
     locale = loc;
     for (const f of faelle) {
       const cart = { items: f.cart };
-      const html = await engine.renderFile('etikett-vorschlag', { cart, all_products: { 'archiv-etikett': etikett(!f.ausverkauft) } });
+      const html = await engine.renderFile('etikett-vorschlag', { cart, settings: f.settings || {}, all_products: { 'archiv-etikett': etikett(!f.ausverkauft) } });
       const z = (html.match(/class="etikett-vorschlag__zeile"/g) || []).length;
       pruefe('[' + loc + '] ' + f.name + ' (Zeilen)', z === f.zeilen, 'ist ' + z + ', soll ' + f.zeilen);
       if (f.zeilen === 0) pruefe('[' + loc + '] ' + f.name + ' (nichts ausgegeben)', html.trim() === '');

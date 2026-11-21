@@ -958,11 +958,24 @@
     "about_heading": "Was ich selbst gern sammle und wachsen sehe, teile ich bei Tungacea mit dir.",
     "contact_heading": "Schreib mir direkt."
   },
+  "meilenstein": {
+    "next_winter": "Noch {{ rest }} bis zur kostenlosen Winterpackung",
+    "next_label": "Noch {{ rest }} bis zu den Premium-Etiketten gratis",
+    "next_shipping": "Noch {{ rest }} bis zum kostenlosen Versand",
+    "all_done": "Du hast alle Vorteile erreicht.",
+    "done_winter": "Winterpackung gratis",
+    "done_label": "Premium-Etiketten gratis",
+    "done_shipping": "Versand gratis",
+    "add_winter": "Winterpackung gratis dazulegen",
+    "hint": "Die ersten beiden Marken zählen den Wert deiner Pflanzen (ohne Samen), der Versand den ganzen Warenkorb."
+  },
   "etikett_vorschlag": {
     "title": "Pflanzenetikett dazu?",
     "sub": "Graviert mit dem Namen deiner Pflanze, schwarzes Acryl. Die Menge änderst du im Warenkorb.",
     "add": "Hinzufügen",
-    "add_many": "{{ menge }} × {{ preis }} · Hinzufügen"
+    "add_many": "{{ menge }} × {{ preis }} · Hinzufügen",
+    "add_free": "gratis · Hinzufügen",
+    "add_free_many": "{{ menge }} × gratis · Hinzufügen"
   },
   "etikett_kopf": {
     "eyebrow": "Pflanzenetikett",

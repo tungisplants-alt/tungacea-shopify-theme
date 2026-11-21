@@ -1,0 +1,75 @@
+/*
+ * Meilensteine im Warenkorb: ein Satz, ein schmaler Balken, dahinter klein, was erreicht ist.
+ * Ruhig, ohne Kasten, Haarlinie unten. Farben fest (Dawns Variablen gelten nur in Farbschemata).
+ */
+.meilenstein {
+  margin: 0 0 1.6rem;
+  padding: 0 0 1.6rem;
+  border-bottom: 1px solid rgba(236, 226, 204, 0.14);
+}
+
+.meilenstein__zeile {
+  margin: 0 0 0.8rem;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: #ece2cc;
+}
+
+.meilenstein__balken {
+  height: 3px;
+  background: rgba(236, 226, 204, 0.14);
+}
+
+.meilenstein__fuellung {
+  display: block;
+  height: 100%;
+  background: #962d3a;
+  transition: width 0.6s ease;
+}
+
+.meilenstein__erreicht {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  color: rgba(210, 198, 173, 0.88);
+}
+
+.meilenstein__knopf {
+  margin: 1.2rem 0 0;
+  padding: 0.85rem 1.4rem;
+  border: 1px solid rgba(236, 226, 204, 0.42);
+  background: transparent;
+  color: #ece2cc;
+  font: inherit;
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.meilenstein__knopf:hover {
+  border-color: #b13d4c;
+  background: rgba(110, 28, 40, 0.28);
+}
+
+.meilenstein__knopf:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.meilenstein__knopf:focus-visible {
+  outline: 2px solid #cc6070;
+  outline-offset: 3px;
+}
+
+.meilenstein__hinweis {
+  margin: 1rem 0 0;
+  font-size: 1.1rem;
+  color: rgba(210, 198, 173, 0.7);
+}

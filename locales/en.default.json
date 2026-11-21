@@ -958,11 +958,24 @@
     "about_heading": "What I like to collect and watch grow, I share with you at Tungacea.",
     "contact_heading": "Message me directly."
   },
+  "meilenstein": {
+    "next_winter": "{{ rest }} to go for the free winter packaging",
+    "next_label": "{{ rest }} to go for free premium labels",
+    "next_shipping": "{{ rest }} to go for free shipping",
+    "all_done": "You've reached every benefit.",
+    "done_winter": "Winter packaging free",
+    "done_label": "Premium labels free",
+    "done_shipping": "Shipping free",
+    "add_winter": "Add free winter packaging",
+    "hint": "The first two steps count the value of your plants (without seeds), shipping counts the whole cart."
+  },
   "etikett_vorschlag": {
     "title": "Add a plant label?",
     "sub": "Engraved with your plant's name, black acrylic. You can change the quantity in the cart.",
     "add": "Add",
-    "add_many": "{{ menge }} × {{ preis }} · Add"
+    "add_many": "{{ menge }} × {{ preis }} · Add",
+    "add_free": "free · Add",
+    "add_free_many": "{{ menge }} × free · Add"
   },
   "etikett_kopf": {
     "eyebrow": "Plant label",

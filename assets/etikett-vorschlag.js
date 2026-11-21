@@ -5,6 +5,9 @@
  * Warenkorb (so viele, wie die Pflanze Stueck hat, siehe data-menge), wie der Knopf auf der Pflanzenseite (assets/etikett.js): sichtbare
  * Zeile "Für: <Pflanze>", verborgen _pflanze = Handle der Pflanze.
  *
+ * Derselbe Handler bedient den Knopf "Winterpackung gratis dazulegen" im
+ * Meilenstein-Balken (data-meilenstein-add, ohne Eigenschaften).
+ *
  * Der Warenkorb wird danach neu gezeichnet: in der Schublade ueber die
  * Methoden des Elements (renderContents), auf der Warenkorbseite durch
  * Neuladen. Die Handler haengen am Dokument, weil die Schublade ihren Inhalt
@@ -23,15 +26,19 @@
   }
 
   document.addEventListener('click', function (e) {
-    var knopf = e.target.closest && e.target.closest('[data-etikett-vorschlag]');
+    var knopf = e.target.closest && e.target.closest('[data-etikett-vorschlag], [data-meilenstein-add]');
     if (!knopf || knopf.disabled) return;
     var id = Number(knopf.dataset.variante);
     if (!id) return;
     knopf.disabled = true;
 
-    var eigenschaften = { _pflanze: knopf.dataset.handle || '' };
-    var schluessel = knopf.dataset.schluesselFuer || 'Für';
-    if (knopf.dataset.fuer) eigenschaften[schluessel] = knopf.dataset.fuer;
+    // Etikett: mit dem Namen der Pflanze. Winterpackung (Meilenstein): ohne Eigenschaften.
+    var eigenschaften = {};
+    if (knopf.dataset.handle !== undefined) {
+      eigenschaften._pflanze = knopf.dataset.handle || '';
+      var schluessel = knopf.dataset.schluesselFuer || 'Für';
+      if (knopf.dataset.fuer) eigenschaften[schluessel] = knopf.dataset.fuer;
+    }
 
     var d = schublade();
     var menge = Math.max(1, Math.min(99, Number(knopf.dataset.menge) || 1));

@@ -1514,5 +1514,52 @@
         "default": true
       }
     ]
+  },
+  {
+    "name": "Warenkorb-Meilensteine",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Balken im Warenkorb"
+      },
+      {
+        "type": "paragraph",
+        "content": "Die Beträge zeigen nur an. Was wirklich gratis wird, bestimmen die automatischen Rabatte in Shopify. Beide müssen zusammenpassen."
+      },
+      {
+        "type": "checkbox",
+        "id": "meilenstein_aktiv",
+        "label": "Balken anzeigen",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "meilenstein_winter",
+        "label": "Winterpackung-Marke anzeigen",
+        "info": "Im Sommer ausschalten.",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "meilenstein_winter_ab",
+        "label": "Winterpackung gratis ab (€)",
+        "info": "Wert der Pflanzen im Warenkorb, ohne Samen.",
+        "default": 100
+      },
+      {
+        "type": "number",
+        "id": "meilenstein_etikett_ab",
+        "label": "Premium-Etiketten gratis ab (€)",
+        "info": "Wert der Pflanzen im Warenkorb, ohne Samen.",
+        "default": 150
+      },
+      {
+        "type": "number",
+        "id": "meilenstein_versand_ab",
+        "label": "Versand gratis ab (€)",
+        "info": "Warenwert des ganzen Warenkorbs.",
+        "default": 200
+      }
+    ]
   }
 ]

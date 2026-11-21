@@ -45,7 +45,26 @@
 
   assign anzahl = 0
   assign gezeigt = ''
+
+  assign plant_cent = 0
+  for x in cart.items
+    assign x_umfang = x.product.metafields.custom.lieferumfang.value | default: '' | strip
+    if x_umfang != blank and x_umfang != 'Gekeimter Samen aus dieser Kreuzung'
+      assign plant_cent = plant_cent | plus: x.original_line_price
+    endif
+  endfor
+  assign etikett_ab_cent = settings.meilenstein_etikett_ab | default: 150 | times: 100
+  assign etikett_gratis = false
+  if settings.meilenstein_aktiv != false and plant_cent >= etikett_ab_cent
+    assign etikett_gratis = true
+  endif
 -%}
+{%- comment -%}
+  Ist die Marke "Premium-Etiketten gratis" des Meilenstein-Balkens erreicht (Wert der Pflanzen im
+  Warenkorb, ohne Samen, ab meilenstein_etikett_ab), steht an den Etiketten fuer Pflanzen "gratis"
+  statt des Preises. Den Preis 0 macht der automatische Rabatt in Shopify. Etiketten fuer Samen
+  bleiben mit Preis.
+{%- endcomment -%}
 {%- capture zeilen -%}
   {%- if moeglich -%}
     {%- for item in cart.items -%}
@@ -62,6 +81,10 @@
         endif
         assign schluessel = '|' | append: item.product.handle | append: '|'
         assign menge = 0
+        assign ist_samen = false
+        if lieferumfang == 'Gekeimter Samen aus dieser Kreuzung'
+          assign ist_samen = true
+        endif
         if zeigen
           if gezeigt contains schluessel
             assign zeigen = false
@@ -110,7 +133,7 @@
             data-label-fertig="{{ 'products.product.etikett.added' | t | escape }}"
           >
             <span aria-hidden="true">+</span>
-            <span class="etikett-vorschlag__knopf-text">{%- assign preis_text = variante.price | money_without_trailing_zeros | replace: '€', ' €' -%}{%- if menge > 1 -%}{{ 'etikett_vorschlag.add_many' | t: menge: menge, preis: preis_text }}{%- else -%}{{ preis_text }} · {{ 'etikett_vorschlag.add' | t }}{%- endif -%}</span>
+            <span class="etikett-vorschlag__knopf-text">{%- assign preis_text = variante.price | money_without_trailing_zeros | replace: '€', ' €' -%}{%- if etikett_gratis and ist_samen == false -%}{%- if menge > 1 -%}{{ 'etikett_vorschlag.add_free_many' | t: menge: menge }}{%- else -%}{{ 'etikett_vorschlag.add_free' | t }}{%- endif -%}{%- elsif menge > 1 -%}{{ 'etikett_vorschlag.add_many' | t: menge: menge, preis: preis_text }}{%- else -%}{{ preis_text }} · {{ 'etikett_vorschlag.add' | t }}{%- endif -%}</span>
           </button>
         </li>
       {%- endif -%}

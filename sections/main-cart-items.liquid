@@ -53,6 +53,7 @@
 
     <form action="{{ routes.cart_url }}" class="cart__contents critical-hidden" method="post" id="cart">
       <div class="cart__items" id="main-cart-items" data-id="{{ section.id }}">
+        {%- render 'warenkorb-meilenstein' -%}
         <div class="js-contents">
           {%- if cart != empty -%}
             <table class="cart-items">
